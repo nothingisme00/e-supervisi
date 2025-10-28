@@ -9,16 +9,18 @@ use Illuminate\Support\Facades\Auth;
 
 // ✅ Halaman root
 Route::get('/', function () {
-    if (auth()->check()) {
-        $role = auth()->user()->role;
-        return match ($role) {
-            'admin' => redirect()->route('admin.dashboard'),
-            'guru' => redirect()->route('guru.dashboard'),
-            'kepala' => redirect()->route('kepala.dashboard'),
-            default => redirect()->route('login'),
-        };
+    if (!auth()->check()) {
+        return redirect()->route('login');
     }
-    return redirect()->route('login');
+
+    $role = auth()->user()->role;
+
+    return match ($role) {
+        'admin' => to_route('admin.dashboard'),
+        'guru' => to_route('guru.dashboard'),
+        'kepala_sekolah' => to_route('kepala_sekolah.dashboard'),
+        default => to_route('login'),
+    };
 });
 
 // ✅ Route untuk user yang sudah login
@@ -41,8 +43,11 @@ Route::middleware(['auth','prevent-back-history'])->group(function () {
     });
 
     // KEPALA SEKOLAH
-    Route::prefix('kepala')->middleware('role:kepala')->group(function () {
-        Route::view('/dashboard', 'kepala.dashboard')->name('kepala.dashboard');
+    Route::prefix('kepala_sekolah')
+    ->middleware(['auth', 'prevent-back-history', 'role:kepala_sekolah'])
+    ->group(function () {
+        Route::get('/dashboard', [\App\Http\Controllers\KepalaSekolah\DashboardController::class, 'index'])
+            ->name('kepala_sekolah.dashboard');
     });
 
     // PROFILE
@@ -50,21 +55,5 @@ Route::middleware(['auth','prevent-back-history'])->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
-
-Route::get('/dashboard', function () {
-    if (!auth()->check()) {
-        return redirect()->route('login');
-    }
-
-    $role = auth()->user()->role;
-
-    return match ($role) {
-        'admin' => redirect()->route('admin.dashboard'),
-        'guru' => redirect()->route('guru.dashboard'),
-        'kepala' => redirect()->route('kepala.dashboard'),
-        default => redirect()->route('login'),
-    };
-})->name('dashboard');
-
 
 require __DIR__.'/auth.php';
