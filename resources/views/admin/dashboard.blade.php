@@ -1,52 +1,34 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard Admin</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f6f8;
-            margin: 0;
-            padding: 20px;
-        }
-        header {
-            background-color: #2c3e50;
-            color: white;
-            padding: 15px;
-            text-align: center;
-            border-radius: 10px;
-        }
-        main {
-            margin-top: 20px;
-        }
-        a {
-            display: inline-block;
-            margin-top: 10px;
-            text-decoration: none;
-            color: white;
-            background-color: #3498db;
-            padding: 10px 15px;
-            border-radius: 8px;
-        }
-        a:hover {
-            background-color: #2980b9;
-        }
-    </style>
-</head>
-<body>
-    <header>
-        <h2>Selamat Datang, {{ auth()->user()->name }} ({{ auth()->user()->role }})</h2>
-    </header>
+@extends('layouts.admin')
 
-    <main>
-        <p>Ini adalah halaman Dashboard Admin.</p>
-        <a href="{{ route('users.index') }}">Kelola User</a>
-        <form action="/logout" method="POST" style="display:inline">
-            @csrf
-            <button type="submit" style="background-color:#e74c3c;border:none;padding:10px 15px;border-radius:8px;color:white;cursor:pointer;">Logout</button>
-        </form>
-    </main>
-</body>
-</html>
+@section('title', 'Dashboard Admin - E-Supervisi')
+@section('page-title', 'Selamat Datang, ' . Auth::user()->name)
+
+@section('content')
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+    <div class="bg-white shadow rounded-xl p-6 hover:shadow-lg transition">
+        <h3 class="text-sm text-gray-500 mb-1">Jumlah Guru</h3>
+        <p class="text-3xl font-bold text-blue-600">{{ $totalGuru }}</p>
+    </div>
+
+    <div class="bg-white shadow rounded-xl p-6 hover:shadow-lg transition">
+        <h3 class="text-sm text-gray-500 mb-1">Laporan Masuk</h3>
+        <p class="text-3xl font-bold text-green-600">{{ $laporanMasuk }}</p>
+    </div>
+
+    <div class="bg-white shadow rounded-xl p-6 hover:shadow-lg transition">
+        <h3 class="text-sm text-gray-500 mb-1">Evaluasi Tersimpan</h3>
+        <p class="text-3xl font-bold text-purple-600">{{ $evaluasiDisetujui }}</p>
+    </div>
+
+</div>
+
+<div class="mt-8 bg-white shadow rounded-xl p-6">
+    <h2 class="text-lg font-semibold mb-4 text-gray-700">Statistik Evaluasi</h2>
+    <p class="text-gray-700 text-sm">Rata-rata Nilai: 
+        <span class="font-bold text-blue-600">
+            {{ number_format($rataNilai, 2) ?? '0.00' }}
+        </span>
+    </p>
+</div>
+@endsection
