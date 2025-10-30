@@ -16,11 +16,7 @@ return Application::configure(basePath: dirname(__DIR__))
         'role' => \App\Http\Middleware\RoleMiddleware::class,
         'prevent-back-history' => \App\Http\Middleware\PreventBackHistory::class,
     ]);
-
-    // Middleware global agar halaman tidak tersimpan di cache browser
-    $middleware->web(append: [
-        \App\Http\Middleware\PreventBackHistory::class,
-    ]);
+    
 })
 
 

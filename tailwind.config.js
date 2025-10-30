@@ -7,8 +7,8 @@ module.exports = {
 }
 
 export default {
-  darkMode: 'media', // otomatis berdasarkan preferensi sistem
-  content: ['./resources/**/*.blade.php', './resources/**/*.js', './resources/**/*.vue'],
+  darkMode: 'class',
+  content: ['./resources/**/*.blade.php', './resources/**/*.js'],
   theme: {
     extend: {},
   },

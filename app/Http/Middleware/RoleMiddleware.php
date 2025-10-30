@@ -7,27 +7,32 @@ use Illuminate\Support\Facades\Auth;
 
 class RoleMiddleware
 {
-    /**
-     * Handle an incoming request.
-     */
     public function handle($request, Closure $next, ...$roles)
     {
-        // Jika belum login, arahkan ke login
+        // Jika belum login → arahkan ke halaman login
         if (!Auth::check()) {
             return redirect()->route('login');
         }
 
         $user = Auth::user();
+        $currentRoute = $request->route()->getName();
 
-        // Jika role user tidak sesuai
+        // Tentukan dashboard sesuai role user
+        $targetRoute = match ($user->role) {
+            'admin' => 'admin.dashboard',
+            'guru' => 'guru.dashboard',
+            'kepala_sekolah' => 'kepala_sekolah.dashboard',
+            default => 'login',
+        };
+
+        // 🚫 Jika role tidak cocok, arahkan ke dashboard yang benar
         if (!in_array($user->role, $roles)) {
-            // Logout paksa dan arahkan ke login
-            Auth::logout();
-            $request->session()->invalidate();
-            $request->session()->regenerateToken();
-            return redirect()->route('login')->withErrors([
-                'access' => 'Anda tidak memiliki izin untuk mengakses halaman ini.',
-            ]);
+            // Hindari loop jika sudah di dashboard sesuai role
+            if ($currentRoute === $targetRoute) {
+                return $next($request);
+            }
+
+            return redirect()->route($targetRoute);
         }
 
         return $next($request);

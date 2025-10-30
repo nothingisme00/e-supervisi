@@ -7,21 +7,25 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Guru\SupervisiController;
 use Illuminate\Support\Facades\Auth;
 
-// ✅ Halaman root
+// ✅ Halaman root aman dari redirect loop
 Route::get('/', function () {
+    // Jika belum login, arahkan ke login
     if (!auth()->check()) {
         return redirect()->route('login');
     }
 
-    $role = auth()->user()->role;
+    $user = auth()->user();
 
-    return match ($role) {
+    // Jika user sudah login tapi berada di halaman root (misal akibat tombol back)
+    // maka arahkan langsung ke dashboard sesuai rolenya TANPA recheck login lagi
+    return match ($user->role) {
         'admin' => to_route('admin.dashboard'),
         'guru' => to_route('guru.dashboard'),
         'kepala_sekolah' => to_route('kepala_sekolah.dashboard'),
-        default => to_route('login'),
+        default => redirect()->route('login'),
     };
-});
+})->name('root');
+
 
 // ✅ Route untuk user yang sudah login
 Route::middleware(['auth','prevent-back-history'])->group(function () {
@@ -43,12 +47,11 @@ Route::middleware(['auth','prevent-back-history'])->group(function () {
     });
 
     // KEPALA SEKOLAH
-    Route::prefix('kepala_sekolah')
-    ->middleware(['auth', 'prevent-back-history', 'role:kepala_sekolah'])
-    ->group(function () {
-        Route::get('/dashboard', [\App\Http\Controllers\KepalaSekolah\DashboardController::class, 'index'])
-            ->name('kepala_sekolah.dashboard');
-    });
+    Route::prefix('kepala_sekolah')->middleware(['role:kepala_sekolah'])->group(function () {
+    Route::get('/dashboard', [\App\Http\Controllers\KepalaSekolah\DashboardController::class, 'index'])
+        ->name('kepala_sekolah.dashboard');
+});
+
 
     // PROFILE
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
