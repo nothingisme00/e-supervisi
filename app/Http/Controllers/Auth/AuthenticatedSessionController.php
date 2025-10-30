@@ -22,26 +22,61 @@ class AuthenticatedSessionController extends Controller
     /**
      * Handle an incoming authentication request.
      */
-    public function store(LoginRequest $request): RedirectResponse
-    {
-        $request->authenticate();
+   public function store(Request $request): RedirectResponse
+{
+    $request->validate([
+        'nik' => ['required', 'string'],
+        'password' => ['required', 'string'],
+        'role' => ['required', 'string'],
+    ]);
 
-        $request->session()->regenerate();
-
-        return redirect()->intended(route('dashboard', absolute: false));
+    // Coba autentikasi berdasarkan NIK dan password
+    if (!Auth::attempt($request->only('nik', 'password'), $request->boolean('remember'))) {
+        return back()->withErrors([
+            'nik' => 'NIK atau password salah.',
+        ])->withInput($request->only('nik', 'role'));
     }
+
+    // Regenerasi session setelah login berhasil
+    $request->session()->regenerate();
+
+    $user = Auth::user();
+
+    // 🔍 Validasi role yang dipilih di form dengan role di database
+    if ($user->role !== $request->role) {
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return back()->withErrors([
+            'role' => "Login gagal. Anda terdaftar sebagai " . ucfirst($user->role) . ", bukan sebagai " . ucfirst($request->role) . ".",
+        ])->withInput($request->only('nik'));
+    }
+
+    // ✅ Redirect ke dashboard sesuai role yang benar
+    return match ($user->role) {
+        'admin' => redirect()->route('admin.dashboard'),
+        'guru' => redirect()->route('guru.dashboard'),
+        'kepala_sekolah' => redirect()->route('kepala_sekolah.dashboard'),
+        default => redirect()->route('login'),
+    };
+}
+
+
+
+
 
     /**
      * Destroy an authenticated session.
      */
     public function destroy(Request $request): RedirectResponse
-    {
-        Auth::guard('web')->logout();
+{
+    auth()->guard('web')->logout();
 
-        $request->session()->invalidate();
+    $request->session()->invalidate();
+    $request->session()->regenerateToken();
 
-        $request->session()->regenerateToken();
+    return redirect('/login');
+}
 
-        return redirect('/');
-    }
 }
