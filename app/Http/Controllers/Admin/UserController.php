@@ -1,0 +1,120 @@
+<?php
+
+namespace App\Http\Controllers\Admin;
+
+use App\Http\Controllers\Controller;
+use App\Models\User;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+
+class UserController extends Controller
+{
+    public function index(Request $request)
+    {
+        $query = User::query();
+
+        if ($request->has('search')) {
+            $search = $request->search;
+            $query->where('name', 'like', "%{$search}%")
+                  ->orWhere('nik', 'like', "%{$search}%")
+                  ->orWhere('email', 'like', "%{$search}%");
+        }
+
+        if ($request->has('role') && $request->role != '') {
+            $query->where('role', $request->role);
+        }
+
+        $users = $query->paginate(10);
+
+        return view('admin.users.index', compact('users'));
+    }
+
+    public function create()
+    {
+        return view('admin.users.create');
+    }
+
+    public function store(Request $request)
+    {
+        $request->validate([
+            'nik' => 'required|string|size:18|unique:users',
+            'name' => 'required|string|max:255',
+            'email' => 'nullable|email|unique:users',
+            'password' => 'required|string|min:6',
+            'role' => 'required|in:admin,guru,kepala_sekolah',
+            'tingkat' => 'required_if:role,guru|in:SD,SMP,SMA',
+            'mata_pelajaran' => 'required_if:role,guru|string'
+        ]);
+
+        User::create([
+            'nik' => $request->nik,
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            'role' => $request->role,
+            'tingkat' => $request->tingkat,
+            'mata_pelajaran' => $request->mata_pelajaran
+        ]);
+
+        return redirect()->route('admin.users.index')
+            ->with('success', 'User berhasil ditambahkan');
+    }
+
+    public function edit($id)
+    {
+        $user = User::findOrFail($id);
+        return view('admin.users.edit', compact('user'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        $user = User::findOrFail($id);
+
+        $request->validate([
+            'nik' => 'required|string|size:18|unique:users,nik,' . $id,
+            'name' => 'required|string|max:255',
+            'email' => 'nullable|email|unique:users,email,' . $id,
+            'role' => 'required|in:admin,guru,kepala_sekolah',
+            'tingkat' => 'required_if:role,guru|in:SD,SMP,SMA',
+            'mata_pelajaran' => 'required_if:role,guru|string'
+        ]);
+
+        $user->update($request->except('password'));
+
+        return redirect()->route('admin.users.index')
+            ->with('success', 'User berhasil diupdate');
+    }
+
+    public function resetPassword($id)
+    {
+        $user = User::findOrFail($id);
+        
+        $newPassword = 'password123'; // Default password
+        $user->update(['password' => Hash::make($newPassword)]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Password berhasil direset ke: ' . $newPassword
+        ]);
+    }
+
+    public function destroy($id)
+    {
+        $user = User::findOrFail($id);
+        $user->delete();
+
+        return redirect()->route('admin.users.index')
+            ->with('success', 'User berhasil dihapus');
+    }
+
+    public function toggleStatus($id)
+    {
+        $user = User::findOrFail($id);
+        $user->update(['is_active' => !$user->is_active]);
+
+        return response()->json([
+            'success' => true,
+            'is_active' => $user->is_active
+        ]);
+    }
+}

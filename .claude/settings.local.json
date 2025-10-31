@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(php artisan route:list:*)",
+      "Bash(php artisan make:middleware:*)",
+      "Bash(php artisan optimize:clear:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
