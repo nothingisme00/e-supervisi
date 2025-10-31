@@ -1,0 +1,38 @@
+/* resources/css/pages/login.css */
+
+/* gunakan @apply agar Tailwind tetap aktif */
+body {
+  @apply font-sans bg-gray-100 flex justify-center items-center h-screen m-0;
+}
+
+.login-container {
+  @apply bg-white p-8 rounded-xl shadow-lg w-full max-w-md;
+}
+
+.login-container h2 {
+  @apply text-2xl font-semibold mb-6 text-center text-gray-800;
+}
+
+label {
+  @apply block mb-2 font-medium text-gray-700;
+}
+
+input[type="email"], input[type="password"] {
+  @apply w-full px-3 py-2 border border-gray-300 rounded mb-4 text-[15px] focus:outline-none focus:ring-2 focus:ring-blue-500;
+}
+
+.login-button {
+  @apply w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition;
+}
+
+.footer-text {
+  @apply text-center mt-4 text-sm text-gray-600;
+}
+
+.footer-text a {
+  @apply text-blue-600 no-underline hover:underline;
+}
+
+.alert {
+  @apply bg-red-500 text-white p-3 rounded mb-4 text-center;
+}
