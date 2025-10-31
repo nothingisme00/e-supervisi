@@ -13,18 +13,22 @@ class UserController extends Controller
     {
         $query = User::query();
 
-        if ($request->has('search')) {
+        // Search filter (with proper grouping)
+        if ($request->filled('search')) {
             $search = $request->search;
-            $query->where('name', 'like', "%{$search}%")
+            $query->where(function($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
                   ->orWhere('nik', 'like', "%{$search}%")
                   ->orWhere('email', 'like', "%{$search}%");
+            });
         }
 
-        if ($request->has('role') && $request->role != '') {
+        // Role filter
+        if ($request->filled('role')) {
             $query->where('role', $request->role);
         }
 
-        $users = $query->paginate(10);
+        $users = $query->orderBy('created_at', 'desc')->paginate(10);
 
         return view('admin.users.index', compact('users'));
     }
