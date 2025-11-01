@@ -13,9 +13,9 @@ class SupervisiController extends Controller
 {
     public function create()
     {
-        // Check if user already has active supervision
+        // Check if user already has active supervision (only draft or revision, not submitted)
         $activeSupervisi = auth()->user()->supervisi()
-            ->whereIn('status', ['draft', 'submitted', 'revision'])
+            ->whereIn('status', ['draft', 'revision'])
             ->first();
 
         if ($activeSupervisi) {
@@ -63,11 +63,13 @@ class SupervisiController extends Controller
         try {
             $request->validate([
                 'jenis_dokumen' => 'required|string',
+                'deskripsi' => 'nullable|string|max:100',
                 'file' => 'required|file|mimes:pdf,jpg,jpeg,png|max:2048'
             ], [
                 'file.required' => 'File wajib dipilih',
                 'file.mimes' => 'File harus berformat PDF, JPG, JPEG, atau PNG',
-                'file.max' => 'Ukuran file maksimal 2MB'
+                'file.max' => 'Ukuran file maksimal 2MB',
+                'deskripsi.max' => 'Deskripsi maksimal 100 karakter'
             ]);
 
             $supervisi = Supervisi::where('id', $id)
@@ -95,6 +97,7 @@ class SupervisiController extends Controller
             DokumenEvaluasi::create([
                 'supervisi_id' => $id,
                 'jenis_dokumen' => $request->jenis_dokumen,
+                'deskripsi' => $request->deskripsi,
                 'nama_file' => $file->getClientOriginalName(),
                 'path_file' => $path,
                 'tipe_file' => $file->getClientOriginalExtension(),
@@ -193,6 +196,36 @@ class SupervisiController extends Controller
         } else {
             // Otherwise start from evaluasi
             return redirect()->route('guru.supervisi.evaluasi', $id);
+        }
+    }
+
+    public function destroy($id)
+    {
+        try {
+            $supervisi = Supervisi::where('id', $id)
+                ->where('user_id', auth()->id())
+                ->whereIn('status', ['draft', 'revision'])
+                ->firstOrFail();
+
+            // Delete all related documents from storage
+            foreach ($supervisi->dokumenEvaluasi as $dokumen) {
+                if (Storage::disk('public')->exists($dokumen->path_file)) {
+                    Storage::disk('public')->delete($dokumen->path_file);
+                }
+            }
+
+            // Delete supervisi (will cascade delete related records)
+            $supervisi->delete();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Supervisi berhasil dihapus'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Gagal menghapus supervisi: ' . $e->getMessage()
+            ], 500);
         }
     }
 }

@@ -25,6 +25,19 @@ class Supervisi extends Model
         'reviewed_at' => 'datetime'
     ];
 
+    // Boot method for cascade delete
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::deleting(function ($supervisi) {
+            // Delete related records
+            $supervisi->dokumenEvaluasi()->delete();
+            $supervisi->prosesPembelajaran()->delete();
+            $supervisi->feedback()->delete();
+        });
+    }
+
     // Relationships
     public function user()
     {

@@ -35,7 +35,7 @@ class ProsesController extends Controller
     {
         $request->validate([
             'link_video' => 'required|url',
-            'link_meeting' => 'required|url',
+            'link_meeting' => 'nullable|url',
             'refleksi_1' => 'required|string|min:10|max:500',
             'refleksi_2' => 'required|string|min:10|max:500',
             'refleksi_3' => 'required|string|min:10|max:500',
@@ -79,7 +79,6 @@ class ProsesController extends Controller
 
         if (!$proses ||
             !$proses->link_video ||
-            !$proses->link_meeting ||
             !$proses->refleksi_1 ||
             !$proses->refleksi_2 ||
             !$proses->refleksi_3 ||

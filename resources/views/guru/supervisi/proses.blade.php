@@ -31,7 +31,7 @@
 
     <!-- Link Pembelajaran Card -->
     <div class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 mb-6 shadow-sm">
-        <div class="border-b border-gray-200 dark:border-gray-700 px-6 py-4 bg-gradient-to-r from-indigo-50 to-purple-50 dark:from-indigo-900/20 dark:to-purple-900/20">
+        <div class="border-b border-gray-200 dark:border-gray-700 px-6 py-4 bg-gradient-to-r from-indigo-50/30 to-blue-50/30 dark:from-indigo-900/10 dark:to-blue-900/10">
             <div class="flex items-center gap-3">
                 <div class="w-10 h-10 bg-indigo-600 dark:bg-indigo-500 rounded-lg flex items-center justify-center">
                     <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -39,14 +39,14 @@
                     </svg>
                 </div>
                 <div>
-                    <h2 class="text-lg font-bold text-gray-900 dark:text-white">Link Pembelajaran</h2>
+                    <h2 class="text-lg font-bold text-gray-800 dark:text-gray-100">Link Pembelajaran</h2>
                     <p class="text-sm text-gray-600 dark:text-gray-400">Masukkan link video dan meeting pembelajaran</p>
                 </div>
             </div>
         </div>
 
         <div class="p-6">
-            <div class="space-y-5">
+            <div class="space-y-8">
                 <!-- Link Video -->
                 <div>
                     <label for="link_video" class="flex items-center gap-2 text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
@@ -77,7 +77,7 @@
                 <div>
                     <label for="link_meeting" class="flex items-center gap-2 text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
                         <span class="flex items-center justify-center w-6 h-6 bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 rounded-full text-xs font-bold">2</span>
-                        Link Meeting <span class="text-red-500">*</span>
+                        Link Meeting <span class="text-gray-500 text-xs">(Opsional)</span>
                     </label>
                     <div class="relative">
                         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -89,13 +89,12 @@
                             type="url"
                             name="link_meeting"
                             id="link_meeting"
-                            required
                             placeholder="https://meet.google.com/... atau https://zoom.us/..."
                             value="{{ old('link_meeting', $proses->link_meeting ?? '') }}"
                             class="w-full pl-10 pr-4 py-2.5 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:text-white"
                         >
                     </div>
-                    <p class="text-xs text-gray-500 dark:text-gray-400 mt-1.5">Masukkan link Google Meet atau Zoom</p>
+                    <p class="text-xs text-gray-500 dark:text-gray-400 mt-1.5">Masukkan link Google Meet atau Zoom (Opsional)</p>
                 </div>
             </div>
         </div>
@@ -103,7 +102,7 @@
 
     <!-- Refleksi Pembelajaran Card -->
     <div class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 mb-6 shadow-sm">
-        <div class="border-b border-gray-200 dark:border-gray-700 px-6 py-4 bg-gradient-to-r from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20">
+        <div class="border-b border-gray-200 dark:border-gray-700 px-6 py-4 bg-gradient-to-r from-purple-50/30 to-pink-50/30 dark:from-purple-900/10 dark:to-pink-900/10">
             <div class="flex items-center gap-3">
                 <div class="w-10 h-10 bg-purple-600 dark:bg-purple-500 rounded-lg flex items-center justify-center">
                     <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -111,7 +110,7 @@
                     </svg>
                 </div>
                 <div>
-                    <h2 class="text-lg font-bold text-gray-900 dark:text-white">Refleksi Pembelajaran</h2>
+                    <h2 class="text-lg font-bold text-gray-800 dark:text-gray-100">Refleksi Pembelajaran</h2>
                     <p class="text-sm text-gray-600 dark:text-gray-400">Jawab pertanyaan refleksi berikut dengan jujur dan detail</p>
                 </div>
             </div>
@@ -182,7 +181,8 @@
             <button
                 type="button"
                 onclick="window.location.href='{{ route('guru.supervisi.evaluasi', $supervisi->id) }}'"
-                class="inline-flex items-center justify-center gap-2 px-5 py-3 bg-gray-700 text-white font-semibold rounded-lg hover:bg-gray-800"
+                style="background-color: #eab308; color: white;"
+                class="inline-flex items-center justify-center gap-2 px-5 py-3 font-semibold rounded-lg cursor-pointer"
             >
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
@@ -194,7 +194,7 @@
                 <button
                     type="button"
                     id="saveButton"
-                    class="inline-flex items-center justify-center gap-2 px-5 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700"
+                    class="inline-flex items-center justify-center gap-2 px-5 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 cursor-pointer"
                 >
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"></path>
@@ -272,7 +272,7 @@ const supervisiId = {{ $supervisi->id }};
 // Validate form and enable/disable submit button
 function validateForm() {
     const linkVideo = document.getElementById('link_video').value.trim();
-    const linkMeeting = document.getElementById('link_meeting').value.trim();
+    // Link Meeting is optional, no need to validate
 
     // Check all refleksi fields
     const refleksiFields = [@foreach($refleksiQuestions as $field => $question)'{{ $field }}'{{ !$loop->last ? ',' : '' }}@endforeach];
@@ -286,16 +286,16 @@ function validateForm() {
         }
     }
 
-    // Enable submit button only if all fields are valid
+    // Enable submit button only if all fields are valid (link meeting is optional)
     const submitButton = document.getElementById('submitButton');
-    const isValid = linkVideo && linkMeeting && allRefleksiFilled;
+    const isValid = linkVideo && allRefleksiFilled;
 
     submitButton.disabled = !isValid;
 
     // Update button styling based on state
     if (isValid) {
         // Enabled: hijau, teks putih
-        submitButton.className = 'inline-flex items-center justify-center gap-2 px-6 py-3 bg-green-600 text-white font-bold rounded-lg hover:bg-green-700';
+        submitButton.className = 'inline-flex items-center justify-center gap-2 px-6 py-3 bg-green-600 text-white font-bold rounded-lg hover:bg-green-700 cursor-pointer';
     } else {
         // Disabled: abu-abu, teks abu-abu gelap
         submitButton.className = 'inline-flex items-center justify-center gap-2 px-6 py-3 bg-gray-400 text-gray-700 font-bold rounded-lg cursor-not-allowed';
@@ -353,6 +353,10 @@ document.getElementById('saveButton').addEventListener('click', async () => {
     try {
         const response = await fetch(`/guru/supervisi/${supervisiId}/proses/save`, {
             method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value,
+                'Accept': 'application/json'
+            },
             body: formData
         });
 

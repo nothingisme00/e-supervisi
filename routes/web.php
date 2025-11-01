@@ -54,7 +54,8 @@ Route::middleware(['auth', 'prevent.back', 'must.change.password'])->group(funct
             Route::post('/{id}/delete-document', [SupervisiController::class, 'deleteDocument'])->name('delete-document');
             Route::get('/{id}/check-documents', [SupervisiController::class, 'checkDocuments'])->name('check-documents');
             Route::get('/{id}/detail', [GuruHomeController::class, 'detail'])->name('detail');
-            
+            Route::delete('/{id}/delete', [SupervisiController::class, 'destroy'])->name('delete');
+
             // Proses Routes
             Route::get('/{id}/proses', [ProsesController::class, 'show'])->name('proses');
             Route::post('/{id}/proses/save', [ProsesController::class, 'save'])->name('proses.save');

@@ -14,6 +14,7 @@ class DokumenEvaluasi extends Model
     protected $fillable = [
         'supervisi_id',
         'jenis_dokumen',
+        'deskripsi',
         'nama_file',
         'path_file',
         'tipe_file',

@@ -25,9 +25,23 @@
 <!-- Main Card -->
 <div class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
     <!-- Header -->
-    <div class="border-b border-gray-200 dark:border-gray-700 px-6 py-4">
-        <h2 class="text-xl font-bold text-gray-900 dark:text-white">Upload Dokumen Evaluasi Diri</h2>
-        <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">Upload 7 dokumen yang diperlukan (opsional)</p>
+    <div class="border-b border-gray-200 dark:border-gray-700 px-6 py-4 bg-gradient-to-r from-indigo-50/30 to-blue-50/30 dark:from-indigo-900/10 dark:to-blue-900/10">
+        <div class="flex items-start justify-between gap-4">
+            <div>
+                <h2 class="text-xl font-bold text-gray-800 dark:text-gray-100">Upload Dokumen Evaluasi Diri</h2>
+                <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">Upload 7 dokumen yang diperlukan (opsional)</p>
+            </div>
+            <!-- Progress Badge -->
+            <div class="flex items-center gap-2 bg-white dark:bg-gray-800 px-4 py-2 rounded-lg border border-gray-200 dark:border-gray-600 shadow-sm">
+                <svg class="w-5 h-5 text-indigo-600 dark:text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                </svg>
+                <div>
+                    <span class="text-xs text-gray-500 dark:text-gray-400 block">Progres Upload</span>
+                    <span id="documentBadge" class="text-sm font-bold text-indigo-600 dark:text-indigo-400">0/7 Dokumen</span>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- Info Alert -->
@@ -62,22 +76,47 @@
         <div class="overflow-x-auto">
             <table class="w-full border-collapse">
                 <thead>
-                    <tr class="bg-gray-50 dark:bg-gray-700">
-                        <th class="px-4 py-3 text-left text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider border-b border-gray-200 dark:border-gray-600">No</th>
-                        <th class="px-4 py-3 text-left text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider border-b border-gray-200 dark:border-gray-600">Nama Dokumen</th>
-                        <th class="px-4 py-3 text-center text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider border-b border-gray-200 dark:border-gray-600">Status</th>
-                        <th class="px-4 py-3 text-center text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider border-b border-gray-200 dark:border-gray-600">Aksi</th>
+                    <tr class="bg-gray-50 dark:bg-gray-700 border-b-2 border-gray-300 dark:border-gray-600">
+                        <th class="px-4 py-3 text-left text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider">No</th>
+                        <th class="px-4 py-3 text-left text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider">Nama Dokumen</th>
+                        <th class="px-4 py-3 text-left text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider">Deskripsi <span class="text-gray-500 dark:text-gray-400 font-normal">(Opsional)</span></th>
+                        <th class="px-4 py-3 text-center text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider">Status</th>
+                        <th class="px-4 py-3 text-center text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider">Aksi</th>
                     </tr>
                 </thead>
-                <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+                <tbody class="bg-white dark:bg-gray-800">
                     @foreach($documents as $key => $label)
                         @php
                             $isUploaded = in_array($key, $uploadedDocuments);
+                            $dokumen = $supervisi->dokumenEvaluasi->where('jenis_dokumen', $key)->first();
                         @endphp
-                        <tr class="hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
-                            <td class="px-4 py-3 text-sm text-gray-900 dark:text-gray-100">{{ $loop->iteration }}</td>
-                            <td class="px-4 py-3 text-sm text-gray-900 dark:text-gray-100">{{ $label }}</td>
-                            <td class="px-4 py-3 text-center">
+                        <tr class="hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors border-b border-gray-200 dark:border-gray-700">
+                            <td class="px-4 py-3 text-sm text-gray-900 dark:text-gray-100 align-top">{{ $loop->iteration }}</td>
+                            <td class="px-4 py-3 text-sm text-gray-900 dark:text-gray-100 align-top">{{ $label }}</td>
+                            <td class="px-4 py-3 align-top">
+                                @if($isUploaded && $dokumen)
+                                    <div class="bg-gray-50 dark:bg-gray-700/50 border border-gray-200 dark:border-gray-600 rounded-lg p-3 min-w-[200px]">
+                                        <p class="text-sm text-gray-700 dark:text-gray-300">
+                                            {{ $dokumen->deskripsi ?? '-' }}
+                                        </p>
+                                    </div>
+                                @else
+                                    <div class="min-w-[250px]">
+                                        <textarea
+                                            id="deskripsi_{{ $key }}"
+                                            maxlength="100"
+                                            rows="3"
+                                            placeholder="Tulis deskripsi dokumen (opsional)"
+                                            class="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 focus:border-transparent resize-none"
+                                            style="resize: none;"
+                                        ></textarea>
+                                        <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                                            <span id="charCount_{{ $key }}">0</span>/100 karakter
+                                        </p>
+                                    </div>
+                                @endif
+                            </td>
+                            <td class="px-4 py-3 text-center align-top">
                                 @if($isUploaded)
                                     <span class="inline-flex items-center gap-1 px-2.5 py-1 bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300 text-xs font-medium rounded-full">
                                         <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -96,7 +135,7 @@
                                     <button
                                         type="button"
                                         onclick="triggerFileUpload('{{ $key }}')"
-                                        class="inline-flex items-center gap-1.5 px-4 py-2 bg-blue-600 text-white text-xs font-semibold rounded-lg hover:bg-blue-700"
+                                        class="inline-flex items-center gap-1.5 px-4 py-2 bg-blue-600 text-white text-xs font-semibold rounded-lg hover:bg-blue-700 cursor-pointer"
                                     >
                                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
@@ -107,7 +146,8 @@
                                         type="button"
                                         onclick="deleteDocument('{{ $key }}')"
                                         {{ !$isUploaded ? 'disabled' : '' }}
-                                        class="inline-flex items-center gap-1.5 px-4 py-2 text-xs font-semibold rounded-lg {{ $isUploaded ? 'bg-red-600 text-white hover:bg-red-700' : 'bg-gray-400 text-gray-700 cursor-not-allowed' }}"
+                                        style="{{ $isUploaded ? 'background-color: #dc2626; color: white;' : 'background-color: #9ca3af; color: #374151;' }}"
+                                        class="inline-flex items-center gap-1.5 px-4 py-2 text-xs font-semibold rounded-lg {{ $isUploaded ? 'hover:bg-red-700 cursor-pointer' : 'cursor-not-allowed' }}"
                                     >
                                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
@@ -123,26 +163,16 @@
         </div>
     </div>
 
-    <!-- Progress Badge -->
-    <div class="px-6 pb-4">
-        <div class="flex items-center gap-2">
-            <span class="text-sm font-medium text-gray-700 dark:text-gray-300">Progres Upload:</span>
-            <span id="documentBadge" class="inline-block px-3 py-1 bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 text-sm font-medium rounded-full">
-                0/7 Dokumen
-            </span>
-        </div>
-    </div>
-
     <!-- Action Buttons -->
     <div class="border-t border-gray-200 dark:border-gray-700 px-6 py-4 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
-        <a href="{{ route('guru.home') }}" class="inline-flex items-center justify-center gap-2 px-5 py-3 bg-gray-700 text-white font-semibold rounded-lg hover:bg-gray-800">
+        <a href="{{ route('guru.home') }}" style="background-color: #eab308; color: white;" class="inline-flex items-center justify-center gap-2 px-5 py-3 font-semibold rounded-lg cursor-pointer">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
             </svg>
             Kembali ke Beranda
         </a>
 
-        <button id="nextButton" class="inline-flex items-center justify-center gap-2 px-6 py-3 bg-indigo-600 text-white font-bold rounded-lg hover:bg-indigo-700">
+        <button id="nextButton" class="inline-flex items-center justify-center gap-2 px-6 py-3 bg-indigo-600 text-white font-bold rounded-lg hover:bg-indigo-700 cursor-pointer">
             Lanjut ke Proses
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
@@ -249,6 +279,12 @@ async function uploadFile(jenis, file) {
     formData.append('jenis_dokumen', jenis);
     formData.append('file', file);
     formData.append('_token', '{{ csrf_token() }}');
+
+    // Tambahkan deskripsi jika ada
+    const deskripsiField = document.getElementById('deskripsi_' + jenis);
+    if (deskripsiField) {
+        formData.append('deskripsi', deskripsiField.value);
+    }
 
     console.log('Uploading file...');
 
@@ -371,6 +407,19 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     console.log('Initialization complete');
+
+    // Character counter untuk textarea deskripsi
+    @foreach(['capaian_pembelajaran', 'alur_tujuan_pembelajaran', 'kalender', 'program_tahunan', 'program_semester', 'modul_ajar', 'bahan_ajar'] as $key)
+        const textarea_{{ $key }} = document.getElementById('deskripsi_{{ $key }}');
+        if (textarea_{{ $key }}) {
+            textarea_{{ $key }}.addEventListener('input', function() {
+                const charCount = document.getElementById('charCount_{{ $key }}');
+                if (charCount) {
+                    charCount.textContent = this.value.length;
+                }
+            });
+        }
+    @endforeach
 });
 </script>
 @endsection
