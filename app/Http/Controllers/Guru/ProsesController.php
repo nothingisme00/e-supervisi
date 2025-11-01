@@ -14,37 +14,38 @@ class ProsesController extends Controller
     {
         $supervisi = Supervisi::where('id', $id)
             ->where('user_id', auth()->id())
-            ->where('status', 'draft')
+            ->whereIn('status', ['draft', 'revision'])
             ->firstOrFail();
-
-        // Check if all documents uploaded
-        $documentCount = DokumenEvaluasi::where('supervisi_id', $id)->count();
-        
-        if ($documentCount < 7) {
-            return redirect()->route('guru.supervisi.evaluasi', $id)
-                ->with('error', 'Harap lengkapi semua dokumen terlebih dahulu');
-        }
 
         $proses = ProsesPembelajaran::where('supervisi_id', $id)->first();
 
-        return view('guru.supervisi.proses', compact('supervisi', 'proses'));
+        // Define refleksi questions
+        $refleksiQuestions = [
+            'refleksi_1' => 'Apa tujuan pembelajaran yang ingin dicapai dalam pembelajaran ini?',
+            'refleksi_2' => 'Bagaimana strategi atau metode pembelajaran yang digunakan?',
+            'refleksi_3' => 'Apa saja tantangan yang dihadapi selama proses pembelajaran?',
+            'refleksi_4' => 'Bagaimana respon dan partisipasi siswa selama pembelajaran?',
+            'refleksi_5' => 'Apa rencana tindak lanjut untuk meningkatkan kualitas pembelajaran?'
+        ];
+
+        return view('guru.supervisi.proses', compact('supervisi', 'proses', 'refleksiQuestions'));
     }
 
     public function save(Request $request, $id)
     {
         $request->validate([
             'link_video' => 'required|url',
-            'link_meeting' => 'nullable|url',
-            'refleksi_1' => 'required|string|min:10',
-            'refleksi_2' => 'required|string|min:10',
-            'refleksi_3' => 'required|string|min:10',
-            'refleksi_4' => 'required|string|min:10',
-            'refleksi_5' => 'required|string|min:10'
+            'link_meeting' => 'required|url',
+            'refleksi_1' => 'required|string|min:10|max:500',
+            'refleksi_2' => 'required|string|min:10|max:500',
+            'refleksi_3' => 'required|string|min:10|max:500',
+            'refleksi_4' => 'required|string|min:10|max:500',
+            'refleksi_5' => 'required|string|min:10|max:500'
         ]);
 
         Supervisi::where('id', $id)
             ->where('user_id', auth()->id())
-            ->where('status', 'draft')
+            ->whereIn('status', ['draft', 'revision'])
             ->firstOrFail();
 
         ProsesPembelajaran::updateOrCreate(
@@ -70,16 +71,23 @@ class ProsesController extends Controller
     {
         $supervisi = Supervisi::where('id', $id)
             ->where('user_id', auth()->id())
-            ->where('status', 'draft')
+            ->whereIn('status', ['draft', 'revision'])
             ->firstOrFail();
 
-        // Check if proses data exists
+        // Check if proses data exists and all mandatory fields are filled
         $proses = ProsesPembelajaran::where('supervisi_id', $id)->first();
-        
-        if (!$proses) {
+
+        if (!$proses ||
+            !$proses->link_video ||
+            !$proses->link_meeting ||
+            !$proses->refleksi_1 ||
+            !$proses->refleksi_2 ||
+            !$proses->refleksi_3 ||
+            !$proses->refleksi_4 ||
+            !$proses->refleksi_5) {
             return response()->json([
                 'success' => false,
-                'message' => 'Harap lengkapi semua data proses pembelajaran'
+                'message' => 'Harap lengkapi semua data proses pembelajaran yang wajib diisi'
             ], 400);
         }
 

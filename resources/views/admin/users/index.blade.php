@@ -20,15 +20,22 @@
 <!-- Filter & Search -->
 <div class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6 mb-6">
     <form method="GET" action="{{ route('admin.users.index') }}">
+        <!-- Preserve sorting parameters -->
+        <input type="hidden" name="sort_by" value="{{ request('sort_by') }}">
+        <input type="hidden" name="sort_direction" value="{{ request('sort_direction') }}">
+
         <div class="grid grid-cols-1 md:grid-cols-12 gap-3">
-            <div class="md:col-span-5">
+            <!-- Search -->
+            <div class="md:col-span-12 lg:col-span-4">
                 <input type="text"
                        name="search"
                        value="{{ request('search') }}"
-                       placeholder="Cari NIK, nama, atau email..."
+                       placeholder="Cari NIP, nama, atau email..."
                        class="w-full px-4 py-2.5 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all">
             </div>
-            <div class="md:col-span-4">
+
+            <!-- Role Filter -->
+            <div class="md:col-span-6 lg:col-span-2">
                 <div class="relative">
                     <select name="role" class="w-full px-4 py-2.5 pr-10 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:focus:border-indigo-400 transition-all appearance-none cursor-pointer">
                         <option value="">Semua Role</option>
@@ -43,11 +50,46 @@
                     </div>
                 </div>
             </div>
-            <div class="md:col-span-3 flex gap-2">
+
+            <!-- Tingkat Filter -->
+            <div class="md:col-span-6 lg:col-span-2">
+                <div class="relative">
+                    <select name="tingkat" class="w-full px-4 py-2.5 pr-10 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:focus:border-indigo-400 transition-all appearance-none cursor-pointer">
+                        <option value="">Semua Tingkat</option>
+                        <option value="SD" {{ request('tingkat') == 'SD' ? 'selected' : '' }}>SD</option>
+                        <option value="SMP" {{ request('tingkat') == 'SMP' ? 'selected' : '' }}>SMP</option>
+                        <option value="SMA" {{ request('tingkat') == 'SMA' ? 'selected' : '' }}>SMA</option>
+                    </select>
+                    <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-gray-500 dark:text-gray-400">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Status Filter -->
+            <div class="md:col-span-6 lg:col-span-2">
+                <div class="relative">
+                    <select name="status" class="w-full px-4 py-2.5 pr-10 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:focus:border-indigo-400 transition-all appearance-none cursor-pointer">
+                        <option value="">Semua Status</option>
+                        <option value="active" {{ request('status') == 'active' ? 'selected' : '' }}>Aktif</option>
+                        <option value="inactive" {{ request('status') == 'inactive' ? 'selected' : '' }}>Nonaktif</option>
+                    </select>
+                    <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-gray-500 dark:text-gray-400">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Buttons -->
+            <div class="md:col-span-6 lg:col-span-2 flex gap-2">
                 <button type="submit" class="flex-1 px-4 py-2.5 bg-indigo-600 hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-600 text-white text-sm font-medium rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800">
                     Filter
                 </button>
-                @if(request('search') || request('role'))
+                @if(request('search') || request('role') || request('tingkat') || request('status'))
                 <a href="{{ route('admin.users.index') }}" class="px-4 py-2.5 bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 text-sm font-medium rounded-lg transition-colors">
                     Reset
                 </a>
@@ -63,9 +105,54 @@
         <table class="w-full">
             <thead class="bg-gray-50 dark:bg-gray-700 border-b border-gray-200 dark:border-gray-600">
                 <tr>
-                    <th class="px-6 py-3 text-left text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider">NIK</th>
-                    <th class="px-6 py-3 text-left text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider">Nama</th>
+                    <!-- Sortable NIP Column -->
+                    <th class="px-6 py-3 text-left text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider">
+                        <a href="{{ route('admin.users.index', array_merge(request()->except(['sort_by', 'sort_direction']), ['sort_by' => 'nik', 'sort_direction' => ($sortBy === 'nik' && $sortDirection === 'asc') ? 'desc' : 'asc'])) }}"
+                           class="group inline-flex items-center gap-1 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
+                            <span>Nomor Induk Pegawai</span>
+                            @if($sortBy === 'nik')
+                                @if($sortDirection === 'asc')
+                                    <svg class="w-4 h-4 text-indigo-600 dark:text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"></path>
+                                    </svg>
+                                @else
+                                    <svg class="w-4 h-4 text-indigo-600 dark:text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                    </svg>
+                                @endif
+                            @else
+                                <svg class="w-4 h-4 text-gray-400 dark:text-gray-600 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"></path>
+                                </svg>
+                            @endif
+                        </a>
+                    </th>
+
+                    <!-- Sortable Nama Column -->
+                    <th class="px-6 py-3 text-left text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider">
+                        <a href="{{ route('admin.users.index', array_merge(request()->except(['sort_by', 'sort_direction']), ['sort_by' => 'name', 'sort_direction' => ($sortBy === 'name' && $sortDirection === 'asc') ? 'desc' : 'asc'])) }}"
+                           class="group inline-flex items-center gap-1 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
+                            <span>Nama</span>
+                            @if($sortBy === 'name')
+                                @if($sortDirection === 'asc')
+                                    <svg class="w-4 h-4 text-indigo-600 dark:text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"></path>
+                                    </svg>
+                                @else
+                                    <svg class="w-4 h-4 text-indigo-600 dark:text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                    </svg>
+                                @endif
+                            @else
+                                <svg class="w-4 h-4 text-gray-400 dark:text-gray-600 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"></path>
+                                </svg>
+                            @endif
+                        </a>
+                    </th>
+
                     <th class="px-6 py-3 text-left text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider">Email</th>
+                    <th class="px-6 py-3 text-left text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider">Tingkat</th>
                     <th class="px-6 py-3 text-left text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider">Role</th>
                     <th class="px-6 py-3 text-left text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider">Status</th>
                     <th class="px-6 py-3 text-left text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider">Aksi</th>
@@ -89,6 +176,15 @@
                         </div>
                     </td>
                     <td class="px-6 py-4 text-sm text-gray-600 dark:text-gray-400">{{ $user->email }}</td>
+                    <td class="px-6 py-4">
+                        @if($user->tingkat)
+                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-indigo-100 dark:bg-indigo-900/30 text-indigo-800 dark:text-indigo-300">
+                                {{ $user->tingkat }}
+                            </span>
+                        @else
+                            <span class="text-gray-400 dark:text-gray-600 text-xs">-</span>
+                        @endif
+                    </td>
                     <td class="px-6 py-4">
                         @if($user->role == 'admin')
                             <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-100 dark:bg-purple-900/30 text-purple-800 dark:text-purple-300">
@@ -144,18 +240,18 @@
                 </tr>
                 @empty
                 <tr>
-                    <td colspan="6" class="px-6 py-12 text-center">
+                    <td colspan="7" class="px-6 py-12 text-center">
                         <svg class="w-16 h-16 mx-auto text-gray-400 dark:text-gray-600 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"></path>
                         </svg>
                         <p class="text-gray-500 dark:text-gray-400 text-sm">
-                            @if(request('search') || request('role'))
+                            @if(request('search') || request('role') || request('tingkat') || request('status'))
                                 Tidak ada pengguna yang sesuai dengan filter
                             @else
                                 Belum ada pengguna terdaftar
                             @endif
                         </p>
-                        @if(request('search') || request('role'))
+                        @if(request('search') || request('role') || request('tingkat') || request('status'))
                             <a href="{{ route('admin.users.index') }}" class="inline-block mt-3 text-indigo-600 dark:text-indigo-400 text-sm font-medium hover:text-indigo-700 dark:hover:text-indigo-300">
                                 Reset filter
                             </a>

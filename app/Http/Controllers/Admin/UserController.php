@@ -28,9 +28,35 @@ class UserController extends Controller
             $query->where('role', $request->role);
         }
 
-        $users = $query->orderBy('created_at', 'desc')->paginate(10);
+        // Tingkat filter
+        if ($request->filled('tingkat')) {
+            $query->where('tingkat', $request->tingkat);
+        }
 
-        return view('admin.users.index', compact('users'));
+        // Status filter
+        if ($request->filled('status')) {
+            $isActive = $request->status === 'active';
+            $query->where('is_active', $isActive);
+        }
+
+        // Sorting
+        $sortBy = $request->get('sort_by', 'created_at');
+        $sortDirection = $request->get('sort_direction', 'desc');
+
+        // Validate sort columns
+        $allowedSortColumns = ['nik', 'name', 'created_at'];
+        if (!in_array($sortBy, $allowedSortColumns)) {
+            $sortBy = 'created_at';
+        }
+
+        // Validate sort direction
+        if (!in_array($sortDirection, ['asc', 'desc'])) {
+            $sortDirection = 'desc';
+        }
+
+        $users = $query->orderBy($sortBy, $sortDirection)->paginate(10)->withQueryString();
+
+        return view('admin.users.index', compact('users', 'sortBy', 'sortDirection'));
     }
 
     public function create()

@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\CustomLoginController;
-use App\Http\Controllers\ChangePasswordController;
+use App\Http\Controllers\Auth\ChangePasswordController;
 use App\Http\Controllers\Guru\HomeController as GuruHomeController;
 use App\Http\Controllers\Guru\SupervisiController;
 use App\Http\Controllers\Guru\ProsesController;
@@ -31,14 +31,14 @@ Route::get('/login', [CustomLoginController::class, 'showLoginForm'])->name('log
 Route::post('/login', [CustomLoginController::class, 'login'])->middleware('guest');
 Route::post('/logout', [CustomLoginController::class, 'logout'])->name('logout');
 
-// Change Password Routes (must be authenticated)
-Route::middleware(['auth'])->group(function () {
-    Route::get('/change-password', [ChangePasswordController::class, 'show'])->name('change-password.show');
-    Route::post('/change-password', [ChangePasswordController::class, 'update'])->name('change-password.update');
+// Change Password Routes (must be authenticated, but no must.change.password middleware)
+Route::middleware(['auth', 'prevent.back'])->group(function () {
+    Route::get('/change-password', [ChangePasswordController::class, 'showChangePasswordForm'])->name('change-password');
+    Route::post('/change-password', [ChangePasswordController::class, 'updatePassword'])->name('change-password.update');
 });
 
 // Protected Routes
-Route::middleware(['auth', 'prevent.back'])->group(function () {
+Route::middleware(['auth', 'prevent.back', 'must.change.password'])->group(function () {
 
     // Guru Routes
     Route::prefix('guru')->name('guru.')->middleware('can:isGuru')->group(function () {
@@ -47,6 +47,7 @@ Route::middleware(['auth', 'prevent.back'])->group(function () {
         // Supervisi Routes
         Route::prefix('supervisi')->name('supervisi.')->group(function () {
             Route::get('/create', [SupervisiController::class, 'create'])->name('create');
+            Route::post('/store', [SupervisiController::class, 'store'])->name('store');
             Route::get('/{id}/continue', [SupervisiController::class, 'continue'])->name('continue');
             Route::get('/{id}/evaluasi', [SupervisiController::class, 'showEvaluasi'])->name('evaluasi');
             Route::post('/{id}/upload', [SupervisiController::class, 'uploadDocument'])->name('upload');

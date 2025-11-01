@@ -1,23 +1,21 @@
 @extends('layouts.modern')
 
 @section('content')
-<div class="w-full max-w-md mx-auto px-4">
-    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-2xl p-8 lg:p-10">
-        <!-- Header dengan Dark Mode Toggle -->
-        <div class="flex items-center justify-between mb-8">
-            <div class="flex-1">
-                <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-1">E-Supervisi</h2>
+<!-- Background Gradient -->
+<div class="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 flex items-center justify-center px-4 py-12">
+    <div class="w-full max-w-md">
+        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl p-8 lg:p-10">
+            <!-- Header Center dengan Icon -->
+            <div class="text-center mb-8">
+                <!-- Icon Website -->
+                <div class="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-2xl mb-4 shadow-lg">
+                    <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+                    </svg>
+                </div>
+                <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">E-Supervisi</h2>
                 <p class="text-sm text-gray-600 dark:text-gray-400">Sistem Supervisi Pembelajaran</p>
             </div>
-            <button id="theme-toggle-login" class="p-2 rounded-lg bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors ml-4" title="Toggle dark mode">
-                <svg id="theme-toggle-dark-icon-login" class="w-5 h-5 text-gray-700 dark:text-gray-300 hidden" fill="currentColor" viewBox="0 0 20 20">
-                    <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
-                </svg>
-                <svg id="theme-toggle-light-icon-login" class="w-5 h-5 text-gray-700 dark:text-gray-300 hidden" fill="currentColor" viewBox="0 0 20 20">
-                    <path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path>
-                </svg>
-            </button>
-        </div>
 
         @if($errors->any())
             <div class="bg-red-50 dark:bg-red-900/20 text-red-800 dark:text-red-300 px-4 py-3 rounded-lg mb-5 border-l-4 border-red-500 dark:border-red-400 text-sm">
@@ -29,31 +27,45 @@
         <form method="POST" action="{{ route('login') }}" id="loginForm">
             @csrf
 
+            <!-- Nomor Induk Pegawai -->
             <div class="mb-5">
                 <label for="nik" class="block text-gray-700 dark:text-gray-300 font-medium text-sm mb-2">
-                    NIK (18 digit)
+                    Nomor Induk Pegawai
                 </label>
-                <input type="text"
-                       id="nik"
-                       name="nik"
-                       value="{{ old('nik') }}"
-                       maxlength="18"
-                       required
-                       placeholder="Masukkan 18 digit NIK"
-                       class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all">
+                <div class="relative">
+                    <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                        <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                        </svg>
+                    </div>
+                    <input type="text"
+                           id="nik"
+                           name="nik"
+                           value="{{ old('nik') }}"
+                           maxlength="18"
+                           required
+                           placeholder="Masukkan 18 digit NIP"
+                           class="w-full pl-10 pr-4 py-3 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all">
+                </div>
             </div>
 
+            <!-- Password -->
             <div class="mb-5">
                 <label for="password" class="block text-gray-700 dark:text-gray-300 font-medium text-sm mb-2">
                     Password
                 </label>
                 <div class="relative">
+                    <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                        <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+                        </svg>
+                    </div>
                     <input type="password"
                            id="password"
                            name="password"
                            required
                            placeholder="Masukkan password"
-                           class="w-full px-4 py-3 pr-12 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all">
+                           class="w-full pl-10 pr-12 py-3 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all">
                     <button type="button"
                             id="togglePassword"
                             class="absolute inset-y-0 right-0 flex items-center px-3 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition-colors">
@@ -68,15 +80,22 @@
                 </div>
             </div>
 
+            <!-- Login Sebagai (Role) -->
             <div class="mb-6">
                 <label for="role" class="block text-gray-700 dark:text-gray-300 font-medium text-sm mb-2">
                     Login Sebagai
                 </label>
                 <div class="relative">
+                    <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                        <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                        </svg>
+                    </div>
                     <select id="role"
                             name="role"
                             required
-                            class="w-full px-4 py-3 pr-10 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:focus:border-indigo-400 transition-all appearance-none cursor-pointer">
+                            class="w-full pl-10 pr-10 py-3 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:focus:border-indigo-400 transition-all appearance-none cursor-pointer">
                         <option value="">Pilih role Anda</option>
                         <option value="guru" {{ old('role') == 'guru' ? 'selected' : '' }}>Guru</option>
                         <option value="kepala_sekolah" {{ old('role') == 'kepala_sekolah' ? 'selected' : '' }}>Kepala Sekolah</option>
@@ -99,7 +118,7 @@
 
             <button type="submit"
                     id="submitBtn"
-                    class="w-full px-4 py-3 bg-indigo-600 hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-600 text-white text-sm font-semibold rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800">
+                    class="w-full px-4 py-3 bg-indigo-600 hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-600 text-white text-sm font-semibold rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 shadow-lg">
                 <span id="btnText">Masuk</span>
                 <span id="btnLoader" class="hidden">
                     <div class="spinner inline-block"></div>
@@ -108,10 +127,23 @@
             </button>
         </form>
 
+        <!-- Dark Mode Toggle (Moved to Bottom) -->
         <div class="text-center mt-6 pt-6 border-t border-gray-200 dark:border-gray-700">
+            <div class="flex items-center justify-center mb-4">
+                <button id="theme-toggle-login" class="flex items-center gap-2 px-4 py-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 text-sm font-medium rounded-lg transition-colors" title="Toggle dark mode">
+                    <svg id="theme-toggle-dark-icon-login" class="w-4 h-4 hidden" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+                    </svg>
+                    <svg id="theme-toggle-light-icon-login" class="w-4 h-4 hidden" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path>
+                    </svg>
+                    <span id="theme-text">Dark Mode</span>
+                </button>
+            </div>
             <p class="text-xs text-gray-500 dark:text-gray-400">© 2025 E-Supervisi</p>
         </div>
     </div>
+</div>
 </div>
 
 <script>
@@ -126,12 +158,15 @@
         const themeToggleLogin = document.getElementById('theme-toggle-login');
         const themeToggleDarkIconLogin = document.getElementById('theme-toggle-dark-icon-login');
         const themeToggleLightIconLogin = document.getElementById('theme-toggle-light-icon-login');
+        const themeText = document.getElementById('theme-text');
 
-        // Show correct icon on load
+        // Show correct icon and text on load
         if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
             themeToggleLightIconLogin.classList.remove('hidden');
+            themeText.textContent = 'Light Mode';
         } else {
             themeToggleDarkIconLogin.classList.remove('hidden');
+            themeText.textContent = 'Dark Mode';
         }
 
         themeToggleLogin.addEventListener('click', function() {
@@ -143,9 +178,11 @@
             if (document.documentElement.classList.contains('dark')) {
                 document.documentElement.classList.remove('dark');
                 localStorage.theme = 'light';
+                themeText.textContent = 'Dark Mode';
             } else {
                 document.documentElement.classList.add('dark');
                 localStorage.theme = 'dark';
+                themeText.textContent = 'Light Mode';
             }
         });
 
