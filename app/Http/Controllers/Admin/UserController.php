@@ -44,7 +44,6 @@ class UserController extends Controller
             'nik' => 'required|string|size:18|unique:users',
             'name' => 'required|string|max:255',
             'email' => 'nullable|email|unique:users',
-            'password' => 'required|string|min:6',
             'role' => 'required|in:admin,guru,kepala_sekolah',
             'tingkat' => 'required_if:role,guru|in:SD,SMP,SMA',
             'mata_pelajaran' => 'required_if:role,guru|string'
@@ -54,14 +53,15 @@ class UserController extends Controller
             'nik' => $request->nik,
             'name' => $request->name,
             'email' => $request->email,
-            'password' => Hash::make($request->password),
+            'password' => Hash::make('pass123456'), // Password default
             'role' => $request->role,
             'tingkat' => $request->tingkat,
-            'mata_pelajaran' => $request->mata_pelajaran
+            'mata_pelajaran' => $request->mata_pelajaran,
+            'must_change_password' => true // Wajib ganti password saat login pertama
         ]);
 
         return redirect()->route('admin.users.index')
-            ->with('success', 'User berhasil ditambahkan');
+            ->with('success', 'User berhasil ditambahkan dengan password default: pass123456');
     }
 
     public function edit($id)
@@ -92,9 +92,12 @@ class UserController extends Controller
     public function resetPassword($id)
     {
         $user = User::findOrFail($id);
-        
-        $newPassword = 'password123'; // Default password
-        $user->update(['password' => Hash::make($newPassword)]);
+
+        $newPassword = 'pass123456'; // Default password
+        $user->update([
+            'password' => Hash::make($newPassword),
+            'must_change_password' => true // Wajib ganti password saat login
+        ]);
 
         return response()->json([
             'success' => true,

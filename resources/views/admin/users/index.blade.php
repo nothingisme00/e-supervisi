@@ -256,7 +256,7 @@
 
     // Reset password
     function resetPassword(userId, userName) {
-        if (!confirm(`Apakah Anda yakin ingin mereset password untuk user "${userName}"?\n\nPassword akan direset ke: password123`)) {
+        if (!confirm(`Apakah Anda yakin ingin mereset password untuk user "${userName}"?\n\nPassword akan direset ke: pass123456`)) {
             return;
         }
 

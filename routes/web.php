@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\CustomLoginController;
+use App\Http\Controllers\ChangePasswordController;
 use App\Http\Controllers\Guru\HomeController as GuruHomeController;
 use App\Http\Controllers\Guru\SupervisiController;
 use App\Http\Controllers\Guru\ProsesController;
@@ -30,9 +31,15 @@ Route::get('/login', [CustomLoginController::class, 'showLoginForm'])->name('log
 Route::post('/login', [CustomLoginController::class, 'login'])->middleware('guest');
 Route::post('/logout', [CustomLoginController::class, 'logout'])->name('logout');
 
+// Change Password Routes (must be authenticated)
+Route::middleware(['auth'])->group(function () {
+    Route::get('/change-password', [ChangePasswordController::class, 'show'])->name('change-password.show');
+    Route::post('/change-password', [ChangePasswordController::class, 'update'])->name('change-password.update');
+});
+
 // Protected Routes
 Route::middleware(['auth', 'prevent.back'])->group(function () {
-    
+
     // Guru Routes
     Route::prefix('guru')->name('guru.')->middleware('can:isGuru')->group(function () {
         Route::get('/home', [GuruHomeController::class, 'index'])->name('home');

@@ -46,6 +46,12 @@ class CustomLoginController extends Controller
 
             $request->session()->regenerate();
 
+            // Cek apakah user harus mengganti password
+            if ($user->must_change_password) {
+                return redirect()->route('change-password.show')
+                    ->with('warning', 'Anda menggunakan password default. Silakan ganti password Anda terlebih dahulu.');
+            }
+
             // Redirect berdasarkan role dengan pesan sukses
             if ($user->isAdmin()) {
                 return redirect()->route('admin.dashboard')->with('success', 'Selamat datang, ' . $user->name . '!');
