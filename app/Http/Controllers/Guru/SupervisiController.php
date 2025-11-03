@@ -141,15 +141,9 @@ class SupervisiController extends Controller
 
             $document->delete();
 
-            return response()->json([
-                'success' => true,
-                'message' => 'Dokumen berhasil dihapus'
-            ]);
+            return redirect()->back()->with('success', 'Dokumen berhasil dihapus');
         } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Terjadi kesalahan: ' . $e->getMessage()
-            ], 500);
+            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
         }
     }
 
@@ -214,15 +208,9 @@ class SupervisiController extends Controller
             // Delete supervisi (will cascade delete related records)
             $supervisi->delete();
 
-            return response()->json([
-                'success' => true,
-                'message' => 'Supervisi berhasil dihapus'
-            ]);
+            return redirect()->back()->with('success', 'Supervisi berhasil dihapus');
         } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Gagal menghapus supervisi: ' . $e->getMessage()
-            ], 500);
+            return redirect()->back()->with('error', 'Gagal menghapus supervisi: ' . $e->getMessage());
         }
     }
 }

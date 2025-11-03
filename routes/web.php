@@ -51,10 +51,10 @@ Route::middleware(['auth', 'prevent.back', 'must.change.password'])->group(funct
             Route::get('/{id}/continue', [SupervisiController::class, 'continue'])->name('continue');
             Route::get('/{id}/evaluasi', [SupervisiController::class, 'showEvaluasi'])->name('evaluasi');
             Route::post('/{id}/upload', [SupervisiController::class, 'uploadDocument'])->name('upload');
-            Route::post('/{id}/delete-document', [SupervisiController::class, 'deleteDocument'])->name('delete-document');
+            Route::delete('/{id}/delete-document', [SupervisiController::class, 'deleteDocument'])->name('delete-document');
             Route::get('/{id}/check-documents', [SupervisiController::class, 'checkDocuments'])->name('check-documents');
             Route::get('/{id}/detail', [GuruHomeController::class, 'detail'])->name('detail');
-            Route::delete('/{id}/delete', [SupervisiController::class, 'destroy'])->name('delete');
+            Route::post('/{id}/delete', [SupervisiController::class, 'destroy'])->name('delete');
 
             // Proses Routes
             Route::get('/{id}/proses', [ProsesController::class, 'show'])->name('proses');

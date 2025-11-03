@@ -22,20 +22,23 @@
 </div>
 
 <div class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6 mb-6">
-    <h3 class="text-base font-semibold text-gray-900 dark:text-white mb-4">Timeline Supervisi</h3>
+    <h3 class="text-base font-semibold text-gray-900 dark:text-gray-100 mb-4">Timeline Supervisi</h3>
 
     @if($supervisiList->count() > 0)
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-5">
+        <div class="grid grid-cols-1 gap-6 mb-6">
             @foreach($supervisiList as $item)
-            <div class="bg-white dark:bg-gray-700 border-2 {{ $item->user_id == auth()->id() ? 'border-indigo-400 dark:border-indigo-500' : 'border-gray-200 dark:border-gray-600' }} rounded-lg shadow-sm hover:shadow-md transition-all relative overflow-hidden">
-                <!-- Badge di pojok kanan atas -->
-                <div class="absolute top-0 right-0">
-                    @if($item->user_id == auth()->id())
-                        <div class="bg-indigo-600 dark:bg-indigo-500 text-white text-xs font-semibold px-3 py-1 rounded-bl-lg">Milik Saya</div>
-                    @else
-                        <div class="bg-gray-500 dark:bg-gray-600 text-white text-xs font-medium px-3 py-1 rounded-bl-lg">{{ $item->user->name }}</div>
-                    @endif
-                </div>
+            <div class="bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-xl shadow-lg hover:shadow-xl dark:hover:shadow-2xl dark:hover:border-gray-500 transition-all duration-300 relative overflow-hidden group hover:scale-105 hover:-translate-y-1">
+                <!-- Badge di pojok kanan atas - hanya untuk card milik sendiri -->
+                @if($item->user_id == auth()->id())
+                    <div class="absolute top-0 right-0">
+                        <div class="bg-gradient-to-r from-indigo-600 to-purple-600 dark:from-indigo-500 dark:to-purple-500 text-white text-xs font-semibold px-3 py-1 rounded-bl-lg shadow-lg">
+                            <svg class="w-3 h-3 inline mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                            </svg>
+                            Milik Saya
+                        </div>
+                    </div>
+                @endif
 
                 <div class="p-4 pt-10">
                     <div class="flex items-center gap-3 mb-3">
@@ -74,21 +77,23 @@
                         @endphp
 
                         <div class="flex-shrink-0">
-                            <div class="w-12 h-12 rounded-full flex items-center justify-center text-white font-bold text-lg shadow-md" style="background-color: {{ $avatarBgColor }};">
+                            <div class="rounded-full flex items-center justify-center text-white font-bold text-lg shadow-md" style="width: 50px; height: 50px; background-color: {{ $avatarBgColor }};">
                                 {{ $firstLetter }}
                             </div>
                         </div>
                         <div class="flex-1 min-w-0">
-                            <div class="font-bold text-gray-900 dark:text-white text-base mb-0.5 truncate">
+                            <div class="font-bold text-gray-900 dark:text-gray-100 text-base mb-0.5 truncate">
                                 {{ $item->user->name }}
                             </div>
-                            <div class="text-gray-600 dark:text-gray-400 text-sm">{{ $item->user->mata_pelajaran }} • {{ $item->user->tingkat }}</div>
+                            <div class="text-gray-600 dark:text-gray-300 text-sm">{{ $item->user->mata_pelajaran }} • {{ $item->user->tingkat }}</div>
                         </div>
                     </div>
 
+                    <hr class="border-gray-200 dark:border-gray-600 mb-4">
+
                     <div class="flex flex-wrap gap-2 mb-4">
                         @if($item->status == 'draft')
-                            <span class="inline-flex items-center gap-1 px-3 py-1 bg-gray-100 dark:bg-gray-900/30 text-gray-800 dark:text-gray-300 text-xs font-semibold rounded-full">
+                            <span class="inline-flex items-center gap-1 px-3 py-1 bg-yellow-100 dark:bg-yellow-500 text-yellow-800 dark:text-yellow-100 text-xs font-semibold rounded-full shadow-sm">
                                 <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><circle cx="10" cy="10" r="3"/></svg>
                                 Draft
                             </span>
@@ -140,7 +145,7 @@
                     </div>
 
                     <div class="pt-3 border-t-2 border-gray-200 dark:border-gray-600 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
-                        <div class="flex items-center gap-2 text-gray-600 dark:text-gray-400 text-xs">
+                        <div class="flex items-center gap-2 text-gray-600 dark:text-gray-300 text-xs">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
                             </svg>
@@ -150,17 +155,23 @@
                         <div class="flex items-center gap-2 flex-wrap">
                             @if($item->user_id == auth()->id())
                                 @if(in_array($item->status, ['draft', 'revision']))
-                                    <button
-                                        onclick="deleteSupervisi({{ $item->id }})"
-                                        style="background-color: #dc2626; color: white;"
-                                        class="inline-flex items-center gap-1.5 px-3 py-2 hover:opacity-90 text-xs font-semibold rounded-lg transition-all shadow-sm"
-                                        title="Hapus supervisi"
-                                    >
-                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
-                                        </svg>
-                                        Hapus
-                                    </button>
+                                    <form method="POST" action="{{ route('guru.supervisi.delete', $item->id) }}" style="display: inline;" onsubmit="return confirm('Apakah Anda yakin ingin menghapus supervisi ini? Semua data termasuk dokumen yang telah diupload akan dihapus secara permanen.')">
+                                        @csrf
+                                        @method('POST')
+                                        <button
+                                            type="submit"
+                                            class="inline-flex items-center gap-1.5 px-3 py-2 text-xs font-semibold rounded-lg transition-all shadow-sm text-white cursor-pointer"
+                                            style="background-color: #e63946;"
+                                            onmouseover="this.style.backgroundColor='#d62828'"
+                                            onmouseout="this.style.backgroundColor='#e63946'"
+                                            title="Hapus supervisi"
+                                        >
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                                            </svg>
+                                            Hapus
+                                        </button>
+                                    </form>
                                 @endif
 
                                 @if($item->status == 'draft')
@@ -212,7 +223,6 @@
 </div>
 
 <div class="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-6">
-    <h3 class="text-base font-semibold text-gray-900 dark:text-white mb-3">Tips</h3>
     <ul class="text-gray-700 dark:text-gray-300 text-sm leading-relaxed space-y-2 list-disc list-inside">
         <li>Pastikan semua dokumen evaluasi sudah lengkap sebelum submit</li>
         <li>Upload video pembelajaran dengan kualitas yang baik</li>

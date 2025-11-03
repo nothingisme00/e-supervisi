@@ -203,9 +203,10 @@
                 </button>
 
                 <button
-                    type="submit"
+                    type="button"
                     id="submitButton"
                     disabled
+                    onclick="confirmSubmit()"
                     class="inline-flex items-center justify-center gap-2 px-6 py-3 font-bold rounded-lg disabled:cursor-not-allowed"
                 >
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -372,10 +373,8 @@ document.getElementById('saveButton').addEventListener('click', async () => {
     }
 });
 
-// Submit form
-document.getElementById('prosesForm').addEventListener('submit', async (e) => {
-    e.preventDefault();
-
+// Confirm submit function
+async function confirmSubmit() {
     const confirmed = await confirmModal(
         'Apakah Anda yakin ingin mensubmit supervisi ini? Setelah disubmit, supervisi akan direview oleh Kepala Sekolah.',
         'Konfirmasi Submit Supervisi'
@@ -385,7 +384,7 @@ document.getElementById('prosesForm').addEventListener('submit', async (e) => {
     }
 
     // First save the data
-    const formData = new FormData(e.target);
+    const formData = new FormData(document.getElementById('prosesForm'));
 
     try {
         // Save data
@@ -419,7 +418,7 @@ document.getElementById('prosesForm').addEventListener('submit', async (e) => {
     } catch (error) {
         showToast('Error: ' + error.message, true);
     }
-});
+}
 
 // Auto-save every 30 seconds
 setInterval(async () => {
