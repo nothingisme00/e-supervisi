@@ -297,8 +297,8 @@ function validateForm() {
         // Enabled: hijau, teks putih
         submitButton.className = 'inline-flex items-center justify-center gap-2 px-6 py-3 bg-green-600 text-white font-bold rounded-lg hover:bg-green-700 cursor-pointer';
     } else {
-        // Disabled: abu-abu, teks abu-abu gelap
-        submitButton.className = 'inline-flex items-center justify-center gap-2 px-6 py-3 bg-gray-400 text-gray-700 font-bold rounded-lg cursor-not-allowed';
+        // Disabled: abu-abu terang dengan teks abu-abu gelap
+        submitButton.className = 'inline-flex items-center justify-center gap-2 px-6 py-3 bg-gray-300 dark:bg-gray-600 text-gray-700 dark:text-gray-300 font-bold rounded-lg cursor-not-allowed';
     }
 }
 
@@ -376,7 +376,11 @@ document.getElementById('saveButton').addEventListener('click', async () => {
 document.getElementById('prosesForm').addEventListener('submit', async (e) => {
     e.preventDefault();
 
-    if (!confirm('Apakah Anda yakin ingin mensubmit supervisi ini? Setelah disubmit, supervisi akan direview oleh Kepala Sekolah.')) {
+    const confirmed = await confirmModal(
+        'Apakah Anda yakin ingin mensubmit supervisi ini? Setelah disubmit, supervisi akan direview oleh Kepala Sekolah.',
+        'Konfirmasi Submit Supervisi'
+    );
+    if (!confirmed) {
         return;
     }
 

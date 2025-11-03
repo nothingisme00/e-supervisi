@@ -17,6 +17,28 @@ class ProsesController extends Controller
             ->whereIn('status', ['draft', 'revision'])
             ->firstOrFail();
 
+        // Check if all 7 required documents are uploaded
+        $requiredDocuments = [
+            'capaian_pembelajaran',
+            'alur_tujuan_pembelajaran',
+            'kalender',
+            'program_tahunan',
+            'program_semester',
+            'modul_ajar',
+            'bahan_ajar'
+        ];
+
+        $uploadedDocuments = DokumenEvaluasi::where('supervisi_id', $id)
+            ->pluck('jenis_dokumen')
+            ->toArray();
+
+        $uploadedCount = count(array_intersect($requiredDocuments, $uploadedDocuments));
+
+        if ($uploadedCount < 7) {
+            return redirect()->route('guru.supervisi.evaluasi', $id)
+                ->with('error', 'Anda harus mengupload semua 7 dokumen terlebih dahulu sebelum dapat melanjutkan ke tab Proses. Dokumen yang sudah diupload: ' . $uploadedCount . '/7');
+        }
+
         $proses = ProsesPembelajaran::where('supervisi_id', $id)->first();
 
         // Define refleksi questions

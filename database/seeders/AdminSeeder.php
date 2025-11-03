@@ -16,7 +16,7 @@ class AdminSeeder extends Seeder
     {
         // Create admin user
         User::create([
-            'nik' => '123456789012345678',
+            'nik' => '1234567890123456',
             'name' => 'Administrator',
             'email' => 'admin@esupervisi.com',
             'password' => Hash::make('admin123'),
@@ -26,7 +26,7 @@ class AdminSeeder extends Seeder
 
         // Create kepala sekolah user
         User::create([
-            'nik' => '223456789012345678',
+            'nik' => '2234567890123456',
             'name' => 'Kepala Sekolah',
             'email' => 'kepala@esupervisi.com',
             'password' => Hash::make('kepala123'),
@@ -36,7 +36,7 @@ class AdminSeeder extends Seeder
 
         // Create guru user
         User::create([
-            'nik' => '323456789012345678',
+            'nik' => '3234567890123456',
             'name' => 'Guru Demo',
             'email' => 'guru@esupervisi.com',
             'password' => Hash::make('guru123'),

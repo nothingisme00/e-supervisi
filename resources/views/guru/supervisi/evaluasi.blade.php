@@ -3,6 +3,17 @@
 @section('page-title', 'Lembar Evaluasi Diri')
 
 @section('content')
+@if(session('error'))
+<div class="mb-6 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4">
+    <div class="flex gap-3">
+        <svg class="w-5 h-5 text-red-600 dark:text-red-400 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+        </svg>
+        <p class="text-sm font-medium text-red-900 dark:text-red-200">{{ session('error') }}</p>
+    </div>
+</div>
+@endif
+
 <!-- Step Navigation -->
 <div class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 mb-6 p-2">
     <div class="flex">
@@ -12,7 +23,11 @@
             </svg>
             <span class="text-sm font-semibold text-indigo-600 dark:text-indigo-400">Lembar Evaluasi Diri</span>
         </div>
-        <button onclick="window.location.href='{{ route('guru.supervisi.proses', $supervisi->id) }}'" class="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
+        <button 
+            id="prosesTabButton"
+            onclick="checkDocumentsAndNavigate('{{ route('guru.supervisi.proses', $supervisi->id) }}')" 
+            class="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
+        >
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path>
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
@@ -29,7 +44,7 @@
         <div class="flex items-start justify-between gap-4">
             <div>
                 <h2 class="text-xl font-bold text-gray-800 dark:text-gray-100">Upload Dokumen Evaluasi Diri</h2>
-                <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">Upload 7 dokumen yang diperlukan (opsional)</p>
+                <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">Upload 7 dokumen yang diperlukan</p>
             </div>
             <!-- Progress Badge -->
             <div class="flex items-center gap-2 bg-white dark:bg-gray-800 px-4 py-2 rounded-lg border border-gray-200 dark:border-gray-600 shadow-sm">
@@ -79,7 +94,6 @@
                     <tr class="bg-gray-50 dark:bg-gray-700 border-b-2 border-gray-300 dark:border-gray-600">
                         <th class="px-4 py-3 text-left text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider">No</th>
                         <th class="px-4 py-3 text-left text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider">Nama Dokumen</th>
-                        <th class="px-4 py-3 text-left text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider">Deskripsi <span class="text-gray-500 dark:text-gray-400 font-normal">(Opsional)</span></th>
                         <th class="px-4 py-3 text-center text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider">Status</th>
                         <th class="px-4 py-3 text-center text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider">Aksi</th>
                     </tr>
@@ -93,29 +107,6 @@
                         <tr class="hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors border-b border-gray-200 dark:border-gray-700">
                             <td class="px-4 py-3 text-sm text-gray-900 dark:text-gray-100 align-top">{{ $loop->iteration }}</td>
                             <td class="px-4 py-3 text-sm text-gray-900 dark:text-gray-100 align-top">{{ $label }}</td>
-                            <td class="px-4 py-3 align-top">
-                                @if($isUploaded && $dokumen)
-                                    <div class="bg-gray-50 dark:bg-gray-700/50 border border-gray-200 dark:border-gray-600 rounded-lg p-3 min-w-[200px]">
-                                        <p class="text-sm text-gray-700 dark:text-gray-300">
-                                            {{ $dokumen->deskripsi ?? '-' }}
-                                        </p>
-                                    </div>
-                                @else
-                                    <div class="min-w-[250px]">
-                                        <textarea
-                                            id="deskripsi_{{ $key }}"
-                                            maxlength="100"
-                                            rows="3"
-                                            placeholder="Tulis deskripsi dokumen (opsional)"
-                                            class="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 focus:border-transparent resize-none"
-                                            style="resize: none;"
-                                        ></textarea>
-                                        <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                                            <span id="charCount_{{ $key }}">0</span>/100 karakter
-                                        </p>
-                                    </div>
-                                @endif
-                            </td>
                             <td class="px-4 py-3 text-center align-top">
                                 @if($isUploaded)
                                     <span class="inline-flex items-center gap-1 px-2.5 py-1 bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300 text-xs font-medium rounded-full">
@@ -144,10 +135,14 @@
                                     </button>
                                     <button
                                         type="button"
-                                        onclick="deleteDocument('{{ $key }}')"
-                                        {{ !$isUploaded ? 'disabled' : '' }}
-                                        style="{{ $isUploaded ? 'background-color: #dc2626; color: white;' : 'background-color: #9ca3af; color: #374151;' }}"
-                                        class="inline-flex items-center gap-1.5 px-4 py-2 text-xs font-semibold rounded-lg {{ $isUploaded ? 'hover:bg-red-700 cursor-pointer' : 'cursor-not-allowed' }}"
+                                        data-jenis="{{ $key }}"
+                                        data-delete-btn
+                                        data-uploaded="{{ $isUploaded ? 'true' : 'false' }}"
+                                        @if($isUploaded)
+                                        class="delete-btn-enabled inline-flex items-center gap-1.5 px-4 py-2 text-xs font-semibold rounded-lg transition-colors bg-red-600 hover:bg-red-700 dark:bg-red-600 dark:hover:bg-red-700 text-white cursor-pointer"
+                                        @else
+                                        class="delete-btn-disabled inline-flex items-center gap-1.5 px-4 py-2 text-xs font-semibold rounded-lg transition-colors bg-gray-300 dark:bg-gray-600 text-gray-700 dark:text-gray-300 cursor-not-allowed"
+                                        @endif
                                     >
                                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
@@ -172,7 +167,7 @@
             Kembali ke Beranda
         </a>
 
-        <button id="nextButton" class="inline-flex items-center justify-center gap-2 px-6 py-3 bg-indigo-600 text-white font-bold rounded-lg hover:bg-indigo-700 cursor-pointer">
+        <button id="nextButton" class="inline-flex items-center justify-center gap-2 px-6 py-3 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700 cursor-pointer">
             Lanjut ke Proses
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
@@ -233,6 +228,12 @@ function refreshDocumentList() {
     window.location.reload();
 }
 
+// Update uploaded docs after upload/delete
+function updateUploadedDocs() {
+    // This will be called after successful upload/delete
+    // For now, we'll reload the page, so uploadedDocs will be updated automatically
+}
+
 // Trigger file upload - langsung buka file picker
 function triggerFileUpload(jenis) {
     console.log('Triggering file upload for:', jenis);
@@ -259,13 +260,13 @@ function handleFileSelection(jenis, file) {
     // Validate file type
     const allowedTypes = ['application/pdf', 'image/jpeg', 'image/jpg', 'image/png'];
     if (!allowedTypes.includes(file.type)) {
-        alert('Format file tidak didukung. Hanya PDF, JPG, dan PNG yang diperbolehkan.');
+        showModal('Format File Tidak Didukung', 'Format file tidak didukung. Hanya PDF, JPG, dan PNG yang diperbolehkan.', 'error');
         return;
     }
 
     // Validate file size (2MB)
     if (file.size > 2 * 1024 * 1024) {
-        alert('Ukuran file terlalu besar. Maksimal 2MB.');
+        showModal('Ukuran File Terlalu Besar', 'Ukuran file terlalu besar. Maksimal 2MB per dokumen.', 'error');
         return;
     }
 
@@ -279,12 +280,6 @@ async function uploadFile(jenis, file) {
     formData.append('jenis_dokumen', jenis);
     formData.append('file', file);
     formData.append('_token', '{{ csrf_token() }}');
-
-    // Tambahkan deskripsi jika ada
-    const deskripsiField = document.getElementById('deskripsi_' + jenis);
-    if (deskripsiField) {
-        formData.append('deskripsi', deskripsiField.value);
-    }
 
     console.log('Uploading file...');
 
@@ -306,11 +301,11 @@ async function uploadFile(jenis, file) {
                 refreshDocumentList();
             }, 1000);
         } else {
-            alert('Gagal upload: ' + (result.message || 'Terjadi kesalahan'));
+            showModal('Gagal Upload', result.message || 'Terjadi kesalahan saat mengupload dokumen. Silakan coba lagi.', 'error');
         }
     } catch (error) {
         console.error('Upload error:', error);
-        alert('Error: ' + error.message);
+        showModal('Error Upload', 'Terjadi kesalahan saat mengupload dokumen: ' + error.message, 'error');
     }
 }
 
@@ -341,9 +336,15 @@ function showToast(message) {
 
 // Delete document function
 async function deleteDocument(jenis) {
-    if (!confirm('Apakah Anda yakin ingin menghapus dokumen ini?')) {
+    console.log('deleteDocument called with jenis:', jenis);
+    
+    const confirmed = await confirmModal('Apakah Anda yakin ingin menghapus dokumen ini?', 'Konfirmasi Hapus Dokumen');
+    if (!confirmed) {
+        console.log('Delete cancelled by user');
         return;
     }
+
+    console.log('Proceeding with delete for:', jenis);
 
     try {
         const response = await fetch(`/guru/supervisi/${supervisiId}/delete-document`, {
@@ -355,7 +356,9 @@ async function deleteDocument(jenis) {
             body: JSON.stringify({ jenis_dokumen: jenis })
         });
 
+        console.log('Delete response status:', response.status);
         const result = await response.json();
+        console.log('Delete response:', result);
 
         if (result.success) {
             showToast('Dokumen berhasil dihapus!');
@@ -364,10 +367,11 @@ async function deleteDocument(jenis) {
                 refreshDocumentList();
             }, 1000);
         } else {
-            alert('Gagal hapus: ' + (result.message || 'Terjadi kesalahan'));
+            showModal('Gagal Hapus', result.message || 'Terjadi kesalahan saat menghapus dokumen. Silakan coba lagi.', 'error');
         }
     } catch (error) {
-        alert('Error: ' + error.message);
+        console.error('Delete error:', error);
+        showModal('Error Hapus', 'Terjadi kesalahan saat menghapus dokumen: ' + error.message, 'error');
     }
 }
 
@@ -394,32 +398,95 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Next button - documents are optional, so no need to check count
+    // Add event listeners to all delete buttons
+    const deleteButtons = document.querySelectorAll('[data-delete-btn]');
+    console.log('Found delete buttons:', deleteButtons.length);
+    deleteButtons.forEach(button => {
+        button.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            const jenis = this.getAttribute('data-jenis');
+            const isUploaded = this.getAttribute('data-uploaded') === 'true';
+            
+            console.log('Delete button clicked - jenis:', jenis, 'isUploaded:', isUploaded);
+            console.log('Button classes:', this.className);
+            
+            // Check if button is in disabled state by checking class names
+            const isEnabled = this.classList.contains('delete-btn-enabled');
+            const isDisabled = this.classList.contains('delete-btn-disabled');
+            
+            console.log('Button state check - isUploaded:', isUploaded, 'isEnabled:', isEnabled, 'isDisabled:', isDisabled);
+            
+            // Only proceed if document is uploaded and button is enabled
+            if (!isUploaded || isDisabled || !isEnabled) {
+                console.log('Button is disabled, ignoring click');
+                return;
+            }
+            
+            console.log('Calling deleteDocument for:', jenis);
+            deleteDocument(jenis);
+        });
+        console.log('Delete button listener added for:', button.getAttribute('data-jenis'), 'uploaded:', button.getAttribute('data-uploaded'));
+    });
+
+    // Next button - check if all documents are uploaded
     const nextButton = document.getElementById('nextButton');
     if (nextButton) {
         nextButton.addEventListener('click', () => {
             console.log('Next button clicked');
-            window.location.href = `/guru/supervisi/${supervisiId}/proses`;
+            checkDocumentsAndNavigate(`/guru/supervisi/${supervisiId}/proses`);
         });
         console.log('Next button event listener added');
+        
+        // Disable next button if documents not complete
+        if (uploadedDocs.length < 7) {
+            nextButton.disabled = true;
+            nextButton.classList.add('bg-gray-300', 'dark:bg-gray-600', 'text-gray-700', 'dark:text-gray-300', 'cursor-not-allowed');
+            nextButton.classList.remove('bg-blue-600', 'text-white', 'hover:bg-blue-700');
+        }
     } else {
         console.error('Next button not found');
     }
 
-    console.log('Initialization complete');
-
-    // Character counter untuk textarea deskripsi
-    @foreach(['capaian_pembelajaran', 'alur_tujuan_pembelajaran', 'kalender', 'program_tahunan', 'program_semester', 'modul_ajar', 'bahan_ajar'] as $key)
-        const textarea_{{ $key }} = document.getElementById('deskripsi_{{ $key }}');
-        if (textarea_{{ $key }}) {
-            textarea_{{ $key }}.addEventListener('input', function() {
-                const charCount = document.getElementById('charCount_{{ $key }}');
-                if (charCount) {
-                    charCount.textContent = this.value.length;
-                }
-            });
+    // Check documents count and disable/enable proses tab button
+    function updateProsesTabButton() {
+        const prosesTabButton = document.getElementById('prosesTabButton');
+        const uploadedCount = uploadedDocs.length;
+        const requiredCount = 7;
+        
+        if (uploadedCount < requiredCount) {
+            prosesTabButton.disabled = true;
+            prosesTabButton.classList.add('bg-gray-300', 'dark:bg-gray-600', 'text-gray-700', 'dark:text-gray-300', 'cursor-not-allowed');
+            prosesTabButton.classList.remove('text-gray-700', 'dark:text-gray-300', 'hover:bg-gray-100', 'dark:hover:bg-gray-700');
+        } else {
+            prosesTabButton.disabled = false;
+            prosesTabButton.classList.remove('bg-gray-300', 'dark:bg-gray-600', 'text-gray-700', 'dark:text-gray-300', 'cursor-not-allowed');
+            prosesTabButton.classList.add('text-gray-700', 'dark:text-gray-300', 'hover:bg-gray-100', 'dark:hover:bg-gray-700');
         }
-    @endforeach
+    }
+
+    // Function to check documents before navigating
+    function checkDocumentsAndNavigate(url) {
+        const uploadedCount = uploadedDocs.length;
+        const requiredCount = 7;
+        
+        if (uploadedCount < requiredCount) {
+            showModal(
+                'Dokumen Belum Lengkap',
+                `Anda harus mengupload semua ${requiredCount} dokumen terlebih dahulu sebelum dapat melanjutkan ke tab Proses.\n\nDokumen yang sudah diupload: ${uploadedCount}/${requiredCount}`,
+                'warning'
+            );
+            return false;
+        }
+        
+        window.location.href = url;
+    }
+
+    // Update proses tab button state
+    updateProsesTabButton();
+
+    console.log('Initialization complete');
 });
 </script>
 @endsection

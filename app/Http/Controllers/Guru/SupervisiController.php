@@ -63,13 +63,11 @@ class SupervisiController extends Controller
         try {
             $request->validate([
                 'jenis_dokumen' => 'required|string',
-                'deskripsi' => 'nullable|string|max:100',
                 'file' => 'required|file|mimes:pdf,jpg,jpeg,png|max:2048'
             ], [
                 'file.required' => 'File wajib dipilih',
                 'file.mimes' => 'File harus berformat PDF, JPG, JPEG, atau PNG',
-                'file.max' => 'Ukuran file maksimal 2MB',
-                'deskripsi.max' => 'Deskripsi maksimal 100 karakter'
+                'file.max' => 'Ukuran file maksimal 2MB'
             ]);
 
             $supervisi = Supervisi::where('id', $id)
@@ -97,7 +95,6 @@ class SupervisiController extends Controller
             DokumenEvaluasi::create([
                 'supervisi_id' => $id,
                 'jenis_dokumen' => $request->jenis_dokumen,
-                'deskripsi' => $request->deskripsi,
                 'nama_file' => $file->getClientOriginalName(),
                 'path_file' => $path,
                 'tipe_file' => $file->getClientOriginalExtension(),

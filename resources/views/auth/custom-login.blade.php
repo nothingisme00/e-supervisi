@@ -27,10 +27,10 @@
         <form method="POST" action="{{ route('login') }}" id="loginForm">
             @csrf
 
-            <!-- Nomor Induk Pegawai -->
+            <!-- Nomor Induk Kependudukan -->
             <div class="mb-5">
                 <label for="nik" class="block text-gray-700 dark:text-gray-300 font-medium text-sm mb-2">
-                    Nomor Induk Pegawai
+                    Nomor Induk Kependudukan (NIK)
                 </label>
                 <div class="relative">
                     <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
@@ -42,9 +42,9 @@
                            id="nik"
                            name="nik"
                            value="{{ old('nik') }}"
-                           maxlength="18"
+                           maxlength="16"
                            required
-                           placeholder="Masukkan 18 digit NIP"
+                           placeholder="Masukkan NIK (maksimal 16 digit)"
                            class="w-full pl-10 pr-4 py-3 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all">
                 </div>
             </div>
@@ -205,12 +205,15 @@
         // NIK input validation
         const nikInput = document.getElementById('nik');
         nikInput.addEventListener('input', function(e) {
-            this.value = this.value.replace(/[^0-9]/g, '').slice(0, 18);
+            this.value = this.value.replace(/[^0-9]/g, '').slice(0, 16);
 
-            // Visual feedback for valid length
-            if (this.value.length === 18) {
+            // Visual feedback for valid length (maksimal 16 digit)
+            if (this.value.length === 16) {
                 this.classList.add('border-green-500');
                 this.classList.remove('border-gray-300');
+            } else if (this.value.length > 0 && this.value.length < 16) {
+                this.classList.remove('border-green-500');
+                this.classList.add('border-gray-300');
             } else {
                 this.classList.remove('border-green-500');
                 this.classList.add('border-gray-300');
@@ -226,7 +229,8 @@
         form.addEventListener('submit', function(e) {
             // Show loading state
             submitBtn.disabled = true;
-            submitBtn.classList.add('opacity-75', 'cursor-not-allowed');
+            submitBtn.classList.add('bg-gray-300', 'dark:bg-gray-600', 'text-gray-700', 'dark:text-gray-300', 'cursor-not-allowed');
+            submitBtn.classList.remove('bg-indigo-600', 'hover:bg-indigo-700', 'text-white');
             btnText.classList.add('hidden');
             btnLoader.classList.remove('hidden');
         });

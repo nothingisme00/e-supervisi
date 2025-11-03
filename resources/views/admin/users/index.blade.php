@@ -30,7 +30,7 @@
                 <input type="text"
                        name="search"
                        value="{{ request('search') }}"
-                       placeholder="Cari NIP, nama, atau email..."
+                       placeholder="Cari NIK, nama, atau email..."
                        class="w-full px-4 py-2.5 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all">
             </div>
 
@@ -105,11 +105,11 @@
         <table class="w-full">
             <thead class="bg-gray-50 dark:bg-gray-700 border-b border-gray-200 dark:border-gray-600">
                 <tr>
-                    <!-- Sortable NIP Column -->
+                    <!-- Sortable NIK Column -->
                     <th class="px-6 py-3 text-left text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider">
                         <a href="{{ route('admin.users.index', array_merge(request()->except(['sort_by', 'sort_direction']), ['sort_by' => 'nik', 'sort_direction' => ($sortBy === 'nik' && $sortDirection === 'asc') ? 'desc' : 'asc'])) }}"
                            class="group inline-flex items-center gap-1 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
-                            <span>Nomor Induk Pegawai</span>
+                            <span>Nomor Induk Kependudukan (NIK)</span>
                             @if($sortBy === 'nik')
                                 @if($sortDirection === 'asc')
                                     <svg class="w-4 h-4 text-indigo-600 dark:text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -224,7 +224,7 @@
                                 </svg>
                                 Reset
                             </button>
-                            <form action="{{ route('admin.users.destroy', $user->id) }}" method="POST" class="inline" onsubmit="return confirm('Apakah Anda yakin ingin menghapus pengguna {{ $user->name }}? Data yang dihapus tidak dapat dikembalikan.')">
+                            <form action="{{ route('admin.users.destroy', $user->id) }}" method="POST" class="inline" onsubmit="return handleDelete(event, '{{ $user->name }}')">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="inline-flex items-center px-3 py-1.5 bg-red-500 hover:bg-red-600 dark:bg-red-600 dark:hover:bg-red-700 text-white text-xs font-medium rounded-lg transition-colors"
@@ -304,15 +304,29 @@
         });
     });
 
+    // Handle delete form submission
+    async function handleDelete(event, userName) {
+        event.preventDefault();
+        const confirmed = await confirmModal(
+            `Apakah Anda yakin ingin menghapus pengguna ${userName}? Data yang dihapus tidak dapat dikembalikan.`,
+            'Konfirmasi Hapus User'
+        );
+        if (confirmed) {
+            event.target.submit();
+        }
+        return false;
+    }
+
     // Toggle user status
-    function toggleStatus(userId, button) {
-        if (!confirm('Apakah Anda yakin ingin mengubah status user ini?')) {
+    async function toggleStatus(userId, button) {
+        const confirmed = await confirmModal('Apakah Anda yakin ingin mengubah status user ini?', 'Konfirmasi Ubah Status');
+        if (!confirmed) {
             return;
         }
 
         // Disable button during request
         button.disabled = true;
-        button.style.opacity = '0.5';
+        button.classList.add('opacity-70');
 
         fetch(`/admin/users/${userId}/toggle-status`, {
             method: 'POST',
@@ -339,20 +353,21 @@
                 }
 
                 button.disabled = false;
-                button.style.opacity = '1';
+                button.classList.remove('opacity-70');
             }
         })
         .catch(error => {
             console.error('Error:', error);
-            alert('Terjadi kesalahan saat mengubah status');
+            showModal('Gagal Mengubah Status', 'Terjadi kesalahan saat mengubah status user. Silakan coba lagi.', 'error');
             button.disabled = false;
-            button.style.opacity = '1';
+            button.classList.remove('opacity-70');
         });
     }
 
     // Reset password
-    function resetPassword(userId, userName) {
-        if (!confirm(`Apakah Anda yakin ingin mereset password untuk user "${userName}"?\n\nPassword akan direset ke: pass123456`)) {
+    async function resetPassword(userId, userName) {
+        const confirmed = await confirmModal(`Apakah Anda yakin ingin mereset password untuk user "${userName}"?\n\nPassword akan direset ke: pass123456`, 'Konfirmasi Reset Password');
+        if (!confirmed) {
             return;
         }
 
@@ -366,12 +381,12 @@
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                alert(data.message);
+                showModal('Password Berhasil Direset', data.message, 'success');
             }
         })
         .catch(error => {
             console.error('Error:', error);
-            alert('Terjadi kesalahan saat mereset password');
+            showModal('Gagal Reset Password', 'Terjadi kesalahan saat mereset password. Silakan coba lagi.', 'error');
         });
     }
 </script>

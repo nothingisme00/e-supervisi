@@ -66,25 +66,45 @@ class UserController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
-            'nik' => 'required|string|size:18|unique:users',
+        $rules = [
+            'nik' => 'required|string|max:16|unique:users',
             'name' => 'required|string|max:255',
             'email' => 'nullable|email|unique:users',
             'role' => 'required|in:admin,guru,kepala_sekolah',
-            'tingkat' => 'required_if:role,guru|in:SD,SMP,SMA',
-            'mata_pelajaran' => 'required_if:role,guru|string'
-        ]);
+        ];
 
-        User::create([
+        // Validasi khusus untuk role guru
+        if ($request->role === 'guru') {
+            $rules['tingkat'] = 'required|in:SD,SMP,SMA';
+            $rules['mata_pelajaran'] = 'required|string';
+        } else {
+            $rules['tingkat'] = 'nullable';
+            $rules['mata_pelajaran'] = 'nullable';
+        }
+
+        $request->validate($rules);
+
+        $userData = [
             'nik' => $request->nik,
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make('pass123456'), // Password default
             'role' => $request->role,
-            'tingkat' => $request->tingkat,
-            'mata_pelajaran' => $request->mata_pelajaran,
+            'is_active' => true, // User baru selalu aktif
             'must_change_password' => true // Wajib ganti password saat login pertama
-        ]);
+        ];
+
+        // Hanya tambahkan tingkat dan mata_pelajaran jika role adalah guru
+        if ($request->role === 'guru') {
+            $userData['tingkat'] = $request->tingkat;
+            $userData['mata_pelajaran'] = $request->mata_pelajaran;
+        } else {
+            // Pastikan tingkat dan mata_pelajaran null untuk non-guru
+            $userData['tingkat'] = null;
+            $userData['mata_pelajaran'] = null;
+        }
+
+        User::create($userData);
 
         return redirect()->route('admin.users.index')
             ->with('success', 'User berhasil ditambahkan dengan password default: pass123456');
@@ -100,16 +120,33 @@ class UserController extends Controller
     {
         $user = User::findOrFail($id);
 
-        $request->validate([
-            'nik' => 'required|string|size:18|unique:users,nik,' . $id,
+        $rules = [
+            'nik' => 'required|string|max:16|unique:users,nik,' . $id,
             'name' => 'required|string|max:255',
             'email' => 'nullable|email|unique:users,email,' . $id,
             'role' => 'required|in:admin,guru,kepala_sekolah',
-            'tingkat' => 'required_if:role,guru|in:SD,SMP,SMA',
-            'mata_pelajaran' => 'required_if:role,guru|string'
-        ]);
+        ];
 
-        $user->update($request->except('password'));
+        // Validasi khusus untuk role guru
+        if ($request->role === 'guru') {
+            $rules['tingkat'] = 'required|in:SD,SMP,SMA';
+            $rules['mata_pelajaran'] = 'required|string';
+        } else {
+            $rules['tingkat'] = 'nullable';
+            $rules['mata_pelajaran'] = 'nullable';
+        }
+
+        $request->validate($rules);
+
+        $userData = $request->except('password');
+
+        // Jika role bukan guru, set tingkat dan mata_pelajaran ke null
+        if ($request->role !== 'guru') {
+            $userData['tingkat'] = null;
+            $userData['mata_pelajaran'] = null;
+        }
+
+        $user->update($userData);
 
         return redirect()->route('admin.users.index')
             ->with('success', 'User berhasil diupdate');

@@ -21,7 +21,7 @@ class CustomLoginController extends Controller
     public function login(Request $request)
     {
         $request->validate([
-            'nik' => 'required|string|size:18',
+            'nik' => 'required|string|max:16',
             'password' => 'required|string',
             'role' => 'required|in:admin,guru,kepala_sekolah'
         ]);
