@@ -1,66 +1,97 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# E-Supervisi
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Sistem Elektronik Supervisi untuk manajemen supervisi dan evaluasi pembelajaran di sekolah.
 
-## About Laravel
+## About E-Supervisi
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+E-Supervisi adalah aplikasi web berbasis Laravel yang dirancang untuk memudahkan proses supervisi dan evaluasi pembelajaran di sekolah. Aplikasi ini menyediakan platform digital untuk kepala sekolah dan guru dalam melakukan supervisi, dokumentasi, dan evaluasi proses pembelajaran.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+### Fitur Utama
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- **Dashboard Admin** - Manajemen pengguna (Admin, Guru, Kepala Sekolah)
+- **Dashboard Guru** - Pengelolaan supervisi dan proses pembelajaran
+- **Dashboard Kepala Sekolah** - Monitoring dan evaluasi supervisi
+- **Sistem Login Multi-Role** - Autentikasi terpisah untuk setiap role
+- **Manajemen Tingkatan** - Support untuk berbagai tingkat pendidikan
+- **Responsive Design** - Optimal di desktop dan mobile
 
-## Learning Laravel
+## Teknologi
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+- Laravel 12.x
+- PHP 8.2+
+- MySQL/MariaDB
+- Tailwind CSS
+- Vite
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+## Instalasi
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+1. Clone repository
+```bash
+git clone https://github.com/nothingisme00/e-supervisi.git
+cd e-supervisi
+```
 
-## Laravel Sponsors
+2. Install dependencies
+```bash
+composer install
+npm install
+```
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+3. Setup environment
+```bash
+cp .env.example .env
+php artisan key:generate
+```
 
-### Premium Partners
+4. Setup database
+```bash
+# Edit .env dengan kredensial database Anda
+php artisan migrate
+php artisan db:seed
+```
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+5. Build assets
+```bash
+npm run dev
+# atau untuk production:
+npm run build
+```
 
-## Contributing
+6. Jalankan aplikasi
+```bash
+php artisan serve
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+## Branch Management
 
-## Code of Conduct
+⚠️ **Penting**: Repository ini menggunakan branch `main` sebagai branch utama.
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+Semua commit terbaru ada di branch `main`. Branch lainnya (develop, master, feature/crud-admin) adalah branch lama yang akan dihapus.
 
-## Security Vulnerabilities
+Untuk instruksi pembersihan branch, lihat [BRANCH_CLEANUP_INSTRUCTIONS.md](BRANCH_CLEANUP_INSTRUCTIONS.md)
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+Atau jalankan script otomatis:
+```bash
+./cleanup-branches.sh
+```
+
+## Default Users
+
+Setelah seeding, Anda dapat login dengan:
+
+**Admin**
+- Email: admin@example.com
+- Password: password
+
+## Kontribusi
+
+Untuk berkontribusi ke project ini:
+1. Fork repository
+2. Buat branch feature (`git checkout -b feature/AmazingFeature`)
+3. Commit changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push ke branch (`git push origin feature/AmazingFeature`)
+5. Buat Pull Request ke branch `main`
 
 ## License
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Project ini adalah open-sourced software dengan lisensi [MIT license](https://opensource.org/licenses/MIT).
