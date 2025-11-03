@@ -49,7 +49,10 @@ Hapus branch-branch lama yang sudah tidak diperlukan:
 
 **Opsi 1: Gunakan Script Otomatis (RECOMMENDED)**
 ```bash
-# Setelah PR ini di-merge, jalankan:
+# Setelah PR ini di-merge, buat script executable:
+chmod +x cleanup-branches.sh
+
+# Jalankan script:
 ./cleanup-branches.sh
 ```
 

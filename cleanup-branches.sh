@@ -1,7 +1,11 @@
 #!/bin/bash
 
 # Script untuk membersihkan branch-branch yang tidak diperlukan
-# Script ini akan menghapus branch develop, master, dan feature/crud-admin
+# Script ini akan menghapus branch develop, master, feature/crud-admin, 
+# dan copilot/merge-commits-to-main (branch untuk PR ini)
+#
+# CATATAN: Script ini sudah executable (chmod +x sudah dilakukan).
+# Jika permission error, jalankan: chmod +x cleanup-branches.sh
 
 set -e  # Exit on error
 

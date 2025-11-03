@@ -72,6 +72,10 @@ Untuk instruksi pembersihan branch, lihat [BRANCH_CLEANUP_INSTRUCTIONS.md](BRANC
 
 Atau jalankan script otomatis:
 ```bash
+# Buat script executable terlebih dahulu
+chmod +x cleanup-branches.sh
+
+# Jalankan script
 ./cleanup-branches.sh
 ```
 
