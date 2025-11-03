@@ -58,7 +58,6 @@
                         <option value="">Semua Tingkat</option>
                         <option value="SD" {{ request('tingkat') == 'SD' ? 'selected' : '' }}>SD</option>
                         <option value="SMP" {{ request('tingkat') == 'SMP' ? 'selected' : '' }}>SMP</option>
-                        <option value="SMA" {{ request('tingkat') == 'SMA' ? 'selected' : '' }}>SMA</option>
                     </select>
                     <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-gray-500 dark:text-gray-400">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -101,7 +100,8 @@
 
 <!-- Tabel Pengguna -->
 <div class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden">
-    <div class="overflow-x-auto">
+    <!-- Desktop View: Table -->
+    <div class="hidden md:block overflow-x-auto">
         <table class="w-full">
             <thead class="bg-gray-50 dark:bg-gray-700 border-b border-gray-200 dark:border-gray-600">
                 <tr>
@@ -169,8 +169,10 @@
                             </div>
                             <div>
                                 <div class="text-sm font-semibold text-gray-900 dark:text-white">{{ $user->name }}</div>
-                                @if($user->mata_pelajaran)
+                                @if($user->mata_pelajaran && $user->tingkat)
                                     <div class="text-xs text-gray-500 dark:text-gray-400">{{ $user->mata_pelajaran }} • {{ $user->tingkat }}</div>
+                                @elseif($user->tingkat)
+                                    <div class="text-xs text-gray-500 dark:text-gray-400">{{ $user->tingkat }}</div>
                                 @endif
                             </div>
                         </div>
@@ -263,6 +265,123 @@
         </table>
     </div>
 
+    <!-- Mobile View: Cards -->
+    <div class="md:hidden divide-y divide-gray-200 dark:divide-gray-700">
+        @forelse($users as $user)
+        <div class="p-4">
+            <!-- User Header -->
+            <div class="flex items-start justify-between mb-3">
+                <div class="flex items-center gap-3">
+                    <div class="w-12 h-12 bg-indigo-600 dark:bg-indigo-500 rounded-full flex items-center justify-center text-white text-base font-semibold shrink-0">
+                        {{ substr($user->name, 0, 1) }}
+                    </div>
+                    <div>
+                        <div class="text-sm font-semibold text-gray-900 dark:text-white">{{ $user->name }}</div>
+                        <div class="text-xs text-gray-500 dark:text-gray-400 font-mono">{{ $user->nik }}</div>
+                        @if($user->mata_pelajaran && $user->tingkat)
+                            <div class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">{{ $user->mata_pelajaran }} • {{ $user->tingkat }}</div>
+                        @elseif($user->tingkat)
+                            <div class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">{{ $user->tingkat }}</div>
+                        @endif
+                    </div>
+                </div>
+                
+                <!-- Status Toggle -->
+                <button onclick="toggleStatus({{ $user->id }}, this)" class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium transition-all {{ $user->is_active ? 'bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300' : 'bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-300' }}" title="Klik untuk ubah status">
+                    <span class="w-1.5 h-1.5 {{ $user->is_active ? 'bg-green-500 dark:bg-green-400' : 'bg-red-500 dark:bg-red-400' }} rounded-full mr-1.5"></span>
+                    <span class="status-text">{{ $user->is_active ? 'Aktif' : 'Nonaktif' }}</span>
+                </button>
+            </div>
+
+            <!-- User Info Grid -->
+            <div class="grid grid-cols-2 gap-2 mb-3 text-xs">
+                @if($user->email)
+                <div class="col-span-2">
+                    <span class="text-gray-500 dark:text-gray-400">Email:</span>
+                    <span class="text-gray-900 dark:text-white block truncate">{{ $user->email }}</span>
+                </div>
+                @endif
+                
+                <div>
+                    <span class="text-gray-500 dark:text-gray-400">Role:</span>
+                    <div class="mt-1">
+                        @if($user->role == 'admin')
+                            <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-purple-100 dark:bg-purple-900/30 text-purple-800 dark:text-purple-300">
+                                Admin
+                            </span>
+                        @elseif($user->role == 'guru')
+                            <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300">
+                                Guru
+                            </span>
+                        @else
+                            <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300">
+                                Kepala Sekolah
+                            </span>
+                        @endif
+                    </div>
+                </div>
+
+                @if($user->tingkat)
+                <div>
+                    <span class="text-gray-500 dark:text-gray-400">Tingkat:</span>
+                    <div class="mt-1">
+                        <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-indigo-100 dark:bg-indigo-900/30 text-indigo-800 dark:text-indigo-300">
+                            {{ $user->tingkat }}
+                        </span>
+                    </div>
+                </div>
+                @endif
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="flex flex-wrap gap-2">
+                <a href="{{ route('admin.users.edit', $user->id) }}"
+                   class="flex-1 inline-flex items-center justify-center px-3 py-1.5 bg-yellow-500 hover:bg-yellow-600 dark:bg-yellow-600 dark:hover:bg-yellow-700 text-white text-xs font-medium rounded-lg transition-colors">
+                    <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                    </svg>
+                    Edit
+                </a>
+                <button onclick="resetPassword({{ $user->id }}, '{{ $user->name }}')"
+                        class="flex-1 inline-flex items-center justify-center px-3 py-1.5 bg-blue-500 hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-700 text-white text-xs font-medium rounded-lg transition-colors">
+                    <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"></path>
+                    </svg>
+                    Reset
+                </button>
+                <form action="{{ route('admin.users.destroy', $user->id) }}" method="POST" class="flex-1" onsubmit="return handleDelete(event, '{{ $user->name }}')">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="w-full inline-flex items-center justify-center px-3 py-1.5 bg-red-500 hover:bg-red-600 dark:bg-red-600 dark:hover:bg-red-700 text-white text-xs font-medium rounded-lg transition-colors">
+                        <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                        </svg>
+                        Hapus
+                    </button>
+                </form>
+            </div>
+        </div>
+        @empty
+        <div class="px-6 py-12 text-center">
+            <svg class="w-16 h-16 mx-auto text-gray-400 dark:text-gray-600 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"></path>
+            </svg>
+            <p class="text-gray-500 dark:text-gray-400 text-sm">
+                @if(request('search') || request('role') || request('tingkat') || request('status'))
+                    Tidak ada pengguna yang sesuai dengan filter
+                @else
+                    Belum ada pengguna terdaftar
+                @endif
+            </p>
+            @if(request('search') || request('role') || request('tingkat') || request('status'))
+                <a href="{{ route('admin.users.index') }}" class="inline-block mt-3 text-indigo-600 dark:text-indigo-400 text-sm font-medium hover:text-indigo-700 dark:hover:text-indigo-300">
+                    Reset filter
+                </a>
+            @endif
+        </div>
+        @endforelse
+    </div>
+
     <!-- Pagination -->
     @if($users->hasPages())
     <div class="px-6 py-4 border-t border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-700/50">
@@ -305,12 +424,9 @@
     });
 
     // Handle delete form submission
-    async function handleDelete(event, userName) {
+    function handleDelete(event, userName) {
         event.preventDefault();
-        const confirmed = await confirmModal(
-            `Apakah Anda yakin ingin menghapus pengguna ${userName}? Data yang dihapus tidak dapat dikembalikan.`,
-            'Konfirmasi Hapus User'
-        );
+        const confirmed = confirm(`Apakah Anda yakin ingin menghapus pengguna ${userName}?\n\nData yang dihapus tidak dapat dikembalikan.`);
         if (confirmed) {
             event.target.submit();
         }
@@ -318,9 +434,10 @@
     }
 
     // Toggle user status
-    async function toggleStatus(userId, button) {
-        const confirmed = await confirmModal('Apakah Anda yakin ingin mengubah status user ini?', 'Konfirmasi Ubah Status');
-        if (!confirmed) {
+    function toggleStatus(userId, button) {
+        console.log('Toggle status called for user:', userId);
+        
+        if (!confirm('Apakah Anda yakin ingin mengubah status user ini?')) {
             return;
         }
 
@@ -328,15 +445,25 @@
         button.disabled = true;
         button.classList.add('opacity-70');
 
-        fetch(`/admin/users/${userId}/toggle-status`, {
+        const url = `{{ url('admin/users') }}/${userId}/toggle-status`;
+        console.log('Fetching URL:', url);
+
+        fetch(url, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
             }
         })
-        .then(response => response.json())
+        .then(response => {
+            console.log('Response status:', response.status);
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+        })
         .then(data => {
+            console.log('Response data:', data);
             if (data.success) {
                 // Update button appearance
                 const statusDot = button.querySelector('span:first-child');
@@ -352,41 +479,57 @@
                     statusText.textContent = 'Nonaktif';
                 }
 
+                alert('Status user berhasil diubah!');
                 button.disabled = false;
                 button.classList.remove('opacity-70');
+            } else {
+                throw new Error('Response success is false');
             }
         })
         .catch(error => {
-            console.error('Error:', error);
-            showModal('Gagal Mengubah Status', 'Terjadi kesalahan saat mengubah status user. Silakan coba lagi.', 'error');
+            console.error('Error details:', error);
+            alert('Terjadi kesalahan saat mengubah status user. Silakan coba lagi.\n\nError: ' + error.message);
             button.disabled = false;
             button.classList.remove('opacity-70');
         });
     }
 
     // Reset password
-    async function resetPassword(userId, userName) {
-        const confirmed = await confirmModal(`Apakah Anda yakin ingin mereset password untuk user "${userName}"?\n\nPassword akan direset ke: pass123456`, 'Konfirmasi Reset Password');
-        if (!confirmed) {
+    function resetPassword(userId, userName) {
+        console.log('Reset password called for user:', userId, userName);
+        
+        if (!confirm(`Apakah Anda yakin ingin mereset password untuk user "${userName}"?\n\nPassword akan direset ke: pass123456`)) {
             return;
         }
 
-        fetch(`/admin/users/${userId}/reset-password`, {
+        const url = `{{ url('admin/users') }}/${userId}/reset-password`;
+        console.log('Fetching URL:', url);
+
+        fetch(url, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
             }
         })
-        .then(response => response.json())
+        .then(response => {
+            console.log('Response status:', response.status);
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+        })
         .then(data => {
+            console.log('Response data:', data);
             if (data.success) {
-                showModal('Password Berhasil Direset', data.message, 'success');
+                alert('Password Berhasil Direset!\n\n' + data.message);
+            } else {
+                throw new Error('Response success is false');
             }
         })
         .catch(error => {
-            console.error('Error:', error);
-            showModal('Gagal Reset Password', 'Terjadi kesalahan saat mereset password. Silakan coba lagi.', 'error');
+            console.error('Error details:', error);
+            alert('Terjadi kesalahan saat mereset password. Silakan coba lagi.\n\nError: ' + error.message);
         });
     }
 </script>

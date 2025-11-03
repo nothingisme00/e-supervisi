@@ -291,15 +291,23 @@ function validateForm() {
     const submitButton = document.getElementById('submitButton');
     const isValid = linkVideo && allRefleksiFilled;
 
+    console.log('Validation check:', {
+        linkVideo: !!linkVideo,
+        allRefleksiFilled: allRefleksiFilled,
+        isValid: isValid
+    });
+
     submitButton.disabled = !isValid;
 
     // Update button styling based on state
     if (isValid) {
         // Enabled: hijau, teks putih
-        submitButton.className = 'inline-flex items-center justify-center gap-2 px-6 py-3 bg-green-600 text-white font-bold rounded-lg hover:bg-green-700 cursor-pointer';
+        submitButton.className = 'inline-flex items-center justify-center gap-2 px-6 py-3 bg-green-600 text-white font-bold rounded-lg hover:bg-green-700 transition-colors cursor-pointer shadow-md hover:shadow-lg';
+        console.log('Submit button ENABLED');
     } else {
         // Disabled: abu-abu terang dengan teks abu-abu gelap
-        submitButton.className = 'inline-flex items-center justify-center gap-2 px-6 py-3 bg-gray-300 dark:bg-gray-600 text-gray-700 dark:text-gray-300 font-bold rounded-lg cursor-not-allowed';
+        submitButton.className = 'inline-flex items-center justify-center gap-2 px-6 py-3 bg-gray-300 dark:bg-gray-600 text-gray-700 dark:text-gray-300 font-bold rounded-lg cursor-not-allowed opacity-60';
+        console.log('Submit button DISABLED');
     }
 }
 
@@ -349,9 +357,18 @@ function showToast(message, isError = false) {
 
 // Save button
 document.getElementById('saveButton').addEventListener('click', async () => {
+    console.log('Save button clicked');
+    const saveButton = document.getElementById('saveButton');
+    const originalHTML = saveButton.innerHTML;
+    
+    // Disable button during save
+    saveButton.disabled = true;
+    saveButton.innerHTML = '<svg class="w-5 h-5 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg> Menyimpan...';
+    
     const formData = new FormData(document.getElementById('prosesForm'));
 
     try {
+        console.log('Sending save request...');
         const response = await fetch(`/guru/supervisi/${supervisiId}/proses/save`, {
             method: 'POST',
             headers: {
@@ -361,62 +378,104 @@ document.getElementById('saveButton').addEventListener('click', async () => {
             body: formData
         });
 
+        console.log('Response status:', response.status);
         const result = await response.json();
+        console.log('Response data:', result);
 
         if (result.success) {
             showToast('Data berhasil disimpan!');
+            console.log('Save successful');
         } else {
             showToast(result.message || 'Gagal menyimpan data', true);
+            console.error('Save failed:', result.message);
         }
     } catch (error) {
+        console.error('Save error:', error);
         showToast('Error: ' + error.message, true);
+    } finally {
+        // Re-enable button
+        saveButton.disabled = false;
+        saveButton.innerHTML = originalHTML;
     }
 });
 
 // Confirm submit function
 async function confirmSubmit() {
-    const confirmed = await confirmModal(
-        'Apakah Anda yakin ingin mensubmit supervisi ini? Setelah disubmit, supervisi akan direview oleh Kepala Sekolah.',
-        'Konfirmasi Submit Supervisi'
-    );
+    console.log('Submit button clicked');
+    
+    // Use native confirm dialog
+    const confirmed = confirm('Apakah Anda yakin ingin mensubmit supervisi ini?\n\nSetelah disubmit, supervisi akan direview oleh Kepala Sekolah dan Anda tidak dapat mengedit lagi kecuali diminta revisi.');
+    
     if (!confirmed) {
+        console.log('Submit cancelled by user');
         return;
     }
+
+    console.log('Submit confirmed, proceeding...');
+
+    // Disable button to prevent double submission
+    const submitButton = document.getElementById('submitButton');
+    submitButton.disabled = true;
+    submitButton.innerHTML = '<svg class="w-5 h-5 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg> Sedang Memproses...';
 
     // First save the data
     const formData = new FormData(document.getElementById('prosesForm'));
 
     try {
         // Save data
+        console.log('Step 1: Saving data...');
         const saveResponse = await fetch(`/guru/supervisi/${supervisiId}/proses/save`, {
             method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value,
+                'Accept': 'application/json'
+            },
             body: formData
         });
 
+        console.log('Save response status:', saveResponse.status);
         const saveResult = await saveResponse.json();
+        console.log('Save result:', saveResult);
 
         if (saveResult.success) {
             // Then submit
+            console.log('Step 2: Submitting supervisi...');
             const submitResponse = await fetch(`/guru/supervisi/${supervisiId}/submit`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value,
+                    'Accept': 'application/json'
                 }
             });
 
+            console.log('Submit response status:', submitResponse.status);
             const submitResult = await submitResponse.json();
+            console.log('Submit result:', submitResult);
 
             if (submitResult.success) {
+                console.log('Submit successful! Showing modal...');
                 document.getElementById('successModal').classList.remove('hidden');
             } else {
+                console.error('Submit failed:', submitResult.message);
                 showToast(submitResult.message || 'Gagal submit supervisi', true);
+                // Re-enable button
+                submitButton.disabled = false;
+                validateForm(); // Reset button state
             }
         } else {
+            console.error('Save failed:', saveResult.message);
             showToast(saveResult.message || 'Gagal menyimpan data', true);
+            // Re-enable button
+            submitButton.disabled = false;
+            validateForm(); // Reset button state
         }
     } catch (error) {
+        console.error('Submit error:', error);
         showToast('Error: ' + error.message, true);
+        // Re-enable button
+        submitButton.disabled = false;
+        validateForm(); // Reset button state
     }
 }
 

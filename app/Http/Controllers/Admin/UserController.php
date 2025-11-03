@@ -75,8 +75,10 @@ class UserController extends Controller
 
         // Validasi khusus untuk role guru
         if ($request->role === 'guru') {
-            $rules['tingkat'] = 'required|in:SD,SMP,SMA';
-            $rules['mata_pelajaran'] = 'required|string';
+            $rules['tingkat'] = 'required|in:SD,SMP';
+            $rules['mata_pelajaran'] = 'required|string|max:100';
+        } elseif ($request->role === 'kepala_sekolah') {
+            $rules['tingkat'] = 'required|in:SD,SMP';
         } else {
             $rules['tingkat'] = 'nullable';
             $rules['mata_pelajaran'] = 'nullable';
@@ -94,13 +96,17 @@ class UserController extends Controller
             'must_change_password' => true // Wajib ganti password saat login pertama
         ];
 
-        // Hanya tambahkan tingkat dan mata_pelajaran jika role adalah guru
-        if ($request->role === 'guru') {
+        // Tambahkan tingkat untuk guru dan kepala_sekolah
+        if ($request->role === 'guru' || $request->role === 'kepala_sekolah') {
             $userData['tingkat'] = $request->tingkat;
+        } else {
+            $userData['tingkat'] = null;
+        }
+
+        // Tambahkan mata_pelajaran hanya untuk guru
+        if ($request->role === 'guru') {
             $userData['mata_pelajaran'] = $request->mata_pelajaran;
         } else {
-            // Pastikan tingkat dan mata_pelajaran null untuk non-guru
-            $userData['tingkat'] = null;
             $userData['mata_pelajaran'] = null;
         }
 
@@ -113,40 +119,73 @@ class UserController extends Controller
     public function edit($id)
     {
         $user = User::findOrFail($id);
-        return view('admin.users.edit', compact('user'));
+        $isEditingSelf = auth()->id() == $user->id;
+        
+        return view('admin.users.edit', compact('user', 'isEditingSelf'));
     }
 
     public function update(Request $request, $id)
     {
         $user = User::findOrFail($id);
+        $isEditingSelf = auth()->id() == $user->id;
 
         $rules = [
             'nik' => 'required|string|max:16|unique:users,nik,' . $id,
             'name' => 'required|string|max:255',
             'email' => 'nullable|email|unique:users,email,' . $id,
-            'role' => 'required|in:admin,guru,kepala_sekolah',
         ];
 
-        // Validasi khusus untuk role guru
-        if ($request->role === 'guru') {
-            $rules['tingkat'] = 'required|in:SD,SMP,SMA';
-            $rules['mata_pelajaran'] = 'required|string';
-        } else {
-            $rules['tingkat'] = 'nullable';
-            $rules['mata_pelajaran'] = 'nullable';
+        // Jika bukan edit diri sendiri, role bisa diubah
+        if (!$isEditingSelf) {
+            $rules['role'] = 'required|in:admin,guru,kepala_sekolah';
+            
+            // Validasi khusus untuk role guru
+            if ($request->role === 'guru') {
+                $rules['tingkat'] = 'required|in:SD,SMP';
+                $rules['mata_pelajaran'] = 'required|string';
+            } elseif ($request->role === 'kepala_sekolah') {
+                $rules['tingkat'] = 'required|in:SD,SMP';
+                $rules['mata_pelajaran'] = 'nullable';
+            } else {
+                $rules['tingkat'] = 'nullable';
+                $rules['mata_pelajaran'] = 'nullable';
+            }
         }
 
         $request->validate($rules);
 
-        $userData = $request->except('password');
+        // Data yang akan diupdate
+        $userData = [
+            'nik' => $request->nik,
+            'name' => $request->name,
+            'email' => $request->email,
+        ];
 
-        // Jika role bukan guru, set tingkat dan mata_pelajaran ke null
-        if ($request->role !== 'guru') {
-            $userData['tingkat'] = null;
-            $userData['mata_pelajaran'] = null;
+        // Jika bukan edit diri sendiri, update role juga
+        if (!$isEditingSelf) {
+            $userData['role'] = $request->role;
+            
+            // Update tingkat untuk guru dan kepala_sekolah
+            if ($request->role === 'guru' || $request->role === 'kepala_sekolah') {
+                $userData['tingkat'] = $request->tingkat;
+            } else {
+                $userData['tingkat'] = null;
+            }
+            
+            // Update mata_pelajaran hanya untuk guru
+            if ($request->role === 'guru') {
+                $userData['mata_pelajaran'] = $request->mata_pelajaran;
+            } else {
+                $userData['mata_pelajaran'] = null;
+            }
         }
 
         $user->update($userData);
+
+        if ($isEditingSelf) {
+            return redirect()->route('admin.users.index')
+                ->with('success', 'Data Anda berhasil diupdate');
+        }
 
         return redirect()->route('admin.users.index')
             ->with('success', 'User berhasil diupdate');
