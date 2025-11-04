@@ -144,8 +144,8 @@
             <div class="p-3 bg-gray-50 dark:bg-gray-700/50 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-all">
                 <div class="flex items-start justify-between gap-3 mb-2">
                     <div class="flex-1 min-w-0">
-                        <div class="font-medium text-gray-900 dark:text-white truncate">{{ $supervisi->user->name ?? 'User Tidak Ditemukan' }}</div>
-                        <div class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">{{ $supervisi->mapel ?? '-' }}</div>
+                        <div class="font-medium text-gray-900 dark:text-white truncate">{{ $supervisi->guru->name }}</div>
+                        <div class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">{{ $supervisi->mapel }}</div>
                     </div>
                     @if($supervisi->status == 'submitted')
                     <span class="px-2 py-1 text-xs font-medium bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300 rounded-md">Perlu Review</span>
@@ -155,8 +155,8 @@
                 </div>
                 <div class="text-xs text-gray-500 dark:text-gray-400">
                     {{ $supervisi->created_at->format('d M Y') }}
-                    @if($supervisi->reviewed_by)
-                    • Reviewer: {{ $supervisi->reviewer->name ?? '-' }}
+                    @if($supervisi->kepala_sekolah_id)
+                    • Reviewer: {{ $supervisi->kepala_sekolah->name ?? '-' }}
                     @endif
                 </div>
             </div>
@@ -183,8 +183,8 @@
             <div class="p-3 bg-gray-50 dark:bg-gray-700/50 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-all">
                 <div class="flex items-start justify-between gap-3 mb-2">
                     <div class="flex-1 min-w-0">
-                        <div class="font-medium text-gray-900 dark:text-white truncate">{{ $supervisi->user->name ?? 'User Tidak Ditemukan' }}</div>
-                        <div class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">{{ $supervisi->mapel ?? '-' }}</div>
+                        <div class="font-medium text-gray-900 dark:text-white truncate">{{ $supervisi->guru->name }}</div>
+                        <div class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">{{ $supervisi->mapel }}</div>
                     </div>
                     <span class="px-2 py-1 text-xs font-medium bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300 rounded-md">Selesai</span>
                 </div>

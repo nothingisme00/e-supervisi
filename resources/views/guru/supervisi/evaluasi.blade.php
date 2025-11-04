@@ -4,8 +4,11 @@
 
 @section('content')
 
+<!-- Wrapper Container (3/4 width, centered) -->
+<div class="w-full lg:w-3/4 mx-auto">
+
 <!-- Main Card -->
-<div class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
+<div class="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 shadow-lg">
     <!-- Header -->
     <div class="border-b border-gray-200 dark:border-gray-700 px-6 py-4 bg-gradient-to-r from-indigo-50/30 to-blue-50/30 dark:from-indigo-900/10 dark:to-blue-900/10">
         <div class="flex items-start justify-between gap-4">
@@ -61,6 +64,7 @@
                     <tr class="bg-gray-50 dark:bg-gray-700 border-b-2 border-gray-300 dark:border-gray-600">
                         <th class="px-4 py-3 text-left text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider">No</th>
                         <th class="px-4 py-3 text-left text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider">Nama Dokumen</th>
+                        <th class="px-4 py-3 text-left text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider">Nama File</th>
                         <th class="px-4 py-3 text-center text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider">Status</th>
                         <th class="px-4 py-3 text-center text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider">Aksi</th>
                     </tr>
@@ -74,6 +78,20 @@
                         <tr class="hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors border-b border-gray-200 dark:border-gray-700">
                             <td class="px-4 py-3 text-sm text-gray-900 dark:text-gray-100 align-top">{{ $loop->iteration }}</td>
                             <td class="px-4 py-3 text-sm text-gray-900 dark:text-gray-100 align-top">{{ $label }}</td>
+                            <td class="px-4 py-3 text-sm align-top">
+                                @if($isUploaded && $dokumen)
+                                    <div class="flex items-center gap-2">
+                                        <svg class="w-4 h-4 text-gray-400 dark:text-gray-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
+                                        </svg>
+                                        <span class="text-gray-700 dark:text-gray-300 text-xs truncate max-w-xs" title="{{ $dokumen->nama_file }}">
+                                            {{ $dokumen->nama_file }}
+                                        </span>
+                                    </div>
+                                @else
+                                    <span class="text-gray-400 dark:text-gray-500 text-xs italic">-</span>
+                                @endif
+                            </td>
                             <td class="px-4 py-3 text-center align-top">
                                 @if($isUploaded)
                                     <span class="inline-flex items-center gap-1 px-2.5 py-1 bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300 text-xs font-medium rounded-full">
@@ -89,7 +107,22 @@
                                 @endif
                             </td>
                             <td class="px-4 py-3 text-center">
-                                <div class="flex items-center justify-center gap-2">
+                                <div class="flex items-center justify-center gap-2 flex-wrap">
+                                    @if($isUploaded && $dokumen)
+                                        <a
+                                            href="{{ asset('storage/' . $dokumen->path_file) }}"
+                                            target="_blank"
+                                            class="inline-flex items-center gap-1.5 px-3 py-2 bg-indigo-600 text-white text-xs font-semibold rounded-lg hover:bg-indigo-700 transition-colors"
+                                            title="Preview dokumen"
+                                        >
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                                            </svg>
+                                            Preview
+                                        </a>
+                                    @endif
+                                    
                                     <button
                                         type="button"
                                         data-upload-btn="{{ $key }}"
@@ -101,12 +134,13 @@
                                         {{ $isUploaded ? 'Ganti' : 'Upload' }}
                                     </button>
                                     @if($isUploaded)
-                                        <form method="POST" action="{{ route('guru.supervisi.delete-document', [$supervisi->id]) }}" style="display: inline;" onsubmit="return confirm('Apakah Anda yakin ingin menghapus dokumen ini?')">
+                                        <form id="delete-form-{{ $key }}" method="POST" action="{{ route('guru.supervisi.delete-document', [$supervisi->id]) }}" style="display: inline;">
                                             @csrf
                                             @method('DELETE')
                                             <input type="hidden" name="jenis_dokumen" value="{{ $key }}">
                                             <button
-                                                type="submit"
+                                                type="button"
+                                                onclick="confirmDeleteForm('delete-form-{{ $key }}', 'Apakah Anda yakin ingin menghapus dokumen ini?')"
                                                 class="inline-flex items-center gap-1.5 px-4 py-2 text-xs font-semibold rounded-lg transition-colors text-white cursor-pointer"
                                                 style="background-color: #e63946;"
                                                 onmouseover="this.style.backgroundColor='#d62828'"
@@ -325,41 +359,42 @@ function showToast(message, type = 'success', position = 'bottom-right') {
 async function deleteDocument(jenis) {
     console.log('deleteDocument called with jenis:', jenis);
 
-    const confirmed = confirm('Apakah Anda yakin ingin menghapus dokumen ini?');
-    if (!confirmed) {
-        console.log('Delete cancelled by user');
-        return;
-    }
+    // Show modal confirmation instead of browser confirm
+    showConfirmModal(
+        'Apakah Anda yakin ingin menghapus dokumen ini?',
+        'Konfirmasi Hapus Dokumen',
+        async function() {
+            console.log('Proceeding with delete for:', jenis);
 
-    console.log('Proceeding with delete for:', jenis);
+            try {
+                const response = await fetch(`/guru/supervisi/${supervisiId}/delete-document`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    body: JSON.stringify({ jenis_dokumen: jenis })
+                });
 
-    try {
-        const response = await fetch(`/guru/supervisi/${supervisiId}/delete-document`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': '{{ csrf_token() }}'
-            },
-            body: JSON.stringify({ jenis_dokumen: jenis })
-        });
+                console.log('Delete response status:', response.status);
+                const result = await response.json();
+                console.log('Delete response:', result);
 
-        console.log('Delete response status:', response.status);
-        const result = await response.json();
-        console.log('Delete response:', result);
-
-        if (result.success) {
-            showToast('Dokumen berhasil dihapus!', 'success', 'center');
-            // Reload page after short delay
-            setTimeout(() => {
-                refreshDocumentList();
-            }, 1000);
-        } else {
-            showToast('Gagal hapus: ' + (result.message || 'Terjadi kesalahan saat menghapus dokumen. Silakan coba lagi.'), 'error');
+                if (result.success) {
+                    showToast('Dokumen berhasil dihapus!', 'success');
+                    // Reload page after short delay
+                    setTimeout(() => {
+                        refreshDocumentList();
+                    }, 1000);
+                } else {
+                    showToast('Gagal hapus: ' + (result.message || 'Terjadi kesalahan saat menghapus dokumen. Silakan coba lagi.'), 'error');
+                }
+            } catch (error) {
+                console.error('Delete error:', error);
+                showToast('Error hapus: Terjadi kesalahan saat menghapus dokumen.', 'error');
+            }
         }
-    } catch (error) {
-        console.error('Delete error:', error);
-        showToast('Error hapus: Terjadi kesalahan saat menghapus dokumen.', 'error');
-    }
+    );
 }
 
 // Global variable to track current upload type
@@ -495,5 +530,16 @@ document.addEventListener('DOMContentLoaded', function() {
 
     console.log('Initialization complete');
 });
+
+// Helper function for form confirmation
+function confirmDeleteForm(formId, message) {
+    showConfirmModal(message, 'Konfirmasi Hapus Dokumen', function() {
+        document.getElementById(formId).submit();
+    });
+}
 </script>
+
+</div>
+<!-- End Wrapper Container -->
+
 @endsection

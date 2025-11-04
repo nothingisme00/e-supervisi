@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\CustomLoginController;
 use App\Http\Controllers\Auth\ChangePasswordController;
+use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\Guru\HomeController as GuruHomeController;
 use App\Http\Controllers\Guru\SupervisiController;
 use App\Http\Controllers\Guru\ProsesController;
@@ -39,6 +40,11 @@ Route::middleware(['auth', 'prevent.back'])->group(function () {
 
 // Protected Routes
 Route::middleware(['auth', 'prevent.back', 'must.change.password'])->group(function () {
+
+    // Settings Routes (Available for all authenticated users)
+    Route::get('/settings', [SettingsController::class, 'index'])->name('settings.index');
+    Route::post('/settings/password', [SettingsController::class, 'updatePassword'])->name('settings.password.update');
+    Route::post('/settings/profile', [SettingsController::class, 'updateProfile'])->name('settings.profile.update');
 
     // Guru Routes
     Route::prefix('guru')->name('guru.')->middleware('can:isGuru')->group(function () {

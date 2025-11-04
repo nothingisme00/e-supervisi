@@ -65,7 +65,7 @@
                 <div class="text-sm text-blue-900 dark:text-blue-200">
                     <p class="font-semibold mb-1">Langkah Selanjutnya:</p>
                     <ul class="space-y-1 list-disc list-inside">
-                        <li>Step 1: Upload 7 dokumen evaluasi diri (opsional)</li>
+                        <li>Step 1: Upload 7 dokumen evaluasi diri (wajib - harus lengkap untuk lanjut ke Step 2)</li>
                         <li>Step 2: Isi informasi proses pembelajaran (wajib)</li>
                         <li>Submit untuk direview oleh Kepala Sekolah</li>
                     </ul>
