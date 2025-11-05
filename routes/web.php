@@ -9,6 +9,7 @@ use App\Http\Controllers\Guru\SupervisiController;
 use App\Http\Controllers\Guru\ProsesController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
+use App\Http\Controllers\Admin\SupervisiController as AdminSupervisiController;
 use App\Http\Controllers\KepalaSekolah\DashboardController as KepalaDashboardController;
 use App\Http\Controllers\KepalaSekolah\EvaluasiController;
 
@@ -36,6 +37,16 @@ Route::post('/logout', [CustomLoginController::class, 'logout'])->name('logout')
 Route::middleware(['auth', 'prevent.back'])->group(function () {
     Route::get('/change-password', [ChangePasswordController::class, 'showChangePasswordForm'])->name('change-password');
     Route::post('/change-password', [ChangePasswordController::class, 'updatePassword'])->name('change-password.update');
+});
+
+// File Download Routes (without prevent.back middleware to avoid header conflicts)
+// Note: Preview uses direct storage link, only download needs route
+Route::middleware(['auth', 'must.change.password'])->group(function () {
+    Route::prefix('kepala')->name('kepala.')->middleware('can:isKepalaSekolah')->group(function () {
+        Route::prefix('evaluasi')->name('evaluasi.')->group(function () {
+            Route::get('/download/{id}', [EvaluasiController::class, 'downloadDocument'])->name('download');
+        });
+    });
 });
 
 // Protected Routes
@@ -77,6 +88,15 @@ Route::middleware(['auth', 'prevent.back', 'must.change.password'])->group(funct
         Route::resource('users', AdminUserController::class);
         Route::post('/users/{id}/reset-password', [AdminUserController::class, 'resetPassword'])->name('users.reset-password');
         Route::post('/users/{id}/toggle-status', [AdminUserController::class, 'toggleStatus'])->name('users.toggle-status');
+        
+        // Supervisi Review Management
+        Route::prefix('supervisi')->name('supervisi.')->group(function () {
+            Route::get('/', [AdminSupervisiController::class, 'index'])->name('index');
+            Route::get('/{id}', [AdminSupervisiController::class, 'show'])->name('show');
+            Route::post('/{id}/feedback', [AdminSupervisiController::class, 'storeFeedback'])->name('feedback');
+            Route::post('/{id}/revision', [AdminSupervisiController::class, 'requestRevision'])->name('revision');
+            Route::get('/download/{id}', [AdminSupervisiController::class, 'downloadDocument'])->name('download');
+        });
     });
 
     // Kepala Sekolah Routes
@@ -87,8 +107,11 @@ Route::middleware(['auth', 'prevent.back', 'must.change.password'])->group(funct
         Route::prefix('evaluasi')->name('evaluasi.')->group(function () {
             Route::get('/', [EvaluasiController::class, 'index'])->name('index');
             Route::get('/{id}', [EvaluasiController::class, 'show'])->name('show');
+            Route::post('/{id}/start-review', [EvaluasiController::class, 'startReview'])->name('startReview');
             Route::post('/{id}/feedback', [EvaluasiController::class, 'giveFeedback'])->name('feedback');
+            Route::post('/{id}/revision', [EvaluasiController::class, 'requestRevision'])->name('revision');
             Route::post('/{id}/complete', [EvaluasiController::class, 'complete'])->name('complete');
+            // Note: preview and download routes moved outside prevent.back middleware (see above)
         });
     });
 });

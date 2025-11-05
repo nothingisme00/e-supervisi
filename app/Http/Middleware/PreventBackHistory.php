@@ -17,6 +17,14 @@ class PreventBackHistory
     {
         $response = $next($request);
 
+        // Skip cache control headers for file responses (BinaryFileResponse)
+        // because PDF viewers and file previews need caching to work properly
+        // Security is already handled by signed URLs with expiration
+        if ($response instanceof \Symfony\Component\HttpFoundation\BinaryFileResponse) {
+            return $response;
+        }
+
+        // Apply no-cache headers only to HTML responses
         return $response->header('Cache-Control', 'no-cache, no-store, must-revalidate')
                         ->header('Pragma', 'no-cache')
                         ->header('Expires', '0');

@@ -16,9 +16,16 @@ class DashboardController extends Controller
         $totalUsers = User::count();
         $totalGuru = User::where('role', 'guru')->count();
         $totalSupervisi = Supervisi::count();
-        $supervisiSubmitted = Supervisi::where('status', 'submitted')->count();
-        $supervisiUnderReview = Supervisi::where('status', 'under_review')->count();
-        $supervisiCompleted = Supervisi::where('status', 'completed')->count();
+        
+        // Kategori Review - Lebih Professional
+        $supervisiPending = Supervisi::where('status', 'submitted')->count(); // Menunggu Peninjauan
+        $supervisiInProgress = Supervisi::where('status', 'under_review')->count(); // Sedang Ditinjau  
+        $supervisiReviewed = Supervisi::where('status', 'completed')->count(); // Telah Ditinjau
+        
+        // Untuk backward compatibility
+        $supervisiSubmitted = $supervisiPending;
+        $supervisiUnderReview = $supervisiInProgress;
+        $supervisiCompleted = $supervisiReviewed;
 
         // Guru dengan statistik supervisi mereka
         $guruList = User::where('role', 'guru')
@@ -64,6 +71,9 @@ class DashboardController extends Controller
             'supervisiSubmitted',
             'supervisiUnderReview',
             'supervisiCompleted',
+            'supervisiPending',
+            'supervisiInProgress',
+            'supervisiReviewed',
             'guruList',
             'supervisiUnderReviewList',
             'supervisiCompletedList'
