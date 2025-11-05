@@ -7,6 +7,17 @@
 <div class="min-h-screen bg-gray-50 dark:bg-gray-900 py-8">
     <div class="w-full lg:w-3/4 mx-auto px-4 sm:px-6 lg:px-8">
         
+        <!-- Back Button -->
+        <div class="mb-6">
+            <a href="{{ route('kepala.dashboard') }}" 
+               class="inline-flex items-center px-4 py-2 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 transition-all duration-200 group">
+                <svg class="w-5 h-5 mr-2 group-hover:-translate-x-1 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                </svg>
+                <span class="font-medium">Kembali ke Dashboard</span>
+            </a>
+        </div>
+        
         @if(session('success'))
         <div class="mb-6 p-4 bg-emerald-50 dark:bg-emerald-900/20 border-l-4 border-emerald-500 dark:border-emerald-600 rounded-r-lg">
             <div class="flex items-center">
