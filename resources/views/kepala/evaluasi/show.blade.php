@@ -74,8 +74,8 @@
             <!-- Card 1: Dokumen Evaluasi Diri -->
             <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
                 <!-- Card Header -->
-                <div class="bg-blue-100 dark:bg-blue-900/80 px-6 py-4 border-b border-blue-200 dark:border-blue-800">
-                    <h3 class="text-base font-semibold text-blue-950 dark:text-blue-50">Dokumen Evaluasi Diri</h3>
+                <div class="bg-blue-100 dark:bg-blue-950/90 px-6 py-4 border-b border-blue-200 dark:border-blue-900">
+                    <h3 class="text-base font-semibold text-blue-900 dark:text-blue-100">Dokumen Evaluasi Diri</h3>
                 </div>
                 <!-- Card Content -->
                 <div class="p-6">
@@ -157,8 +157,8 @@
             <!-- Card 2: Link Pembelajaran -->
             <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
                 <!-- Card Header -->
-                <div class="bg-purple-100 dark:bg-purple-900/80 px-6 py-4 border-b border-purple-200 dark:border-purple-800">
-                    <h3 class="text-base font-semibold text-purple-950 dark:text-purple-50">Link Pembelajaran</h3>
+                <div class="bg-purple-100 dark:bg-purple-950/90 px-6 py-4 border-b border-purple-200 dark:border-purple-900">
+                    <h3 class="text-base font-semibold text-purple-900 dark:text-purple-100">Link Pembelajaran</h3>
                 </div>
                 <!-- Card Content -->
                 <div class="p-6">
@@ -221,8 +221,8 @@
             <!-- Card 3: Refleksi Pembelajaran -->
             <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
                 <!-- Card Header -->
-                <div class="bg-emerald-100 dark:bg-emerald-900/80 px-6 py-4 border-b border-emerald-200 dark:border-emerald-800">
-                    <h3 class="text-base font-semibold text-emerald-950 dark:text-emerald-50">Refleksi Pembelajaran</h3>
+                <div class="bg-emerald-100 dark:bg-emerald-950/90 px-6 py-4 border-b border-emerald-200 dark:border-emerald-900">
+                    <h3 class="text-base font-semibold text-emerald-900 dark:text-emerald-100">Refleksi Pembelajaran</h3>
                 </div>
                 <!-- Card Content -->
                 <div class="p-6">
@@ -267,8 +267,8 @@
             <!-- Card 4: Riwayat Feedback -->
             <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
                 <!-- Card Header -->
-                <div class="bg-amber-100 dark:bg-amber-900/80 px-6 py-4 border-b border-amber-200 dark:border-amber-800">
-                    <h3 class="text-base font-semibold text-amber-950 dark:text-amber-50">Riwayat Feedback</h3>
+                <div class="bg-amber-100 dark:bg-amber-950/90 px-6 py-4 border-b border-amber-200 dark:border-amber-900">
+                    <h3 class="text-base font-semibold text-amber-900 dark:text-amber-100">Riwayat Feedback</h3>
                 </div>
                 <!-- Card Content -->
                 <div class="p-6">
@@ -295,8 +295,8 @@
             <!-- Card 5: Berikan Feedback -->
             <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
                 <!-- Card Header -->
-                <div class="bg-indigo-100 dark:bg-indigo-900/80 px-6 py-4 border-b border-indigo-200 dark:border-indigo-800">
-                    <h3 class="text-base font-semibold text-indigo-950 dark:text-indigo-50">Berikan Feedback</h3>
+                <div class="bg-indigo-100 dark:bg-indigo-950/90 px-6 py-4 border-b border-indigo-200 dark:border-indigo-900">
+                    <h3 class="text-base font-semibold text-indigo-900 dark:text-indigo-100">Berikan Feedback</h3>
                 </div>
                 <!-- Card Content -->
                 <div class="p-6">
