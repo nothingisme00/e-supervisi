@@ -279,3 +279,39 @@ html {
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
     background: linear-gradient(to bottom, #8b5cf6, #7c3aed);
 }
+
+/* Thin scrollbars for different sections */
+.scrollbar-thin::-webkit-scrollbar {
+    width: 4px;
+    height: 4px;
+}
+
+.scrollbar-thumb-emerald-200::-webkit-scrollbar-thumb {
+    background: #a7f3d0;
+    border-radius: 6px;
+}
+
+.scrollbar-thumb-amber-200::-webkit-scrollbar-thumb {
+    background: #fde68a;
+    border-radius: 6px;
+}
+
+.dark .scrollbar-thumb-emerald-800::-webkit-scrollbar-thumb {
+    background: #065f46;
+}
+
+.dark .scrollbar-thumb-amber-800::-webkit-scrollbar-thumb {
+    background: #92400e;
+}
+
+.scrollbar-track-transparent::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+/* Line clamp utilities */
+.line-clamp-4 {
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
