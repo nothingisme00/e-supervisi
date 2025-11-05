@@ -15,7 +15,8 @@ class Feedback extends Model
         'supervisi_id',
         'user_id',
         'komentar',
-        'rating'
+        'rating',
+        'is_revision_request'
     ];
 
     // Relationships
