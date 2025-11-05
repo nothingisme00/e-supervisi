@@ -4,7 +4,7 @@
 
 @section('content')
 
-<div class="min-h-screen bg-white dark:bg-gray-900 py-8">
+<div class="min-h-screen bg-gray-50 dark:bg-gray-900 py-8">
     <div class="w-full lg:w-3/4 mx-auto px-4 sm:px-6 lg:px-8">
         
         @if(session('success'))
@@ -74,8 +74,8 @@
             <!-- Card 1: Dokumen Evaluasi Diri -->
             <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
                 <!-- Card Header -->
-                <div class="bg-gray-50 dark:bg-gray-750 px-6 py-4 border-b border-gray-200 dark:border-gray-700">
-                    <h3 class="text-base font-semibold text-gray-900 dark:text-white">Dokumen Evaluasi Diri</h3>
+                <div class="bg-blue-50 dark:bg-blue-950/50 px-6 py-4 border-b border-blue-100 dark:border-blue-900/50">
+                    <h3 class="text-base font-semibold text-blue-900 dark:text-blue-200">Dokumen Evaluasi Diri</h3>
                 </div>
                 <!-- Card Content -->
                 <div class="p-6">
@@ -109,14 +109,14 @@
                                         </svg>
                                     @endif
                                     <div>
-                                        <p class="text-xs font-semibold text-blue-600 dark:text-blue-400 mb-0.5">
+                                        <p class="text-xs font-semibold text-blue-600 dark:text-blue-300 mb-0.5">
                                             {{ $jenisLabels[$dokumen->jenis_dokumen] ?? ucwords(str_replace('_', ' ', $dokumen->jenis_dokumen)) }}
                                         </p>
-                                        <p class="text-sm font-medium text-slate-700 dark:text-gray-200">
+                                        <p class="text-sm font-medium text-gray-900 dark:text-gray-100">
                                             {{ $dokumen->nama_file ?? 'Dokumen ' . ($index + 1) }}
                                         </p>
                                         @if($dokumen->deskripsi)
-                                            <p class="text-xs text-slate-500 dark:text-gray-400">{{ $dokumen->deskripsi }}</p>
+                                            <p class="text-xs text-gray-600 dark:text-gray-300">{{ $dokumen->deskripsi }}</p>
                                         @endif
                                     </div>
                                 </div>
@@ -129,7 +129,7 @@
                                     <a href="{{ asset('storage/' . $previewPath) }}"
                                        target="_blank"
                                        rel="noopener noreferrer"
-                                       class="inline-flex items-center px-3 py-1.5 text-xs font-medium text-gray-600 dark:text-gray-300 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors">
+                                       class="inline-flex items-center px-3 py-1.5 text-xs font-medium text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors">
                                         <svg class="w-3.5 h-3.5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
@@ -139,7 +139,7 @@
                                     @endif
 
                                     <a href="{{ route('kepala.evaluasi.download', $dokumen->id) }}"
-                                       class="inline-flex items-center px-3 py-1.5 text-xs font-medium text-white bg-gray-700 dark:bg-gray-600 rounded hover:bg-gray-800 dark:hover:bg-gray-500 transition-colors">
+                                       class="inline-flex items-center px-3 py-1.5 text-xs font-medium text-white bg-blue-600 dark:bg-blue-600 rounded hover:bg-blue-700 dark:hover:bg-blue-500 transition-colors">
                                         <svg class="w-3.5 h-3.5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
                                         </svg>
@@ -157,8 +157,8 @@
             <!-- Card 2: Link Pembelajaran -->
             <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
                 <!-- Card Header -->
-                <div class="bg-gray-50 dark:bg-gray-750 px-6 py-4 border-b border-gray-200 dark:border-gray-700">
-                    <h3 class="text-base font-semibold text-gray-900 dark:text-white">Link Pembelajaran</h3>
+                <div class="bg-purple-50 dark:bg-purple-950/50 px-6 py-4 border-b border-purple-100 dark:border-purple-900/50">
+                    <h3 class="text-base font-semibold text-purple-900 dark:text-purple-200">Link Pembelajaran</h3>
                 </div>
                 <!-- Card Content -->
                 <div class="p-6">
@@ -221,8 +221,8 @@
             <!-- Card 3: Refleksi Pembelajaran -->
             <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
                 <!-- Card Header -->
-                <div class="bg-gray-50 dark:bg-gray-750 px-6 py-4 border-b border-gray-200 dark:border-gray-700">
-                    <h3 class="text-base font-semibold text-gray-900 dark:text-white">Refleksi Pembelajaran</h3>
+                <div class="bg-emerald-50 dark:bg-emerald-950/50 px-6 py-4 border-b border-emerald-100 dark:border-emerald-900/50">
+                    <h3 class="text-base font-semibold text-emerald-900 dark:text-emerald-200">Refleksi Pembelajaran</h3>
                 </div>
                 <!-- Card Content -->
                 <div class="p-6">
@@ -243,11 +243,11 @@
                                     <div class="p-4 bg-gray-50 dark:bg-gray-700/50 rounded-md border-b border-gray-200 dark:border-gray-600 last:border-b-0">
                                         <div class="flex items-start space-x-3">
                                             <div class="flex-shrink-0 w-6 text-center">
-                                                <span class="text-sm font-semibold text-gray-500 dark:text-gray-400">{{ $index + 1 }}.</span>
+                                                <span class="text-sm font-semibold text-gray-500 dark:text-gray-300">{{ $index + 1 }}.</span>
                                             </div>
                                             <div class="flex-1">
-                                                <p class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{{ $reflection['label'] }}</p>
-                                                <p class="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">{{ $reflection['value'] }}</p>
+                                                <p class="text-sm font-medium text-gray-900 dark:text-gray-100 mb-2">{{ $reflection['label'] }}</p>
+                                                <p class="text-sm text-gray-700 dark:text-gray-200 leading-relaxed">{{ $reflection['value'] }}</p>
                                             </div>
                                         </div>
                                     </div>
@@ -267,8 +267,8 @@
             <!-- Card 4: Riwayat Feedback -->
             <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
                 <!-- Card Header -->
-                <div class="bg-gray-50 dark:bg-gray-750 px-6 py-4 border-b border-gray-200 dark:border-gray-700">
-                    <h3 class="text-base font-semibold text-gray-900 dark:text-white">Riwayat Feedback</h3>
+                <div class="bg-amber-50 dark:bg-amber-950/50 px-6 py-4 border-b border-amber-100 dark:border-amber-900/50">
+                    <h3 class="text-base font-semibold text-amber-900 dark:text-amber-200">Riwayat Feedback</h3>
                 </div>
                 <!-- Card Content -->
                 <div class="p-6">
@@ -276,14 +276,14 @@
                         @forelse($supervisi->feedback as $fb)
                             <div class="p-4 bg-gray-50 dark:bg-gray-700/50 rounded-md border-b border-gray-200 dark:border-gray-600 last:border-b-0">
                                 <div class="flex items-start justify-between mb-2">
-                                    <p class="text-xs font-medium text-gray-500 dark:text-gray-400">{{ $fb->created_at->format('d M Y, H:i') }}</p>
+                                    <p class="text-xs font-medium text-gray-600 dark:text-gray-300">{{ $fb->created_at->format('d M Y, H:i') }}</p>
                                     @if($fb->is_revision_request)
-                                        <span class="text-xs px-2 py-0.5 bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-300 rounded font-medium">
+                                        <span class="text-xs px-2 py-0.5 bg-red-100 text-red-700 dark:bg-red-900/40 dark:text-red-200 rounded font-medium">
                                             Revisi Diminta
                                         </span>
                                     @endif
                                 </div>
-                                <p class="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">{{ $fb->komentar }}</p>
+                                <p class="text-sm text-gray-900 dark:text-gray-100 leading-relaxed">{{ $fb->komentar }}</p>
                             </div>
                         @empty
                             <p class="text-slate-500 dark:text-gray-400 text-sm text-center py-4">Belum ada feedback</p>
@@ -295,8 +295,8 @@
             <!-- Card 5: Berikan Feedback -->
             <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
                 <!-- Card Header -->
-                <div class="bg-gray-50 dark:bg-gray-750 px-6 py-4 border-b border-gray-200 dark:border-gray-700">
-                    <h3 class="text-base font-semibold text-gray-900 dark:text-white">Berikan Feedback</h3>
+                <div class="bg-indigo-50 dark:bg-indigo-950/50 px-6 py-4 border-b border-indigo-100 dark:border-indigo-900/50">
+                    <h3 class="text-base font-semibold text-indigo-900 dark:text-indigo-200">Berikan Feedback</h3>
                 </div>
                 <!-- Card Content -->
                 <div class="p-6">
@@ -330,11 +330,11 @@
 
                 <div class="flex justify-end space-x-3 pt-4">
                     <a href="{{ route('kepala.evaluasi.index') }}"
-                       class="px-5 py-2 bg-white hover:bg-gray-50 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-200 text-sm font-medium rounded-md transition-colors border border-gray-300 dark:border-gray-600">
+                       class="px-5 py-2 bg-white hover:bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-200 text-sm font-medium rounded-md transition-colors border border-gray-300 dark:border-gray-600">
                         Kembali
                     </a>
                     <button type="submit"
-                            class="px-5 py-2 bg-gray-800 hover:bg-gray-900 dark:bg-gray-700 dark:hover:bg-gray-600 text-white text-sm font-medium rounded-md transition-colors">
+                            class="px-5 py-2 bg-indigo-600 hover:bg-indigo-700 dark:bg-indigo-600 dark:hover:bg-indigo-500 text-white text-sm font-medium rounded-md transition-colors">
                         Kirim Feedback
                     </button>
                 </div>
@@ -385,12 +385,12 @@
                         <button
                             type="button"
                             onclick="hideRevisionModal()"
-                            class="px-4 py-2 text-gray-700 dark:text-gray-200 bg-white hover:bg-gray-50 dark:bg-gray-700 dark:hover:bg-gray-600 text-sm font-medium rounded-md transition-colors border border-gray-300 dark:border-gray-600">
+                            class="px-4 py-2 text-gray-700 dark:text-gray-200 bg-white hover:bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 text-sm font-medium rounded-md transition-colors border border-gray-300 dark:border-gray-600">
                             Batal
                         </button>
                         <button
                             type="submit"
-                            class="px-4 py-2 bg-gray-800 hover:bg-gray-900 dark:bg-gray-700 dark:hover:bg-gray-600 text-white text-sm font-medium rounded-md transition-colors">
+                            class="px-4 py-2 bg-red-600 hover:bg-red-700 dark:bg-red-600 dark:hover:bg-red-500 text-white text-sm font-medium rounded-md transition-colors">
                             Kirim Permintaan Revisi
                         </button>
                     </div>
