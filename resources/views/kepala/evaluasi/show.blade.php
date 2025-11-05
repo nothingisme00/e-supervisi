@@ -88,7 +88,7 @@
                         @endphp
                         
                         @forelse($supervisi->dokumenEvaluasi as $index => $dokumen)
-                            <div class="flex items-center justify-between p-3 bg-slate-50 dark:bg-gray-700 rounded-lg hover:bg-slate-100 dark:hover:bg-gray-600 transition-colors duration-200">
+                            <div class="flex items-center justify-between p-3 bg-white dark:bg-gray-800 rounded-lg hover:bg-slate-50 dark:hover:bg-gray-600 transition-colors duration-200 border border-gray-200 dark:border-gray-600">
                                 <div class="flex items-center space-x-3">
                                     @if(str_ends_with($dokumen->file_path, '.pdf'))
                                         <svg class="w-8 h-8 text-red-500 dark:text-red-400" fill="currentColor" viewBox="0 0 20 20">
@@ -219,7 +219,7 @@
 
                             @foreach($reflections as $index => $reflection)
                                 @if($reflection['value'])
-                                    <div class="p-3 bg-slate-50 dark:bg-gray-700 rounded-lg">
+                                    <div class="p-3 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-600">
                                         <p class="text-xs font-semibold text-slate-600 dark:text-gray-300 mb-2">{{ $index + 1 }}. {{ $reflection['label'] }}</p>
                                         <p class="text-sm text-slate-700 dark:text-gray-200 leading-relaxed">{{ $reflection['value'] }}</p>
                                     </div>
@@ -308,16 +308,16 @@
 </div>
 
 <!-- Revision Request Modal -->
-<div id="revisionModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden" style="display: none;">
+<div id="revisionModal" class="fixed inset-0 bg-black bg-opacity-50 dark:bg-black dark:bg-opacity-70 z-50 hidden" style="display: none;">
     <div class="min-h-screen flex items-center justify-center p-4">
         <div class="bg-white dark:bg-gray-800 rounded-xl shadow-2xl max-w-md w-full">
             <div class="p-6">
                 <div class="flex items-center justify-between mb-4">
                     <h3 class="text-xl font-bold text-slate-800 dark:text-white">Minta Revisi</h3>
-                    <button 
+                    <button
                         type="button"
                         onclick="hideRevisionModal()"
-                        class="text-slate-400 hover:text-slate-600 dark:text-gray-300">
+                        class="text-slate-400 hover:text-slate-600 dark:text-gray-400 dark:hover:text-gray-200 transition-colors">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                         </svg>
@@ -331,12 +331,12 @@
                         <label for="revision_notes" class="block text-sm font-medium text-slate-700 dark:text-gray-200 mb-2">
                             Catatan Revisi <span class="text-red-500 dark:text-red-400">*</span>
                         </label>
-                        <textarea 
-                            name="revision_notes" 
-                            id="revision_notes" 
-                            rows="5" 
+                        <textarea
+                            name="revision_notes"
+                            id="revision_notes"
+                            rows="5"
                             required
-                            class="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-rose-500 focus:border-transparent resize-none"
+                            class="w-full px-4 py-3 border border-slate-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-rose-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 resize-none"
                             placeholder="Jelaskan apa yang perlu direvisi..."
                         ></textarea>
                     </div>
