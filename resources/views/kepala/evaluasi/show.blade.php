@@ -57,8 +57,8 @@
                                 </button>
                             </form>
                         @elseif($supervisi->status === 'under_review')
-                            <span class="inline-flex items-center px-5 py-3 rounded-lg text-sm font-bold bg-indigo-100 text-indigo-900 dark:bg-purple-800! dark:text-white! shadow-lg">
-                                <span class="w-2.5 h-2.5 bg-indigo-600 dark:bg-white! rounded-full mr-2.5 animate-pulse"></span>
+                            <span class="inline-flex items-center px-5 py-3 rounded-lg text-sm font-bold bg-indigo-100 text-indigo-900 dark:bg-violet-900! dark:text-gray-100! shadow-lg border-2 border-indigo-200 dark:border-violet-700!">
+                                <span class="w-2.5 h-2.5 bg-indigo-600 dark:bg-yellow-400! rounded-full mr-2.5 animate-pulse"></span>
                                 Sedang Ditinjau
                             </span>
                         @elseif($supervisi->status === 'completed')
