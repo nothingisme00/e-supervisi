@@ -53,8 +53,8 @@
                     </div>
                     <div class="text-right">
                         @if($supervisi->status === 'submitted')
-                            <span class="inline-flex items-center px-4 py-2.5 rounded-lg text-sm font-semibold bg-amber-100 text-amber-800 dark:bg-amber-500/20 dark:text-amber-300 border-2 border-amber-200 dark:border-amber-500/40 shadow-sm mb-3">
-                                <span class="w-2 h-2 bg-amber-500 dark:bg-amber-400 rounded-full mr-2 animate-pulse"></span>
+                            <span class="inline-flex items-center px-4 py-2.5 rounded-lg text-sm font-semibold bg-amber-100 text-amber-700 border-2 border-amber-200 shadow-sm mb-3">
+                                <span class="w-2 h-2 bg-amber-500 rounded-full mr-2.5 animate-pulse"></span>
                                 Menunggu Peninjauan
                             </span>
                             <form action="{{ route('kepala.evaluasi.startReview', $supervisi->id) }}" method="POST" class="mt-3">
@@ -68,20 +68,20 @@
                                 </button>
                             </form>
                         @elseif($supervisi->status === 'under_review')
-                            <span class="inline-flex items-center px-5 py-3 rounded-lg text-sm font-bold bg-indigo-100 text-indigo-900 dark:bg-violet-900! dark:text-gray-100! shadow-lg border-2 border-indigo-200 dark:border-violet-700!">
-                                <span class="w-2.5 h-2.5 bg-indigo-600 dark:bg-yellow-400! rounded-full mr-2.5 animate-pulse"></span>
+                            <span class="inline-flex items-center px-5 py-3 rounded-lg text-sm font-bold bg-indigo-100 text-indigo-700 shadow-lg border-2 border-indigo-200">
+                                <span class="w-2.5 h-2.5 bg-indigo-600 rounded-full mr-4 animate-pulse"></span>
                                 Sedang Ditinjau
                             </span>
                         @elseif($supervisi->status === 'completed')
-                            <span class="inline-flex items-center px-4 py-2.5 rounded-lg text-sm font-semibold bg-emerald-100 text-emerald-800 dark:bg-emerald-500/20 dark:text-emerald-300 border-2 border-emerald-200 dark:border-emerald-500/40 shadow-sm">
-                                <svg class="w-4 h-4 mr-2 text-emerald-600 dark:text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <span class="inline-flex items-center px-4 py-2.5 rounded-lg text-sm font-semibold bg-emerald-100 text-emerald-800 border-2 border-emerald-200 shadow-sm">
+                                <svg class="w-4 h-4 mr-2 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                                 </svg>
                                 Telah Ditinjau
                             </span>
                         @elseif($supervisi->status === 'revision')
-                            <span class="inline-flex items-center px-4 py-2.5 rounded-lg text-sm font-semibold bg-rose-100 text-rose-800 dark:bg-rose-500/20 dark:text-rose-300 border-2 border-rose-200 dark:border-rose-500/40 shadow-sm">
-                                <svg class="w-4 h-4 mr-2 text-rose-600 dark:text-rose-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <span class="inline-flex items-center px-4 py-2.5 rounded-lg text-sm font-semibold bg-rose-100 text-rose-800 border-2 border-rose-200 shadow-sm">
+                                <svg class="w-4 h-4 mr-2 text-rose-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
                                 </svg>
                                 Perlu Revisi
@@ -194,61 +194,76 @@
                 <div class="p-6">
                     <div class="max-h-96 overflow-y-auto space-y-3">
                         @if($supervisi->prosesPembelajaran)
-                            @if($supervisi->prosesPembelajaran->video_link)
-                                    <div class="p-4 bg-linear-to-r from-red-50 to-pink-50 dark:from-red-900/10 dark:to-pink-900/10 rounded-lg border border-red-100 dark:border-red-800/30">
-                                    <div class="flex items-start justify-between">
-                                        <div class="flex-1 min-w-0 pr-2">
-                                            <p class="text-sm font-semibold text-gray-900 dark:text-gray-100 mb-1">Link Video Pembelajaran</p>
-                                            <a href="{{ $supervisi->prosesPembelajaran->video_link }}" 
+                            @if($supervisi->prosesPembelajaran->link_video)
+                                <div class="border-l-4 border-red-500 bg-red-50 dark:bg-red-900/20 rounded-r-lg p-4">
+                                    <div class="flex items-start gap-3">
+                                        <div class="w-10 h-10 bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400 rounded-lg flex items-center justify-center flex-shrink-0">
+                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path>
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                            </svg>
+                                        </div>
+                                        <div class="flex-1 min-w-0">
+                                            <div class="text-sm font-semibold text-gray-900 dark:text-white mb-2">Link Video Pembelajaran</div>
+                                            <a href="{{ $supervisi->prosesPembelajaran->link_video }}" 
                                                target="_blank"
-                                               class="text-sm text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 underline break-all">
-                                                {{ $supervisi->prosesPembelajaran->video_link }}
+                                               class="inline-flex items-center gap-2 text-sm text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 hover:underline break-all">
+                                                <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+                                                </svg>
+                                                {{ $supervisi->prosesPembelajaran->link_video }}
                                             </a>
                                         </div>
-                                        <a href="{{ $supervisi->prosesPembelajaran->video_link }}" 
-                                           target="_blank"
-                                           class="ml-2 text-red-600 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300 shrink-0">
-                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
-                                            </svg>
-                                        </a>
                                     </div>
                                 </div>
                             @endif
 
-                            @if($supervisi->prosesPembelajaran->meeting_link)
-                                <div class="p-4 bg-linear-to-r from-blue-50 to-indigo-50 dark:from-blue-900/10 dark:to-indigo-900/10 rounded-lg border border-blue-100 dark:border-blue-800/30">
-                                    <div class="flex items-start justify-between">
-                                        <div class="flex-1 min-w-0 pr-2">
-                                            <p class="text-sm font-semibold text-gray-900 dark:text-gray-100 mb-1">Link Meeting/Zoom</p>
-                                            <a href="{{ $supervisi->prosesPembelajaran->meeting_link }}" 
+                            @if($supervisi->prosesPembelajaran->link_meeting)
+                                <div class="border-l-4 border-blue-500 bg-blue-50 dark:bg-blue-900/20 rounded-r-lg p-4">
+                                    <div class="flex items-start gap-3">
+                                        <div class="w-10 h-10 bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-lg flex items-center justify-center flex-shrink-0">
+                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+                                            </svg>
+                                        </div>
+                                        <div class="flex-1 min-w-0">
+                                            <div class="text-sm font-semibold text-gray-900 dark:text-white mb-2">Link Meeting/Zoom</div>
+                                            <a href="{{ $supervisi->prosesPembelajaran->link_meeting }}" 
                                                target="_blank"
-                                               class="text-sm text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 underline break-all">
-                                                {{ $supervisi->prosesPembelajaran->meeting_link }}
+                                               class="inline-flex items-center gap-2 text-sm text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 hover:underline break-all">
+                                                <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+                                                </svg>
+                                                {{ $supervisi->prosesPembelajaran->link_meeting }}
                                             </a>
                                         </div>
-                                        <a href="{{ $supervisi->prosesPembelajaran->meeting_link }}" 
-                                           target="_blank"
-                                           class="ml-2 text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 shrink-0">
-                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
-                                            </svg>
-                                        </a>
                                     </div>
                                 </div>
                             @endif
 
-                            @if(!$supervisi->prosesPembelajaran->video_link && !$supervisi->prosesPembelajaran->meeting_link)
-                                <p class="text-slate-500 dark:text-gray-400 text-sm text-center py-4">Tidak ada link pembelajaran</p>
+                            @if(!$supervisi->prosesPembelajaran->link_video && !$supervisi->prosesPembelajaran->link_meeting)
+                                <div class="text-center py-8">
+                                    <div class="w-12 h-12 bg-gray-100 dark:bg-gray-700 rounded-lg flex items-center justify-center mx-auto mb-3">
+                                        <svg class="w-6 h-6 text-gray-400 dark:text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path>
+                                        </svg>
+                                    </div>
+                                    <p class="text-gray-500 dark:text-gray-400 text-sm">Belum ada link pembelajaran</p>
+                                </div>
                             @endif
                         @else
-                            <p class="text-slate-500 dark:text-gray-400 text-sm text-center py-4">Tidak ada data pembelajaran</p>
+                            <div class="text-center py-8">
+                                <div class="w-12 h-12 bg-gray-100 dark:bg-gray-700 rounded-lg flex items-center justify-center mx-auto mb-3">
+                                    <svg class="w-6 h-6 text-gray-400 dark:text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path>
+                                    </svg>
+                                </div>
+                                <p class="text-gray-500 dark:text-gray-400 text-sm">Tidak ada data pembelajaran</p>
+                            </div>
                         @endif
                     </div>
                 </div>
-            </div>
-
-            <!-- Card 3: Refleksi Pembelajaran -->
+            </div>            <!-- Card 3: Refleksi Pembelajaran -->
             <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
                 <!-- Card Header -->
                 <div class="bg-linear-to-r from-emerald-500 to-emerald-600 dark:from-emerald-600 dark:to-emerald-700 px-6 py-4 border-b border-emerald-600 dark:border-emerald-800">
@@ -294,6 +309,7 @@
                 </div>
             </div>
 
+            @if($supervisi->status !== 'submitted')
             <!-- Card 4: Riwayat Feedback -->
             <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
                 <!-- Card Header -->
@@ -304,19 +320,44 @@
                 <div class="p-6">
                     <div class="max-h-96 overflow-y-auto space-y-3">
                         @forelse($supervisi->feedback as $fb)
-                            <div class="p-4 bg-gray-50 dark:bg-gray-700/50 rounded-md border-b border-gray-200 dark:border-gray-600 last:border-b-0">
-                                <div class="flex items-start justify-between mb-2">
-                                    <p class="text-xs font-medium text-gray-600 dark:text-gray-400">{{ $fb->created_at->format('d M Y, H:i') }}</p>
-                                    @if($fb->is_revision_request)
-                                        <span class="text-xs px-2 py-0.5 bg-red-100 text-red-700 dark:bg-red-900/40 dark:text-red-300 rounded font-medium">
-                                            Revisi Diminta
-                                        </span>
-                                    @endif
+                            <div class="border-l-4 {{ $fb->is_revision_request ? 'border-red-500 bg-red-50 dark:bg-red-900/20' : 'border-amber-500 bg-amber-50 dark:bg-amber-900/20' }} rounded-r-lg p-4">
+                                <div class="flex items-start gap-3">
+                                    <div class="w-10 h-10 bg-gradient-to-br from-amber-500 to-orange-600 rounded-full flex items-center justify-center text-white text-sm font-bold flex-shrink-0 shadow-md">
+                                        {{ strtoupper(substr($fb->user->name ?? 'KS', 0, 2)) }}
+                                    </div>
+                                    <div class="flex-1">
+                                        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-2">
+                                            <div class="flex items-center gap-2">
+                                                <span class="text-sm font-semibold text-gray-900 dark:text-white">{{ $fb->user->name ?? 'Kepala Sekolah' }}</span>
+                                                @if($fb->is_revision_request)
+                                                    <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-semibold bg-red-100 text-red-700 dark:bg-red-900/40 dark:text-red-300">
+                                                        <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+                                                        </svg>
+                                                        Revisi Diminta
+                                                    </span>
+                                                @endif
+                                            </div>
+                                            <div class="inline-flex items-center gap-1.5 text-xs text-gray-500 dark:text-gray-400">
+                                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                                </svg>
+                                                {{ $fb->created_at->format('d M Y, H:i') }}
+                                            </div>
+                                        </div>
+                                        <p class="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">{{ $fb->komentar }}</p>
+                                    </div>
                                 </div>
-                                <p class="text-sm text-gray-900 dark:text-gray-100 leading-relaxed">{{ $fb->komentar }}</p>
                             </div>
                         @empty
-                            <p class="text-slate-500 dark:text-gray-400 text-sm text-center py-4">Belum ada feedback</p>
+                            <div class="text-center py-8">
+                                <div class="w-12 h-12 bg-gray-100 dark:bg-gray-700 rounded-lg flex items-center justify-center mx-auto mb-3">
+                                    <svg class="w-6 h-6 text-gray-400 dark:text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"></path>
+                                    </svg>
+                                </div>
+                                <p class="text-gray-500 dark:text-gray-400 text-sm">Belum ada feedback</p>
+                            </div>
                         @endforelse
                     </div>
                 </div>
@@ -330,6 +371,27 @@
                 </div>
                 <!-- Card Content -->
                 <div class="p-6">
+                    @if($supervisi->status === 'completed')
+                        <!-- Status Completed Message -->
+                        <div class="text-center py-8">
+                            <div class="w-16 h-16 bg-emerald-100 dark:bg-emerald-900/30 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <svg class="w-8 h-8 text-emerald-600 dark:text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                            </div>
+                            <h4 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">Supervisi Telah Selesai Ditinjau</h4>
+                            <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">
+                                Supervisi ini telah ditandai sebagai selesai. Anda masih dapat melihat riwayat feedback di atas.
+                            </p>
+                            <a href="{{ route('kepala.evaluasi.index') }}"
+                               class="inline-flex items-center gap-2 px-5 py-2 bg-indigo-600 hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-600 text-white text-sm font-medium rounded-md transition-colors">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                                </svg>
+                                Kembali ke Daftar Evaluasi
+                            </a>
+                        </div>
+                    @else
                     <form action="{{ route('kepala.evaluasi.feedback', $supervisi->id) }}" method="POST" class="space-y-5">
                 @csrf
                 
@@ -363,19 +425,38 @@
                        class="px-5 py-2 bg-white hover:bg-gray-50 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-900 dark:text-gray-100 text-sm font-medium rounded-md transition-colors border border-gray-300 dark:border-gray-600">
                         Kembali
                     </a>
+                    
                     <button type="submit"
                             class="px-5 py-2 bg-indigo-600 hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-600 text-white text-sm font-medium rounded-md transition-colors">
                         Kirim Feedback
                     </button>
+                    
+                    @if($supervisi->status === 'under_review')
+                    <button type="button"
+                            onclick="confirmComplete()"
+                            class="inline-flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-emerald-500 to-green-600 hover:from-emerald-600 hover:to-green-700 text-white text-sm font-bold rounded-lg transition-all duration-200 shadow-lg shadow-emerald-500/50 dark:shadow-emerald-500/30 cursor-pointer">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        Tandai Selesai Ditinjau
+                    </button>
+                    @endif
                 </div>
                     </form>
+                    @endif
                 </div>
             </div>
+            @endif
 
         </div>
         <!-- End Vertical Card Layout -->
     </div>
 </div>
+
+<!-- Complete Form (Hidden) -->
+<form id="completeForm" action="{{ route('kepala.evaluasi.complete', $supervisi->id) }}" method="POST" style="display: none;">
+    @csrf
+</form>
 
 <!-- Revision Request Modal -->
 <div id="revisionModal" class="fixed inset-0 bg-black bg-opacity-50 dark:bg-black dark:bg-opacity-60 z-50 hidden" style="display: none;">
@@ -431,6 +512,13 @@
 </div>
 
 <script>
+// Complete Confirmation Function
+function confirmComplete() {
+    if (confirm('Apakah Anda yakin ingin menandai supervisi ini sebagai selesai ditinjau?\n\nStatus akan berubah menjadi "Telah Selesai" dan supervisi akan dipindahkan ke tab Telah Selesai.')) {
+        document.getElementById('completeForm').submit();
+    }
+}
+
 // Revision Modal Functions
 function showRevisionModal() {
     const modal = document.getElementById('revisionModal');

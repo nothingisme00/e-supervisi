@@ -18,6 +18,18 @@
     </script>
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    
+    <style>
+        /* Global button cursor pointer */
+        button, 
+        input[type="button"], 
+        input[type="submit"], 
+        input[type="reset"],
+        .btn,
+        [role="button"] {
+            cursor: pointer !important;
+        }
+    </style>
 </head>
 <body class="bg-gray-50 text-gray-900 dark:bg-gray-900 dark:text-gray-100 transition-colors duration-300">
 

@@ -3,94 +3,106 @@
 @section('page-title', 'Detail Supervisi')
 
 @section('content')
-<div class="w-full lg:w-3/4 mx-auto">
-<!-- Back Button -->
-<div class="mb-4">
-    <a href="{{ route('guru.home') }}" class="inline-flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 text-sm font-medium">
-        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
-        </svg>
-        Kembali ke Beranda
-    </a>
-</div>
 
-<!-- Header Card -->
-<div class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 mb-6 overflow-hidden">
-    <div class="h-1 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500"></div>
-    <div class="border-b border-gray-200 dark:border-gray-700 px-6 py-4 bg-gray-50 dark:bg-gray-900/50">
-        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-            <div>
-                <h2 class="text-xl font-bold text-gray-900 dark:text-gray-100 mb-1">Detail Supervisi</h2>
-                <div class="flex items-center gap-2">
-                    <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-                    </svg>
-                    <p class="text-sm text-gray-600 dark:text-gray-400">{{ \Carbon\Carbon::parse($supervisi->tanggal_supervisi)->format('d F Y') }}</p>
+<div class="min-h-screen bg-gray-50 dark:bg-gray-900 py-8">
+    <div class="w-full lg:w-3/4 mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <!-- Back Button -->
+        <div class="mb-6">
+            <a href="{{ route('guru.home') }}" 
+               class="inline-flex items-center px-4 py-2 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 transition-all duration-200 group">
+                <svg class="w-5 h-5 mr-2 group-hover:-translate-x-1 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                </svg>
+                <span class="font-medium">Kembali ke Beranda</span>
+            </a>
+        </div>
+
+        <!-- Header Section -->
+        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-slate-200 dark:border-gray-700 overflow-hidden mb-6">
+            <!-- Decorative Header Bar -->
+            <div class="h-2 bg-linear-to-r from-indigo-500 via-purple-500 to-pink-500"></div>
+            
+            <div class="p-6">
+                <div class="flex items-start justify-between flex-wrap gap-4">
+                    <div class="flex items-start space-x-4">
+                        <div class="w-16 h-16 rounded-full bg-linear-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white font-bold text-xl shadow-lg ring-4 ring-indigo-100 dark:ring-indigo-900/50">
+                            {{ strtoupper(substr(Auth::user()->name, 0, 2)) }}
+                        </div>
+                        <div>
+                            <h1 class="text-2xl font-bold text-slate-800 dark:text-white mb-1">Detail Supervisi Pembelajaran</h1>
+                            <p class="text-slate-600 dark:text-gray-300 text-sm">{{ Auth::user()->name }}</p>
+                            <p class="text-sm text-slate-500 dark:text-gray-400 mt-1 flex items-center">
+                                <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                                </svg>
+                                {{ \Carbon\Carbon::parse($supervisi->tanggal_supervisi)->format('d F Y') }}
+                            </p>
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        @if($supervisi->status == 'draft')
+                            <span class="inline-flex items-center px-4 py-2.5 rounded-lg text-sm font-semibold bg-gray-100 text-gray-700 border-2 border-gray-200 shadow-sm">
+                                <span class="w-2 h-2 bg-gray-500 rounded-full mr-2"></span>
+                                Draft
+                            </span>
+                        @elseif($supervisi->status == 'submitted')
+                            <span class="inline-flex items-center px-4 py-2.5 rounded-lg text-sm font-semibold bg-amber-100 text-amber-700 border-2 border-amber-200 shadow-sm">
+                                <span class="w-2 h-2 bg-amber-500 rounded-full mr-2.5 animate-pulse"></span>
+                                Menunggu Peninjauan
+                            </span>
+                        @elseif($supervisi->status == 'under_review')
+                            <span class="inline-flex items-center px-4 py-2.5 rounded-lg text-sm font-semibold bg-indigo-100 text-indigo-700 border-2 border-indigo-200 shadow-sm">
+                                <span class="w-2 h-2 bg-indigo-600 rounded-full mr-3.5 animate-pulse"></span>
+                                Sedang Ditinjau
+                            </span>
+                        @elseif($supervisi->status == 'completed')
+                            <span class="inline-flex items-center px-4 py-2.5 rounded-lg text-sm font-semibold bg-emerald-100 text-emerald-700 border-2 border-emerald-200 shadow-sm">
+                                <svg class="w-4 h-4 mr-2 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                                Telah Ditinjau
+                            </span>
+                        @elseif($supervisi->status == 'revision')
+                            <span class="inline-flex items-center px-4 py-2.5 rounded-lg text-sm font-semibold bg-rose-100 text-rose-700 border-2 border-rose-200 shadow-sm">
+                                <svg class="w-4 h-4 mr-2 text-rose-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+                                </svg>
+                                Perlu Revisi
+                            </span>
+                        @endif
+                    </div>
                 </div>
-            </div>
-            <div>
-                @if($supervisi->status == 'draft')
-                    <span class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 text-sm font-medium rounded-md border-l-4 border-gray-500">
-                        <span class="w-2 h-2 bg-gray-500 rounded-full"></span>
-                        Draft
-                    </span>
-                @elseif($supervisi->status == 'submitted')
-                    <span class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-yellow-50 dark:bg-yellow-900/20 text-yellow-700 dark:text-yellow-300 text-sm font-medium rounded-md border-l-4 border-yellow-500">
-                        <span class="w-2 h-2 bg-yellow-500 rounded-full"></span>
-                        Disubmit
-                    </span>
-                @elseif($supervisi->status == 'under_review')
-                    <span class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300 text-sm font-medium rounded-md border-l-4 border-blue-500">
-                        <span class="w-2 h-2 bg-blue-500 rounded-full"></span>
-                        Sedang Direview
-                    </span>
-                @elseif($supervisi->status == 'completed')
-                    <span class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-300 text-sm font-medium rounded-md border-l-4 border-green-500">
-                        <span class="w-2 h-2 bg-green-500 rounded-full"></span>
-                        Selesai
-                    </span>
-                @elseif($supervisi->status == 'revision')
-                    <span class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-orange-50 dark:bg-orange-900/20 text-orange-700 dark:text-orange-300 text-sm font-medium rounded-md border-l-4 border-orange-500">
-                        <span class="w-2 h-2 bg-orange-500 rounded-full"></span>
-                        Perlu Revisi
-                    </span>
+                
+                @if($supervisi->catatan)
+                <div class="mt-4 p-4 bg-blue-50 dark:bg-blue-900/20 border-l-4 border-blue-500 dark:border-blue-600 rounded-r-lg">
+                    <div class="flex items-center">
+                        <svg class="w-5 h-5 text-blue-600 dark:text-blue-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        <div class="flex-1">
+                            <p class="text-sm font-semibold text-blue-900 dark:text-blue-200 mb-1">Catatan Supervisi</p>
+                            <p class="text-sm text-blue-800 dark:text-blue-300">{{ $supervisi->catatan }}</p>
+                        </div>
+                    </div>
+                </div>
                 @endif
             </div>
         </div>
-    </div>
 
-    @if($supervisi->catatan)
-    <div class="px-6 pb-6">
-        <div class="bg-blue-50 dark:bg-blue-900/20 border-l-4 border-blue-500 rounded-r-lg p-4">
-            <div class="flex gap-3">
-                <svg class="w-5 h-5 text-blue-600 dark:text-blue-400 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                </svg>
-                <div>
-                    <h4 class="text-sm font-semibold text-gray-900 dark:text-white mb-1">Catatan Supervisi</h4>
-                    <p class="text-sm text-gray-700 dark:text-gray-300">{{ $supervisi->catatan }}</p>
-                </div>
-            </div>
-        </div>
-    </div>
-    @endif
-</div>
-
-<!-- Grid 2x2 untuk 4 Section Cards -->
-<div class="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start mb-8">
+        <!-- Vertical Card Layout -->
+        <div class="space-y-6">
     
-    <!-- Card 1: Dokumen Evaluasi Diri -->
-    <div class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-200">
-        <div class="h-1 bg-gradient-to-r from-purple-500 via-pink-500 to-rose-500"></div>
-        <div class="border-b border-gray-200 dark:border-gray-700 px-6 py-4 bg-gray-50 dark:bg-gray-900/50">
-            <h2 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-1">Dokumen Evaluasi Diri</h2>
-            <p class="text-sm text-gray-600 dark:text-gray-400">
-                <span class="text-purple-600 dark:text-purple-400 font-semibold">{{ $supervisi->dokumenEvaluasi->count() }}</span> dari <span class="font-semibold">7</span> dokumen terupload
-            </p>
-        </div>
-        <div class="p-6">
+            <!-- Card 1: Dokumen Evaluasi Diri -->
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+                <!-- Card Header -->
+                <div class="bg-blue-600 dark:bg-blue-700 px-6 py-4 border-b border-blue-700 dark:border-blue-800">
+                    <h3 class="text-base font-semibold text-white">Dokumen Evaluasi Diri</h3>
+                </div>
+                <!-- Card Content -->
+                <div class="p-6 pb-8">
                 @if($supervisi->dokumenEvaluasi->count() > 0)
-                    <div class="space-y-3 max-h-96 overflow-y-auto">
+                    <div class="max-h-96 overflow-y-auto space-y-2">
                         @foreach($supervisi->dokumenEvaluasi as $dokumen)
                             <div class="flex items-center gap-3 p-3 bg-gray-50 dark:bg-gray-900/30 rounded-lg border border-gray-200 dark:border-gray-700 hover:border-purple-300 dark:hover:border-purple-700 hover:bg-purple-50 dark:hover:bg-purple-900/10 transition-all duration-200">
                                 <div class="w-10 h-10 @if($dokumen->tipe_file == 'pdf') bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400 @else bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 @endif rounded-lg flex items-center justify-center flex-shrink-0 transition-transform duration-200 group-hover:scale-110">
@@ -127,18 +139,16 @@
                         <p class="text-gray-500 dark:text-gray-400 text-sm">Belum ada dokumen yang diupload</p>
                     </div>
                 @endif
+                </div>
             </div>
-        </div>
 
     <!-- Card 2: Link Pembelajaran -->
     @if($supervisi->prosesPembelajaran)
     <div class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-200">
-        <div class="h-1 bg-gradient-to-r from-blue-500 via-indigo-500 to-cyan-500"></div>
-        <div class="border-b border-gray-200 dark:border-gray-700 px-6 py-4 bg-gray-50 dark:bg-gray-900/50">
-            <h2 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-1">Link Pembelajaran</h2>
-            <p class="text-sm text-gray-600 dark:text-gray-400">Link video dan meeting pembelajaran</p>
+        <div class="bg-linear-to-r from-purple-500 to-purple-600 dark:from-purple-600 dark:to-purple-700 px-6 py-4 border-b border-purple-600 dark:border-purple-800">
+            <h3 class="text-base font-semibold text-white">Link Pembelajaran</h3>
         </div>
-        <div class="p-6 space-y-4">
+        <div class="p-6 pb-8 space-y-4">
                 <!-- Link Video -->
                 <div class="border-l-4 border-red-500 bg-red-50 dark:bg-red-900/20 rounded-r-lg p-4">
                     <div class="flex items-start gap-3">
@@ -182,12 +192,10 @@
     @else
     <!-- Empty State untuk Link Pembelajaran -->
     <div class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden shadow-sm">
-        <div class="h-1 bg-gradient-to-r from-gray-400 via-gray-500 to-gray-600"></div>
-        <div class="border-b border-gray-200 dark:border-gray-700 px-6 py-4 bg-gray-50 dark:bg-gray-900/50">
-            <h2 class="text-lg font-semibold text-gray-900 dark:text-gray-100">Link Pembelajaran</h2>
-            <p class="text-sm text-gray-600 dark:text-gray-400">Data link pembelajaran belum tersedia</p>
+        <div class="bg-linear-to-r from-purple-500 to-purple-600 dark:from-purple-600 dark:to-purple-700 px-6 py-4 border-b border-purple-600 dark:border-purple-800">
+            <h3 class="text-base font-semibold text-white">Link Pembelajaran</h3>
         </div>
-        <div class="p-6 text-center py-8">
+        <div class="p-6 pb-8 text-center py-8">
             <div class="w-12 h-12 bg-gray-100 dark:bg-gray-700 rounded-lg flex items-center justify-center mx-auto mb-3">
                 <svg class="w-6 h-6 text-gray-400 dark:text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path>
@@ -201,12 +209,11 @@
     <!-- Card 3: Refleksi Pembelajaran -->
     @if($supervisi->prosesPembelajaran)
     <div class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-200">
-        <div class="h-1 bg-gradient-to-r from-green-500 via-emerald-500 to-teal-500"></div>
-        <div class="border-b border-gray-200 dark:border-gray-700 px-6 py-4 bg-gray-50 dark:bg-gray-900/50">
-            <h2 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-1">Refleksi Pembelajaran</h2>
-            <p class="text-sm text-gray-600 dark:text-gray-400">Hasil refleksi dari proses pembelajaran</p>
+        <div class="bg-linear-to-r from-emerald-500 to-emerald-600 dark:from-emerald-600 dark:to-emerald-700 px-6 py-4 border-b border-emerald-600 dark:border-emerald-800">
+            <h3 class="text-base font-semibold text-white">Refleksi Pembelajaran</h3>
         </div>
-        <div class="p-6 space-y-3 max-h-96 overflow-y-auto">
+        <div class="p-6">
+            <div class="space-y-3 max-h-96 overflow-y-auto pb-2">
                 @php
                     $refleksiQuestions = [
                         'refleksi_1' => 'Apa tujuan pembelajaran yang ingin dicapai dalam pembelajaran ini?',
@@ -230,15 +237,14 @@
                 @endforeach
             </div>
         </div>
+    </div>
     @else
     <!-- Empty State untuk Refleksi Pembelajaran -->
     <div class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden shadow-sm">
-        <div class="h-1 bg-gradient-to-r from-gray-400 via-gray-500 to-gray-600"></div>
-        <div class="border-b border-gray-200 dark:border-gray-700 px-6 py-4 bg-gray-50 dark:bg-gray-900/50">
-            <h2 class="text-lg font-semibold text-gray-900 dark:text-gray-100">Refleksi Pembelajaran</h2>
-            <p class="text-sm text-gray-600 dark:text-gray-400">Data refleksi pembelajaran belum tersedia</p>
+        <div class="bg-linear-to-r from-emerald-500 to-emerald-600 dark:from-emerald-600 dark:to-emerald-700 px-6 py-4 border-b border-emerald-600 dark:border-emerald-800">
+            <h3 class="text-base font-semibold text-white">Refleksi Pembelajaran</h3>
         </div>
-        <div class="p-6 text-center py-8">
+        <div class="p-6 pb-8 text-center py-8">
             <div class="w-12 h-12 bg-gray-100 dark:bg-gray-700 rounded-lg flex items-center justify-center mx-auto mb-3">
                 <svg class="w-6 h-6 text-gray-400 dark:text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
@@ -252,14 +258,11 @@
     <!-- Card 4: Feedback dari Kepala Sekolah -->
     @if($supervisi->feedback && $supervisi->feedback->count() > 0)
     <div class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-200">
-        <div class="h-1 bg-gradient-to-r from-amber-500 via-orange-500 to-yellow-500"></div>
-        <div class="border-b border-gray-200 dark:border-gray-700 px-6 py-4 bg-gray-50 dark:bg-gray-900/50">
-            <h2 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-1">Feedback dari Kepala Sekolah</h2>
-            <p class="text-sm text-gray-600 dark:text-gray-400">
-                <span class="text-amber-600 dark:text-amber-400 font-semibold">{{ $supervisi->feedback->count() }}</span> feedback diterima
-            </p>
+        <div class="bg-orange-600 dark:bg-orange-700 px-6 py-4">
+            <h3 class="text-base font-semibold text-white">Feedback dari Kepala Sekolah</h3>
         </div>
-        <div class="p-6 space-y-3 max-h-96 overflow-y-auto">
+        <div class="p-6">
+            <div class="space-y-3 max-h-96 overflow-y-auto pb-2">
         @foreach($supervisi->feedback as $fb)
             <div class="border-l-4 {{ $fb->is_revision_request ? 'border-red-500 bg-red-50 dark:bg-red-900/20' : 'border-amber-500 bg-amber-50 dark:bg-amber-900/20' }} rounded-r-lg p-4">
                 <div class="flex items-start gap-3">
@@ -298,17 +301,16 @@
                 </div>
             </div>
         @endforeach
+            </div>
+        </div>
     </div>
-</div>
 @else
 <!-- Empty State untuk Feedback -->
 <div class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden shadow-sm">
-    <div class="h-1 bg-gradient-to-r from-gray-400 via-gray-500 to-gray-600"></div>
-    <div class="border-b border-gray-200 dark:border-gray-700 px-6 py-4 bg-gray-50 dark:bg-gray-900/50">
-        <h2 class="text-lg font-semibold text-gray-900 dark:text-gray-100">Feedback dari Kepala Sekolah</h2>
-        <p class="text-sm text-gray-600 dark:text-gray-400">Belum ada feedback</p>
+    <div class="bg-orange-600 dark:bg-orange-700 px-6 py-4">
+        <h3 class="text-base font-semibold text-white">Feedback dari Kepala Sekolah</h3>
     </div>
-    <div class="p-6 text-center py-8">
+    <div class="p-6 pb-8 text-center py-8">
         <div class="w-12 h-12 bg-gray-100 dark:bg-gray-700 rounded-lg flex items-center justify-center mx-auto mb-3">
             <svg class="w-6 h-6 text-gray-400 dark:text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"></path>
@@ -322,31 +324,27 @@
 </div> <!-- End Grid 2x2 -->
 
 <!-- Action Buttons Section -->
+@if(in_array($supervisi->status, ['draft', 'revision']))
 <div class="mt-8 pt-6 border-t border-gray-200 dark:border-gray-700">
-    <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4">
-        <a href="{{ route('guru.home') }}" class="inline-flex items-center justify-center gap-2 px-6 py-3 bg-white dark:bg-gray-800 border-2 border-gray-300 dark:border-gray-600 hover:border-gray-400 dark:hover:border-gray-500 text-gray-700 dark:text-gray-200 font-medium rounded-lg transition-all duration-200 hover:shadow-md">
+    <div class="flex justify-center">
+        <a href="{{ route('guru.supervisi.continue', $supervisi->id) }}" class="inline-flex items-center justify-center gap-2 px-6 py-3 @if($supervisi->status == 'revision') bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 @else bg-gradient-to-r from-indigo-500 to-indigo-600 hover:from-indigo-600 hover:to-indigo-700 @endif text-white font-semibold rounded-lg shadow-md hover:shadow-lg transition-all duration-200 transform hover:-translate-y-0.5">
+        @if($supervisi->status == 'revision')
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
             </svg>
-            Kembali ke Beranda
-        </a>
+            Lakukan Revisi
+        @else
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+            </svg>
+            Lanjutkan Supervisi
+        @endif
+    </a>
+    </div>
+</div>
+@endif
 
-        @if(in_array($supervisi->status, ['draft', 'revision']))
-            <a href="{{ route('guru.supervisi.continue', $supervisi->id) }}" class="inline-flex items-center justify-center gap-2 px-6 py-3 @if($supervisi->status == 'revision') bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 @else bg-gradient-to-r from-indigo-500 to-indigo-600 hover:from-indigo-600 hover:to-indigo-700 @endif text-white font-semibold rounded-lg shadow-md hover:shadow-lg transition-all duration-200 transform hover:-translate-y-0.5">
-            @if($supervisi->status == 'revision')
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
-                </svg>
-                Lakukan Revisi
-            @else
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
-                </svg>
-                Lanjutkan Supervisi
-            @endif
-        </a>
-    @endif
-</div>
-</div>
+    </div> <!-- End container -->
+</div> <!-- End min-h-screen -->
 
 @endsection
