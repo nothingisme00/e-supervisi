@@ -68,19 +68,12 @@
             </div>
         </div>
 
-        <!-- Grid Layout: 2x2 -->
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start mb-8">
-            
-            <!-- Dokumen Evaluasi Diri -->
-            <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden">
-                <div class="h-1 bg-linear-to-r from-blue-500 to-indigo-500"></div>
-                <div class="p-5">
-                    <div class="flex items-center mb-4">
-                        <svg class="w-5 h-5 text-blue-600 dark:text-blue-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-                        </svg>
-                        <h3 class="text-lg font-semibold text-slate-800 dark:text-white">Dokumen Evaluasi Diri</h3>
-                    </div>
+        <!-- Vertical Card Layout -->
+        <div class="space-y-5">
+
+            <!-- Card 1: Dokumen Evaluasi Diri -->
+            <div class="bg-gray-100 dark:bg-gray-700 rounded-lg p-6 w-full">
+                <h3 class="text-base font-semibold text-gray-800 dark:text-white mb-4">Dokumen Evaluasi Diri</h3>
                     <div class="max-h-96 overflow-y-auto space-y-2">
                         @php
                             $jenisLabels = [
@@ -149,19 +142,11 @@
                             <p class="text-slate-500 dark:text-gray-400 text-sm text-center py-4">Tidak ada dokumen</p>
                         @endforelse
                     </div>
-                </div>
             </div>
 
-            <!-- Link Pembelajaran -->
-            <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden">
-                <div class="h-1 bg-linear-to-r from-purple-500 to-pink-500"></div>
-                <div class="p-5">
-                    <div class="flex items-center mb-4">
-                        <svg class="w-5 h-5 text-purple-600 dark:text-purple-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path>
-                        </svg>
-                        <h3 class="text-lg font-semibold text-slate-800 dark:text-white">Link Pembelajaran</h3>
-                    </div>
+            <!-- Card 2: Link Pembelajaran -->
+            <div class="bg-gray-100 dark:bg-gray-700 rounded-lg p-6 w-full">
+                <h3 class="text-base font-semibold text-gray-800 dark:text-white mb-4">Link Pembelajaran</h3>
                     <div class="max-h-96 overflow-y-auto space-y-3">
                         @if($supervisi->prosesPembelajaran)
                             @if($supervisi->prosesPembelajaran->video_link)
@@ -215,19 +200,11 @@
                             <p class="text-slate-500 dark:text-gray-400 text-sm text-center py-4">Tidak ada data pembelajaran</p>
                         @endif
                     </div>
-                </div>
             </div>
 
-            <!-- Refleksi Pembelajaran -->
-            <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden">
-                <div class="h-1 bg-linear-to-r from-emerald-500 to-teal-500"></div>
-                <div class="p-5">
-                    <div class="flex items-center mb-4">
-                        <svg class="w-5 h-5 text-emerald-600 dark:text-emerald-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-                        </svg>
-                        <h3 class="text-lg font-semibold text-slate-800 dark:text-white">Refleksi Pembelajaran</h3>
-                    </div>
+            <!-- Card 3: Refleksi Pembelajaran -->
+            <div class="bg-gray-100 dark:bg-gray-700 rounded-lg p-6 w-full">
+                <h3 class="text-base font-semibold text-gray-800 dark:text-white mb-4">Refleksi Pembelajaran</h3>
                     <div class="max-h-96 overflow-y-auto space-y-4">
                         @if($supervisi->prosesPembelajaran)
                             @php
@@ -256,19 +233,11 @@
                             <p class="text-slate-500 dark:text-gray-400 text-sm text-center py-4">Tidak ada data refleksi</p>
                         @endif
                     </div>
-                </div>
             </div>
 
-            <!-- Feedback yang Ada -->
-            <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden">
-                <div class="h-1 bg-linear-to-r from-amber-500 to-orange-500"></div>
-                <div class="p-5">
-                    <div class="flex items-center mb-4">
-                        <svg class="w-5 h-5 text-amber-600 dark:text-amber-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"></path>
-                        </svg>
-                        <h3 class="text-lg font-semibold text-slate-800 dark:text-white">Riwayat Feedback</h3>
-                    </div>
+            <!-- Card 4: Riwayat Feedback -->
+            <div class="bg-gray-100 dark:bg-gray-700 rounded-lg p-6 w-full">
+                <h3 class="text-base font-semibold text-gray-800 dark:text-white mb-4">Riwayat Feedback</h3>
                     <div class="max-h-96 overflow-y-auto space-y-3">
                         @forelse($supervisi->feedback as $fb)
                             <div class="p-4 bg-linear-to-r from-amber-50 to-orange-50 dark:from-amber-900/10 dark:to-orange-900/10 rounded-lg border border-amber-100 dark:border-amber-800/30">
@@ -286,65 +255,55 @@
                             <p class="text-slate-500 dark:text-gray-400 text-sm text-center py-4">Belum ada feedback</p>
                         @endforelse
                     </div>
-                </div>
             </div>
 
-        </div>
+            <!-- Card 5: Berikan Feedback -->
+            <div class="bg-gray-100 dark:bg-gray-700 rounded-lg p-6 w-full">
+                <h3 class="text-base font-semibold text-gray-800 dark:text-white mb-4">Berikan Feedback</h3>
 
-        <!-- Feedback Form Section -->
-        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-slate-200 dark:border-gray-700 p-6 mb-6">
-            <div class="h-1 bg-linear-to-r from-rose-500 to-pink-500 -mt-6 -mx-6 mb-6"></div>
-            
-            <div class="flex items-center mb-6">
-                <svg class="w-6 h-6 text-rose-600 dark:text-rose-400 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-1l-4 4z"></path>
-                </svg>
-                <h3 class="text-xl font-bold text-slate-800 dark:text-white">Berikan Feedback</h3>
-            </div>
-
-            <form action="{{ route('kepala.evaluasi.feedback', $supervisi->id) }}" method="POST" class="space-y-6">
+                <form action="{{ route('kepala.evaluasi.feedback', $supervisi->id) }}" method="POST" class="space-y-4">
                 @csrf
                 
                 <div>
-                    <label for="komentar" class="block text-sm font-semibold text-slate-700 dark:text-gray-300 mb-3">
+                    <label for="komentar" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                         Komentar dan Saran
                     </label>
-                    <textarea 
-                        name="komentar" 
-                        id="komentar" 
-                        rows="6" 
-                        class="w-full px-4 py-3 border border-slate-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-rose-500 dark:focus:ring-rose-400 focus:border-transparent bg-white dark:bg-gray-700 text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-gray-400 text-sm leading-relaxed resize-none transition-all duration-200"
+                    <textarea
+                        name="komentar"
+                        id="komentar"
+                        rows="5"
+                        class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-400 text-sm resize-none"
                         placeholder="Berikan feedback, komentar, atau saran untuk guru..."
                         required></textarea>
                 </div>
 
-                <div class="flex items-center space-x-3">
-                    <input 
-                        type="checkbox" 
-                        name="is_revision_request" 
+                <div class="flex items-center space-x-2">
+                    <input
+                        type="checkbox"
+                        name="is_revision_request"
                         id="is_revision_request"
                         value="1"
-                        class="w-4 h-4 text-rose-600 bg-white dark:bg-gray-700 border-slate-300 dark:border-gray-600 rounded focus:ring-rose-500 dark:focus:ring-rose-400 focus:ring-2">
-                    <label for="is_revision_request" class="text-sm font-medium text-slate-700 dark:text-gray-300">
+                        class="w-4 h-4 text-indigo-600 bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 rounded focus:ring-indigo-500 focus:ring-2">
+                    <label for="is_revision_request" class="text-sm text-gray-700 dark:text-gray-300">
                         Minta revisi untuk supervisi ini
                     </label>
                 </div>
 
                 <div class="flex justify-end space-x-3 pt-4">
-                    <a href="{{ route('kepala.evaluasi.index') }}" 
-                       class="px-6 py-2.5 bg-slate-100 hover:bg-slate-200 dark:bg-gray-700 dark:hover:bg-gray-600 text-slate-700 dark:text-gray-300 font-medium rounded-lg transition-colors duration-200">
+                    <a href="{{ route('kepala.evaluasi.index') }}"
+                       class="px-6 py-2.5 bg-white hover:bg-gray-50 dark:bg-gray-800 dark:hover:bg-gray-900 text-slate-700 dark:text-gray-300 font-medium rounded-lg transition-colors duration-200 border border-gray-300 dark:border-gray-600">
                         Kembali
                     </a>
-                    <button type="submit" 
-                            class="px-6 py-2.5 bg-gradient-to-r from-rose-500 to-pink-500 hover:from-rose-600 hover:to-pink-600 text-white font-medium rounded-lg transition-all duration-200 shadow-md hover:shadow-lg transform hover:-translate-y-0.5">
-                        <svg class="w-4 h-4 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
-                        </svg>
+                    <button type="submit"
+                            class="px-6 py-2.5 bg-indigo-600 hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-600 text-white font-medium rounded-lg transition-all duration-200">
                         Kirim Feedback
                     </button>
                 </div>
-            </form>
+                </form>
+            </div>
+
         </div>
+        <!-- End Vertical Card Layout -->
     </div>
 </div>
 
