@@ -54,7 +54,15 @@ class UserController extends Controller
             $sortDirection = 'desc';
         }
 
-        $users = $query->orderBy($sortBy, $sortDirection)->paginate(10)->withQueryString();
+        // Eager loading supervisi count untuk guru
+        if ($request->get('role') === 'guru' || !$request->filled('role')) {
+            $query->withCount('supervisi');
+        }
+
+        // Pagination ditingkatkan dari 10 menjadi 15
+        $users = $query->orderBy($sortBy, $sortDirection)
+                      ->paginate(15)
+                      ->withQueryString();
 
         return view('admin.users.index', compact('users', 'sortBy', 'sortDirection'));
     }

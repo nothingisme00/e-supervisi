@@ -3,6 +3,14 @@
 @section('page-title', 'Detail Evaluasi Supervisi - ' . $supervisi->user->name)
 
 @section('content')
+<!-- Breadcrumb -->
+<div class="mb-4">
+    <x-breadcrumb :items="[
+        ['label' => 'Dashboard', 'url' => route('kepala.dashboard')],
+        ['label' => 'Evaluasi Supervisi', 'url' => route('kepala.evaluasi.index')],
+        ['label' => 'Detail', 'icon' => true]
+    ]" />
+</div>
 
 <div class="min-h-screen bg-gray-50 dark:bg-gray-900 py-8">
     <div class="w-full lg:w-3/4 mx-auto px-4 sm:px-6 lg:px-8">
@@ -408,33 +416,36 @@
                         required></textarea>
                 </div>
 
-                <div class="flex items-start space-x-2 p-3 bg-gray-50 dark:bg-gray-700/50 rounded-md">
+                <div class="flex items-start space-x-2 p-4 bg-gradient-to-r from-amber-50 to-orange-50 dark:from-amber-900/20 dark:to-orange-900/20 rounded-lg border-2 border-amber-300 dark:border-amber-700">
                     <input
                         type="checkbox"
                         name="is_revision_request"
                         id="is_revision_request"
                         value="1"
-                        class="w-4 h-4 text-indigo-600 bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-500 rounded focus:ring-indigo-500 focus:ring-2 mt-0.5">
-                    <label for="is_revision_request" class="text-sm text-gray-900 dark:text-gray-100">
+                        class="w-5 h-5 text-amber-600 bg-white dark:bg-gray-700 border-amber-400 dark:border-amber-600 rounded focus:ring-0 focus:ring-offset-0 transition-all duration-200 ease-in-out cursor-pointer mt-0.5">
+                    <label for="is_revision_request" class="text-sm font-semibold text-amber-900 dark:text-amber-200 cursor-pointer">
+                        <svg class="w-4 h-4 inline-block mr-1 mb-0.5" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path>
+                        </svg>
                         Minta revisi untuk supervisi ini
                     </label>
                 </div>
 
-                <div class="flex justify-end space-x-3 pt-4">
+                <div class="flex flex-col sm:flex-row justify-end items-stretch sm:items-center gap-3 pt-4">
                     <a href="{{ route('kepala.evaluasi.index') }}"
-                       class="px-5 py-2 bg-white hover:bg-gray-50 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-900 dark:text-gray-100 text-sm font-medium rounded-md transition-colors border border-gray-300 dark:border-gray-600">
+                       class="px-5 py-2.5 bg-white hover:bg-gray-50 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-900 dark:text-gray-100 text-sm font-medium rounded-lg transition-colors border border-gray-300 dark:border-gray-600 text-center">
                         Kembali
                     </a>
                     
                     <button type="submit"
-                            class="px-5 py-2 bg-indigo-600 hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-600 text-white text-sm font-medium rounded-md transition-colors">
+                            class="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-600 text-white text-sm font-medium rounded-lg transition-colors">
                         Kirim Feedback
                     </button>
                     
                     @if($supervisi->status === 'under_review')
                     <button type="button"
                             onclick="confirmComplete()"
-                            class="inline-flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-emerald-500 to-green-600 hover:from-emerald-600 hover:to-green-700 text-white text-sm font-bold rounded-lg transition-all duration-200 shadow-lg shadow-emerald-500/50 dark:shadow-emerald-500/30 cursor-pointer">
+                            class="inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-gradient-to-r from-emerald-500 to-green-600 hover:from-emerald-600 hover:to-green-700 text-white text-sm font-bold rounded-lg transition-all duration-200 shadow-lg shadow-emerald-500/50 dark:shadow-emerald-500/30 cursor-pointer">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                         </svg>

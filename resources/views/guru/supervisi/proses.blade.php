@@ -3,6 +3,14 @@
 @section('page-title', 'Proses Pembelajaran')
 
 @section('content')
+<!-- Breadcrumb -->
+<div class="mb-4">
+    <x-breadcrumb :items="[
+        ['label' => 'Beranda', 'url' => route('guru.home')],
+        ['label' => 'Supervisi'],
+        ['label' => 'Proses Pembelajaran', 'icon' => true]
+    ]" />
+</div>
 
 <!-- Wrapper Container (3/4 width, centered) -->
 <div class="w-full lg:w-3/4 mx-auto space-y-6">

@@ -3,6 +3,14 @@
 @section('title', 'Lihat Supervisi - ' . $supervisi->user->name)
 
 @section('content')
+<!-- Breadcrumb -->
+<div class="mb-4">
+    <x-breadcrumb :items="[
+        ['label' => 'Beranda', 'url' => route('guru.home')],
+        ['label' => 'Supervisi'],
+        ['label' => 'Lihat Detail', 'icon' => true]
+    ]" />
+</div>
 
 {{-- Debug: Uncomment to see data structure --}}
 {{-- @dd($supervisi->toArray()) --}}

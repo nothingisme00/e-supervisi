@@ -35,6 +35,25 @@ class User extends Authenticatable
         'last_login_at' => 'datetime',
     ];
 
+    // Boot method for cache clearing
+    protected static function boot()
+    {
+        parent::boot();
+
+        // Clear cache when user is created, updated, or deleted
+        static::created(function () {
+            \App\Helpers\CacheHelper::clearUserCache();
+        });
+
+        static::updated(function () {
+            \App\Helpers\CacheHelper::clearUserCache();
+        });
+
+        static::deleted(function () {
+            \App\Helpers\CacheHelper::clearUserCache();
+        });
+    }
+
     // Relationships
     public function supervisi()
     {

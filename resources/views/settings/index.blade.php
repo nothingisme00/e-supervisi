@@ -3,6 +3,11 @@
 @section('page-title', 'Pengaturan')
 
 @section('content')
+<!-- Breadcrumb -->
+<div class="mb-4">
+    <x-breadcrumb :items="[['label' => 'Pengaturan', 'icon' => true]]" />
+</div>
+
 <div class="max-w-4xl mx-auto">
     <!-- Page Header -->
     <div class="mb-6">

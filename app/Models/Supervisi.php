@@ -25,16 +25,28 @@ class Supervisi extends Model
         'reviewed_at' => 'datetime'
     ];
 
-    // Boot method for cascade delete
+    // Boot method for cascade delete and cache clearing
     protected static function boot()
     {
         parent::boot();
+
+        // Clear cache when supervisi is created, updated, or deleted
+        static::created(function () {
+            \App\Helpers\CacheHelper::clearSupervisiCache();
+        });
+
+        static::updated(function () {
+            \App\Helpers\CacheHelper::clearSupervisiCache();
+        });
 
         static::deleting(function ($supervisi) {
             // Delete related records
             $supervisi->dokumenEvaluasi()->delete();
             $supervisi->prosesPembelajaran()->delete();
             $supervisi->feedback()->delete();
+            
+            // Clear cache
+            \App\Helpers\CacheHelper::clearSupervisiCache();
         });
     }
 

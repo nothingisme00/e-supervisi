@@ -3,6 +3,12 @@
 @section('page-title', 'Edit User')
 
 @section('content')
+<x-breadcrumb :items="[
+    ['label' => 'Dashboard', 'url' => route('admin.dashboard')],
+    ['label' => 'Kelola Pengguna', 'url' => route('admin.users.index')],
+    ['label' => 'Edit User']
+]" />
+
 <div class="max-w-3xl mx-auto">
     <!-- Warning Banner untuk Edit Diri Sendiri -->
     @if($isEditingSelf)

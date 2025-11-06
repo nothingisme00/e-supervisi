@@ -3,45 +3,55 @@
 @section('page-title', 'Beranda')
 
 @section('content')
-<div class="w-full lg:w-3/4 mx-auto px-4 sm:px-6 lg:px-8 py-6">
-    <!-- Header Card -->
-    <div class="bg-gradient-to-r from-indigo-600 to-purple-600 dark:from-indigo-700 dark:to-purple-700 text-white rounded-lg p-6 mb-6">
-        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-            <div>
-                <h2 class="text-2xl font-bold mb-2">Selamat Datang, {{ auth()->user()->name }}!</h2>
-                <p class="text-sm text-indigo-100 dark:text-indigo-200">{{ auth()->user()->mata_pelajaran }} • {{ auth()->user()->tingkat }}</p>
-            </div>
-            <div class="flex flex-wrap gap-3 justify-end">
-                <button onclick="openGuideModal()" class="inline-flex items-center gap-2 px-5 py-3 bg-white/10 hover:bg-white/20 text-white font-semibold rounded-lg transition-all border border-white/30 hover:border-white/50 shadow-lg hover:shadow-xl backdrop-blur-sm">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
-                    </svg>
-                    Panduan
-                </button>
-                <a href="{{ route('guru.supervisi.create') }}" class="inline-flex items-center gap-2 px-5 py-3 bg-white hover:bg-gray-100 text-indigo-600 font-semibold rounded-lg transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-0.5">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
-                    </svg>
-                    Buat Supervisi Baru
-                </a>
-            </div>
-        </div>
+<!-- Breadcrumb -->
+<div class="mb-6">
+    <x-breadcrumb :items="[['label' => 'Beranda', 'icon' => true]]" />
+</div>
+
+<div class="w-full lg:w-3/4 mx-auto px-4 sm:px-6 lg:px-8">
+    <!-- Action Buttons -->
+    <div class="flex flex-wrap gap-3 justify-end mb-6">
+        <button onclick="openGuideModal()" class="inline-flex items-center gap-2 px-5 py-3 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 font-semibold rounded-lg transition-all shadow-sm hover:shadow-md">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+            </svg>
+            Panduan
+        </button>
+        <a href="{{ route('guru.supervisi.create') }}" class="inline-flex items-center gap-2 px-5 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-semibold rounded-lg transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-0.5">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+            </svg>
+            Buat Supervisi Baru
+        </a>
     </div>
 
-    <!-- Tips & Informasi -->
-    <div class="bg-gradient-to-r from-cyan-50 to-blue-50 dark:from-cyan-900/20 dark:to-blue-900/20 rounded-xl border border-cyan-200 dark:border-cyan-800 p-5 mb-6">
-        <div class="flex items-center gap-3 mb-4">
-            <div class="w-11 h-11 bg-gradient-to-br from-cyan-500 to-blue-500 rounded-lg flex items-center justify-center shrink-0 shadow-md">
-                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                </svg>
+    <!-- Tips & Informasi - Accordion -->
+    <div class="bg-gradient-to-r from-cyan-50 to-blue-50 dark:from-cyan-900/20 dark:to-blue-900/20 rounded-xl border border-cyan-200 dark:border-cyan-800 overflow-hidden mb-10">
+        <!-- Accordion Header (Clickable) -->
+        <button 
+            onclick="toggleTips()"
+            type="button"
+            class="w-full flex items-center justify-between gap-3 p-4 hover:bg-cyan-100/50 dark:hover:bg-cyan-900/30 transition-colors">
+            <div class="flex items-center gap-2.5">
+                <div class="w-10 h-10 bg-gradient-to-br from-cyan-500 to-blue-500 rounded-lg flex items-center justify-center shrink-0 shadow-md">
+                    <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                </div>
+                <div class="text-left">
+                    <h3 class="text-sm font-bold text-gray-900 dark:text-white">Tips & Informasi</h3>
+                    <p class="text-xs text-gray-600 dark:text-gray-400">Hal penting yang perlu diketahui</p>
+                </div>
             </div>
-            <div>
-                <h3 class="text-base font-bold text-gray-900 dark:text-white">Tips & Informasi</h3>
-                <p class="text-xs text-gray-600 dark:text-gray-400">Hal penting yang perlu diketahui</p>
-            </div>
-        </div>
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+            <svg id="tips-chevron" class="w-5 h-5 text-gray-600 dark:text-gray-400 transform transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+            </svg>
+        </button>
+
+        <!-- Accordion Content (Collapsible) -->
+        <div id="tips-content" class="overflow-hidden transition-all duration-300 ease-in-out" style="max-height: 0; opacity: 0;">
+            <div class="px-5 pb-5">
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
             <div class="bg-white dark:bg-gray-800 rounded-lg p-3 border border-blue-100 dark:border-blue-900/30 shadow-sm hover:shadow-md transition-shadow">
                 <div class="flex items-center gap-2">
                     <svg class="w-5 h-5 text-blue-600 dark:text-blue-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -87,10 +97,12 @@
                 </div>
             </div>
         </div>
+            </div>
+        </div>
     </div>
 
-<!-- Timeline Supervisi dengan style sosial media -->
-<div class="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 shadow-lg p-6">
+    <!-- Timeline Supervisi dengan style sosial media -->
+    <div class="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 shadow-lg p-6">
         <div class="flex items-center justify-between mb-6 pb-4 border-b border-gray-200 dark:border-gray-700">
             <div class="flex items-center gap-3">
                 <div class="w-10 h-10 bg-linear-to-r from-indigo-600 to-purple-600 dark:from-indigo-500 dark:to-purple-500 rounded-lg flex items-center justify-center shadow-md">
@@ -544,6 +556,24 @@
             });
         });
     });
+
+    // Toggle Tips & Informasi Accordion
+    function toggleTips() {
+        const content = document.getElementById('tips-content');
+        const chevron = document.getElementById('tips-chevron');
+        
+        if (content.style.maxHeight === '0px' || content.style.maxHeight === '') {
+            // Open
+            content.style.maxHeight = content.scrollHeight + 'px';
+            content.style.opacity = '1';
+            chevron.style.transform = 'rotate(180deg)';
+        } else {
+            // Close
+            content.style.maxHeight = '0px';
+            content.style.opacity = '0';
+            chevron.style.transform = 'rotate(0deg)';
+        }
+    }
 
     // Delete supervisi function with modal confirmation
     function confirmDeleteSupervisi(supervisiId) {

@@ -3,6 +3,14 @@
 @section('page-title', 'Detail Supervisi')
 
 @section('content')
+<!-- Breadcrumb -->
+<div class="mb-4">
+    <x-breadcrumb :items="[
+        ['label' => 'Beranda', 'url' => route('guru.home')],
+        ['label' => 'Supervisi'],
+        ['label' => 'Detail', 'icon' => true]
+    ]" />
+</div>
 
 <div class="min-h-screen bg-gray-50 dark:bg-gray-900 py-8">
     <div class="w-full lg:w-3/4 mx-auto px-4 sm:px-6 lg:px-8">

@@ -18,5 +18,17 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
-        //
+        // Custom handling for rate limit exceeded
+        $exceptions->renderable(function (\Illuminate\Http\Exceptions\ThrottleRequestsException $e, $request) {
+            if ($request->expectsJson()) {
+                return response()->json([
+                    'message' => 'Terlalu banyak percobaan. Silakan coba lagi dalam beberapa saat.',
+                    'retry_after' => $e->getHeaders()['Retry-After'] ?? 60
+                ], 429);
+            }
+            
+            return back()->withErrors([
+                'throttle' => 'Terlalu banyak percobaan login. Silakan tunggu ' . ($e->getHeaders()['Retry-After'] ?? 60) . ' detik sebelum mencoba lagi.',
+            ])->onlyInput('nik', 'role');
+        });
     })->create();

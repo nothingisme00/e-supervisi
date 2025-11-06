@@ -2,102 +2,144 @@
 
 @section('content')
 <div class="px-4 sm:px-6 lg:px-8 py-6">
-    <div class="mb-6">
-        <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Dashboard Kepala Sekolah</h1>
-        <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">
+    <!-- Breadcrumb -->
+    <x-breadcrumb :items="[
+        ['label' => 'Dashboard', 'icon' => true]
+    ]" />
+
+    <!-- Header - Enlarged -->
+    <div class="mb-8">
+        <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-3">Dashboard Kepala Sekolah</h1>
+        <p class="text-base text-gray-600 dark:text-gray-400">
             Selamat datang, <span class="font-semibold">{{ Auth::user()->name }}</span> | 
             {{ \Carbon\Carbon::now()->isoFormat('dddd, D MMMM YYYY') }}
         </p>
     </div>
 
-    <!-- Tips & Informasi (Compact & Horizontal) -->
-    <div class="bg-gradient-to-r from-rose-50 to-pink-50 dark:from-rose-900/20 dark:to-pink-900/20 rounded-xl border border-rose-200 dark:border-rose-800 p-5 mb-6">
-        <div class="flex items-center gap-3 mb-4">
-            <div class="w-11 h-11 bg-gradient-to-br from-rose-500 to-pink-500 rounded-lg flex items-center justify-center shrink-0 shadow-md">
-                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                </svg>
-            </div>
-            <div>
-                <h3 class="text-base font-bold text-gray-900 dark:text-white">Tips & Informasi</h3>
-                <p class="text-xs text-gray-600 dark:text-gray-400">Hal penting yang perlu diketahui</p>
-            </div>
-        </div>
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
-            <div class="bg-white dark:bg-gray-800 rounded-lg p-3 border border-blue-100 dark:border-blue-900/30 shadow-sm hover:shadow-md transition-shadow">
-                <div class="flex items-center gap-2">
-                    <svg class="w-5 h-5 text-blue-600 dark:text-blue-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                    </svg>
-                    <div>
-                        <div class="text-sm font-bold text-blue-900 dark:text-blue-300">Status Supervisi</div>
-                        <p class="text-xs text-gray-600 dark:text-gray-400">Submitted → Under Review → Completed</p>
-                    </div>
-                </div>
-            </div>
-            <div class="bg-white dark:bg-gray-800 rounded-lg p-3 border border-amber-100 dark:border-amber-900/30 shadow-sm hover:shadow-md transition-shadow">
-                <div class="flex items-center gap-2">
-                    <svg class="w-5 h-5 text-amber-600 dark:text-amber-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
-                    </svg>
-                    <div>
-                        <div class="text-sm font-bold text-amber-900 dark:text-amber-300">Prioritas Review</div>
-                        <p class="text-xs text-gray-600 dark:text-gray-400">Review supervisi paling lama terlebih dahulu</p>
-                    </div>
-                </div>
-            </div>
-            <div class="bg-white dark:bg-gray-800 rounded-lg p-3 border border-emerald-100 dark:border-emerald-900/30 shadow-sm hover:shadow-md transition-shadow">
-                <div class="flex items-center gap-2">
-                    <svg class="w-5 h-5 text-emerald-600 dark:text-emerald-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                    </svg>
-                    <div>
-                        <div class="text-sm font-bold text-emerald-900 dark:text-emerald-300">Feedback Konstruktif</div>
-                        <p class="text-xs text-gray-600 dark:text-gray-400">Berikan masukan jelas dan membangun</p>
-                    </div>
-                </div>
-            </div>
-            <div class="bg-white dark:bg-gray-800 rounded-lg p-3 border border-purple-100 dark:border-purple-900/30 shadow-sm hover:shadow-md transition-shadow">
-                <div class="flex items-center gap-2">
-                    <svg class="w-5 h-5 text-purple-600 dark:text-purple-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                    </svg>
-                    <div>
-                        <div class="text-sm font-bold text-purple-900 dark:text-purple-300">Waktu Review</div>
-                        <p class="text-xs text-gray-600 dark:text-gray-400">Target maksimal 3 hari kerja</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Panduan Penggunaan Button -->
+    <!-- Panduan Penggunaan - Top (Standout) -->
     <div class="mb-6">
-        <button onclick="document.getElementById('panduanModal').classList.remove('hidden')" class="w-full flex items-center justify-between p-5 bg-gradient-to-r from-violet-500 to-purple-500 hover:from-violet-600 hover:to-purple-600 rounded-xl text-white transition-all shadow-md hover:shadow-xl group">
+        <button onclick="document.getElementById('panduanModal').classList.remove('hidden')" class="flex items-center justify-between px-6 py-5 bg-gradient-to-r from-violet-600 via-purple-600 to-indigo-600 hover:from-violet-700 hover:to-indigo-700 rounded-2xl text-white transition-all shadow-lg hover:shadow-2xl group w-full text-left border-2 border-violet-400/30">
             <div class="flex items-center gap-4">
-                <div class="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform">
+                <div class="w-14 h-14 bg-white/20 rounded-xl flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform shadow-lg">
                     <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
                     </svg>
                 </div>
-                <div class="text-left">
-                    <div class="text-lg font-bold mb-1">Panduan Penggunaan</div>
+                <div>
+                    <div class="text-xl font-bold mb-1">Panduan Penggunaan</div>
                     <div class="text-sm opacity-90">Langkah-langkah menggunakan sistem E-Supervisi</div>
                 </div>
             </div>
-            <svg class="w-7 h-7 group-hover:translate-x-2 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg class="w-8 h-8 group-hover:translate-x-2 transition-transform shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
             </svg>
         </button>
     </div>
 
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        @php
-            $pendingList = \App\Models\Supervisi::with('user')->where('status', 'submitted')->latest()->get();
-            $inProgressList = \App\Models\Supervisi::with('user')->where('status', 'under_review')->latest()->get();
-            $completedList = \App\Models\Supervisi::with('user')->where('status', 'completed')->latest()->get();
-        @endphp
+    <!-- Tips & Informasi - Accordion -->
+    <div class="mb-8">
+        <div class="bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 dark:from-blue-900/20 dark:via-indigo-900/20 dark:to-purple-900/20 rounded-2xl border-2 border-blue-200 dark:border-blue-800/50 overflow-hidden shadow-md hover:shadow-lg transition-shadow">
+            <!-- Accordion Header (Clickable) -->
+            <button onclick="toggleTipsAccordion()" class="w-full flex items-center justify-between p-5 hover:bg-white/50 dark:hover:bg-gray-800/30 transition-colors">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 bg-gradient-to-br from-blue-500 to-indigo-500 rounded-lg flex items-center justify-center shrink-0 shadow-md">
+                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                    </div>
+                    <div class="text-left">
+                        <h3 class="text-base font-bold text-gray-900 dark:text-white">Tips & Informasi</h3>
+                        <p class="text-xs text-gray-600 dark:text-gray-400">Klik untuk melihat hal penting</p>
+                    </div>
+                </div>
+                <!-- Toggle Icon -->
+                <svg id="tipsAccordionIcon" class="w-6 h-6 text-gray-600 dark:text-gray-400 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                </svg>
+            </button>
+            
+            <!-- Accordion Content -->
+            <div id="tipsAccordionContent" class="max-h-0 overflow-hidden transition-all duration-300 ease-in-out">
+                <div class="px-5 pb-5">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+                        <div class="bg-white dark:bg-gray-800 rounded-lg p-3 border border-blue-200 dark:border-blue-900/30 shadow-sm hover:shadow-md hover:border-blue-300 dark:hover:border-blue-700 transition-all">
+                            <div class="flex items-start gap-2.5">
+                                <div class="w-8 h-8 bg-gradient-to-br from-blue-500 to-indigo-500 rounded-lg flex items-center justify-center shrink-0 shadow-sm">
+                                    <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <div class="text-xs font-bold text-blue-900 dark:text-blue-300 mb-0.5">Status Supervisi</div>
+                                    <p class="text-[11px] text-gray-600 dark:text-gray-400 leading-snug">Submitted → Review → Completed</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-white dark:bg-gray-800 rounded-lg p-3 border border-amber-200 dark:border-amber-900/30 shadow-sm hover:shadow-md hover:border-amber-300 dark:hover:border-amber-700 transition-all">
+                            <div class="flex items-start gap-2.5">
+                                <div class="w-8 h-8 bg-gradient-to-br from-amber-500 to-orange-500 rounded-lg flex items-center justify-center shrink-0 shadow-sm">
+                                    <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <div class="text-xs font-bold text-amber-900 dark:text-amber-300 mb-0.5">Prioritas Review</div>
+                                    <p class="text-[11px] text-gray-600 dark:text-gray-400 leading-snug">Review terlama lebih dahulu</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-white dark:bg-gray-800 rounded-lg p-3 border border-emerald-200 dark:border-emerald-900/30 shadow-sm hover:shadow-md hover:border-emerald-300 dark:hover:border-emerald-700 transition-all">
+                            <div class="flex items-start gap-2.5">
+                                <div class="w-8 h-8 bg-gradient-to-br from-emerald-500 to-green-500 rounded-lg flex items-center justify-center shrink-0 shadow-sm">
+                                    <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <div class="text-xs font-bold text-emerald-900 dark:text-emerald-300 mb-0.5">Feedback Konstruktif</div>
+                                    <p class="text-[11px] text-gray-600 dark:text-gray-400 leading-snug">Masukan jelas & membangun</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-white dark:bg-gray-800 rounded-lg p-3 border border-purple-200 dark:border-purple-900/30 shadow-sm hover:shadow-md hover:border-purple-300 dark:hover:border-purple-700 transition-all">
+                            <div class="flex items-start gap-2.5">
+                                <div class="w-8 h-8 bg-gradient-to-br from-purple-500 to-indigo-500 rounded-lg flex items-center justify-center shrink-0 shadow-sm">
+                                    <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <div class="text-xs font-bold text-purple-900 dark:text-purple-300 mb-0.5">Waktu Review</div>
+                                    <p class="text-[11px] text-gray-600 dark:text-gray-400 leading-snug">Target maksimal 3 hari</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
+    <script>
+        function toggleTipsAccordion() {
+            const content = document.getElementById('tipsAccordionContent');
+            const icon = document.getElementById('tipsAccordionIcon');
+            
+            if (content.style.maxHeight && content.style.maxHeight !== '0px') {
+                // Close
+                content.style.maxHeight = '0px';
+                icon.style.transform = 'rotate(0deg)';
+            } else {
+                // Open
+                content.style.maxHeight = content.scrollHeight + 'px';
+                icon.style.transform = 'rotate(180deg)';
+            }
+        }
+        
+        // Default CLOSED on page load (removed auto-open code)
+    </script>
+    
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <!-- Card 1: Perlu Review -->
         <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
             <div class="h-1 bg-gradient-to-r from-amber-400 to-orange-500"></div>
@@ -155,14 +197,12 @@
                     @endforeach
                 </div>
                 @else
-                <div class="text-center py-12">
-                    <div class="w-16 h-16 bg-amber-50 dark:bg-amber-900/20 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                        <svg class="w-8 h-8 text-amber-400 dark:text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"></path>
-                        </svg>
-                    </div>
-                    <p class="text-base text-gray-500 dark:text-gray-400 font-medium">Tidak ada data</p>
-                </div>
+                <x-empty-state 
+                    icon="clock"
+                    title="Tidak ada supervisi"
+                    description="Belum ada supervisi yang perlu direview saat ini"
+                    :compact="true"
+                />
                 @endif
             </div>
         </div>
@@ -225,14 +265,12 @@
                     @endforeach
                 </div>
                 @else
-                <div class="text-center py-12">
-                    <div class="w-16 h-16 bg-indigo-50 dark:bg-indigo-900/20 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                        <svg class="w-8 h-8 text-indigo-400 dark:text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"></path>
-                        </svg>
-                    </div>
-                    <p class="text-base text-gray-500 dark:text-gray-400 font-medium">Tidak ada data</p>
-                </div>
+                <x-empty-state 
+                    icon="document"
+                    title="Tidak ada supervisi"
+                    description="Belum ada supervisi yang sedang ditinjau"
+                    :compact="true"
+                />
                 @endif
             </div>
         </div>
@@ -294,14 +332,12 @@
                     @endforeach
                 </div>
                 @else
-                <div class="text-center py-12">
-                    <div class="w-16 h-16 bg-emerald-50 dark:bg-emerald-900/20 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                        <svg class="w-8 h-8 text-emerald-400 dark:text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"></path>
-                        </svg>
-                    </div>
-                    <p class="text-base text-gray-500 dark:text-gray-400 font-medium">Tidak ada data</p>
-                </div>
+                <x-empty-state 
+                    icon="check" 
+                    title="Tidak ada supervisi" 
+                    description="Belum ada supervisi yang telah selesai" 
+                    :compact="true" 
+                />
                 @endif
             </div>
         </div>

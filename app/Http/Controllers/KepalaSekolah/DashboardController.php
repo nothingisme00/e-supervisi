@@ -5,28 +5,58 @@ namespace App\Http\Controllers\KepalaSekolah;
 use App\Http\Controllers\Controller;
 use App\Models\Supervisi;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 class DashboardController extends Controller
 {
     public function index()
     {
-        $totalSupervisi = Supervisi::count();
+        // Cache statistics for 5 minutes
+        $totalSupervisi = cache()->remember('kepala.stats.total_supervisi', 300, function() {
+            return Supervisi::count();
+        });
         
-        // Professional categories for Kepala Sekolah
-        $supervisiPending = Supervisi::where('status', 'submitted')->count(); // Perlu Review
-        $supervisiInProgress = Supervisi::where('status', 'under_review')->count(); // Sedang Review
-        $supervisiReviewed = Supervisi::where('status', 'completed')->count(); // Telah Review
+        $supervisiPending = cache()->remember('kepala.stats.supervisi_pending', 300, function() {
+            return Supervisi::where('status', 'submitted')->count();
+        });
+        
+        $supervisiInProgress = cache()->remember('kepala.stats.supervisi_in_progress', 300, function() {
+            return Supervisi::where('status', 'under_review')->count();
+        });
+        
+        $supervisiReviewed = cache()->remember('kepala.stats.supervisi_reviewed', 300, function() {
+            return Supervisi::where('status', 'completed')->count();
+        });
 
         // For backward compatibility
         $supervisiSubmitted = $supervisiPending;
         $supervisiUnderReview = $supervisiInProgress;
         $supervisiCompleted = $supervisiReviewed;
 
-        // Recent supervisi that need attention
-        $recentSupervisi = Supervisi::with('user')
+        // Recent supervisi with eager loading - only load needed columns
+        $recentSupervisi = Supervisi::with('user:id,name,nik,tingkat')
             ->whereIn('status', ['submitted', 'under_review'])
             ->latest()
             ->take(10)
+            ->get();
+
+        // Separate lists for each status
+        $pendingList = Supervisi::with('user:id,name,nik,tingkat')
+            ->where('status', 'submitted')
+            ->latest()
+            ->take(5)
+            ->get();
+            
+        $inProgressList = Supervisi::with('user:id,name,nik,tingkat')
+            ->where('status', 'under_review')
+            ->latest()
+            ->take(5)
+            ->get();
+            
+        $completedList = Supervisi::with('user:id,name,nik,tingkat')
+            ->where('status', 'completed')
+            ->latest()
+            ->take(5)
             ->get();
 
         return view('kepala.dashboard', compact(
@@ -37,7 +67,10 @@ class DashboardController extends Controller
             'supervisiSubmitted',
             'supervisiUnderReview',
             'supervisiCompleted',
-            'recentSupervisi'
+            'recentSupervisi',
+            'pendingList',
+            'inProgressList',
+            'completedList'
         ));
     }
 }

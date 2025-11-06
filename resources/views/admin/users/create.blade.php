@@ -3,6 +3,12 @@
 @section('page-title', 'Tambah User Baru')
 
 @section('content')
+<x-breadcrumb :items="[
+    ['label' => 'Dashboard', 'url' => route('admin.dashboard')],
+    ['label' => 'Kelola Pengguna', 'url' => route('admin.users.index')],
+    ['label' => 'Tambah User']
+]" />
+
 <div class="max-w-3xl mx-auto">
     <div class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6 lg:p-8">
         <div class="flex items-center justify-between mb-6">

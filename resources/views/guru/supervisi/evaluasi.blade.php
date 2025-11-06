@@ -3,6 +3,14 @@
 @section('page-title', 'Lembar Evaluasi Diri')
 
 @section('content')
+<!-- Breadcrumb -->
+<div class="mb-4">
+    <x-breadcrumb :items="[
+        ['label' => 'Beranda', 'url' => route('guru.home')],
+        ['label' => 'Supervisi'],
+        ['label' => 'Evaluasi Diri', 'icon' => true]
+    ]" />
+</div>
 
 <!-- Wrapper Container (3/4 width, centered) -->
 <div class="w-full lg:w-3/4 mx-auto">
@@ -107,12 +115,12 @@
                                 @endif
                             </td>
                             <td class="px-4 py-3 text-center">
-                                <div class="flex items-center justify-center gap-2 flex-wrap">
+                                <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-2">
                                     @if($isUploaded && $dokumen)
                                         <a
                                             href="{{ asset('storage/' . $dokumen->path_file) }}"
                                             target="_blank"
-                                            class="inline-flex items-center gap-1.5 px-3 py-2 bg-indigo-600 text-white text-xs font-semibold rounded-lg hover:bg-indigo-700 transition-colors"
+                                            class="inline-flex items-center justify-center gap-1.5 px-3 py-2 bg-indigo-600 text-white text-xs font-semibold rounded-lg hover:bg-indigo-700 transition-colors w-full sm:w-auto"
                                             title="Preview dokumen"
                                         >
                                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -126,7 +134,7 @@
                                     <button
                                         type="button"
                                         data-upload-btn="{{ $key }}"
-                                        class="inline-flex items-center gap-1.5 px-4 py-2 bg-blue-600 text-white text-xs font-semibold rounded-lg hover:bg-blue-700 cursor-pointer"
+                                        class="inline-flex items-center justify-center gap-1.5 px-4 py-2 bg-blue-600 text-white text-xs font-semibold rounded-lg hover:bg-blue-700 cursor-pointer w-full sm:w-auto"
                                     >
                                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
@@ -134,14 +142,14 @@
                                         {{ $isUploaded ? 'Ganti' : 'Upload' }}
                                     </button>
                                     @if($isUploaded)
-                                        <form id="delete-form-{{ $key }}" method="POST" action="{{ route('guru.supervisi.delete-document', [$supervisi->id]) }}" style="display: inline;">
+                                        <form id="delete-form-{{ $key }}" method="POST" action="{{ route('guru.supervisi.delete-document', [$supervisi->id]) }}" class="w-full sm:w-auto">
                                             @csrf
                                             @method('DELETE')
                                             <input type="hidden" name="jenis_dokumen" value="{{ $key }}">
                                             <button
                                                 type="button"
                                                 onclick="confirmDeleteForm('delete-form-{{ $key }}', 'Apakah Anda yakin ingin menghapus dokumen ini?')"
-                                                class="inline-flex items-center gap-1.5 px-4 py-2 text-xs font-semibold rounded-lg transition-colors text-white cursor-pointer"
+                                                class="inline-flex items-center justify-center gap-1.5 px-4 py-2 text-xs font-semibold rounded-lg transition-colors text-white cursor-pointer w-full sm:w-auto"
                                                 style="background-color: #e63946;"
                                                 onmouseover="this.style.backgroundColor='#d62828'"
                                                 onmouseout="this.style.backgroundColor='#e63946'"

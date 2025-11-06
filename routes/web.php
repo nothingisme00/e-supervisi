@@ -28,13 +28,16 @@ Route::get('/', function () {
     return redirect()->route('login');
 });
 
-// Authentication Routes
-Route::get('/login', [CustomLoginController::class, 'showLoginForm'])->name('login')->middleware('guest');
-Route::post('/login', [CustomLoginController::class, 'login'])->middleware('guest');
+// Authentication Routes - With Rate Limiting
+Route::middleware('throttle:5,1')->group(function () {
+    Route::get('/login', [CustomLoginController::class, 'showLoginForm'])->name('login')->middleware('guest');
+    Route::post('/login', [CustomLoginController::class, 'login'])->middleware('guest');
+});
 Route::post('/logout', [CustomLoginController::class, 'logout'])->name('logout');
 
 // Change Password Routes (must be authenticated, but no must.change.password middleware)
-Route::middleware(['auth', 'prevent.back'])->group(function () {
+// Rate limited to prevent abuse
+Route::middleware(['auth', 'prevent.back', 'throttle:10,1'])->group(function () {
     Route::get('/change-password', [ChangePasswordController::class, 'showChangePasswordForm'])->name('change-password');
     Route::post('/change-password', [ChangePasswordController::class, 'updatePassword'])->name('change-password.update');
 });

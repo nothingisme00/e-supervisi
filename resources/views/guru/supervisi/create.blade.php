@@ -3,6 +3,15 @@
 @section('page-title', 'Buat Supervisi Baru')
 
 @section('content')
+<!-- Breadcrumb -->
+<div class="mb-4">
+    <x-breadcrumb :items="[
+        ['label' => 'Beranda', 'url' => route('guru.home')],
+        ['label' => 'Supervisi'],
+        ['label' => 'Buat Baru', 'icon' => true]
+    ]" />
+</div>
+
 <!-- Header -->
 <div class="bg-gradient-to-r from-indigo-600 to-purple-600 dark:from-indigo-700 dark:to-purple-700 text-white rounded-lg p-6 mb-6">
     <h2 class="text-2xl font-bold mb-2">Buat Supervisi Baru</h2>

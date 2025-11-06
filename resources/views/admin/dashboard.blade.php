@@ -4,6 +4,8 @@
 
 @section('content')
 
+<x-breadcrumb :items="[['label' => 'Dashboard Admin', 'icon' => true]]" />
+
 <!-- Header Section -->
 <div class="mb-8">
     <div class="flex items-start justify-between">
@@ -166,12 +168,12 @@
                 </div>
             </div>
             @empty
-            <div class="text-center py-8 text-gray-500 dark:text-gray-400">
-                <svg class="w-12 h-12 mx-auto mb-3 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"></path>
-                </svg>
-                <p class="text-sm">Belum ada data guru</p>
-            </div>
+            <x-empty-state 
+                icon="users" 
+                title="Belum ada guru" 
+                description="Klik tombol 'Tambah' untuk menambahkan guru baru" 
+                :compact="true" 
+            />
             @endforelse
             </div>
         </div>
@@ -261,12 +263,12 @@
                 </div>
             </div>
             @empty
-            <div class="text-center py-8 text-gray-500 dark:text-gray-400">
-                <svg class="w-12 h-12 mx-auto mb-3 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-                </svg>
-                <p class="text-sm">Tidak ada supervisi dalam proses</p>
-            </div>
+            <x-empty-state 
+                icon="clock" 
+                title="Tidak ada supervisi dalam proses" 
+                description="Supervisi yang sedang ditinjau akan muncul di sini" 
+                :compact="true" 
+            />
             @endforelse
             </div>
         </div>
@@ -339,12 +341,12 @@
                 </div>
             </div>
             @empty
-            <div class="text-center py-8 text-gray-500 dark:text-gray-400">
-                <svg class="w-12 h-12 mx-auto mb-3 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                </svg>
-                <p class="text-sm">Belum ada supervisi selesai</p>
-            </div>
+            <x-empty-state 
+                icon="check" 
+                title="Belum ada supervisi selesai" 
+                description="Supervisi yang telah selesai akan ditampilkan di sini" 
+                :compact="true" 
+            />
             @endforelse
             </div>
         </div>

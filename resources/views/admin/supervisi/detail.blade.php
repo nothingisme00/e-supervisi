@@ -3,6 +3,15 @@
 @section('title', 'Detail Supervisi - ' . $supervisi->user->name)
 
 @section('content')
+<!-- Breadcrumb -->
+<div class="mb-4">
+    <x-breadcrumb :items="[
+        ['label' => 'Dashboard', 'url' => route('admin.dashboard')],
+        ['label' => 'Review Supervisi', 'url' => route('admin.supervisi.index')],
+        ['label' => 'Detail', 'icon' => true]
+    ]" />
+</div>
+
 <div class="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 py-8">
     <div class="w-full lg:w-3/4 mx-auto px-4 sm:px-6 lg:px-8">
         

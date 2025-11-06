@@ -3,6 +3,13 @@
 @section('page-title', 'Evaluasi Supervisi')
 
 @section('content')
+<!-- Breadcrumb -->
+<div class="mb-4">
+    <x-breadcrumb :items="[
+        ['label' => 'Dashboard', 'url' => route('kepala.dashboard')],
+        ['label' => 'Evaluasi Supervisi', 'icon' => true]
+    ]" />
+</div>
 
 <!-- Header Section -->
 <div class="mb-8">
