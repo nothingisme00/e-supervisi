@@ -15,28 +15,6 @@
 <!-- Wrapper Container (3/4 width, centered) -->
 <div class="w-full lg:w-3/4 mx-auto space-y-6">
 
-<!-- Step Navigation -->
-<div class="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 shadow-lg p-2">
-    <div class="flex">
-        <button
-            onclick="window.location.href='{{ route('guru.supervisi.evaluasi', $supervisi->id) }}'"
-            class="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
-        >
-            <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-            </svg>
-            <span class="text-sm font-medium">Lembar Evaluasi Diri</span>
-        </button>
-        <div class="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 bg-indigo-50 dark:bg-indigo-900/30 border-b-2 border-indigo-600 dark:border-indigo-500 rounded-lg">
-            <svg class="w-5 h-5 text-indigo-600 dark:text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path>
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-            </svg>
-            <span class="text-sm font-semibold text-indigo-600 dark:text-indigo-400">Proses</span>
-        </div>
-    </div>
-</div>
-
 <!-- Form -->
 <form id="prosesForm">
     @csrf
@@ -173,68 +151,68 @@
                     </div>
                 </div>
             @endforeach
-        </div>
-    </div>
 
-    <!-- Info Alert -->
-    <div class="bg-gradient-to-r from-amber-50 to-yellow-50 dark:from-amber-900/20 dark:to-yellow-900/20 border-l-4 border-amber-500 dark:border-amber-400 rounded-xl p-5 shadow-sm">
-        <div class="flex gap-4">
-            <div class="shrink-0">
-                <div class="w-12 h-12 bg-amber-500 dark:bg-amber-600 rounded-xl flex items-center justify-center shadow-md">
-                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
-                    </svg>
+            <!-- Info Alert - Moved Inside -->
+            <div class="bg-gradient-to-r from-amber-50 to-yellow-50 dark:from-amber-900/20 dark:to-yellow-900/20 border-l-4 border-amber-500 dark:border-amber-400 rounded-xl p-5">
+                <div class="flex gap-4">
+                    <div class="shrink-0">
+                        <div class="w-10 h-10 bg-amber-500 dark:bg-amber-600 rounded-lg flex items-center justify-center">
+                            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="flex-1">
+                        <h4 class="text-sm font-bold text-amber-900 dark:text-amber-200 mb-2">Perhatian Penting!</h4>
+                        <ul class="text-sm text-amber-800 dark:text-amber-300 space-y-1.5 list-disc list-inside">
+                            <li>Pastikan semua data sudah benar sebelum submit</li>
+                            <li>Data akan otomatis tersimpan setiap 30 detik</li>
+                            <li>Setelah submit, supervisi akan direview oleh Kepala Sekolah</li>
+                        </ul>
+                    </div>
                 </div>
             </div>
-            <div class="flex-1">
-                <h4 class="text-sm font-bold text-amber-900 dark:text-amber-200 mb-2">Perhatian Penting!</h4>
-                <ul class="text-sm text-amber-800 dark:text-amber-300 space-y-1.5 list-disc list-inside">
-                    <li>Pastikan semua data sudah benar sebelum submit</li>
-                    <li>Data akan otomatis tersimpan setiap 30 detik</li>
-                    <li>Setelah submit, supervisi akan direview oleh Kepala Sekolah</li>
-                </ul>
-            </div>
-        </div>
-    </div>
 
-    <!-- Action Buttons -->
-    <div class="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 p-6 shadow-lg">
-        <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4">
-            <button
-                type="button"
-                onclick="window.location.href='{{ route('guru.supervisi.evaluasi', $supervisi->id) }}'"
-                class="inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-yellow-500 hover:bg-yellow-600 text-white font-bold rounded-xl transition-all shadow-md hover:shadow-lg"
-            >
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
-                </svg>
-                Kembali ke Evaluasi
-            </button>
+            <!-- Action Buttons - Moved Inside -->
+            <div class="pt-2">
+                <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4">
+                    <button
+                        type="button"
+                        onclick="window.location.href='{{ route('guru.supervisi.evaluasi', $supervisi->id) }}'"
+                        class="inline-flex items-center justify-center gap-2 px-6 py-3 bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-200 font-medium rounded-lg transition-colors"
+                    >
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                        </svg>
+                        Kembali
+                    </button>
 
-            <div class="flex flex-col sm:flex-row items-stretch gap-3">
-                <button
-                    type="button"
-                    id="saveButton"
-                    class="inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl transition-all shadow-md hover:shadow-lg"
-                >
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"></path>
-                    </svg>
-                    Simpan Draft
-                </button>
+                    <div class="flex flex-col sm:flex-row items-stretch gap-3">
+                        <button
+                            type="button"
+                            id="saveButton"
+                            class="inline-flex items-center justify-center gap-2 px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors"
+                        >
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"></path>
+                            </svg>
+                            Simpan Draft
+                        </button>
 
-                <button
-                    type="button"
-                    id="submitButton"
-                    disabled
-                    onclick="confirmSubmit()"
-                    class="inline-flex items-center justify-center gap-2 px-7 py-3.5 font-bold rounded-xl disabled:cursor-not-allowed shadow-md"
-                >
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                    </svg>
-                    Submit Supervisi
-                </button>
+                        <button
+                            type="button"
+                            id="submitButton"
+                            disabled
+                            onclick="confirmSubmit()"
+                            class="inline-flex items-center justify-center gap-2 px-6 py-3 font-medium rounded-lg disabled:cursor-not-allowed"
+                        >
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            Submit Supervisi
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -243,27 +221,71 @@
 </div>
 <!-- End Wrapper Container -->
 
-<!-- Success Modal -->
-<div id="successModal" class="hidden fixed inset-0 bg-black bg-opacity-60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-    <div class="bg-white dark:bg-gray-800 rounded-2xl max-w-md w-full shadow-2xl text-center p-8 transform transition-all">
-        <div class="w-20 h-20 bg-gradient-to-br from-green-400 to-emerald-500 rounded-2xl flex items-center justify-center mx-auto mb-5 shadow-lg">
-            <svg class="w-12 h-12 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path>
-            </svg>
-        </div>
-        <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-3">Supervisi Berhasil Disubmit!</h3>
-        <p class="text-gray-600 dark:text-gray-400 mb-6 leading-relaxed">Supervisi Anda telah berhasil disubmit dan akan segera direview oleh Kepala Sekolah.</p>
-        <div class="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg p-4 mb-6">
-            <p class="text-sm text-green-800 dark:text-green-300">
-                <span class="font-semibold">Langkah selanjutnya:</span> Tunggu hasil review dari Kepala Sekolah. Anda akan menerima notifikasi jika ada revisi yang diperlukan.
+<!-- Confirm Submit Modal -->
+<div id="confirmModal" class="hidden fixed inset-0 bg-black/50 backdrop-blur-sm z-50 items-center justify-center p-4">
+    <div id="confirmModalContent" class="bg-white dark:bg-gray-800 rounded-xl shadow-2xl max-w-sm w-full transform transition-all duration-200 scale-95 opacity-0">
+        <!-- Content -->
+        <div class="p-6 text-center">
+            <!-- Icon -->
+            <div class="w-14 h-14 rounded-full flex items-center justify-center bg-indigo-100 dark:bg-indigo-900/30 mx-auto mb-4">
+                <svg class="w-7 h-7 text-indigo-600 dark:text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"></path>
+                </svg>
+            </div>
+
+            <!-- Title -->
+            <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3">
+                Sudah yakin untuk submit?
+            </h3>
+
+            <!-- Description -->
+            <p class="text-sm text-gray-600 dark:text-gray-400 mb-6 leading-relaxed">
+                Data akan direview Kepala Sekolah dan tidak bisa diedit kecuali diminta revisi.
             </p>
+
+            <!-- Buttons -->
+            <div class="flex gap-3">
+                <button onclick="closeConfirmModal()" class="flex-1 px-4 py-2.5 bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-200 font-medium rounded-lg transition-colors">
+                    Batal
+                </button>
+                <button onclick="proceedSubmit()" class="flex-1 px-4 py-2.5 bg-indigo-600 hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-600 text-white font-medium rounded-lg transition-colors">
+                    Ya, Submit
+                </button>
+            </div>
         </div>
-        <button
-            onclick="window.location.href='{{ route('guru.home') }}'"
-            class="w-full px-6 py-3.5 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 dark:from-indigo-500 dark:to-purple-500 dark:hover:from-indigo-600 dark:hover:to-purple-600 text-white font-bold rounded-lg transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
-        >
-            Kembali ke Beranda
-        </button>
+    </div>
+</div>
+
+<!-- Success Modal -->
+<!-- Success Submit Modal -->
+<div id="successModal" class="hidden fixed inset-0 bg-black/50 backdrop-blur-sm z-[70] items-center justify-center p-4">
+    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-2xl max-w-md w-full transform transition-all duration-200 scale-95 opacity-0">
+        <!-- Icon & Content -->
+        <div class="p-6 text-center">
+            <!-- Success Icon -->
+            <div class="w-14 h-14 rounded-full flex items-center justify-center bg-green-100 dark:bg-green-900/30 mx-auto mb-4">
+                <svg class="w-7 h-7 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path>
+                </svg>
+            </div>
+
+            <!-- Title -->
+            <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3">
+                Supervisi Berhasil Disubmit!
+            </h3>
+
+            <!-- Description -->
+            <p class="text-sm text-gray-600 dark:text-gray-400 mb-6 leading-relaxed">
+                Data akan direview oleh Kepala Sekolah. Anda akan diberitahu jika ada revisi.
+            </p>
+
+            <!-- Button -->
+            <button
+                onclick="window.location.href='{{ route('guru.home') }}'"
+                class="w-full px-4 py-2.5 bg-indigo-600 hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-600 text-white font-medium rounded-lg transition-colors">
+                Kembali ke Beranda
+            </button>
+        </div>
     </div>
 </div>
 
@@ -423,19 +445,44 @@ document.getElementById('saveButton').addEventListener('click', async () => {
     }
 });
 
-// Confirm submit function
-async function confirmSubmit() {
+// Show confirm modal
+function confirmSubmit() {
     console.log('Submit button clicked');
-    
-    // Use native confirm dialog
-    const confirmed = confirm('Apakah Anda yakin ingin mensubmit supervisi ini?\n\nSetelah disubmit, supervisi akan direview oleh Kepala Sekolah dan Anda tidak dapat mengedit lagi kecuali diminta revisi.');
-    
-    if (!confirmed) {
-        console.log('Submit cancelled by user');
-        return;
-    }
+    const modal = document.getElementById('confirmModal');
+    const content = document.getElementById('confirmModalContent');
 
+    // Show modal
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
+
+    // Animate in
+    setTimeout(() => {
+        content.classList.remove('scale-95', 'opacity-0');
+        content.classList.add('scale-100', 'opacity-100');
+    }, 10);
+}
+
+// Close confirm modal
+function closeConfirmModal() {
+    const modal = document.getElementById('confirmModal');
+    const content = document.getElementById('confirmModalContent');
+
+    // Animate out
+    content.classList.remove('scale-100', 'opacity-100');
+    content.classList.add('scale-95', 'opacity-0');
+
+    setTimeout(() => {
+        modal.classList.remove('flex');
+        modal.classList.add('hidden');
+    }, 200);
+}
+
+// Proceed with submit
+async function proceedSubmit() {
     console.log('Submit confirmed, proceeding...');
+
+    // Close confirm modal
+    closeConfirmModal();
 
     // Disable button to prevent double submission
     const submitButton = document.getElementById('submitButton');
@@ -479,7 +526,18 @@ async function confirmSubmit() {
 
             if (submitResult.success) {
                 console.log('Submit successful! Showing modal...');
-                document.getElementById('successModal').classList.remove('hidden');
+                const modal = document.getElementById('successModal');
+                const content = modal.querySelector('.transform');
+
+                // Show modal
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+
+                // Animate in
+                setTimeout(() => {
+                    content.classList.remove('scale-95', 'opacity-0');
+                    content.classList.add('scale-100', 'opacity-100');
+                }, 10);
             } else {
                 console.error('Submit failed:', submitResult.message);
                 showToast(submitResult.message || 'Gagal submit supervisi', true);
@@ -519,6 +577,12 @@ setInterval(async () => {
 }, 30000);
 
 // Close modal on outside click
+document.getElementById('confirmModal')?.addEventListener('click', (e) => {
+    if (e.target.id === 'confirmModal') {
+        closeConfirmModal();
+    }
+});
+
 document.getElementById('successModal').addEventListener('click', (e) => {
     if (e.target.id === 'successModal') {
         window.location.href = '{{ route('guru.home') }}';

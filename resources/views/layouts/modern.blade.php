@@ -228,9 +228,9 @@
         <!-- SIDEBAR -->
         <aside id="sidebar" class="fixed top-0 left-0 h-screen w-72 bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 transition-transform duration-300 ease-in-out z-50 -translate-x-full shadow-lg">
         <div class="h-full flex flex-col">
-            <!-- User Profile Section with Hamburger -->
-            <div class="border-b border-gray-200 dark:border-gray-700 px-3 md:px-4 lg:px-6 py-1.5 md:py-2 lg:py-2.5">
-                <div class="flex items-center justify-between gap-1.5 md:gap-2 lg:gap-3">
+            <!-- User Profile Section with Hamburger - Match Header Height -->
+            <div class="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 px-3 md:px-4 lg:px-6 py-1.5 md:py-2 lg:py-2.5">
+                <div class="flex items-center justify-between h-full gap-1.5 md:gap-2 lg:gap-3">
                     <!-- Hamburger Icon -->
                     <button id="hamburger-menu-sidebar" type="button" class="p-1.5 md:p-1.5 lg:p-2 rounded-lg text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
                         <svg class="w-5 h-5 md:w-5 md:h-5 lg:w-6 lg:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -423,34 +423,33 @@
     <div id="toast-container" class="fixed top-24 left-1/2 -translate-x-1/2 z-[60] flex flex-col gap-3 pointer-events-none w-full max-w-2xl px-4"></div>
 
     <!-- MODAL CONFIRMATION -->
-    <div id="modal-backdrop" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-[70] flex items-center justify-center p-4 animate-fade-in">
-        <div id="modal-content" class="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl max-w-md w-full transform transition-all duration-300 scale-95 opacity-0">
-            <div class="p-6">
-                <!-- Icon -->
-                <div class="flex justify-center mb-4">
-                    <div id="modal-icon" class="w-16 h-16 rounded-full flex items-center justify-center bg-red-100 dark:bg-red-900/30">
-                        <svg class="w-8 h-8 text-red-600 dark:text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
-                        </svg>
-                    </div>
+    <div id="modal-backdrop" class="hidden fixed inset-0 bg-black/50 backdrop-blur-sm z-[70] items-center justify-center p-4">
+        <div id="modal-content" class="bg-white dark:bg-gray-800 rounded-xl shadow-2xl max-w-md w-full transform transition-all duration-200 scale-95 opacity-0">
+            <!-- Header with Icon -->
+            <div class="flex items-start gap-4 p-6 pb-4">
+                <div id="modal-icon" class="flex-shrink-0 w-12 h-12 rounded-full flex items-center justify-center bg-amber-100 dark:bg-amber-900/30">
+                    <svg class="w-6 h-6 text-amber-600 dark:text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+                    </svg>
                 </div>
-                <!-- Title -->
-                <h3 id="modal-title" class="text-xl font-bold text-gray-900 dark:text-white text-center mb-2">
-                    Konfirmasi Hapus
-                </h3>
-                <!-- Message -->
-                <p id="modal-message" class="text-gray-600 dark:text-gray-400 text-center mb-6">
-                    Apakah Anda yakin ingin menghapus item ini?
-                </p>
-                <!-- Buttons -->
-                <div class="flex gap-3">
-                    <button onclick="closeModal()" class="flex-1 px-4 py-3 bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-200 font-semibold rounded-xl transition-colors">
-                        Batal
-                    </button>
-                    <button id="modal-confirm-btn" class="flex-1 px-4 py-3 bg-red-600 hover:bg-red-700 dark:bg-red-500 dark:hover:bg-red-600 text-white font-semibold rounded-xl transition-colors">
-                        Hapus
-                    </button>
+                <div class="flex-1 min-w-0">
+                    <h3 id="modal-title" class="text-lg font-bold text-gray-900 dark:text-white mb-1">
+                        Konfirmasi
+                    </h3>
+                    <p id="modal-message" class="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
+                        Apakah Anda yakin ingin melanjutkan?
+                    </p>
                 </div>
+            </div>
+
+            <!-- Buttons -->
+            <div class="flex gap-3 px-6 pb-6">
+                <button onclick="closeModal()" class="flex-1 px-4 py-2.5 bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-200 font-medium rounded-lg transition-colors">
+                    Batal
+                </button>
+                <button id="modal-confirm-btn" class="flex-1 px-4 py-2.5 bg-indigo-600 hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-600 text-white font-medium rounded-lg transition-colors">
+                    Ya, Lanjutkan
+                </button>
             </div>
         </div>
     </div>
@@ -696,27 +695,61 @@
         // Modal functions
         let modalCallback = null;
 
-        function showConfirmModal(message, title = 'Konfirmasi Hapus', onConfirm = null) {
+        function showConfirmModal(message, title = 'Konfirmasi', onConfirm = null, options = {}) {
             const backdrop = document.getElementById('modal-backdrop');
             const content = document.getElementById('modal-content');
             const titleEl = document.getElementById('modal-title');
             const messageEl = document.getElementById('modal-message');
             const confirmBtn = document.getElementById('modal-confirm-btn');
-            
+            const icon = document.getElementById('modal-icon');
+
+            // Set default options
+            const config = {
+                type: 'warning', // warning, danger, info
+                confirmText: 'Ya, Lanjutkan',
+                confirmClass: 'bg-indigo-600 hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-600',
+                iconBg: 'bg-amber-100 dark:bg-amber-900/30',
+                iconColor: 'text-amber-600 dark:text-amber-400',
+                ...options
+            };
+
+            // Update modal type styling
+            if (config.type === 'danger') {
+                config.confirmText = options.confirmText || 'Ya, Hapus';
+                config.confirmClass = 'bg-red-600 hover:bg-red-700 dark:bg-red-500 dark:hover:bg-red-600';
+                config.iconBg = 'bg-red-100 dark:bg-red-900/30';
+                config.iconColor = 'text-red-600 dark:text-red-400';
+            } else if (config.type === 'info') {
+                config.confirmText = options.confirmText || 'OK';
+                config.confirmClass = 'bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600';
+                config.iconBg = 'bg-blue-100 dark:bg-blue-900/30';
+                config.iconColor = 'text-blue-600 dark:text-blue-400';
+            }
+
+            // Update icon styling
+            icon.className = `flex-shrink-0 w-12 h-12 rounded-full flex items-center justify-center ${config.iconBg}`;
+            const iconSvg = icon.querySelector('svg');
+            iconSvg.className = `w-6 h-6 ${config.iconColor}`;
+
+            // Update content
             titleEl.textContent = title;
             messageEl.textContent = message;
             modalCallback = onConfirm;
-            
+
+            // Update confirm button
+            confirmBtn.textContent = config.confirmText;
+            confirmBtn.className = `flex-1 px-4 py-2.5 ${config.confirmClass} text-white font-medium rounded-lg transition-colors`;
+
             // Show modal
             backdrop.classList.remove('hidden');
             backdrop.classList.add('flex');
-            
+
             // Animate in
             setTimeout(() => {
                 content.classList.remove('scale-95', 'opacity-0');
                 content.classList.add('scale-100', 'opacity-100');
             }, 10);
-            
+
             // Update confirm button listener
             confirmBtn.onclick = function() {
                 if (modalCallback) {
@@ -899,5 +932,93 @@
         @yield('content')
     </div>
 @endauth
+
+<!-- Back to Top Button -->
+<button id="back-to-top" class="fixed bottom-24 left-1/2 -translate-x-1/2 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 px-4 py-2.5 rounded-full shadow-lg border border-gray-200 dark:border-gray-700 opacity-0 invisible transition-all duration-300 z-50 hover:-translate-y-1 hover:shadow-xl group">
+    <div class="flex items-center gap-2">
+        <svg class="w-5 h-5 group-hover:-translate-y-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"></path>
+        </svg>
+        <span class="text-sm font-medium">Kembali ke Atas</span>
+    </div>
+</button>
+
+<script>
+// Back to Top Button Functionality
+const backToTopBtn = document.getElementById('back-to-top');
+
+if (backToTopBtn) {
+    let isModalOpen = false;
+
+    // Function to check if any modal/overlay is open
+    function checkModalState() {
+        const modalBackdrop = document.getElementById('modal-backdrop');
+        const confirmModal = document.getElementById('confirmModal');
+        const successModal = document.getElementById('successModal');
+
+        // Check if any modal is visible (not hidden and has flex display)
+        isModalOpen = (modalBackdrop && !modalBackdrop.classList.contains('hidden')) ||
+                      (confirmModal && !confirmModal.classList.contains('hidden')) ||
+                      (successModal && !successModal.classList.contains('hidden'));
+
+        // Update button visibility based on scroll and modal state
+        updateButtonVisibility();
+    }
+
+    // Function to update button visibility
+    function updateButtonVisibility() {
+        if (isModalOpen) {
+            // Hide button when modal is open
+            backToTopBtn.classList.remove('opacity-100', 'visible');
+            backToTopBtn.classList.add('opacity-0', 'invisible');
+        } else if (window.scrollY > 300) {
+            // Show button when scrolled and no modal
+            backToTopBtn.classList.remove('opacity-0', 'invisible');
+            backToTopBtn.classList.add('opacity-100', 'visible');
+        } else {
+            // Hide button when at top
+            backToTopBtn.classList.remove('opacity-100', 'visible');
+            backToTopBtn.classList.add('opacity-0', 'invisible');
+        }
+    }
+
+    // Show/hide button based on scroll position
+    window.addEventListener('scroll', () => {
+        updateButtonVisibility();
+    });
+
+    // Scroll to top when clicked
+    backToTopBtn.addEventListener('click', () => {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    });
+
+    // Observe modal state changes using MutationObserver
+    const observer = new MutationObserver(() => {
+        checkModalState();
+    });
+
+    // Observe all potential modal elements
+    const modalBackdrop = document.getElementById('modal-backdrop');
+    const confirmModal = document.getElementById('confirmModal');
+    const successModal = document.getElementById('successModal');
+
+    if (modalBackdrop) {
+        observer.observe(modalBackdrop, { attributes: true, attributeFilter: ['class'] });
+    }
+    if (confirmModal) {
+        observer.observe(confirmModal, { attributes: true, attributeFilter: ['class'] });
+    }
+    if (successModal) {
+        observer.observe(successModal, { attributes: true, attributeFilter: ['class'] });
+    }
+
+    // Initial check
+    checkModalState();
+}
+</script>
+
 </body>
 </html>

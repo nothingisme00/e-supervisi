@@ -258,9 +258,10 @@
                         @endif
                     </div>
 
-                    <!-- Komentar Terbaru (untuk semua supervisi) - Accordion -->
+                    <!-- Komentar Terbaru (hanya tampil jika sudah submit) - Accordion -->
+                    @if($item->status !== 'draft')
                     <div class="mb-3">
-                        <button type="button" 
+                        <button type="button"
                                 onclick="toggleComments('{{ $item->id }}')"
                                 class="w-full flex items-center justify-between gap-2 px-3 py-2 bg-slate-50 dark:bg-gray-900/30 hover:bg-slate-100 dark:hover:bg-gray-900/50 rounded-lg border border-slate-200 dark:border-gray-700 transition-colors">
                             <div class="flex items-center gap-2">
@@ -312,6 +313,7 @@
                             </div>
                         </div>
                     </div>
+                    @endif
                 </div>
 
                 <!-- Action Footer -->
