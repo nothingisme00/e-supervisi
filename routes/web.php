@@ -144,9 +144,4 @@ if (config('app.debug')) {
             return view('errors.network');
         })->name('network');
     });
-
-    // Test Loading Spinner
-    Route::get('/test-loading', function () {
-        return view('test-loading');
-    })->name('test.loading');
 }
