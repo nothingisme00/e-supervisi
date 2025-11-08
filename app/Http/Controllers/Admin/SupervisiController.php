@@ -133,9 +133,15 @@ class SupervisiController extends Controller
     public function downloadDocument($id)
     {
         $dokumen = \App\Models\DokumenEvaluasi::findOrFail($id);
-        
+        $supervisi = $dokumen->supervisi;
+
+        // Admin can only download documents from submitted/under_review/completed supervisi
+        if (!in_array($supervisi->status, ['submitted', 'under_review', 'completed'])) {
+            abort(403, 'Anda tidak memiliki akses ke dokumen ini');
+        }
+
         $filePath = storage_path('app/public/' . $dokumen->path_file);
-        
+
         if (!file_exists($filePath)) {
             abort(404, 'File tidak ditemukan');
         }

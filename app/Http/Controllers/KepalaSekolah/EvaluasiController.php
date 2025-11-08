@@ -142,6 +142,18 @@ class EvaluasiController extends Controller
     public function downloadDocument($id)
     {
         $dokumen = \App\Models\DokumenEvaluasi::findOrFail($id);
+        $supervisi = $dokumen->supervisi;
+
+        // Kepala sekolah can only download documents from their school
+        $user = $supervisi->user;
+        if ($user->tingkat !== auth()->user()->tingkat) {
+            abort(403, 'Anda tidak memiliki akses ke dokumen ini');
+        }
+
+        // Only allow download for submitted/under_review/completed supervisi
+        if (!in_array($supervisi->status, ['submitted', 'under_review', 'completed'])) {
+            abort(403, 'Anda tidak memiliki akses ke dokumen ini');
+        }
 
         // Prefer the normalized column `path_file` but fall back to older names
         $relativePath = $dokumen->path_file ?? $dokumen->file_path ?? null;
@@ -164,6 +176,18 @@ class EvaluasiController extends Controller
     public function previewDocument($id)
     {
         $dokumen = \App\Models\DokumenEvaluasi::findOrFail($id);
+        $supervisi = $dokumen->supervisi;
+
+        // Kepala sekolah can only preview documents from their school
+        $user = $supervisi->user;
+        if ($user->tingkat !== auth()->user()->tingkat) {
+            abort(403, 'Anda tidak memiliki akses ke dokumen ini');
+        }
+
+        // Only allow preview for submitted/under_review/completed supervisi
+        if (!in_array($supervisi->status, ['submitted', 'under_review', 'completed'])) {
+            abort(403, 'Anda tidak memiliki akses ke dokumen ini');
+        }
 
         // Prefer the normalized column `path_file` but fall back to older names
         $relativePath = $dokumen->path_file ?? $dokumen->file_path ?? null;
@@ -181,7 +205,7 @@ class EvaluasiController extends Controller
         // Get file info
         $fileName = $dokumen->nama_file ?? basename($relativePath);
         $mimeType = $dokumen->tipe_file ?? mime_content_type($filePath);
-        
+
         // Return file for inline viewing
         return response()->file($filePath);
     }

@@ -331,7 +331,7 @@
         console.log('Fetching URL:', url);
 
         fetch(url, {
-            method: 'POST',
+            method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json',
                 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')

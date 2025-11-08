@@ -11,6 +11,9 @@ use Illuminate\Support\Facades\Storage;
 
 class SupervisiController extends Controller
 {
+    // Required documents count for supervisi evaluation
+    private const REQUIRED_DOCUMENTS_COUNT = 7;
+
     public function create()
     {
         // Check if user already has active supervision (only draft or revision, not submitted)
@@ -28,16 +31,11 @@ class SupervisiController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
-            'tanggal_supervisi' => 'nullable|date',
-            'catatan' => 'nullable|string|max:500',
-        ]);
-
-        // Create new supervision
+        // Create new supervision (tanggal will be set when submitted)
         $supervisi = Supervisi::create([
             'user_id' => auth()->id(),
-            'tanggal_supervisi' => $request->tanggal_supervisi ?? now(),
-            'catatan' => $request->catatan,
+            'tanggal_supervisi' => null, // Will be set when submitted
+            'catatan' => null,
             'status' => 'draft'
         ]);
 
@@ -62,12 +60,14 @@ class SupervisiController extends Controller
     {
         try {
             $request->validate([
-                'jenis_dokumen' => 'required|string',
-                'file' => 'required|file|mimes:pdf,jpg,jpeg,png|max:2048'
+                'jenis_dokumen' => 'required|string|alpha_dash|max:50',
+                'file' => 'required|file|mimes:pdf,jpg,jpeg,png|mimetypes:application/pdf,image/jpeg,image/png|max:2048'
             ], [
                 'file.required' => 'File wajib dipilih',
                 'file.mimes' => 'File harus berformat PDF, JPG, JPEG, atau PNG',
-                'file.max' => 'Ukuran file maksimal 2MB'
+                'file.mimetypes' => 'Tipe MIME file tidak valid',
+                'file.max' => 'Ukuran file maksimal 2MB',
+                'jenis_dokumen.alpha_dash' => 'Jenis dokumen hanya boleh mengandung huruf, angka, dash dan underscore'
             ]);
 
             $supervisi = Supervisi::where('id', $id)
@@ -87,9 +87,10 @@ class SupervisiController extends Controller
                 $existingDoc->delete();
             }
 
-            // Upload new file
+            // Upload new file with sanitized filename
             $file = $request->file('file');
-            $filename = time() . '_' . $request->jenis_dokumen . '.' . $file->getClientOriginalExtension();
+            $jenisDoc = preg_replace('/[^a-zA-Z0-9_-]/', '', $request->jenis_dokumen);
+            $filename = time() . '_' . $jenisDoc . '.' . $file->getClientOriginalExtension();
             $path = $file->storeAs('supervisi/' . $id, $filename, 'public');
 
             DokumenEvaluasi::create([
@@ -150,11 +151,11 @@ class SupervisiController extends Controller
     public function checkDocuments($id)
     {
         $count = DokumenEvaluasi::where('supervisi_id', $id)->count();
-        
+
         return response()->json([
-            'complete' => $count >= 7,
+            'complete' => $count >= self::REQUIRED_DOCUMENTS_COUNT,
             'count' => $count,
-            'required' => 7
+            'required' => self::REQUIRED_DOCUMENTS_COUNT
         ]);
     }
 
@@ -166,8 +167,7 @@ class SupervisiController extends Controller
 
         // If status is submitted, under_review, or completed, show detail page
         if (in_array($supervisi->status, ['submitted', 'under_review', 'completed'])) {
-            // TODO: redirect to detail page when it's ready
-            return redirect()->route('guru.supervisi.proses', $id);
+            return redirect()->route('guru.supervisi.detail', $id);
         }
 
         // For draft or revision status, continue the flow

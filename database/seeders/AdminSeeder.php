@@ -19,7 +19,7 @@ class AdminSeeder extends Seeder
             'nik' => '1234567890123456',
             'name' => 'Administrator',
             'email' => 'admin@esupervisi.com',
-            'password' => Hash::make('admin123'),
+            'password' => Hash::make(env('DEFAULT_ADMIN_PASSWORD', 'admin123')),
             'role' => 'admin',
             'is_active' => true,
         ]);
@@ -29,7 +29,7 @@ class AdminSeeder extends Seeder
             'nik' => '2234567890123456',
             'name' => 'Kepala Sekolah',
             'email' => 'kepala@esupervisi.com',
-            'password' => Hash::make('kepala123'),
+            'password' => Hash::make(env('DEFAULT_KEPALA_PASSWORD', 'kepala123')),
             'role' => 'kepala_sekolah',
             'is_active' => true,
         ]);
@@ -39,7 +39,7 @@ class AdminSeeder extends Seeder
             'nik' => '3234567890123456',
             'name' => 'Guru Demo',
             'email' => 'guru@esupervisi.com',
-            'password' => Hash::make('guru123'),
+            'password' => Hash::make(env('DEFAULT_GURU_PASSWORD', 'guru123')),
             'role' => 'guru',
             'tingkat' => 'SMA',
             'mata_pelajaran' => 'Matematika',

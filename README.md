@@ -1,359 +1,380 @@
-# 📚 E-Supervisi - Sistem Supervisi Pembelajaran
+# E-Supervisi - Sistem Supervisi Pembelajaran
 
 <div align="center">
 
 ![Laravel](https://img.shields.io/badge/Laravel-12.36.1-FF2D20?style=for-the-badge&logo=laravel&logoColor=white)
 ![PHP](https://img.shields.io/badge/PHP-8.2+-777BB4?style=for-the-badge&logo=php&logoColor=white)
-![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4.0-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
 ![MySQL](https://img.shields.io/badge/MySQL-8.0-4479A1?style=for-the-badge&logo=mysql&logoColor=white)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4.0-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
 
-**Sistem Manajemen Supervisi Pembelajaran Berbasis Web**
+Sistem manajemen supervisi dan evaluasi pembelajaran berbasis web
 
-[Demo](#) • [Dokumentasi](#fitur-utama) • [Instalasi](#instalasi) • [Kontribusi](#kontribusi)
+[Features](#features) • [Installation](#installation) • [Usage](#usage) • [Deployment](#deployment)
 
 </div>
 
 ---
 
-## 📋 Deskripsi
+## About
 
-**E-Supervisi** adalah sistem informasi berbasis web yang dirancang untuk memudahkan proses supervisi dan evaluasi pembelajaran di sekolah. Sistem ini memungkinkan guru untuk mengajukan supervisi, kepala sekolah untuk melakukan evaluasi, dan administrator untuk mengelola seluruh sistem dengan efisien.
+**E-Supervisi** adalah sistem informasi berbasis web untuk mengelola proses supervisi pembelajaran di sekolah. Sistem ini menyediakan platform digital untuk pengajuan supervisi oleh guru, evaluasi oleh kepala sekolah, dan manajemen pengguna oleh administrator.
 
-### 🎯 Tujuan Sistem
+### Key Features
 
--   Digitalisasi proses supervisi pembelajaran
--   Meningkatkan efisiensi evaluasi kinerja guru
--   Mempermudah monitoring dan pelaporan
--   Menyediakan feedback yang terstruktur dan terukur
-
----
-
-## ✨ Fitur Utama
-
-### 👨‍🏫 **Fitur Guru**
-
--   ✅ Dashboard dengan statistik supervisi
--   📝 Pengajuan supervisi baru
--   📤 Upload dokumen pembelajaran (RPP, Materi, Evaluasi)
--   🔄 Revisi dokumen berdasarkan feedback
--   📊 Tracking status supervisi (Draft, Submitted, Under Review, Completed)
--   💬 Melihat feedback dari Kepala Sekolah
-
-### 👔 **Fitur Kepala Sekolah**
-
--   📈 Dashboard monitoring semua supervisi
--   👁️ Review dokumen supervisi guru
--   ✍️ Memberikan feedback dan komentar
--   ⚠️ Request revisi dokumen
--   ✅ Menandai supervisi selesai ditinjau
--   📊 Statistik evaluasi per guru dan mata pelajaran
-
-### 🛡️ **Fitur Administrator**
-
--   👥 Manajemen pengguna (CRUD users)
--   🔐 Pengaturan role dan hak akses
--   🔄 Reset password pengguna
--   ✏️ Edit data profil pengguna
--   📊 Dashboard overview sistem
--   🔍 Filter dan sorting data
-
-### 🎨 **Fitur UI/UX**
-
--   🌓 Dark Mode / Light Mode
--   📱 Fully Responsive (Mobile, Tablet, Laptop)
--   🎯 Modern & Clean Interface
--   ⚡ Smooth Animations & Transitions
--   🔔 Real-time Notifications
--   📥 Pull-to-Refresh (Mobile)
--   🔄 Auto-hide Header on Scroll
+- **Multi-role System**: Administrator, Kepala Sekolah, dan Guru dengan hak akses berbeda
+- **Document Management**: Upload dan manajemen dokumen pembelajaran (RPP, Materi, Evaluasi)
+- **Workflow Tracking**: Status tracking dari draft hingga completed dengan sistem revisi
+- **Feedback System**: Komunikasi terstruktur antara guru dan evaluator
+- **User Management**: CRUD operations untuk manajemen pengguna dan hak akses
+- **Responsive Design**: Kompatibel dengan desktop, tablet, dan mobile devices
 
 ---
 
-## 🛠️ Teknologi yang Digunakan
+## System Requirements
+
+- PHP >= 8.2
+- Composer >= 2.0
+- Node.js >= 18.x
+- NPM >= 9.x
+- MySQL >= 8.0
+- Git
+
+---
+
+## Installation
+
+### 1. Clone Repository
+
+```bash
+git clone https://github.com/nothingisme00/e-supervisi.git
+cd e-supervisi
+```
+
+### 2. Install Dependencies
+
+```bash
+# Install PHP dependencies
+composer install
+
+# Install JavaScript dependencies
+npm install
+```
+
+### 3. Environment Configuration
+
+```bash
+# Copy environment file
+cp .env.example .env
+
+# Generate application key
+php artisan key:generate
+```
+
+### 4. Database Setup
+
+Create MySQL database:
+
+```sql
+CREATE DATABASE e_supervisi;
+```
+
+Update `.env` file:
+
+```env
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=e_supervisi
+DB_USERNAME=root
+DB_PASSWORD=your_password
+```
+
+### 5. Run Migrations and Seeders
+
+```bash
+# Run database migrations
+php artisan migrate
+
+# Seed database with initial data
+php artisan db:seed
+```
+
+### 6. Create Storage Link
+
+```bash
+php artisan storage:link
+```
+
+### 7. Build Assets
+
+```bash
+# Development
+npm run dev
+
+# Production
+npm run build
+```
+
+### 8. Start Development Server
+
+```bash
+php artisan serve
+```
+
+Access application at: `http://localhost:8000`
+
+---
+
+## Default Credentials
+
+After running seeders, use these credentials to login:
+
+| Role           | NIK                | Password   |
+| -------------- | ------------------ | ---------- |
+| Administrator  | `1234567890123456` | `password` |
+| Kepala Sekolah | `1234567890123457` | `password` |
+| Guru           | `1234567890123458` | `password` |
+
+> ⚠️ **Important**: Change default passwords after first login in production environment.
+
+---
+
+## Usage
+
+### Administrator
+
+- Manage users (create, read, update, delete)
+- Assign roles and permissions
+- Reset user passwords
+- Monitor system activity via dashboard
+- Configure system settings
+
+### Kepala Sekolah
+
+- Review supervision submissions from teachers
+- Provide feedback and comments on documents
+- Request revisions when needed
+- Approve and complete supervision evaluations
+- Monitor teacher performance through statistics
+
+### Guru
+
+- Create and submit supervision requests
+- Upload learning documents (Lesson Plans, Materials, Evaluations)
+- Track submission status (Draft, Submitted, Under Review, Completed)
+- Respond to feedback and revision requests
+- View evaluation history and comments
+
+---
+
+## Tech Stack
 
 ### Backend
-
--   **Laravel 12.36.1** - PHP Framework
--   **PHP 8.2+** - Programming Language
--   **MySQL 8.0** - Database
--   **Laravel Sanctum** - API Authentication
--   **Intervention Image** - Image Processing
+- **Laravel 12.36.1** - PHP Framework
+- **PHP 8.2+** - Server-side language
+- **MySQL 8.0** - Relational database
+- **Eloquent ORM** - Database abstraction
 
 ### Frontend
-
--   **Tailwind CSS 4** - CSS Framework
--   **Alpine.js** - JavaScript Framework
--   **Vite** - Build Tool
--   **Blade Templates** - Templating Engine
-
-### Tools & Libraries
-
--   **Composer** - PHP Dependency Manager
--   **NPM** - JavaScript Package Manager
--   **Git** - Version Control
+- **Tailwind CSS 4** - Utility-first CSS framework
+- **Alpine.js** - Lightweight JavaScript framework
+- **Blade Templates** - Laravel templating engine
+- **Vite** - Frontend build tool
 
 ---
 
-## 📦 Instalasi
-
-### Prasyarat
-
-Pastikan sistem Anda sudah terinstall:
-
--   PHP >= 8.2
--   Composer
--   Node.js & NPM
--   MySQL 8.0
--   Git
-
-### Langkah Instalasi
-
-1. **Clone Repository**
-
-    ```bash
-    git clone https://github.com/nothingisme00/e-supervisi.git
-    cd e-supervisi
-    ```
-
-2. **Install Dependencies**
-
-    ```bash
-    # Install PHP dependencies
-    composer install
-
-    # Install JavaScript dependencies
-    npm install
-    ```
-
-3. **Konfigurasi Environment**
-
-    ```bash
-    # Copy file .env
-    cp .env.example .env
-
-    # Generate application key
-    php artisan key:generate
-    ```
-
-4. **Setup Database**
-
-    Buat database MySQL:
-
-    ```sql
-    CREATE DATABASE e_supervisi;
-    ```
-
-    Edit file `.env`:
-
-    ```env
-    DB_CONNECTION=mysql
-    DB_HOST=127.0.0.1
-    DB_PORT=3306
-    DB_DATABASE=e_supervisi
-    DB_USERNAME=root
-    DB_PASSWORD=
-    ```
-
-5. **Migrasi & Seeder**
-
-    ```bash
-    # Jalankan migrasi
-    php artisan migrate
-
-    # Jalankan seeder (opsional)
-    php artisan db:seed
-    ```
-
-6. **Storage Link**
-
-    ```bash
-    php artisan storage:link
-    ```
-
-7. **Build Assets**
-
-    ```bash
-    npm run build
-    ```
-
-8. **Jalankan Aplikasi**
-
-    ```bash
-    # Development
-    php artisan serve
-
-    # Di terminal lain untuk development assets
-    npm run dev
-    ```
-
-9. **Akses Aplikasi**
-
-    Buka browser dan akses: `http://localhost:8000`
-
----
-
-## 👤 Default User Credentials
-
-Setelah menjalankan seeder, Anda dapat login dengan akun berikut:
-
-| Role           | NIK                | Password   | Keterangan          |
-| -------------- | ------------------ | ---------- | ------------------- |
-| Administrator  | `1234567890123456` | `password` | Akses penuh sistem  |
-| Kepala Sekolah | `1234567890123457` | `password` | Evaluasi supervisi  |
-| Guru           | `1234567890123458` | `password` | Pengajuan supervisi |
-
-> ⚠️ **PENTING**: Ganti password default setelah login pertama kali!
-
----
-
-## 📁 Struktur Folder
+## Project Structure
 
 ```
 e-supervisi/
 ├── app/
-│   ├── Http/
-│   │   ├── Controllers/     # Controllers
-│   │   └── Middleware/      # Custom Middleware
-│   ├── Models/              # Eloquent Models
-│   ├── Services/            # Business Logic Services
-│   └── Helpers/             # Helper Functions
+│   ├── Http/Controllers/    # Application controllers
+│   ├── Models/              # Eloquent models
+│   ├── Middleware/          # Custom middleware
+│   └── Providers/           # Service providers
 ├── database/
-│   ├── migrations/          # Database Migrations
-│   └── seeders/             # Database Seeders
-├── public/
-│   ├── storage/             # Public Storage (symlink)
-│   └── build/               # Compiled Assets
+│   ├── migrations/          # Database schema
+│   └── seeders/             # Database seeders
+├── public/                  # Web root directory
 ├── resources/
-│   ├── views/               # Blade Templates
-│   ├── css/                 # CSS Files
-│   └── js/                  # JavaScript Files
+│   ├── views/               # Blade templates
+│   ├── css/                 # Stylesheets
+│   └── js/                  # JavaScript files
 ├── routes/
-│   └── web.php              # Web Routes
+│   └── web.php              # Application routes
 └── storage/
-    └── app/public/          # File Storage
+    └── app/public/          # Uploaded files
 ```
 
 ---
 
-## 🔐 Keamanan
+## Security Features
 
--   ✅ Password Hashing (bcrypt)
--   ✅ CSRF Protection
--   ✅ SQL Injection Prevention (Eloquent ORM)
--   ✅ XSS Protection
--   ✅ Authentication & Authorization
--   ✅ Secure File Upload (validation & sanitization)
+- **Password Hashing** - bcrypt encryption for passwords
+- **CSRF Protection** - Token validation on forms
+- **SQL Injection Prevention** - Eloquent ORM with parameter binding
+- **XSS Protection** - Input sanitization and output escaping
+- **Authentication & Authorization** - Role-based access control
+- **File Upload Validation** - MIME type and size restrictions
 
 ---
 
-## 🚀 Deployment
+## Deployment
 
-### Production Setup
+### Production Configuration
 
-1. **Set Environment Production**
+1. **Update Environment Variables**
 
-    ```env
-    APP_ENV=production
-    APP_DEBUG=false
-    ```
+```env
+APP_ENV=production
+APP_DEBUG=false
+APP_URL=https://your-domain.com
+```
 
 2. **Optimize Application**
 
-    ```bash
-    # Cache configuration
-    php artisan config:cache
+```bash
+# Cache configuration
+php artisan config:cache
 
-    # Cache routes
-    php artisan route:cache
+# Cache routes
+php artisan route:cache
 
-    # Cache views
-    php artisan view:cache
+# Cache views
+php artisan view:cache
 
-    # Optimize autoloader
-    composer install --optimize-autoloader --no-dev
-    ```
+# Optimize Composer autoloader
+composer install --optimize-autoloader --no-dev
+```
 
 3. **Build Production Assets**
 
-    ```bash
-    npm run build
-    ```
+```bash
+npm run build
+```
 
-4. **Set Permissions**
-    ```bash
-    chmod -R 755 storage bootstrap/cache
-    ```
+4. **Set File Permissions**
 
----
+```bash
+chmod -R 755 storage bootstrap/cache
+chown -R www-data:www-data storage bootstrap/cache
+```
 
-## 📸 Screenshots
+5. **Configure Web Server**
 
-### Login Page
+Point document root to `public/` directory and configure URL rewriting.
 
-![Login Page](https://via.placeholder.com/800x450/4F46E5/FFFFFF?text=Login+Page)
+**Nginx Example:**
+```nginx
+location / {
+    try_files $uri $uri/ /index.php?$query_string;
+}
+```
 
-### Dashboard Guru
-
-![Dashboard Guru](https://via.placeholder.com/800x450/10B981/FFFFFF?text=Dashboard+Guru)
-
-### Dashboard Kepala Sekolah
-
-![Dashboard Kepala](https://via.placeholder.com/800x450/F59E0B/FFFFFF?text=Dashboard+Kepala+Sekolah)
-
-### Kelola Pengguna
-
-![Kelola Pengguna](https://via.placeholder.com/800x450/EF4444/FFFFFF?text=Kelola+Pengguna)
-
----
-
-## 🐛 Bug Report & Feature Request
-
-Jika Anda menemukan bug atau ingin mengajukan fitur baru, silakan buat issue di:
-
-👉 [GitHub Issues](https://github.com/nothingisme00/e-supervisi/issues)
+**Apache Example:**
+```apache
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^(.*)$ index.php/$1 [L]
+</IfModule>
+```
 
 ---
 
-## 🤝 Kontribusi
+## Troubleshooting
 
-Kontribusi sangat diterima! Untuk berkontribusi:
+### Common Issues
 
-1. Fork repository ini
-2. Buat branch fitur baru (`git checkout -b fitur-baru`)
-3. Commit perubahan (`git commit -m 'Menambahkan fitur baru'`)
-4. Push ke branch (`git push origin fitur-baru`)
-5. Buat Pull Request
+**Database Connection Error**
+- Verify database credentials in `.env`
+- Ensure MySQL service is running
+- Check database exists and user has proper permissions
+
+**Permission Denied**
+```bash
+chmod -R 755 storage bootstrap/cache
+```
+
+**Assets Not Loading**
+```bash
+npm run build
+php artisan storage:link
+```
+
+**Session/Cache Issues**
+```bash
+php artisan cache:clear
+php artisan config:clear
+php artisan view:clear
+```
 
 ---
 
-## 📄 Lisensi
+## Development
 
-Proyek ini menggunakan lisensi **MIT License**. Lihat file [LICENSE](LICENSE) untuk detail.
+### Running Tests
+
+```bash
+php artisan test
+```
+
+### Code Style
+
+Follow PSR-12 coding standards for PHP code.
+
+### Database Refresh
+
+```bash
+# Reset database and re-run migrations
+php artisan migrate:fresh --seed
+```
 
 ---
 
-## 👨‍💻 Developer
+## Contributing
 
-Dikembangkan dengan ❤️ oleh **[nothingisme00](https://github.com/nothingisme00)**
+Contributions are welcome! Please follow these steps:
 
-### Support
-
-Jika Anda merasa proyek ini bermanfaat, berikan ⭐️ pada repository ini!
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
 
 ---
 
-## 📞 Kontak
+## License
 
--   **GitHub**: [@nothingisme00](https://github.com/nothingisme00)
--   **Email**: [Email]
--   **Project Link**: [https://github.com/nothingisme00/e-supervisi](https://github.com/nothingisme00/e-supervisi)
+This project is licensed under the **MIT License**. See [LICENSE](LICENSE) file for details.
+
+---
+
+## Support
+
+If you encounter any issues or have questions:
+
+- Open an issue on [GitHub Issues](https://github.com/nothingisme00/e-supervisi/issues)
+- Check existing documentation and FAQs
+
+---
+
+## Acknowledgments
+
+Built with:
+- [Laravel](https://laravel.com)
+- [Tailwind CSS](https://tailwindcss.com)
+- [Alpine.js](https://alpinejs.dev)
 
 ---
 
 <div align="center">
 
-**© 2025 E-Supervisi. All Rights Reserved.**
+**E-Supervisi** © 2025
 
-Made with ❤️ using Laravel & Tailwind CSS
+Developed by [nothingisme00](https://github.com/nothingisme00)
+
+⭐ Star this repository if you find it helpful!
 
 </div>

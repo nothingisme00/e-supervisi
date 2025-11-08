@@ -76,7 +76,7 @@ Route::middleware(['auth', 'prevent.back', 'must.change.password'])->group(funct
             Route::get('/{id}/detail', [GuruHomeController::class, 'detail'])->name('detail');
             Route::get('/{id}/view', [GuruHomeController::class, 'viewOther'])->name('view');
             Route::post('/{id}/comment', [GuruHomeController::class, 'storeComment'])->name('comment');
-            Route::post('/{id}/delete', [SupervisiController::class, 'destroy'])->name('delete');
+            Route::delete('/{id}', [SupervisiController::class, 'destroy'])->name('delete');
 
             // Proses Routes
             Route::get('/{id}/proses', [ProsesController::class, 'show'])->name('proses');
@@ -92,7 +92,7 @@ Route::middleware(['auth', 'prevent.back', 'must.change.password'])->group(funct
         // User Management
         Route::resource('users', AdminUserController::class);
         Route::post('/users/{id}/reset-password', [AdminUserController::class, 'resetPassword'])->name('users.reset-password');
-        Route::post('/users/{id}/toggle-status', [AdminUserController::class, 'toggleStatus'])->name('users.toggle-status');
+        Route::patch('/users/{id}/toggle-status', [AdminUserController::class, 'toggleStatus'])->name('users.toggle-status');
         
         // Supervisi Review Management
         Route::prefix('supervisi')->name('supervisi.')->group(function () {
@@ -120,3 +120,33 @@ Route::middleware(['auth', 'prevent.back', 'must.change.password'])->group(funct
         });
     });
 });
+
+// Test/Simulasi Error Pages (only for development/testing)
+if (config('app.debug')) {
+    Route::prefix('test-error')->name('test.error.')->group(function () {
+        Route::get('/404', function () {
+            abort(404);
+        })->name('404');
+
+        Route::get('/500', function () {
+            throw new \Exception('Simulasi error 500 - Internal Server Error');
+        })->name('500');
+
+        Route::get('/503', function () {
+            abort(503);
+        })->name('503');
+
+        Route::get('/419', function () {
+            abort(419);
+        })->name('419');
+
+        Route::get('/network', function () {
+            return view('errors.network');
+        })->name('network');
+    });
+
+    // Test Loading Spinner
+    Route::get('/test-loading', function () {
+        return view('test-loading');
+    })->name('test.loading');
+}

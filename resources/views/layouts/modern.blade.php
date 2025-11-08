@@ -73,7 +73,7 @@
         }
     </style>
 </head>
-<body class="bg-gray-50 text-gray-900 dark:bg-gray-900 dark:text-gray-100 transition-colors duration-300">
+<body class="bg-gray-300 text-gray-900 dark:bg-gray-950 dark:text-gray-100 transition-colors duration-300">
 
 @auth
     <!-- Pull to Refresh Indicator -->
@@ -230,33 +230,34 @@
         <div class="h-full flex flex-col">
             <!-- User Profile Section with Hamburger -->
             <div class="border-b border-gray-200 dark:border-gray-700 px-3 md:px-4 lg:px-6 py-1.5 md:py-2 lg:py-2.5">
-                <div class="flex items-center justify-between h-full gap-1.5 md:gap-2 lg:gap-3">
+                <div class="flex items-center justify-between gap-1.5 md:gap-2 lg:gap-3">
                     <!-- Hamburger Icon -->
                     <button id="hamburger-menu-sidebar" type="button" class="p-1.5 md:p-1.5 lg:p-2 rounded-lg text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
                         <svg class="w-5 h-5 md:w-5 md:h-5 lg:w-6 lg:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                         </svg>
                     </button>
-                    
+
                     <!-- User Profile Info -->
                     <div class="flex items-center gap-1.5 md:gap-2 lg:gap-2.5 flex-1 min-w-0">
-                        <div class="relative">
-                            <div class="w-8 h-8 md:w-9 md:h-9 lg:w-10 lg:h-10 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-lg flex items-center justify-center text-white font-semibold text-sm md:text-base lg:text-base">
-                                {{ substr(Auth::user()->name, 0, 1) }}
-                            </div>
-                            <div class="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 bg-green-500 border-2 border-white dark:border-gray-800 rounded-full"></div>
+                        <div class="w-7 h-7 md:w-8 md:h-8 lg:w-9 lg:h-9 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-lg flex items-center justify-center shadow-md">
+                            <span class="text-xs md:text-sm lg:text-base text-white font-bold">{{ substr(Auth::user()->name, 0, 1) }}</span>
                         </div>
-                        <div class="flex-1 min-w-0">
-                            <div class="text-sm font-semibold text-gray-900 dark:text-white truncate">{{ Auth::user()->name }}</div>
-                            <div class="text-xs text-gray-500 dark:text-gray-400 truncate">
+                        <div>
+                            <h3 class="text-xs md:text-sm lg:text-base font-bold text-gray-900 dark:text-gray-100">{{ Auth::user()->name }}</h3>
+                            <p class="text-[10px] md:text-xs lg:text-sm text-gray-500 dark:text-gray-400">
                                 @if(Auth::user()->isAdmin())
                                     Administrator
                                 @elseif(Auth::user()->isGuru())
-                                    Guru {{ Auth::user()->mata_pelajaran }}
+                                    @if(Auth::user()->tingkat)
+                                        {{ Auth::user()->tingkat }} - {{ Auth::user()->mata_pelajaran }}
+                                    @else
+                                        Guru {{ Auth::user()->mata_pelajaran }}
+                                    @endif
                                 @elseif(Auth::user()->isKepalaSekolah())
-                                    Kepala Sekolah
+                                    Kepala Sekolah {{ Auth::user()->tingkat }}
                                 @endif
-                            </div>
+                            </p>
                         </div>
                     </div>
                 </div>

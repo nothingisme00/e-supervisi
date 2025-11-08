@@ -101,15 +101,16 @@
                     <select id="role"
                             name="role"
                             required
-                            class="w-full pl-9 sm:pl-10 pr-8 sm:pr-10 py-2.5 sm:py-3 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:focus:border-indigo-400 transition-all appearance-none cursor-pointer">
-                        <option value="">Pilih role Anda</option>
-                        <option value="guru" {{ old('role') == 'guru' ? 'selected' : '' }}>Guru</option>
-                        <option value="kepala_sekolah" {{ old('role') == 'kepala_sekolah' ? 'selected' : '' }}>Kepala Sekolah</option>
-                        <option value="admin" {{ old('role') == 'admin' ? 'selected' : '' }}>Administrator</option>
+                            class="w-full pl-9 sm:pl-10 pr-8 sm:pr-10 py-2.5 sm:py-3 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:focus:border-indigo-400 transition-all duration-300 appearance-none cursor-pointer hover:border-indigo-300 dark:hover:border-indigo-600"
+                            style="background-image: none;">
+                        <option value="" class="py-3 rounded-lg">Pilih role Anda</option>
+                        <option value="guru" {{ old('role') == 'guru' ? 'selected' : '' }} class="py-3 rounded-lg">Guru</option>
+                        <option value="kepala_sekolah" {{ old('role') == 'kepala_sekolah' ? 'selected' : '' }} class="py-3 rounded-lg">Kepala Sekolah</option>
+                        <option value="admin" {{ old('role') == 'admin' ? 'selected' : '' }} class="py-3 rounded-lg">Administrator</option>
                     </select>
-                    <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2.5 sm:px-3 text-gray-500 dark:text-gray-400">
-                        <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                    <div id="chevronIcon" class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2.5 sm:px-3 text-gray-500 dark:text-gray-400 transition-transform duration-300">
+                        <svg class="w-4 h-4 sm:w-4.5 sm:h-4.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"></path>
                         </svg>
                     </div>
                 </div>
@@ -240,17 +241,17 @@
             btnLoader.classList.remove('hidden');
         });
 
-        // Dropdown hover effect (border color only)
+        // Simple dropdown animation - chevron rotation only
         const roleSelect = document.getElementById('role');
-        roleSelect.addEventListener('mouseenter', function() {
-            if (document.activeElement !== this) {
-                this.style.borderColor = '#818cf8';
-            }
+        const chevronIcon = document.getElementById('chevronIcon');
+
+        // Rotate chevron smoothly when dropdown is opened
+        roleSelect.addEventListener('focus', function() {
+            chevronIcon.style.transform = 'rotate(180deg)';
         });
-        roleSelect.addEventListener('mouseleave', function() {
-            if (document.activeElement !== this) {
-                this.style.borderColor = '';
-            }
+
+        roleSelect.addEventListener('blur', function() {
+            chevronIcon.style.transform = 'rotate(0deg)';
         });
     });
 

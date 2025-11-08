@@ -10,6 +10,17 @@ use Illuminate\Http\Request;
 
 class ProsesController extends Controller
 {
+    // Required documents for supervisi evaluation
+    private const REQUIRED_DOCUMENTS = [
+        'capaian_pembelajaran',
+        'alur_tujuan_pembelajaran',
+        'kalender',
+        'program_tahunan',
+        'program_semester',
+        'modul_ajar',
+        'bahan_ajar'
+    ];
+
     public function show($id)
     {
         $supervisi = Supervisi::where('id', $id)
@@ -17,16 +28,9 @@ class ProsesController extends Controller
             ->whereIn('status', ['draft', 'revision'])
             ->firstOrFail();
 
-        // Check if all 7 required documents are uploaded
-        $requiredDocuments = [
-            'capaian_pembelajaran',
-            'alur_tujuan_pembelajaran',
-            'kalender',
-            'program_tahunan',
-            'program_semester',
-            'modul_ajar',
-            'bahan_ajar'
-        ];
+        // Check if all required documents are uploaded
+        $requiredDocuments = self::REQUIRED_DOCUMENTS;
+        $requiredCount = count($requiredDocuments);
 
         $uploadedDocuments = DokumenEvaluasi::where('supervisi_id', $id)
             ->pluck('jenis_dokumen')
@@ -34,9 +38,9 @@ class ProsesController extends Controller
 
         $uploadedCount = count(array_intersect($requiredDocuments, $uploadedDocuments));
 
-        if ($uploadedCount < 7) {
+        if ($uploadedCount < $requiredCount) {
             return redirect()->route('guru.supervisi.evaluasi', $id)
-                ->with('error', 'Anda harus mengupload semua 7 dokumen terlebih dahulu sebelum dapat melanjutkan ke tab Proses. Dokumen yang sudah diupload: ' . $uploadedCount . '/7');
+                ->with('error', 'Anda harus mengupload semua ' . $requiredCount . ' dokumen terlebih dahulu sebelum dapat melanjutkan ke tab Proses. Dokumen yang sudah diupload: ' . $uploadedCount . '/' . $requiredCount);
         }
 
         $proses = ProsesPembelajaran::where('supervisi_id', $id)->first();
@@ -112,9 +116,10 @@ class ProsesController extends Controller
             ], 400);
         }
 
-        // Update status to submitted
+        // Update status to submitted and set tanggal_supervisi
         $supervisi->update([
-            'status' => 'submitted'
+            'status' => 'submitted',
+            'tanggal_supervisi' => now() // Set tanggal saat submit
         ]);
 
         return response()->json([

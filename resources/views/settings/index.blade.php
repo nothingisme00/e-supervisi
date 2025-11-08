@@ -8,15 +8,18 @@
     <x-breadcrumb :items="[['label' => 'Pengaturan', 'icon' => true]]" />
 </div>
 
-<div class="max-w-4xl mx-auto">
+<div class="max-w-7xl mx-auto">
     <!-- Page Header -->
     <div class="mb-6">
         <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Pengaturan</h2>
         <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">Kelola informasi profil dan keamanan akun Anda</p>
     </div>
 
+    <!-- Two Column Layout -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+
     <!-- Profile Information -->
-    <div class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 mb-6 overflow-hidden">
+    <div class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden">
         <!-- Header -->
         <div class="px-6 py-4 bg-gradient-to-r from-indigo-50 to-blue-50 dark:from-gray-700 dark:to-gray-700 border-b border-gray-200 dark:border-gray-600">
             <h3 class="text-lg font-semibold text-gray-900 dark:text-white flex items-center">
@@ -232,6 +235,10 @@
             </div>
         </form>
     </div>
+
+    </div>
+    <!-- End Two Column Layout -->
+
 </div>
 
 <script>

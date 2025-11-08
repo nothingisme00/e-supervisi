@@ -75,7 +75,7 @@ class UserController extends Controller
     public function store(Request $request)
     {
         $rules = [
-            'nik' => 'required|string|max:16|unique:users',
+            'nik' => 'required|string|size:16|regex:/^[0-9]{16}$/|unique:users',
             'name' => 'required|string|max:255',
             'email' => 'nullable|email|unique:users',
             'role' => 'required|in:admin,guru,kepala_sekolah',
@@ -94,11 +94,12 @@ class UserController extends Controller
 
         $request->validate($rules);
 
+        $defaultPassword = env('DEFAULT_USER_PASSWORD', 'pass123456');
         $userData = [
             'nik' => $request->nik,
             'name' => $request->name,
             'email' => $request->email,
-            'password' => Hash::make('pass123456'), // Password default
+            'password' => Hash::make($defaultPassword), // Password default
             'role' => $request->role,
             'is_active' => true, // User baru selalu aktif
             'must_change_password' => true // Wajib ganti password saat login pertama
@@ -121,7 +122,7 @@ class UserController extends Controller
         User::create($userData);
 
         return redirect()->route('admin.users.index')
-            ->with('success', 'User berhasil ditambahkan dengan password default: pass123456');
+            ->with('success', 'User berhasil ditambahkan dengan password default: ' . $defaultPassword);
     }
 
     public function edit($id)
@@ -138,7 +139,7 @@ class UserController extends Controller
         $isEditingSelf = auth()->id() == $user->id;
 
         $rules = [
-            'nik' => 'required|string|max:16|unique:users,nik,' . $id,
+            'nik' => 'required|string|size:16|regex:/^[0-9]{16}$/|unique:users,nik,' . $id,
             'name' => 'required|string|max:255',
             'email' => 'nullable|email|unique:users,email,' . $id,
         ];
@@ -203,7 +204,7 @@ class UserController extends Controller
     {
         $user = User::findOrFail($id);
 
-        $newPassword = 'pass123456'; // Default password
+        $newPassword = env('DEFAULT_USER_PASSWORD', 'pass123456'); // Default password
         $user->update([
             'password' => Hash::make($newPassword),
             'must_change_password' => true // Wajib ganti password saat login
@@ -217,11 +218,23 @@ class UserController extends Controller
 
     public function destroy($id)
     {
-        $user = User::findOrFail($id);
-        $user->delete();
+        try {
+            $user = User::findOrFail($id);
 
-        return redirect()->route('admin.users.index')
-            ->with('success', 'User berhasil dihapus');
+            // Prevent deleting self
+            if ($user->id === auth()->id()) {
+                return redirect()->route('admin.users.index')
+                    ->with('error', 'Anda tidak dapat menghapus akun Anda sendiri');
+            }
+
+            $user->delete();
+
+            return redirect()->route('admin.users.index')
+                ->with('success', 'User berhasil dihapus');
+        } catch (\Exception $e) {
+            return redirect()->route('admin.users.index')
+                ->with('error', 'Gagal menghapus user: ' . $e->getMessage());
+        }
     }
 
     public function toggleStatus($id)

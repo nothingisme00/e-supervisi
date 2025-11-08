@@ -40,7 +40,7 @@ class CustomLoginController extends Controller
             if (!$user->is_active) {
                 Auth::logout();
                 return back()->withErrors([
-                    'nik' => 'Akun Anda tidak aktif. Silakan hubungi administrator.',
+                    'nik' => 'NIK, password, atau role tidak sesuai.',
                 ])->onlyInput('nik', 'role');
             }
 

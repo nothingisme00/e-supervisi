@@ -8,7 +8,10 @@
       "Bash(php check_users.php:*)",
       "Bash(del:*)",
       "Bash(npm run build:*)",
-      "Bash(php artisan:*)"
+      "Bash(php artisan:*)",
+      "Bash(git checkout:*)",
+      "Bash(dir:*)",
+      "Bash(git add:*)"
     ],
     "deny": [],
     "ask": []
