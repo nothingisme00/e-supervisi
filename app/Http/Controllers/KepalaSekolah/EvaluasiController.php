@@ -39,7 +39,8 @@ class EvaluasiController extends Controller
             'user',
             'dokumenEvaluasi',
             'prosesPembelajaran',
-            'feedback.user'
+            'feedback.user',
+            'feedback.replies.user'
         ])->findOrFail($id);
 
         // Don't auto mark - let kepala sekolah explicitly start review
@@ -70,6 +71,7 @@ class EvaluasiController extends Controller
     {
         $request->validate([
             'komentar' => 'required|string|min:10',
+            'parent_id' => 'nullable|exists:feedback,id',
         ]);
 
         $supervisi = Supervisi::findOrFail($id);
@@ -82,6 +84,7 @@ class EvaluasiController extends Controller
         Feedback::create([
             'supervisi_id' => $id,
             'user_id' => auth()->id(),
+            'parent_id' => $request->parent_id,
             'komentar' => $request->komentar,
             'is_revision_request' => $isRevisionRequest
         ]);
