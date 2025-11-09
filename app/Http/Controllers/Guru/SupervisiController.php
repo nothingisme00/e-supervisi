@@ -45,6 +45,7 @@ class SupervisiController extends Controller
 
     public function showEvaluasi($id)
     {
+        // Allow editing for both draft and revision status
         $supervisi = Supervisi::where('id', $id)
             ->where('user_id', auth()->id())
             ->whereIn('status', ['draft', 'revision'])
@@ -71,6 +72,7 @@ class SupervisiController extends Controller
                 'jenis_dokumen.alpha_dash' => 'Jenis dokumen hanya boleh mengandung huruf, angka, dash dan underscore'
             ]);
 
+            // Allow document upload for both draft and revision status
             $supervisi = Supervisi::where('id', $id)
                 ->where('user_id', auth()->id())
                 ->whereIn('status', ['draft', 'revision'])

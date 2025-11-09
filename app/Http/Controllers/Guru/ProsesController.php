@@ -23,6 +23,7 @@ class ProsesController extends Controller
 
     public function show($id)
     {
+        // Allow access to proses page for both draft and revision status
         $supervisi = Supervisi::where('id', $id)
             ->where('user_id', auth()->id())
             ->whereIn('status', ['draft', 'revision'])
