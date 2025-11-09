@@ -45,14 +45,16 @@
                         <label for="email" class="block text-sm font-medium text-gray-700 mb-1">
                             {{ __('Email Address') }}
                         </label>
-                        <input id="email" 
-                               type="email" 
-                               name="email" 
-                               value="{{ old('email') }}" 
-                               required 
-                               autocomplete="email" 
+                        <input id="email"
+                               type="email"
+                               name="email"
+                               value="{{ old('email') }}"
+                               required
+                               autocomplete="email"
                                autofocus
                                placeholder="nama@email.com"
+                               pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}"
+                               title="Masukkan alamat email yang valid (contoh: nama@email.com)"
                                class="appearance-none block w-full px-4 py-3 border rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-sm transition-all @error('email') border-red-500 @else border-gray-300 @enderror">
                         
                         @error('email')
