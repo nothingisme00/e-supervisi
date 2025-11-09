@@ -11,12 +11,24 @@ class HomeController extends Controller
 {
     public function index(Request $request)
     {
-        // Get all supervisi (timeline) with user relationship
+        // Get all supervisi (timeline) excluding drafts - only show submitted/reviewed supervisi
         $supervisiList = Supervisi::with(['user', 'dokumenEvaluasi', 'prosesPembelajaran', 'feedback.user'])
+            ->whereNotIn('status', ['draft'])
             ->orderBy('created_at', 'desc')
             ->get();
 
         return view('guru.home', compact('supervisiList'));
+    }
+
+    public function mySupervisi()
+    {
+        // Get only current user's draft supervisi
+        $mySupervisi = Supervisi::with(['dokumenEvaluasi', 'prosesPembelajaran'])
+            ->where('user_id', auth()->id())
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        return view('guru.my-supervisi', compact('mySupervisi'));
     }
 
     public function detail($id)

@@ -63,7 +63,8 @@ Route::middleware(['auth', 'prevent.back', 'must.change.password'])->group(funct
     // Guru Routes
     Route::prefix('guru')->name('guru.')->middleware('can:isGuru')->group(function () {
         Route::get('/home', [GuruHomeController::class, 'index'])->name('home');
-        
+        Route::get('/my-supervisi', [GuruHomeController::class, 'mySupervisi'])->name('my-supervisi');
+
         // Supervisi Routes
         Route::prefix('supervisi')->name('supervisi.')->group(function () {
             Route::get('/create', [SupervisiController::class, 'create'])->name('create');
