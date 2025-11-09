@@ -576,13 +576,13 @@ document.addEventListener('DOMContentLoaded', function() {
             if (this.checked) {
                 // Disable button when revision is checked
                 completeButton.disabled = true;
-                completeButton.classList.remove('bg-gradient-to-r', 'from-emerald-500', 'to-green-600', 'hover:from-emerald-600', 'hover:to-green-700', 'cursor-pointer');
-                completeButton.classList.add('bg-gray-400', 'dark:bg-gray-600', 'cursor-not-allowed', 'opacity-50');
+                completeButton.classList.remove('bg-gradient-to-r', 'from-emerald-500', 'to-green-600', 'hover:from-emerald-600', 'hover:to-green-700', 'cursor-pointer', 'shadow-lg', 'shadow-emerald-500/50', 'dark:shadow-emerald-500/30');
+                completeButton.classList.add('bg-gray-300', 'dark:bg-gray-700', 'text-gray-500', 'dark:text-gray-400', 'cursor-not-allowed');
             } else {
                 // Enable button when revision is unchecked
                 completeButton.disabled = false;
-                completeButton.classList.add('bg-gradient-to-r', 'from-emerald-500', 'to-green-600', 'hover:from-emerald-600', 'hover:to-green-700', 'cursor-pointer');
-                completeButton.classList.remove('bg-gray-400', 'dark:bg-gray-600', 'cursor-not-allowed', 'opacity-50');
+                completeButton.classList.add('bg-gradient-to-r', 'from-emerald-500', 'to-green-600', 'hover:from-emerald-600', 'hover:to-green-700', 'cursor-pointer', 'shadow-lg', 'shadow-emerald-500/50', 'dark:shadow-emerald-500/30');
+                completeButton.classList.remove('bg-gray-300', 'dark:bg-gray-700', 'text-gray-500', 'dark:text-gray-400', 'cursor-not-allowed');
             }
         });
     }
