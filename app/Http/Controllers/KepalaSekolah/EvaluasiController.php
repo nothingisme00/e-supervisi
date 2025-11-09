@@ -74,8 +74,9 @@ class EvaluasiController extends Controller
 
         $supervisi = Supervisi::findOrFail($id);
 
-        // Check if this is a revision request
-        $isRevisionRequest = $request->has('is_revision_request') && $request->is_revision_request == 'on';
+        // Check if this is a revision request using boolean() helper
+        // This handles '1', 'on', 'yes', true, etc.
+        $isRevisionRequest = $request->boolean('is_revision_request');
 
         // Create feedback with or without revision request flag
         Feedback::create([
