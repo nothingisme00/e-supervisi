@@ -44,7 +44,7 @@ class HomeController extends Controller
     public function viewOther($id)
     {
         // Get supervisi from other teacher (not own supervisi)
-        $supervisi = Supervisi::with(['user', 'dokumenEvaluasi', 'prosesPembelajaran', 'feedback.user'])
+        $supervisi = Supervisi::with(['user', 'dokumenEvaluasi', 'prosesPembelajaran', 'feedback.user', 'feedback.replies.user'])
             ->where('id', $id)
             ->where('user_id', '!=', auth()->id())
             ->firstOrFail();
