@@ -281,9 +281,9 @@
                             <div class="mt-2 space-y-2 max-h-60 overflow-y-auto pr-1 custom-scrollbar">
                                 @if($item->feedback && count($item->feedback) > 0)
                                     @php
-                                        $allComments = $item->feedback->sortByDesc('created_at');
+                                        $parentComments = $item->feedback->whereNull('parent_id')->sortByDesc('created_at');
                                     @endphp
-                                    @foreach($allComments as $fb)
+                                    @foreach($parentComments as $fb)
                                     <div class="bg-slate-50 dark:bg-gray-900/50 rounded-lg p-2.5 border border-slate-200 dark:border-gray-700">
                                         <div class="flex items-start gap-2">
                                             <div class="w-7 h-7 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white font-semibold text-xs flex-shrink-0">
@@ -299,9 +299,42 @@
                                                         </svg>
                                                         Kepsek
                                                     </span>
+                                                    @elseif($fb->user_id == auth()->id())
+                                                    <span class="inline-flex items-center px-1.5 py-0.5 rounded text-xs font-semibold bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-300">
+                                                        Anda
+                                                    </span>
                                                     @endif
                                                 </div>
                                                 <p class="text-xs text-slate-600 dark:text-gray-400">{{ $fb->komentar }}</p>
+
+                                                <!-- Nested Replies -->
+                                                @if($fb->replies && $fb->replies->count() > 0)
+                                                    <div class="mt-2 ml-4 space-y-2 pl-2 border-l-2 border-slate-200 dark:border-gray-700">
+                                                        @foreach($fb->replies->take(2) as $reply)
+                                                        <div class="bg-white dark:bg-gray-800/50 rounded p-2">
+                                                            <div class="flex items-start gap-1.5">
+                                                                <div class="w-5 h-5 rounded-full bg-gradient-to-br from-gray-400 to-gray-600 flex items-center justify-center text-white text-xs font-semibold flex-shrink-0">
+                                                                    {{ strtoupper(substr($reply->user->name ?? 'U', 0, 1)) }}
+                                                                </div>
+                                                                <div class="flex-1 min-w-0">
+                                                                    <div class="flex items-center gap-1 mb-0.5">
+                                                                        <span class="text-xs font-semibold text-slate-700 dark:text-gray-300">{{ $reply->user->name ?? 'User' }}</span>
+                                                                        @if($reply->user_id == auth()->id())
+                                                                        <span class="inline-flex items-center px-1 py-0.5 rounded text-xs font-semibold bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-300">
+                                                                            Anda
+                                                                        </span>
+                                                                        @endif
+                                                                    </div>
+                                                                    <p class="text-xs text-slate-600 dark:text-gray-400">{{ $reply->komentar }}</p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        @endforeach
+                                                        @if($fb->replies->count() > 2)
+                                                        <p class="text-xs text-slate-500 dark:text-gray-400 italic pl-2">+{{ $fb->replies->count() - 2 }} balasan lainnya...</p>
+                                                        @endif
+                                                    </div>
+                                                @endif
                                             </div>
                                         </div>
                                     </div>

@@ -12,7 +12,7 @@ class HomeController extends Controller
     public function index(Request $request)
     {
         // Get all supervisi (timeline) excluding drafts - only show submitted/reviewed supervisi
-        $supervisiList = Supervisi::with(['user', 'dokumenEvaluasi', 'prosesPembelajaran', 'feedback.user'])
+        $supervisiList = Supervisi::with(['user', 'dokumenEvaluasi', 'prosesPembelajaran', 'feedback.user', 'feedback.replies.user'])
             ->whereNotIn('status', ['draft'])
             ->orderBy('created_at', 'desc')
             ->get();
@@ -33,7 +33,7 @@ class HomeController extends Controller
 
     public function detail($id)
     {
-        $supervisi = Supervisi::with(['dokumenEvaluasi', 'prosesPembelajaran', 'feedback'])
+        $supervisi = Supervisi::with(['dokumenEvaluasi', 'prosesPembelajaran', 'feedback.user', 'feedback.replies.user'])
             ->where('id', $id)
             ->where('user_id', auth()->id())
             ->firstOrFail();
@@ -56,6 +56,7 @@ class HomeController extends Controller
     {
         $request->validate([
             'komentar' => 'required|string|max:1000',
+            'parent_id' => 'nullable|exists:feedback,id',
         ]);
 
         // Verify supervisi exists
@@ -70,10 +71,12 @@ class HomeController extends Controller
         Feedback::create([
             'supervisi_id' => $id,
             'user_id' => auth()->id(),
+            'parent_id' => $request->parent_id,
             'komentar' => $request->komentar,
             'is_revision_request' => false, // Comments from peers/owners are not revision requests
         ]);
 
-        return redirect()->back()->with('success', 'Komentar berhasil ditambahkan!');
+        $message = $request->parent_id ? 'Balasan berhasil ditambahkan!' : 'Komentar berhasil ditambahkan!';
+        return redirect()->back()->with('success', $message);
     }
 }
