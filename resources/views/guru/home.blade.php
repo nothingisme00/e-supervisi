@@ -321,7 +321,8 @@
                 <div class="px-4 py-3 bg-gray-50 dark:bg-gray-900/30 border-t border-gray-100 dark:border-gray-700 flex items-center justify-end gap-3">
                     <div class="flex items-center gap-2">
                         @if($item->user_id == auth()->id())
-                            @if(in_array($item->status, ['draft', 'revision']))
+                            {{-- Only show delete button for draft status, not for revision --}}
+                            @if($item->status == 'draft')
                                 <form id="delete-supervisi-{{ $item->id }}" method="POST" action="{{ route('guru.supervisi.delete', $item->id) }}" class="inline-block">
                                     @csrf
                                     @method('DELETE')

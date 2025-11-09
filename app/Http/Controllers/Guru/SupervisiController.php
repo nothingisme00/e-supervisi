@@ -175,8 +175,13 @@ class SupervisiController extends Controller
             return redirect()->route('guru.supervisi.detail', $id);
         }
 
-        // For draft or revision status, continue the flow
-        // Check if proses data exists and is complete
+        // If status is revision, ALWAYS redirect to evaluasi page first
+        // This allows guru to review and re-upload documents as requested
+        if ($supervisi->status == 'revision') {
+            return redirect()->route('guru.supervisi.evaluasi', $id);
+        }
+
+        // For draft status, check if proses data exists and is complete
         $proses = ProsesPembelajaran::where('supervisi_id', $id)->first();
 
         // If proses exists and has all required fields, go to proses page
