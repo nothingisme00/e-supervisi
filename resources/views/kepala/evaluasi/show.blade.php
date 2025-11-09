@@ -318,55 +318,205 @@
             </div>
 
             @if($supervisi->status !== 'submitted')
-            <!-- Card 4: Riwayat Feedback -->
+            <!-- Card 4: Riwayat Feedback & Diskusi -->
             <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
                 <!-- Card Header -->
-                <div class="bg-orange-600 dark:bg-orange-700 px-6 py-4">
-                    <h3 class="text-base font-semibold text-white">Riwayat Feedback</h3>
+                <div class="bg-gradient-to-r from-purple-600 to-indigo-600 dark:from-purple-700 dark:to-indigo-700 px-6 py-4">
+                    <h3 class="text-base font-semibold text-white">Diskusi & Feedback</h3>
                 </div>
                 <!-- Card Content -->
                 <div class="p-6">
-                    <div class="max-h-96 overflow-y-auto space-y-3">
-                        @forelse($supervisi->feedback as $fb)
-                            <div class="border-l-4 {{ $fb->is_revision_request ? 'border-red-500 bg-red-50 dark:bg-red-900/20' : 'border-amber-500 bg-amber-50 dark:bg-amber-900/20' }} rounded-r-lg p-4">
-                                <div class="flex items-start gap-3">
-                                    <div class="w-10 h-10 bg-gradient-to-br from-amber-500 to-orange-600 rounded-full flex items-center justify-center text-white text-sm font-bold flex-shrink-0 shadow-md">
-                                        {{ strtoupper(substr($fb->user->name ?? 'KS', 0, 2)) }}
-                                    </div>
-                                    <div class="flex-1">
-                                        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-2">
-                                            <div class="flex items-center gap-2">
-                                                <span class="text-sm font-semibold text-gray-900 dark:text-white">{{ $fb->user->name ?? 'Kepala Sekolah' }}</span>
-                                                @if($fb->is_revision_request)
-                                                    <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-semibold bg-red-100 text-red-700 dark:bg-red-900/40 dark:text-red-300">
-                                                        <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
-                                                        </svg>
-                                                        Revisi Diminta
-                                                    </span>
-                                                @endif
-                                            </div>
-                                            <div class="inline-flex items-center gap-1.5 text-xs text-gray-500 dark:text-gray-400">
-                                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                                                </svg>
-                                                {{ $fb->created_at->format('d M Y, H:i') }}
-                                            </div>
+                    <!-- Success/Error Messages -->
+                    @if(session('success'))
+                    <div class="mb-4 p-4 bg-emerald-50 dark:bg-emerald-900/20 border-l-4 border-emerald-500 dark:border-emerald-600 rounded-r-lg">
+                        <div class="flex items-center">
+                            <svg class="w-5 h-5 text-emerald-600 dark:text-emerald-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                            <span class="text-emerald-700 dark:text-emerald-300 text-sm font-medium">{{ session('success') }}</span>
+                        </div>
+                    </div>
+                    @endif
+
+                    <!-- Feedback List -->
+                    <div class="space-y-3 max-h-96 overflow-y-auto pb-2 mb-4">
+                    @if($supervisi->feedback && $supervisi->feedback->count() > 0)
+                        @foreach($supervisi->feedback->whereNull('parent_id')->sortByDesc('created_at') as $fb)
+                        <div class="border-l-4 {{ $fb->is_revision_request ? 'border-red-500 bg-red-50 dark:bg-red-900/20' : ($fb->user_id == auth()->id() ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20' : 'border-amber-500 bg-amber-50 dark:bg-amber-900/20') }} rounded-r-lg p-4">
+                            <div class="flex items-start gap-3">
+                                <div class="w-10 h-10 bg-gradient-to-br {{ $fb->user_id == auth()->id() ? 'from-blue-500 to-indigo-600' : 'from-amber-500 to-orange-600' }} rounded-full flex items-center justify-center text-white text-sm font-bold flex-shrink-0 shadow-md">
+                                    {{ strtoupper(substr($fb->user->name ?? 'U', 0, 2)) }}
+                                </div>
+                                <div class="flex-1">
+                                    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-2">
+                                        <div class="flex items-center gap-2 flex-wrap">
+                                            <span class="text-sm font-semibold text-gray-900 dark:text-white">{{ $fb->user->name ?? 'User' }}</span>
+
+                                            @if($fb->user->role === 'kepala_sekolah')
+                                                <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-semibold bg-purple-100 text-purple-700 dark:bg-purple-900/40 dark:text-purple-300">
+                                                    <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path>
+                                                    </svg>
+                                                    Kepala Sekolah
+                                                </span>
+                                            @elseif($fb->user_id == auth()->id())
+                                                <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-semibold bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-300">
+                                                    <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                                                    </svg>
+                                                    Anda
+                                                </span>
+                                            @else
+                                                <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-semibold bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300">
+                                                    Guru
+                                                </span>
+                                            @endif
+
+                                            @if($fb->is_revision_request)
+                                                <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-semibold bg-red-100 text-red-700 dark:bg-red-900/40 dark:text-red-300">
+                                                    <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+                                                    </svg>
+                                                    Revisi Diminta
+                                                </span>
+                                            @endif
                                         </div>
-                                        <p class="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">{{ $fb->komentar }}</p>
+                                        <div class="inline-flex items-center gap-1.5 text-xs text-gray-500 dark:text-gray-400">
+                                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                            </svg>
+                                            {{ $fb->created_at->diffForHumans() }}
+                                        </div>
                                     </div>
+                                    <p class="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">{{ $fb->komentar }}</p>
+
+                                    @if($fb->is_revision_request)
+                                        <div class="mt-3 p-3 bg-red-100 dark:bg-red-900/30 rounded-lg border border-red-200 dark:border-red-800/50">
+                                            <p class="text-xs font-semibold text-red-800 dark:text-red-300 mb-1">⚠️ Revisi Diminta</p>
+                                            <p class="text-xs text-red-700 dark:text-red-400">Guru akan melakukan revisi sesuai feedback di atas.</p>
+                                        </div>
+                                    @endif
+
+                                    <!-- Reply Button -->
+                                    @if($supervisi->status !== 'completed')
+                                    <div class="mt-3">
+                                        <button onclick="toggleReplyForm({{ $fb->id }})" class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 hover:bg-indigo-50 dark:hover:bg-indigo-900/20 rounded-lg transition-all">
+                                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6"></path>
+                                            </svg>
+                                            Balas
+                                        </button>
+                                    </div>
+
+                                    <!-- Reply Form -->
+                                    <div id="reply-form-{{ $fb->id }}" class="hidden mt-3 pl-4 border-l-2 border-indigo-200 dark:border-indigo-800">
+                                        <form action="{{ route('kepala.evaluasi.feedback', $supervisi->id) }}" method="POST" class="space-y-2">
+                                            @csrf
+                                            <input type="hidden" name="parent_id" value="{{ $fb->id }}">
+                                            <textarea
+                                                name="komentar"
+                                                rows="2"
+                                                required
+                                                class="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 focus:border-indigo-500 dark:focus:border-indigo-400 bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 resize-none"
+                                                placeholder="Tulis balasan Anda..."></textarea>
+                                            <div class="flex gap-2">
+                                                <button type="submit" class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold rounded-lg transition-all">
+                                                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
+                                                    </svg>
+                                                    Kirim
+                                                </button>
+                                                <button type="button" onclick="toggleReplyForm({{ $fb->id }})" class="px-3 py-1.5 text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 text-xs font-semibold rounded-lg transition-all">
+                                                    Batal
+                                                </button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    @endif
+
+                                    <!-- Nested Replies -->
+                                    @if($fb->replies && $fb->replies->count() > 0)
+                                        <div class="mt-4 ml-6 space-y-3 pl-4 border-l-2 border-gray-200 dark:border-gray-700">
+                                            @foreach($fb->replies as $reply)
+                                            <div class="bg-gray-50 dark:bg-gray-900/30 rounded-lg p-3">
+                                                <div class="flex items-start gap-2">
+                                                    <div class="w-8 h-8 bg-gradient-to-br {{ $reply->user_id == auth()->id() ? 'from-blue-400 to-indigo-500' : 'from-gray-400 to-gray-600' }} rounded-full flex items-center justify-center text-white text-xs font-bold flex-shrink-0">
+                                                        {{ strtoupper(substr($reply->user->name ?? 'U', 0, 2)) }}
+                                                    </div>
+                                                    <div class="flex-1 min-w-0">
+                                                        <div class="flex items-center gap-2 mb-1 flex-wrap">
+                                                            <span class="text-xs font-semibold text-gray-900 dark:text-white">{{ $reply->user->name ?? 'User' }}</span>
+
+                                                            @if($reply->user->role === 'kepala_sekolah')
+                                                                <span class="inline-flex items-center px-1.5 py-0.5 rounded text-xs font-semibold bg-purple-100 text-purple-700 dark:bg-purple-900/40 dark:text-purple-300">
+                                                                    <svg class="w-2.5 h-2.5 mr-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path>
+                                                                    </svg>
+                                                                    Kepsek
+                                                                </span>
+                                                            @elseif($reply->user_id == auth()->id())
+                                                                <span class="inline-flex items-center px-1.5 py-0.5 rounded text-xs font-semibold bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-300">
+                                                                    Anda
+                                                                </span>
+                                                            @endif
+
+                                                            <span class="text-xs text-gray-500 dark:text-gray-400">{{ $reply->created_at->diffForHumans() }}</span>
+                                                        </div>
+                                                        <p class="text-xs text-gray-700 dark:text-gray-300">{{ $reply->komentar }}</p>
+
+                                                        <!-- Reply to reply button -->
+                                                        @if($supervisi->status !== 'completed')
+                                                        <div class="mt-2">
+                                                            <button onclick="toggleReplyForm({{ $reply->id }})" class="inline-flex items-center gap-1 text-xs font-semibold text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300">
+                                                                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6"></path>
+                                                                </svg>
+                                                                Balas
+                                                            </button>
+                                                        </div>
+
+                                                        <!-- Reply to reply form -->
+                                                        <div id="reply-form-{{ $reply->id }}" class="hidden mt-2">
+                                                            <form action="{{ route('kepala.evaluasi.feedback', $supervisi->id) }}" method="POST" class="space-y-2">
+                                                                @csrf
+                                                                <input type="hidden" name="parent_id" value="{{ $fb->id }}">
+                                                                <textarea
+                                                                    name="komentar"
+                                                                    rows="2"
+                                                                    required
+                                                                    class="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 resize-none"
+                                                                    placeholder="Tulis balasan Anda..."></textarea>
+                                                                <div class="flex gap-2">
+                                                                    <button type="submit" class="inline-flex items-center gap-1 px-2 py-1 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold rounded transition-all">
+                                                                        Kirim
+                                                                    </button>
+                                                                    <button type="button" onclick="toggleReplyForm({{ $reply->id }})" class="px-2 py-1 text-gray-600 dark:text-gray-400 text-xs font-semibold rounded transition-all">
+                                                                        Batal
+                                                                    </button>
+                                                                </div>
+                                                            </form>
+                                                        </div>
+                                                        @endif
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            @endforeach
+                                        </div>
+                                    @endif
                                 </div>
                             </div>
-                        @empty
-                            <div class="text-center py-8">
-                                <div class="w-12 h-12 bg-gray-100 dark:bg-gray-700 rounded-lg flex items-center justify-center mx-auto mb-3">
-                                    <svg class="w-6 h-6 text-gray-400 dark:text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"></path>
-                                    </svg>
-                                </div>
-                                <p class="text-gray-500 dark:text-gray-400 text-sm">Belum ada feedback</p>
+                        </div>
+                        @endforeach
+                    @else
+                        <div class="text-center py-8">
+                            <div class="w-12 h-12 bg-gray-100 dark:bg-gray-700 rounded-lg flex items-center justify-center mx-auto mb-3">
+                                <svg class="w-6 h-6 text-gray-400 dark:text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
+                                </svg>
                             </div>
-                        @endforelse
+                            <p class="text-gray-500 dark:text-gray-400 text-sm">Belum ada komentar</p>
+                        </div>
+                    @endif
                     </div>
                 </div>
             </div>
@@ -587,6 +737,14 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 });
+
+// Toggle reply form visibility
+function toggleReplyForm(id) {
+    const form = document.getElementById('reply-form-' + id);
+    if (form) {
+        form.classList.toggle('hidden');
+    }
+}
 </script>
 
 @endsection
