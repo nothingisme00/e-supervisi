@@ -446,7 +446,7 @@
                     <button type="button"
                             id="completeButton"
                             onclick="confirmComplete()"
-                            class="inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-gradient-to-r from-emerald-500 to-green-600 hover:from-emerald-600 hover:to-green-700 text-white text-sm font-bold rounded-lg transition-all duration-200 shadow-lg shadow-emerald-500/50 dark:shadow-emerald-500/30 cursor-pointer">
+                            class="inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-gradient-to-r from-emerald-500 to-green-600 hover:from-emerald-600 hover:to-green-700 text-white text-sm font-bold rounded-lg transition-all duration-200 cursor-pointer">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                         </svg>
@@ -576,13 +576,13 @@ document.addEventListener('DOMContentLoaded', function() {
             if (this.checked) {
                 // Disable button when revision is checked
                 completeButton.disabled = true;
-                completeButton.classList.remove('bg-gradient-to-r', 'from-emerald-500', 'to-green-600', 'hover:from-emerald-600', 'hover:to-green-700', 'cursor-pointer', 'shadow-lg', 'shadow-emerald-500/50', 'dark:shadow-emerald-500/30');
-                completeButton.classList.add('bg-gray-300', 'dark:bg-gray-700', 'text-gray-500', 'dark:text-gray-400', 'cursor-not-allowed', 'shadow-none');
+                completeButton.classList.remove('bg-gradient-to-r', 'from-emerald-500', 'to-green-600', 'hover:from-emerald-600', 'hover:to-green-700', 'cursor-pointer');
+                completeButton.classList.add('bg-gray-300', 'dark:bg-gray-700', 'text-gray-500', 'dark:text-gray-400', 'cursor-not-allowed');
             } else {
                 // Enable button when revision is unchecked
                 completeButton.disabled = false;
-                completeButton.classList.remove('bg-gray-300', 'dark:bg-gray-700', 'text-gray-500', 'dark:text-gray-400', 'cursor-not-allowed', 'shadow-none');
-                completeButton.classList.add('bg-gradient-to-r', 'from-emerald-500', 'to-green-600', 'hover:from-emerald-600', 'hover:to-green-700', 'cursor-pointer', 'shadow-lg', 'shadow-emerald-500/50', 'dark:shadow-emerald-500/30');
+                completeButton.classList.remove('bg-gray-300', 'dark:bg-gray-700', 'text-gray-500', 'dark:text-gray-400', 'cursor-not-allowed');
+                completeButton.classList.add('bg-gradient-to-r', 'from-emerald-500', 'to-green-600', 'hover:from-emerald-600', 'hover:to-green-700', 'cursor-pointer');
             }
         });
     }
