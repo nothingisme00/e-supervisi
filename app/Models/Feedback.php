@@ -14,6 +14,7 @@ class Feedback extends Model
     protected $fillable = [
         'supervisi_id',
         'user_id',
+        'parent_id',
         'komentar',
         'rating',
         'is_revision_request'
@@ -28,5 +29,17 @@ class Feedback extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    // Parent comment (for replies)
+    public function parent()
+    {
+        return $this->belongsTo(Feedback::class, 'parent_id');
+    }
+
+    // Child comments (replies)
+    public function replies()
+    {
+        return $this->hasMany(Feedback::class, 'parent_id')->with('user', 'replies')->latest();
     }
 }
