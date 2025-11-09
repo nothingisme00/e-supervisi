@@ -11,8 +11,9 @@ class EvaluasiController extends Controller
 {
     public function index(Request $request)
     {
+        // Include 'revision' status so kepala can see supervisi that need revision
         $query = Supervisi::with(['user', 'dokumenEvaluasi', 'prosesPembelajaran', 'feedback'])
-            ->whereIn('status', ['submitted', 'under_review', 'completed']);
+            ->whereIn('status', ['submitted', 'under_review', 'revision', 'completed']);
 
         // Filter by status
         if ($request->has('status') && $request->status != '') {
@@ -73,12 +74,28 @@ class EvaluasiController extends Controller
 
         $supervisi = Supervisi::findOrFail($id);
 
-        // Create feedback without rating
+        // Check if this is a revision request
+        $isRevisionRequest = $request->has('is_revision_request') && $request->is_revision_request == 'on';
+
+        // Create feedback with or without revision request flag
         Feedback::create([
             'supervisi_id' => $id,
             'user_id' => auth()->id(),
             'komentar' => $request->komentar,
+            'is_revision_request' => $isRevisionRequest
         ]);
+
+        // If revision is requested, update status to revision
+        if ($isRevisionRequest) {
+            $supervisi->update([
+                'status' => 'revision',
+                'revision_count' => ($supervisi->revision_count ?? 0) + 1,
+                'revision_notes' => $request->komentar
+            ]);
+
+            return redirect()->route('kepala.evaluasi.show', $id)
+                ->with('success', 'Permintaan revisi berhasil dikirim ke guru');
+        }
 
         // Update supervisi status to under_review if submitted
         if ($supervisi->status == 'submitted') {
