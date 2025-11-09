@@ -58,16 +58,20 @@ class HomeController extends Controller
             'komentar' => 'required|string|max:1000',
         ]);
 
-        // Verify this is not user's own supervisi
-        $supervisi = Supervisi::where('id', $id)
-            ->where('user_id', '!=', auth()->id())
-            ->firstOrFail();
+        // Verify supervisi exists
+        $supervisi = Supervisi::findOrFail($id);
+
+        // Allow comments from supervisi owner or others
+        // But only if supervisi is not in draft status
+        if ($supervisi->status === 'draft') {
+            return redirect()->back()->with('error', 'Tidak dapat menambahkan komentar pada supervisi yang masih draft.');
+        }
 
         Feedback::create([
             'supervisi_id' => $id,
             'user_id' => auth()->id(),
             'komentar' => $request->komentar,
-            'is_revision_request' => false, // Comments from peers are not revision requests
+            'is_revision_request' => false, // Comments from peers/owners are not revision requests
         ]);
 
         return redirect()->back()->with('success', 'Komentar berhasil ditambahkan!');
