@@ -127,15 +127,16 @@ Access application at: `http://localhost:8000`
 
 ## Default Credentials
 
-After running seeders, use these credentials to login:
+After running `php artisan db:seed`, a default admin user will be created:
 
-| Role           | NIK                | Password   |
-| -------------- | ------------------ | ---------- |
-| Administrator  | `1234567890123456` | `password` |
-| Kepala Sekolah | `1234567890123457` | `password` |
-| Guru           | `1234567890123458` | `password` |
+| Role          | NIK                | Email                | Password  |
+| ------------- | ------------------ | -------------------- | --------- |
+| Administrator | `1234567890123456` | admin@esupervisi.com | `admin123` |
 
-> ⚠️ **Important**: Change default passwords after first login in production environment.
+> ⚠️ **IMPORTANT**:
+> - Change the default password immediately after first login!
+> - Create other users (Kepala Sekolah, Guru) through the admin panel after logging in.
+> - For production, consider using stronger passwords and enable two-factor authentication.
 
 ---
 
@@ -291,6 +292,18 @@ location / {
 - Verify database credentials in `.env`
 - Ensure MySQL service is running
 - Check database exists and user has proper permissions
+
+**Seeding Error (Column not found)**
+If you encounter `email_verified_at` column error during seeding:
+```bash
+# Clear all caches
+php artisan config:clear
+php artisan cache:clear
+composer dump-autoload
+
+# Reset database completely
+php artisan migrate:fresh --seed
+```
 
 **Permission Denied**
 ```bash

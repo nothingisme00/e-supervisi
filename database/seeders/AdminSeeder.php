@@ -14,36 +14,19 @@ class AdminSeeder extends Seeder
      */
     public function run(): void
     {
-        // Create admin user
+        // Create default admin user
         User::create([
             'nik' => '1234567890123456',
             'name' => 'Administrator',
             'email' => 'admin@esupervisi.com',
-            'password' => Hash::make(env('DEFAULT_ADMIN_PASSWORD', 'admin123')),
+            'password' => Hash::make('admin123'),
             'role' => 'admin',
             'is_active' => true,
         ]);
 
-        // Create kepala sekolah user
-        User::create([
-            'nik' => '2234567890123456',
-            'name' => 'Kepala Sekolah',
-            'email' => 'kepala@esupervisi.com',
-            'password' => Hash::make(env('DEFAULT_KEPALA_PASSWORD', 'kepala123')),
-            'role' => 'kepala_sekolah',
-            'is_active' => true,
-        ]);
-
-        // Create guru user
-        User::create([
-            'nik' => '3234567890123456',
-            'name' => 'Guru Demo',
-            'email' => 'guru@esupervisi.com',
-            'password' => Hash::make(env('DEFAULT_GURU_PASSWORD', 'guru123')),
-            'role' => 'guru',
-            'tingkat' => 'SMA',
-            'mata_pelajaran' => 'Matematika',
-            'is_active' => true,
-        ]);
+        $this->command->info('Default admin user created successfully!');
+        $this->command->info('NIK: 1234567890123456');
+        $this->command->info('Password: admin123');
+        $this->command->warn('⚠️  IMPORTANT: Please change the default password after first login!');
     }
 }
