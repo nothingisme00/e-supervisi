@@ -11,7 +11,8 @@ class UserController extends Controller
 {
     public function index(Request $request)
     {
-        $query = User::query();
+        // Only show admin users
+        $query = User::where('role', 'admin');
 
         // Search filter (with proper grouping)
         if ($request->filled('search')) {
@@ -23,15 +24,15 @@ class UserController extends Controller
             });
         }
 
-        // Role filter
-        if ($request->filled('role')) {
-            $query->where('role', $request->role);
-        }
+        // Role filter - removed since we only show admin users
+        // if ($request->filled('role')) {
+        //     $query->where('role', $request->role);
+        // }
 
-        // Tingkat filter
-        if ($request->filled('tingkat')) {
-            $query->where('tingkat', $request->tingkat);
-        }
+        // Tingkat filter - removed since admin doesn't have tingkat
+        // if ($request->filled('tingkat')) {
+        //     $query->where('tingkat', $request->tingkat);
+        // }
 
         // Status filter
         if ($request->filled('status')) {
@@ -54,10 +55,7 @@ class UserController extends Controller
             $sortDirection = 'desc';
         }
 
-        // Eager loading supervisi count untuk guru
-        if ($request->get('role') === 'guru' || !$request->filled('role')) {
-            $query->withCount('supervisi');
-        }
+        // No need for supervisi count since admin users don't have supervisi
 
         // Pagination ditingkatkan dari 10 menjadi 15
         $users = $query->orderBy($sortBy, $sortDirection)
@@ -74,55 +72,32 @@ class UserController extends Controller
 
     public function store(Request $request)
     {
+        // Only allow creating admin users
         $rules = [
             'nik' => 'required|string|size:16|regex:/^[0-9]{16}$/|unique:users',
             'name' => 'required|string|max:255',
-            'email' => 'nullable|email|unique:users',
-            'role' => 'required|in:admin,guru,kepala_sekolah',
+            'email' => 'required|email|unique:users',
         ];
-
-        // Validasi khusus untuk role guru
-        if ($request->role === 'guru') {
-            $rules['tingkat'] = 'required|in:SD,SMP';
-            $rules['mata_pelajaran'] = 'required|string|max:100';
-        } elseif ($request->role === 'kepala_sekolah') {
-            $rules['tingkat'] = 'required|in:SD,SMP';
-        } else {
-            $rules['tingkat'] = 'nullable';
-            $rules['mata_pelajaran'] = 'nullable';
-        }
 
         $request->validate($rules);
 
-        $defaultPassword = env('DEFAULT_USER_PASSWORD', 'pass123456');
+        $defaultPassword = env('DEFAULT_USER_PASSWORD', 'admin123');
         $userData = [
             'nik' => $request->nik,
             'name' => $request->name,
             'email' => $request->email,
-            'password' => Hash::make($defaultPassword), // Password default
-            'role' => $request->role,
-            'is_active' => true, // User baru selalu aktif
-            'must_change_password' => true // Wajib ganti password saat login pertama
+            'password' => Hash::make($defaultPassword),
+            'role' => 'admin', // Force role to admin
+            'tingkat' => null, // Admin doesn't have tingkat
+            'mata_pelajaran' => null, // Admin doesn't have mata_pelajaran
+            'is_active' => true,
+            'must_change_password' => true
         ];
-
-        // Tambahkan tingkat untuk guru dan kepala_sekolah
-        if ($request->role === 'guru' || $request->role === 'kepala_sekolah') {
-            $userData['tingkat'] = $request->tingkat;
-        } else {
-            $userData['tingkat'] = null;
-        }
-
-        // Tambahkan mata_pelajaran hanya untuk guru
-        if ($request->role === 'guru') {
-            $userData['mata_pelajaran'] = $request->mata_pelajaran;
-        } else {
-            $userData['mata_pelajaran'] = null;
-        }
 
         User::create($userData);
 
         return redirect()->route('admin.users.index')
-            ->with('success', 'User berhasil ditambahkan dengan password default: ' . $defaultPassword);
+            ->with('success', 'Admin berhasil ditambahkan dengan password default: ' . $defaultPassword);
     }
 
     public function edit($id)
@@ -138,28 +113,12 @@ class UserController extends Controller
         $user = User::findOrFail($id);
         $isEditingSelf = auth()->id() == $user->id;
 
+        // Only allow updating admin users
         $rules = [
             'nik' => 'required|string|size:16|regex:/^[0-9]{16}$/|unique:users,nik,' . $id,
             'name' => 'required|string|max:255',
-            'email' => 'nullable|email|unique:users,email,' . $id,
+            'email' => 'required|email|unique:users,email,' . $id,
         ];
-
-        // Jika bukan edit diri sendiri, role bisa diubah
-        if (!$isEditingSelf) {
-            $rules['role'] = 'required|in:admin,guru,kepala_sekolah';
-            
-            // Validasi khusus untuk role guru
-            if ($request->role === 'guru') {
-                $rules['tingkat'] = 'required|in:SD,SMP';
-                $rules['mata_pelajaran'] = 'required|string';
-            } elseif ($request->role === 'kepala_sekolah') {
-                $rules['tingkat'] = 'required|in:SD,SMP';
-                $rules['mata_pelajaran'] = 'nullable';
-            } else {
-                $rules['tingkat'] = 'nullable';
-                $rules['mata_pelajaran'] = 'nullable';
-            }
-        }
 
         $request->validate($rules);
 
@@ -168,26 +127,10 @@ class UserController extends Controller
             'nik' => $request->nik,
             'name' => $request->name,
             'email' => $request->email,
+            'role' => 'admin', // Keep role as admin
+            'tingkat' => null,
+            'mata_pelajaran' => null,
         ];
-
-        // Jika bukan edit diri sendiri, update role juga
-        if (!$isEditingSelf) {
-            $userData['role'] = $request->role;
-            
-            // Update tingkat untuk guru dan kepala_sekolah
-            if ($request->role === 'guru' || $request->role === 'kepala_sekolah') {
-                $userData['tingkat'] = $request->tingkat;
-            } else {
-                $userData['tingkat'] = null;
-            }
-            
-            // Update mata_pelajaran hanya untuk guru
-            if ($request->role === 'guru') {
-                $userData['mata_pelajaran'] = $request->mata_pelajaran;
-            } else {
-                $userData['mata_pelajaran'] = null;
-            }
-        }
 
         $user->update($userData);
 
@@ -197,14 +140,14 @@ class UserController extends Controller
         }
 
         return redirect()->route('admin.users.index')
-            ->with('success', 'User berhasil diupdate');
+            ->with('success', 'Admin berhasil diupdate');
     }
 
     public function resetPassword($id)
     {
         $user = User::findOrFail($id);
 
-        $newPassword = env('DEFAULT_USER_PASSWORD', 'pass123456'); // Default password
+        $newPassword = env('DEFAULT_USER_PASSWORD', 'admin123'); // Default admin password
         $user->update([
             'password' => Hash::make($newPassword),
             'must_change_password' => true // Wajib ganti password saat login
