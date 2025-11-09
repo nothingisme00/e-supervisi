@@ -1,12 +1,12 @@
 @extends('layouts.modern')
 
-@section('page-title', 'Edit Admin')
+@section('page-title', 'Edit Pengguna')
 
 @section('content')
 <x-breadcrumb :items="[
     ['label' => 'Dashboard', 'url' => route('admin.dashboard')],
-    ['label' => 'Kelola Admin', 'url' => route('admin.users.index')],
-    ['label' => 'Edit Admin']
+    ['label' => 'Kelola Pengguna', 'url' => route('admin.users.index')],
+    ['label' => 'Edit Pengguna']
 ]" />
 
 <div class="max-w-3xl mx-auto">
@@ -20,7 +20,7 @@
             <div>
                 <h3 class="text-sm font-semibold text-amber-900 dark:text-amber-300 mb-1">Anda Sedang Mengedit Data Diri Sendiri</h3>
                 <p class="text-xs text-amber-800 dark:text-amber-400 leading-relaxed">
-                    Anda hanya dapat mengubah <strong>NIK</strong>, <strong>Nama</strong>, dan <strong>Email</strong> Anda.
+                    Berhati-hatilah saat mengubah data diri Anda sendiri, terutama <strong>Email</strong> yang digunakan untuk login.
                 </p>
             </div>
         </div>
@@ -29,7 +29,7 @@
 
     <div class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6 lg:p-8">
         <div class="flex items-center justify-between mb-6">
-            <h2 class="text-xl font-bold text-gray-900 dark:text-white">Edit Admin</h2>
+            <h2 class="text-xl font-bold text-gray-900 dark:text-white">Edit Pengguna</h2>
             <a href="{{ route('admin.users.index') }}" class="px-4 py-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 text-sm font-medium rounded-lg transition-colors">
                 Kembali
             </a>
@@ -86,15 +86,64 @@
                        name="email"
                        value="{{ old('email', $user->email) }}"
                        required
-                       placeholder="Masukkan email admin"
+                       placeholder="Masukkan email"
                        class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all @error('email') border-red-500 @enderror">
                 @error('email')
                     <p class="mt-1 text-xs text-red-500 dark:text-red-400">{{ $message }}</p>
                 @enderror
             </div>
 
-            <!-- Role Hidden (Always admin) -->
-            <input type="hidden" name="role" value="admin">
+            <!-- Role -->
+            <div class="mb-5">
+                <label for="role" class="block text-gray-700 dark:text-gray-300 font-medium text-sm mb-2">
+                    Role <span class="text-red-500">*</span>
+                </label>
+                <select id="role"
+                        name="role"
+                        required
+                        class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all @error('role') border-red-500 @enderror">
+                    <option value="">-- Pilih Role --</option>
+                    <option value="admin" {{ old('role', $user->role) == 'admin' ? 'selected' : '' }}>Admin</option>
+                    <option value="kepala_sekolah" {{ old('role', $user->role) == 'kepala_sekolah' ? 'selected' : '' }}>Kepala Sekolah</option>
+                    <option value="guru" {{ old('role', $user->role) == 'guru' ? 'selected' : '' }}>Guru</option>
+                </select>
+                @error('role')
+                    <p class="mt-1 text-xs text-red-500 dark:text-red-400">{{ $message }}</p>
+                @enderror
+            </div>
+
+            <!-- Tingkat (Conditional - for guru and kepala_sekolah) -->
+            <div class="mb-5" id="tingkatField" style="display: none;">
+                <label for="tingkat" class="block text-gray-700 dark:text-gray-300 font-medium text-sm mb-2">
+                    Tingkat <span class="text-red-500">*</span>
+                </label>
+                <select id="tingkat"
+                        name="tingkat"
+                        class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all @error('tingkat') border-red-500 @enderror">
+                    <option value="">-- Pilih Tingkat --</option>
+                    <option value="SD" {{ old('tingkat', $user->tingkat) == 'SD' ? 'selected' : '' }}>SD</option>
+                    <option value="SMP" {{ old('tingkat', $user->tingkat) == 'SMP' ? 'selected' : '' }}>SMP</option>
+                </select>
+                @error('tingkat')
+                    <p class="mt-1 text-xs text-red-500 dark:text-red-400">{{ $message }}</p>
+                @enderror
+            </div>
+
+            <!-- Mata Pelajaran (Conditional - for guru only) -->
+            <div class="mb-5" id="mataPelajaranField" style="display: none;">
+                <label for="mata_pelajaran" class="block text-gray-700 dark:text-gray-300 font-medium text-sm mb-2">
+                    Mata Pelajaran <span class="text-red-500">*</span>
+                </label>
+                <input type="text"
+                       id="mata_pelajaran"
+                       name="mata_pelajaran"
+                       value="{{ old('mata_pelajaran', $user->mata_pelajaran) }}"
+                       placeholder="Masukkan mata pelajaran"
+                       class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all @error('mata_pelajaran') border-red-500 @enderror">
+                @error('mata_pelajaran')
+                    <p class="mt-1 text-xs text-red-500 dark:text-red-400">{{ $message }}</p>
+                @enderror
+            </div>
 
             <!-- Password Info -->
             <div class="mb-5 p-4 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg">
@@ -104,7 +153,7 @@
                     </svg>
                     <div>
                         <p class="text-sm font-medium text-blue-800 dark:text-blue-300">Informasi Password</p>
-                        <p class="text-xs text-blue-700 dark:text-blue-400 mt-1">Password tidak akan diubah saat update. Gunakan tombol "Reset Password" di halaman daftar admin untuk mereset password.</p>
+                        <p class="text-xs text-blue-700 dark:text-blue-400 mt-1">Password tidak akan diubah saat update. Gunakan tombol "Reset Password" di halaman daftar pengguna untuk mereset password.</p>
                     </div>
                 </div>
             </div>
@@ -117,7 +166,7 @@
                 <button type="submit"
                         id="submitBtn"
                         class="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-600 text-white text-sm font-semibold rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800">
-                    <span id="btnText">Update Admin</span>
+                    <span id="btnText">Update Pengguna</span>
                     <span id="btnLoader" class="hidden">
                         <div class="spinner inline-block"></div>
                         <span class="ml-2">Menyimpan...</span>
@@ -147,6 +196,38 @@
                 this.classList.add('border-gray-300', 'dark:border-gray-600');
             }
         });
+
+        // Role change handler - show/hide fields based on role
+        const roleSelect = document.getElementById('role');
+        const tingkatField = document.getElementById('tingkatField');
+        const mataPelajaranField = document.getElementById('mataPelajaranField');
+        const tingkatSelect = document.getElementById('tingkat');
+        const mataPelajaranInput = document.getElementById('mata_pelajaran');
+
+        function updateFieldsVisibility() {
+            const selectedRole = roleSelect.value;
+
+            if (selectedRole === 'guru' || selectedRole === 'kepala_sekolah') {
+                tingkatField.style.display = 'block';
+                tingkatSelect.required = true;
+            } else {
+                tingkatField.style.display = 'none';
+                tingkatSelect.required = false;
+            }
+
+            if (selectedRole === 'guru') {
+                mataPelajaranField.style.display = 'block';
+                mataPelajaranInput.required = true;
+            } else {
+                mataPelajaranField.style.display = 'none';
+                mataPelajaranInput.required = false;
+            }
+        }
+
+        roleSelect.addEventListener('change', updateFieldsVisibility);
+
+        // Initialize on page load (for existing user values)
+        updateFieldsVisibility();
 
         // Form submit with loading animation
         const form = document.getElementById('editUserForm');
