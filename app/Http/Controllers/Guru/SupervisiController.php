@@ -47,6 +47,7 @@ class SupervisiController extends Controller
     {
         $supervisi = Supervisi::where('id', $id)
             ->where('user_id', auth()->id())
+            ->whereIn('status', ['draft', 'revision'])
             ->firstOrFail();
 
         $uploadedDocuments = DokumenEvaluasi::where('supervisi_id', $id)
@@ -72,6 +73,7 @@ class SupervisiController extends Controller
 
             $supervisi = Supervisi::where('id', $id)
                 ->where('user_id', auth()->id())
+                ->whereIn('status', ['draft', 'revision'])
                 ->firstOrFail();
 
             // Check if document type already uploaded
@@ -126,9 +128,10 @@ class SupervisiController extends Controller
                 'jenis_dokumen' => 'required|string'
             ]);
 
-            // Verify ownership
+            // Verify ownership and status
             Supervisi::where('id', $id)
                 ->where('user_id', auth()->id())
+                ->whereIn('status', ['draft', 'revision'])
                 ->firstOrFail();
 
             $document = DokumenEvaluasi::where('supervisi_id', $id)
