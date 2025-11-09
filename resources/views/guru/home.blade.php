@@ -278,12 +278,12 @@
                             </svg>
                         </button>
                         <div id="comments-{{ $item->id }}" class="overflow-hidden transition-all duration-300 ease-in-out" style="max-height: 0; opacity: 0;">
-                            <div class="mt-2 space-y-2">
+                            <div class="mt-2 space-y-2 max-h-60 overflow-y-auto pr-1 custom-scrollbar">
                                 @if($item->feedback && count($item->feedback) > 0)
                                     @php
-                                        $recentComments = $item->feedback->sortByDesc('created_at')->take(3);
+                                        $allComments = $item->feedback->sortByDesc('created_at');
                                     @endphp
-                                    @foreach($recentComments as $fb)
+                                    @foreach($allComments as $fb)
                                     <div class="bg-slate-50 dark:bg-gray-900/50 rounded-lg p-2.5 border border-slate-200 dark:border-gray-700">
                                         <div class="flex items-start gap-2">
                                             <div class="w-7 h-7 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white font-semibold text-xs flex-shrink-0">
@@ -301,7 +301,7 @@
                                                     </span>
                                                     @endif
                                                 </div>
-                                                <p class="text-xs text-slate-600 dark:text-gray-400 line-clamp-2">{{ $fb->komentar }}</p>
+                                                <p class="text-xs text-slate-600 dark:text-gray-400">{{ $fb->komentar }}</p>
                                             </div>
                                         </div>
                                     </div>
