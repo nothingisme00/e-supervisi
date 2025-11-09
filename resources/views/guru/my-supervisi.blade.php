@@ -52,14 +52,22 @@
                         <!-- Card Header -->
                         <div class="px-4 py-3 bg-gradient-to-r from-gray-50 to-white dark:from-gray-700/50 dark:to-gray-800 border-b border-gray-200 dark:border-gray-700">
                             <div class="flex items-start justify-between gap-3">
-                                <!-- Left: Tanggal -->
-                                <div class="flex items-center gap-2">
-                                    <svg class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-                                    </svg>
-                                    <span class="text-sm font-medium text-gray-700 dark:text-gray-300">
-                                        {{ $item->tanggal_supervisi ? \Carbon\Carbon::parse($item->tanggal_supervisi)->format('d M Y') : 'Belum disubmit' }}
-                                    </span>
+                                <!-- Left: Info -->
+                                <div class="flex-1">
+                                    <div class="flex items-center gap-2 mb-1">
+                                        <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                                        </svg>
+                                        <span class="text-sm font-semibold text-gray-700 dark:text-gray-300">
+                                            {{ $item->tanggal_supervisi ? \Carbon\Carbon::parse($item->tanggal_supervisi)->format('d M Y') : 'Belum disubmit' }}
+                                        </span>
+                                    </div>
+                                    <div class="flex items-center gap-2 text-xs text-gray-500 dark:text-gray-400">
+                                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                        </svg>
+                                        <span>Terakhir update: {{ $item->updated_at->diffForHumans() }}</span>
+                                    </div>
                                 </div>
 
                                 <!-- Right: Status Badge -->
@@ -94,7 +102,6 @@
                                             Selesai
                                         </span>
                                     @elseif($item->status == 'revision')
-                                        {{-- Badge for revision status --}}
                                         <span class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-rose-100 text-rose-700 text-xs font-semibold rounded-full">
                                             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
@@ -107,29 +114,58 @@
                         </div>
 
                         <!-- Card Content -->
-                        <div class="px-4 py-3">
-                            <!-- Info Cards (Dokumen & Proses) -->
-                            <div class="flex items-center gap-3 flex-wrap mb-3">
-                                @php
-                                    $docCount = $item->dokumenEvaluasi->count();
-                                    $hasProses = $item->prosesPembelajaran != null;
-                                @endphp
+                        <div class="px-4 py-4">
+                            <!-- Progress Bar -->
+                            @php
+                                $docCount = $item->dokumenEvaluasi->count();
+                                $hasProses = $item->prosesPembelajaran != null;
+                                $feedbackCount = $item->feedback->count();
 
-                                <div class="flex items-center gap-2 px-3 py-1.5 bg-indigo-50 dark:bg-indigo-900/20 rounded-lg border border-indigo-100 dark:border-indigo-800">
-                                    <svg class="w-4 h-4 text-indigo-600 dark:text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                // Calculate progress percentage
+                                $docProgress = ($docCount / 7) * 50; // 50% for documents
+                                $prosesProgress = $hasProses ? 50 : 0; // 50% for process
+                                $totalProgress = $docProgress + $prosesProgress;
+                            @endphp
+
+                            <div class="mb-4">
+                                <div class="flex items-center justify-between mb-2">
+                                    <span class="text-xs font-semibold text-gray-700 dark:text-gray-300">Progress Kelengkapan</span>
+                                    <span class="text-xs font-bold text-indigo-600 dark:text-indigo-400">{{ round($totalProgress) }}%</span>
+                                </div>
+                                <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5 overflow-hidden">
+                                    <div class="h-full rounded-full transition-all duration-300 {{ $totalProgress == 100 ? 'bg-gradient-to-r from-emerald-500 to-green-600' : 'bg-gradient-to-r from-indigo-500 to-purple-600' }}" style="width: {{ $totalProgress }}%"></div>
+                                </div>
+                            </div>
+
+                            <!-- Stats Grid -->
+                            <div class="grid grid-cols-3 gap-3 mb-4">
+                                <!-- Dokumen -->
+                                <div class="flex flex-col items-center p-3 bg-indigo-50 dark:bg-indigo-900/20 rounded-lg border border-indigo-100 dark:border-indigo-800">
+                                    <svg class="w-5 h-5 text-indigo-600 dark:text-indigo-400 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
                                     </svg>
-                                    <span class="text-xs font-medium text-indigo-700 dark:text-indigo-300">{{ $docCount }}/7 Dokumen</span>
+                                    <div class="text-lg font-bold text-indigo-700 dark:text-indigo-300">{{ $docCount }}/7</div>
+                                    <div class="text-xs text-indigo-600 dark:text-indigo-400">Dokumen</div>
                                 </div>
 
-                                <div class="flex items-center gap-2 px-3 py-1.5 {{ $hasProses ? 'bg-green-50 dark:bg-green-900/20 border-green-100 dark:border-green-800' : 'bg-gray-50 dark:bg-gray-700/20 border-gray-200 dark:border-gray-700' }} rounded-lg border">
-                                    <svg class="w-4 h-4 {{ $hasProses ? 'text-green-600 dark:text-green-400' : 'text-gray-400 dark:text-gray-500' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path>
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                <!-- Proses -->
+                                <div class="flex flex-col items-center p-3 {{ $hasProses ? 'bg-green-50 dark:bg-green-900/20 border-green-100 dark:border-green-800' : 'bg-gray-50 dark:bg-gray-700/20 border-gray-200 dark:border-gray-700' }} rounded-lg border">
+                                    <svg class="w-5 h-5 {{ $hasProses ? 'text-green-600 dark:text-green-400' : 'text-gray-400 dark:text-gray-500' }} mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                                     </svg>
-                                    <span class="text-xs font-medium {{ $hasProses ? 'text-green-700 dark:text-green-300' : 'text-gray-500 dark:text-gray-400' }}">
-                                        {{ $hasProses ? 'Proses Lengkap' : 'Proses Belum' }}
-                                    </span>
+                                    <div class="text-lg font-bold {{ $hasProses ? 'text-green-700 dark:text-green-300' : 'text-gray-500 dark:text-gray-400' }}">
+                                        {{ $hasProses ? '✓' : '✗' }}
+                                    </div>
+                                    <div class="text-xs {{ $hasProses ? 'text-green-600 dark:text-green-400' : 'text-gray-500 dark:text-gray-400' }}">Proses</div>
+                                </div>
+
+                                <!-- Feedback -->
+                                <div class="flex flex-col items-center p-3 {{ $feedbackCount > 0 ? 'bg-purple-50 dark:bg-purple-900/20 border-purple-100 dark:border-purple-800' : 'bg-gray-50 dark:bg-gray-700/20 border-gray-200 dark:border-gray-700' }} rounded-lg border">
+                                    <svg class="w-5 h-5 {{ $feedbackCount > 0 ? 'text-purple-600 dark:text-purple-400' : 'text-gray-400 dark:text-gray-500' }} mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
+                                    </svg>
+                                    <div class="text-lg font-bold {{ $feedbackCount > 0 ? 'text-purple-700 dark:text-purple-300' : 'text-gray-500 dark:text-gray-400' }}">{{ $feedbackCount }}</div>
+                                    <div class="text-xs {{ $feedbackCount > 0 ? 'text-purple-600 dark:text-purple-400' : 'text-gray-500 dark:text-gray-400' }}">Feedback</div>
                                 </div>
                             </div>
 
