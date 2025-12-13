@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quick Reference Card - Client Meeting</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f3f4f6;
+            padding: 20px;
+        }
+
+        .card-container {
+            max-width: 800px;
+            margin: 0 auto;
+            display: grid;
+            gap: 20px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            page-break-inside: avoid;
+        }
+
+        .card-header {
+            background: linear-gradient(135deg, #1e40af 0%, #2563eb 100%);
+            color: white;
+            padding: 15px 20px;
+            margin: -20px -20px 20px -20px;
+            border-radius: 12px 12px 0 0;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .key-point {
+            background: #fef3c7;
+            border-left: 4px solid #f59e0b;
+            padding: 12px 15px;
+            margin: 10px 0;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+
+        .do-dont-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin: 15px 0;
+        }
+
+        .do-list, .dont-list {
+            padding: 15px;
+            border-radius: 8px;
+        }
+
+        .do-list {
+            background: #d1fae5;
+            border: 2px solid #10b981;
+        }
+
+        .dont-list {
+            background: #fee2e2;
+            border: 2px solid #ef4444;
+        }
+
+        .do-list h4 {
+            color: #065f46;
+            margin-bottom: 10px;
+        }
+
+        .dont-list h4 {
+            color: #991b1b;
+            margin-bottom: 10px;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .do-list li::before {
+            content: '✅ ';
+            margin-right: 5px;
+        }
+
+        .dont-list li::before {
+            content: '❌ ';
+            margin-right: 5px;
+        }
+
+        li {
+            margin: 6px 0;
+            font-size: 13px;
+            line-height: 1.4;
+        }
+
+        .script-box {
+            background: #eff6ff;
+            border: 2px dashed #3b82f6;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+            font-style: italic;
+            font-size: 14px;
+        }
+
+        .price-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin: 15px 0;
+        }
+
+        .price-item {
+            text-align: center;
+            padding: 15px;
+            border-radius: 8px;
+            background: #f9fafb;
+            border: 2px solid #e5e7eb;
+        }
+
+        .price-item.target {
+            background: #d1fae5;
+            border-color: #10b981;
+        }
+
+        .price-item .label {
+            font-size: 11px;
+            color: #6b7280;
+            margin-bottom: 5px;
+        }
+
+        .price-item .amount {
+            font-size: 18px;
+            font-weight: bold;
+            color: #1f2937;
+        }
+
+        .checklist-compact {
+            columns: 2;
+            column-gap: 20px;
+        }
+
+        .checklist-compact li {
+            margin: 8px 0;
+            font-size: 12px;
+            page-break-inside: avoid;
+        }
+
+        .emergency-box {
+            background: #fef2f2;
+            border: 3px solid #ef4444;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+        }
+
+        .emergency-box h4 {
+            color: #991b1b;
+            margin-bottom: 10px;
+        }
+
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+
+            .card {
+                box-shadow: none;
+                border: 1px solid #e5e7eb;
+                margin-bottom: 20px;
+            }
+
+            .card-container {
+                max-width: 100%;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .do-dont-grid,
+            .price-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .checklist-compact {
+                columns: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="card-container">
+        <!-- CARD 1: KEY NUMBERS -->
+        <div class="card">
+            <div class="card-header">💰 KEY NUMBERS - Hafalkan Ini!</div>
+
+            <div class="price-grid">
+                <div class="price-item target">
+                    <div class="label">TARGET</div>
+                    <div class="amount">5.5 Juta</div>
+                </div>
+                <div class="price-item">
+                    <div class="label">MINIMUM</div>
+                    <div class="amount">4.5 Juta</div>
+                </div>
+                <div class="price-item">
+                    <div class="label">MARKET</div>
+                    <div class="amount">40-70 Juta</div>
+                </div>
+            </div>
+
+            <div class="key-point">
+                💎 Total Value Project: Rp 37+ Juta
+            </div>
+            <div class="key-point">
+                ⏱️ Total Waktu: 150+ jam (vs estimasi 80 jam)
+            </div>
+            <div class="key-point">
+                💾 Total Code: 12,000+ baris kode custom
+            </div>
+            <div class="key-point">
+                🎯 Diskon: 85% dari market price
+            </div>
+        </div>
+
+        <!-- CARD 2: OPENING SCRIPT -->
+        <div class="card">
+            <div class="card-header">🎤 OPENING SCRIPT (Hafal!)</div>
+
+            <div class="script-box">
+                "Pak/Bu, terima kasih waktunya. Project sudah 95% selesai.
+                <strong>Boleh saya demo dulu hasilnya?</strong>"
+                <br><br>
+                [DEMO 10 MENIT - Tunjukkan wow factor!]
+                <br><br>
+                "Bagaimana Pak/Bu? Sudah sesuai?"
+                <br><br>
+                [Tunggu response positif]
+                <br><br>
+                "Alhamdulillah. Nah, saya mau transparan. <strong>Ternyata scope-nya
+                jauh lebih kompleks dari estimasi awal 4 juta.</strong> Sistem sejenis
+                di market itu <strong>40-70 juta</strong>. Saya usulkan <strong>adjust ke 5.5 juta</strong>
+                - masih 90% lebih murah. Bagaimana Pak/Bu?"
+            </div>
+
+            <div style="background: #d1fae5; padding: 12px; border-radius: 6px; margin-top: 15px;">
+                <strong>🎯 Golden Rule:</strong> DIAM setelah ask! Biarkan mereka bicara dulu.
+            </div>
+        </div>
+
+        <!-- CARD 3: DOS & DONTS -->
+        <div class="card">
+            <div class="card-header">⚖️ DO'S & DON'TS</div>
+
+            <div class="do-dont-grid">
+                <div class="do-list">
+                    <h4>✅ DO</h4>
+                    <ul>
+                        <li>Demo live dulu</li>
+                        <li>Fokus pada value</li>
+                        <li>Akui salah estimasi</li>
+                        <li>Tawarkan opsi</li>
+                        <li>Stay calm & confident</li>
+                        <li>Dengarkan mereka</li>
+                    </ul>
+                </div>
+                <div class="dont-list">
+                    <h4>❌ DON'T</h4>
+                    <ul>
+                        <li>Komplain capek</li>
+                        <li>Terlihat desperate</li>
+                        <li>Emosional</li>
+                        <li>Ultimatum</li>
+                        <li>Salahkan mereka</li>
+                        <li>Terburu-buru</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- CARD 4: HANDLING OBJECTIONS -->
+        <div class="card">
+            <div class="card-header">🛡️ HANDLING OBJECTIONS</div>
+
+            <div style="margin-bottom: 15px;">
+                <strong>"Tapi kita sudah deal 4 juta?"</strong>
+                <div class="script-box">
+                    "Betul Pak/Bu, dan saya hormati itu. Makanya saya tidak minta
+                    harga market 40-70 juta. Cuma adjust kecil ke 5.5 juta mengingat
+                    value yang jauh lebih besar. Bisa dicicil 2x juga."
+                </div>
+            </div>
+
+            <div style="margin-bottom: 15px;">
+                <strong>"Kenapa baru sekarang bilang?"</strong>
+                <div class="script-box">
+                    "Saya baru sadar setelah development berjalan. Ini pengalaman
+                    pertama saya, jadi underestimate complexity-nya. Mohon maaf,
+                    tapi lihat hasilnya - value-nya jelas melebihi 5.5 juta."
+                </div>
+            </div>
+
+            <div>
+                <strong>"Kalau saya tidak setuju?"</strong>
+                <div class="script-box">
+                    "Saya tetap selesaikan profesional Pak/Bu. Tapi mari kita diskusi
+                    win-win solution: cicilan, atau tetap 4 juta dengan referral program?"
+                </div>
+            </div>
+        </div>
+
+        <!-- CARD 5: PLAN B -->
+        <div class="card">
+            <div class="card-header">🔄 PLAN B - Jika Nego Stuck</div>
+
+            <div class="emergency-box">
+                <h4>🚨 Fallback Options (urutan prioritas)</h4>
+                <ul style="padding-left: 20px; list-style: decimal;">
+                    <li style="margin: 10px 0;"><strong>5 juta + cicil 2x</strong> (kenaikan 1 juta)</li>
+                    <li style="margin: 10px 0;"><strong>4.5 juta + cicil 3x</strong> (kenaikan 500rb)</li>
+                    <li style="margin: 10px 0;"><strong>4 juta + testimonial + referral program</strong> (500rb per referral)</li>
+                    <li style="margin: 10px 0;"><strong>4 juta + monthly maintenance</strong> (300rb/bulan)</li>
+                </ul>
+            </div>
+
+            <div style="background: #eff6ff; padding: 12px; border-radius: 6px; margin-top: 15px; font-size: 13px;">
+                <strong>💡 Best Compromise:</strong> 4 juta + "Pak/Bu dapat referral fee 500rb
+                untuk setiap sekolah yang Bapak/Ibu referensikan ke saya. Win-win kan?"
+            </div>
+        </div>
+
+        <!-- CARD 6: VALUE BULLETS -->
+        <div class="card">
+            <div class="card-header">🎯 VALUE BULLETS (Amunisi Nego)</div>
+
+            <div class="checklist-compact">
+                <ul>
+                    <li>✅ 3 role lengkap (Admin, Guru, KS)</li>
+                    <li>✅ 10 tabel database kompleks</li>
+                    <li>✅ 4-step workflow approval</li>
+                    <li>✅ Nested comments unlimited</li>
+                    <li>✅ Image auto-optimization 80%</li>
+                    <li>✅ Performance cache 5x faster</li>
+                    <li>✅ Dark mode full</li>
+                    <li>✅ Responsive 3 devices</li>
+                    <li>✅ Revision system complete</li>
+                    <li>✅ Laravel 12 + Livewire 3 (latest)</li>
+                    <li>✅ 14 Livewire components</li>
+                    <li>✅ 52+ blade templates</li>
+                    <li>✅ Security: CSRF, rate limit</li>
+                    <li>✅ Production-ready deploy</li>
+                    <li>✅ 1 bulan support gratis</li>
+                    <li>✅ Training admin included</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- CARD 7: CLOSING TECHNIQUES -->
+        <div class="card">
+            <div class="card-header">🎬 CLOSING TECHNIQUES</div>
+
+            <div style="margin-bottom: 15px;">
+                <strong>🔥 Assumptive Close</strong>
+                <div class="script-box">
+                    "Baik Pak/Bu, saya siapkan invoice untuk 5.5 juta dengan cicilan 2x ya?
+                    Deployment minggu depan oke?"
+                </div>
+            </div>
+
+            <div style="margin-bottom: 15px;">
+                <strong>🤝 Choice Close</strong>
+                <div class="script-box">
+                    "Bapak/Ibu lebih prefer bayar full 4.5 juta, atau cicil 2x @ 2.25 juta?"
+                </div>
+            </div>
+
+            <div style="margin-bottom: 15px;">
+                <strong>💎 Value Close</strong>
+                <div class="script-box">
+                    "Kalau dihitung ROI-nya, investasi 5.5 juta ini balik modal dalam
+                    beberapa bulan dari sisi efisiensi waktu supervisi yang tadinya manual."
+                </div>
+            </div>
+
+            <div>
+                <strong>⏰ Urgency Close</strong>
+                <div class="script-box">
+                    "Kalau kita finalize minggu ini, saya bisa deploy sebelum semester baru.
+                    Jadi langsung bisa dipakai dari awal semester."
+                </div>
+            </div>
+        </div>
+
+        <!-- CARD 8: PRE-MEETING CHECKLIST -->
+        <div class="card">
+            <div class="card-header">✅ PRE-MEETING CHECKLIST</div>
+
+            <ul style="padding-left: 20px;">
+                <li style="margin: 8px 0;">☐ Demo environment siap & tested</li>
+                <li style="margin: 8px 0;">☐ Comparison sheet di-print/siap share screen</li>
+                <li style="margin: 8px 0;">☐ Screenshot fitur wow di folder</li>
+                <li style="margin: 8px 0;">☐ Market research kompetitor (screenshot)</li>
+                <li style="margin: 8px 0;">☐ Quick reference card ini di-print</li>
+                <li style="margin: 8px 0;">☐ Kalkulator siap (untuk hitung cicilan)</li>
+                <li style="margin: 8px 0;">☐ Note template agreement</li>
+                <li style="margin: 8px 0;">☐ Rekening bank siap (untuk invoice)</li>
+                <li style="margin: 8px 0;">☐ Mental: CONFIDENT & CALM 💪</li>
+            </ul>
+
+            <div style="background: #fef3c7; padding: 12px; border-radius: 6px; margin-top: 15px; text-align: center; font-weight: bold;">
+                🎯 GOAL: Minimal 4.5 juta | Target: 5.5 juta
+            </div>
+        </div>
+
+        <!-- CARD 9: BODY LANGUAGE TIPS -->
+        <div class="card">
+            <div class="card-header">🧘 BODY LANGUAGE & TONALITY</div>
+
+            <div class="do-dont-grid">
+                <div class="do-list">
+                    <h4>✅ DO</h4>
+                    <ul>
+                        <li>Smile & eye contact</li>
+                        <li>Speak calmly & clearly</li>
+                        <li>Confident posture</li>
+                        <li>Hand gestures (natural)</li>
+                        <li>Nod when listening</li>
+                        <li>Pause after key points</li>
+                    </ul>
+                </div>
+                <div class="dont-list">
+                    <h4>❌ DON'T</h4>
+                    <ul>
+                        <li>Look nervous/fidgety</li>
+                        <li>Talk too fast</li>
+                        <li>Cross arms (defensive)</li>
+                        <li>Look away when asking</li>
+                        <li>Fill silence (let them think)</li>
+                        <li>Sound apologetic</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div style="background: #d1fae5; padding: 12px; border-radius: 6px; margin-top: 15px; font-size: 13px;">
+                <strong>🎭 Tone:</strong> Confident tapi humble. Bukan memohon, tapi offering value.
+                Frame: "Saya mau kita sama-sama happy dengan deal ini."
+            </div>
+        </div>
+
+        <!-- CARD 10: EMERGENCY MANTRAS -->
+        <div class="card">
+            <div class="card-header">🧠 EMERGENCY MANTRAS (Baca Sebelum Meeting!)</div>
+
+            <div style="background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); padding: 20px; border-radius: 8px; text-align: center;">
+                <div style="font-size: 16px; font-weight: bold; color: #1e40af; margin-bottom: 15px;">
+                    "Saya memberikan VALUE, bukan minta uang."
+                </div>
+                <div style="font-size: 16px; font-weight: bold; color: #1e40af; margin-bottom: 15px;">
+                    "Project ini worth 37 juta. 5.5 juta adalah steal deal."
+                </div>
+                <div style="font-size: 16px; font-weight: bold; color: #1e40af; margin-bottom: 15px;">
+                    "Win-win solution adalah goal, bukan confrontation."
+                </div>
+                <div style="font-size: 16px; font-weight: bold; color: #1e40af;">
+                    "Worst case: 4 juta + testimonial masih OK. Santai!"
+                </div>
+            </div>
+
+            <div style="margin-top: 20px; text-align: center; padding: 15px; background: #fef3c7; border-radius: 6px;">
+                <div style="font-size: 24px; margin-bottom: 10px;">🔥🔥🔥</div>
+                <div style="font-size: 18px; font-weight: bold; color: #92400e;">
+                    YOU GOT THIS! 💪
+                </div>
+                <div style="font-size: 14px; color: #78350f; margin-top: 5px;">
+                    Breathe. Smile. Deliver value. Close deal.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div style="text-align: center; padding: 30px 20px; background: white; margin-top: 20px; border-radius: 12px; max-width: 800px; margin-left: auto; margin-right: auto;">
+        <div style="font-size: 14px; color: #6b7280; margin-bottom: 10px;">
+            Quick Reference Card - Client Meeting E-Supervisi
+        </div>
+        <div style="font-size: 12px; color: #9ca3af;">
+            Print kartu ini dan bawa saat meeting. Review 5 menit sebelum meeting!
+        </div>
+        <div style="margin-top: 15px; padding-top: 15px; border-top: 1px solid #e5e7eb; font-size: 13px; color: #1e40af; font-weight: bold;">
+            💡 TIP: Latih opening script di depan kaca 3x sebelum meeting!
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,148 @@
+<?php
+
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Auth\CustomLoginController;
+use App\Http\Controllers\Auth\ChangePasswordController;
+use App\Http\Controllers\SettingsController;
+use App\Http\Controllers\Guru\HomeController as GuruHomeController;
+use App\Http\Controllers\Guru\SupervisiController;
+use App\Http\Controllers\Guru\ProsesController;
+use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
+use App\Http\Controllers\Admin\UserController as AdminUserController;
+use App\Http\Controllers\Admin\SupervisiController as AdminSupervisiController;
+use App\Http\Controllers\KepalaSekolah\DashboardController as KepalaDashboardController;
+use App\Http\Controllers\KepalaSekolah\EvaluasiController;
+
+// Public Routes
+Route::get('/', function () {
+    if (auth()->check()) {
+        $user = auth()->user();
+        if ($user->isAdmin()) {
+            return redirect()->route('admin.dashboard');
+        } elseif ($user->isGuru()) {
+            return redirect()->route('guru.home');
+        } elseif ($user->isKepalaSekolah()) {
+            return redirect()->route('kepala.dashboard');
+        }
+    }
+    return redirect()->route('login');
+});
+
+// Authentication Routes - With Rate Limiting
+Route::middleware('throttle:5,1')->group(function () {
+    Route::get('/login', [CustomLoginController::class, 'showLoginForm'])->name('login')->middleware('guest');
+    Route::post('/login', [CustomLoginController::class, 'login'])->middleware('guest');
+});
+Route::post('/logout', [CustomLoginController::class, 'logout'])->name('logout');
+
+// Change Password Routes (must be authenticated, but no must.change.password middleware)
+// Rate limited to prevent abuse
+Route::middleware(['auth', 'prevent.back', 'throttle:10,1'])->group(function () {
+    Route::get('/change-password', [ChangePasswordController::class, 'showChangePasswordForm'])->name('change-password');
+    Route::post('/change-password', [ChangePasswordController::class, 'updatePassword'])->name('change-password.update');
+});
+
+// File Download Routes (without prevent.back middleware to avoid header conflicts)
+// Note: Preview uses direct storage link, only download needs route
+Route::middleware(['auth', 'must.change.password'])->group(function () {
+    Route::prefix('kepala')->name('kepala.')->middleware('can:isKepalaSekolah')->group(function () {
+        Route::prefix('evaluasi')->name('evaluasi.')->group(function () {
+            Route::get('/download/{id}', [EvaluasiController::class, 'downloadDocument'])->name('download');
+        });
+    });
+});
+
+// Protected Routes
+Route::middleware(['auth', 'prevent.back', 'must.change.password'])->group(function () {
+
+    // Settings Routes (Available for all authenticated users)
+    Route::get('/settings', [SettingsController::class, 'index'])->name('settings.index');
+    Route::post('/settings/password', [SettingsController::class, 'updatePassword'])->name('settings.password.update');
+    Route::post('/settings/profile', [SettingsController::class, 'updateProfile'])->name('settings.profile.update');
+
+    // Guru Routes
+    Route::prefix('guru')->name('guru.')->middleware('can:isGuru')->group(function () {
+        Route::get('/home', [GuruHomeController::class, 'index'])->name('home');
+        Route::get('/my-supervisi', [GuruHomeController::class, 'mySupervisi'])->name('my-supervisi');
+
+        // Supervisi Routes
+        Route::prefix('supervisi')->name('supervisi.')->group(function () {
+            Route::get('/create', [SupervisiController::class, 'create'])->name('create');
+            Route::post('/store', [SupervisiController::class, 'store'])->name('store');
+            Route::get('/{id}/continue', [SupervisiController::class, 'continue'])->name('continue');
+            Route::get('/{id}/evaluasi', [SupervisiController::class, 'showEvaluasi'])->name('evaluasi');
+            Route::post('/{id}/upload', [SupervisiController::class, 'uploadDocument'])->name('upload');
+            Route::delete('/{id}/delete-document', [SupervisiController::class, 'deleteDocument'])->name('delete-document');
+            Route::get('/{id}/check-documents', [SupervisiController::class, 'checkDocuments'])->name('check-documents');
+            Route::get('/{id}/detail', [GuruHomeController::class, 'detail'])->name('detail');
+            Route::get('/{id}/view', [GuruHomeController::class, 'viewOther'])->name('view');
+            Route::post('/{id}/comment', [GuruHomeController::class, 'storeComment'])->name('comment');
+            Route::delete('/{id}', [SupervisiController::class, 'destroy'])->name('delete');
+
+            // Proses Routes
+            Route::get('/{id}/proses', [ProsesController::class, 'show'])->name('proses');
+            Route::post('/{id}/proses/save', [ProsesController::class, 'save'])->name('proses.save');
+            Route::post('/{id}/submit', [ProsesController::class, 'submit'])->name('submit');
+        });
+    });
+
+    // Admin Routes
+    Route::prefix('admin')->name('admin.')->middleware('can:isAdmin')->group(function () {
+        Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
+        
+        // User Management
+        Route::resource('users', AdminUserController::class);
+        Route::post('/users/{id}/reset-password', [AdminUserController::class, 'resetPassword'])->name('users.reset-password');
+        Route::patch('/users/{id}/toggle-status', [AdminUserController::class, 'toggleStatus'])->name('users.toggle-status');
+        
+        // Supervisi Review Management
+        Route::prefix('supervisi')->name('supervisi.')->group(function () {
+            Route::get('/', [AdminSupervisiController::class, 'index'])->name('index');
+            Route::get('/{id}', [AdminSupervisiController::class, 'show'])->name('show');
+            Route::post('/{id}/feedback', [AdminSupervisiController::class, 'storeFeedback'])->name('feedback');
+            Route::post('/{id}/revision', [AdminSupervisiController::class, 'requestRevision'])->name('revision');
+            Route::get('/download/{id}', [AdminSupervisiController::class, 'downloadDocument'])->name('download');
+        });
+    });
+
+    // Kepala Sekolah Routes
+    Route::prefix('kepala')->name('kepala.')->middleware('can:isKepalaSekolah')->group(function () {
+        Route::get('/dashboard', [KepalaDashboardController::class, 'index'])->name('dashboard');
+        
+        // Evaluasi Routes
+        Route::prefix('evaluasi')->name('evaluasi.')->group(function () {
+            Route::get('/', [EvaluasiController::class, 'index'])->name('index');
+            Route::get('/{id}', [EvaluasiController::class, 'show'])->name('show');
+            Route::post('/{id}/start-review', [EvaluasiController::class, 'startReview'])->name('startReview');
+            Route::post('/{id}/feedback', [EvaluasiController::class, 'giveFeedback'])->name('feedback');
+            Route::post('/{id}/revision', [EvaluasiController::class, 'requestRevision'])->name('revision');
+            Route::post('/{id}/complete', [EvaluasiController::class, 'complete'])->name('complete');
+            // Note: preview and download routes moved outside prevent.back middleware (see above)
+        });
+    });
+});
+
+// Test/Simulasi Error Pages (only for development/testing)
+if (config('app.debug')) {
+    Route::prefix('test-error')->name('test.error.')->group(function () {
+        Route::get('/404', function () {
+            abort(404);
+        })->name('404');
+
+        Route::get('/500', function () {
+            throw new \Exception('Simulasi error 500 - Internal Server Error');
+        })->name('500');
+
+        Route::get('/503', function () {
+            abort(503);
+        })->name('503');
+
+        Route::get('/419', function () {
+            abort(419);
+        })->name('419');
+
+        Route::get('/network', function () {
+            return view('errors.network');
+        })->name('network');
+    });
+}
