@@ -4,7 +4,7 @@
 
 @section('content')
 <!-- Breadcrumb -->
-<div class="mb-4">
+<div class="mb-2 sm:mb-4">
     <x-breadcrumb :items="[
         ['label' => 'Beranda', 'url' => route('guru.home')],
         ['label' => 'Supervisi'],
@@ -13,40 +13,40 @@
 </div>
 
 <!-- Wrapper Container (3/4 width, centered) -->
-<div class="w-full lg:w-3/4 mx-auto">
+<div class="w-full lg:w-3/4 mx-auto px-0 sm:px-4">
 
 <!-- Main Card -->
-<div class="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 shadow-lg">
+<div class="bg-white dark:bg-gray-800 rounded-md sm:rounded-2xl border border-gray-200 dark:border-gray-700 shadow-lg">
     <!-- Header -->
-    <div class="border-b border-gray-200 dark:border-gray-700 px-6 py-4 bg-gradient-to-r from-indigo-50/30 to-blue-50/30 dark:from-indigo-900/10 dark:to-blue-900/10">
-        <div class="flex items-start justify-between gap-4">
+    <div class="border-b border-gray-200 dark:border-gray-700 px-3 py-2.5 sm:px-6 sm:py-4 bg-gradient-to-r from-indigo-50/30 to-blue-50/30 dark:from-indigo-900/10 dark:to-blue-900/10">
+        <div class="flex items-start justify-between gap-2 sm:gap-4">
             <div>
-                <h2 class="text-xl font-bold text-gray-800 dark:text-gray-100">Upload Dokumen Evaluasi Diri</h2>
-                <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">Upload 7 dokumen yang diperlukan</p>
+                <h2 class="text-sm sm:text-xl font-bold text-gray-800 dark:text-gray-100">Upload Dokumen Evaluasi</h2>
+                <p class="mt-0.5 sm:mt-1 text-[10px] sm:text-sm text-gray-600 dark:text-gray-400">Upload 7 dokumen yang diperlukan</p>
             </div>
             <!-- Progress Badge -->
-            <div class="flex items-center gap-2 bg-white dark:bg-gray-800 px-4 py-2 rounded-lg border border-gray-200 dark:border-gray-600 shadow-sm">
-                <svg class="w-5 h-5 text-indigo-600 dark:text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div class="flex items-center gap-1.5 sm:gap-2 bg-white dark:bg-gray-800 px-2 py-1.5 sm:px-4 sm:py-2 rounded-md sm:rounded-lg border border-gray-200 dark:border-gray-600 shadow-sm">
+                <svg class="w-4 h-4 sm:w-5 sm:h-5 text-indigo-600 dark:text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
                 </svg>
                 <div>
-                    <span class="text-xs text-gray-500 dark:text-gray-400 block">Progres Upload</span>
-                    <span id="documentBadge" class="text-sm font-bold text-indigo-600 dark:text-indigo-400">0/7 Dokumen</span>
+                    <span class="text-[9px] sm:text-xs text-gray-500 dark:text-gray-400 block">Progres</span>
+                    <span id="documentBadge" class="text-xs sm:text-sm font-bold text-indigo-600 dark:text-indigo-400">0/7</span>
                 </div>
             </div>
         </div>
     </div>
 
     <!-- Info Alert -->
-    <div class="px-6 pt-6">
-        <div class="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
-            <div class="flex gap-3">
-                <svg class="w-5 h-5 text-blue-600 dark:text-blue-400 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <div class="px-3 pt-3 sm:px-6 sm:pt-6">
+        <div class="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-md sm:rounded-lg p-2.5 sm:p-4">
+            <div class="flex gap-2 sm:gap-3">
+                <svg class="w-4 h-4 sm:w-5 sm:h-5 text-blue-600 dark:text-blue-400 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                 </svg>
                 <div>
-                    <p class="text-sm font-medium text-blue-900 dark:text-blue-200">Format yang diperbolehkan: PDF, JPG, PNG</p>
-                    <p class="text-sm text-blue-800 dark:text-blue-300 mt-1">Maksimal ukuran file: 2MB per dokumen</p>
+                    <p class="text-[11px] sm:text-sm font-medium text-blue-900 dark:text-blue-200">Format: PDF, JPG, PNG</p>
+                    <p class="text-[10px] sm:text-sm text-blue-800 dark:text-blue-300 mt-0.5 sm:mt-1">Maks. 2MB per file</p>
                 </div>
             </div>
         </div>
@@ -184,17 +184,17 @@
     <!-- File inputs will be created dynamically -->
 
     <!-- Action Buttons -->
-    <div class="border-t border-gray-200 dark:border-gray-700 px-6 py-4 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
-        <a href="{{ route('guru.home') }}" style="background-color: #eab308; color: white;" class="inline-flex items-center justify-center gap-2 px-5 py-3 font-semibold rounded-lg cursor-pointer">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <div class="border-t border-gray-200 dark:border-gray-700 px-3 py-3 sm:px-6 sm:py-4 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2 sm:gap-3">
+        <a href="{{ route('guru.home') }}" style="background-color: #eab308; color: white;" class="inline-flex items-center justify-center gap-1.5 sm:gap-2 px-4 py-2 sm:px-5 sm:py-3 text-xs sm:text-sm font-semibold rounded-md sm:rounded-lg cursor-pointer">
+            <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
             </svg>
-            Kembali ke Beranda
+            Kembali
         </a>
 
-        <button id="nextButton" class="inline-flex items-center justify-center gap-2 px-6 py-3 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700 cursor-pointer">
-            Lanjut ke Proses
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <button id="nextButton" class="inline-flex items-center justify-center gap-1.5 sm:gap-2 px-4 py-2 sm:px-6 sm:py-3 bg-blue-600 text-white text-xs sm:text-sm font-bold rounded-md sm:rounded-lg hover:bg-blue-700 cursor-pointer">
+            Lanjut
+            <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
             </svg>
         </button>

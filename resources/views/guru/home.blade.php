@@ -3,51 +3,51 @@
 @section('page-title', 'Beranda')
 
 @section('content')
-<div class="w-full lg:w-11/12 xl:w-5/6 mx-auto px-2 sm:px-3 md:px-6 lg:px-8">
+<div class="w-full lg:w-11/12 xl:w-5/6 mx-auto px-0 sm:px-3 md:px-6 lg:px-8">
     <!-- Breadcrumb -->
     <x-breadcrumb :items="[
         ['label' => 'Dashboard Guru', 'icon' => true]
     ]" />
 
     <!-- Outer Container: Timeline Supervisi - Container + Inner Cards Architecture -->
-    <div class="bg-gray-50 dark:bg-gray-900/30 rounded-lg md:rounded-xl lg:rounded-2xl p-2 sm:p-3 md:p-5 lg:p-6 mb-3 md:mb-4 lg:mb-6">
+    <div class="bg-gray-50 dark:bg-gray-900/30 rounded-lg md:rounded-xl lg:rounded-2xl p-1.5 sm:p-3 md:p-5 lg:p-6 mb-2 sm:mb-3 md:mb-4 lg:mb-6">
         <!-- Cards Wrapper with flex column and gap -->
-        <div class="flex flex-col gap-2 sm:gap-3 md:gap-4 w-full">
+        <div class="flex flex-col gap-1.5 sm:gap-3 md:gap-4 w-full">
             <!-- Inner Card 1: Header "Timeline Supervisi" -->
             <div class="bg-white dark:bg-gray-800 rounded-md sm:rounded-lg md:rounded-xl shadow w-full">
                 <!-- Header Content with optimized padding -->
-                <div class="px-2 py-2 sm:px-3 sm:py-3 md:px-6 md:py-4 lg:px-7 lg:py-5">
+                <div class="px-2 py-1.5 sm:px-3 sm:py-2.5 md:px-6 md:py-4 lg:px-7 lg:py-5">
             <!-- Top Row: Title and Buttons - FLEX CONTAINER -->
-            <div class="flex flex-row items-center justify-between gap-2 sm:gap-3 md:gap-5 w-full">
+            <div class="flex flex-row items-center justify-between gap-1.5 sm:gap-3 md:gap-5 w-full">
                 <!-- LEFT SECTION: Logo + Title -->
                 <div class="flex items-center gap-1.5 sm:gap-2 md:gap-4 flex-shrink min-w-0">
-                    <div class="w-8 h-8 sm:w-10 sm:h-10 md:w-14 md:h-14 lg:w-16 lg:h-16 bg-gradient-to-r from-indigo-600 to-purple-600 dark:from-indigo-500 dark:to-purple-500 rounded-lg md:rounded-xl flex items-center justify-center shadow-lg flex-shrink-0">
-                        <svg class="w-4 h-4 sm:w-5 sm:h-5 md:w-7 md:h-7 lg:w-8 lg:h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <div class="w-7 h-7 sm:w-9 sm:h-9 md:w-14 md:h-14 lg:w-16 lg:h-16 bg-gradient-to-r from-indigo-600 to-purple-600 dark:from-indigo-500 dark:to-purple-500 rounded-md sm:rounded-lg md:rounded-xl flex items-center justify-center shadow-md sm:shadow-lg flex-shrink-0">
+                        <svg class="w-3.5 h-3.5 sm:w-5 sm:h-5 md:w-7 md:h-7 lg:w-8 lg:h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                         </svg>
                     </div>
                     <div class="min-w-0 flex-1">
-                        <h3 class="text-sm sm:text-base md:text-xl lg:text-2xl font-bold text-gray-900 dark:text-gray-100 truncate">Timeline Supervisi</h3>
-                        <p class="text-[10px] sm:text-xs md:text-sm text-gray-500 dark:text-gray-400 hidden sm:block">Aktivitas supervisi pembelajaran Anda • {{ $supervisiList->count() }} supervisi</p>
+                        <h3 class="text-xs sm:text-sm md:text-xl lg:text-2xl font-bold text-gray-900 dark:text-gray-100 truncate">Supervisi</h3>
+                        <p class="text-[9px] sm:text-xs md:text-sm text-gray-500 dark:text-gray-400 hidden sm:block">{{ $supervisiList->count() }} supervisi</p>
                     </div>
                 </div>
 
                 <!-- RIGHT SECTION: Buttons aligned to right on tablet/laptop -->
-                <div class="flex flex-nowrap items-center gap-1 sm:gap-1.5 md:gap-2 lg:gap-2.5 flex-shrink-0">
+                <div class="flex flex-nowrap items-center gap-0.5 sm:gap-1.5 md:gap-2 lg:gap-2.5 flex-shrink-0">
                     <!-- Button 1: Tips & Informasi (Icon only on mobile/tablet, with text on laptop) -->
-                    <button onclick="toggleTips()" class="inline-flex items-center justify-center gap-0 lg:gap-2 px-1.5 py-1.5 sm:px-2 sm:py-2 md:px-3 md:py-2.5 lg:px-4 lg:py-2.5 bg-gradient-to-r from-blue-50 to-cyan-50 dark:from-blue-900/30 dark:to-cyan-900/30 hover:from-blue-100 hover:to-cyan-100 dark:hover:from-blue-900/40 dark:hover:to-cyan-900/40 border border-blue-200 dark:border-blue-800 text-blue-700 dark:text-blue-300 font-semibold rounded-md md:rounded-lg transition-all shadow-sm hover:shadow-md text-[10px] sm:text-[11px] lg:text-sm whitespace-nowrap">
-                        <svg class="w-4 h-4 sm:w-4.5 sm:h-4.5 md:w-5 md:h-5 lg:w-4 lg:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <button onclick="toggleTips()" class="inline-flex items-center justify-center gap-0 lg:gap-2 p-1 sm:px-2 sm:py-1.5 md:px-3 md:py-2.5 lg:px-4 lg:py-2.5 bg-gradient-to-r from-blue-50 to-cyan-50 dark:from-blue-900/30 dark:to-cyan-900/30 hover:from-blue-100 hover:to-cyan-100 dark:hover:from-blue-900/40 dark:hover:to-cyan-900/40 border border-blue-200 dark:border-blue-800 text-blue-700 dark:text-blue-300 font-semibold rounded sm:rounded-md md:rounded-lg transition-all shadow-sm hover:shadow-md text-[9px] sm:text-[11px] lg:text-sm whitespace-nowrap">
+                        <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4 md:w-5 md:h-5 lg:w-4 lg:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                         </svg>
                         <span class="hidden lg:inline">Tips & Info</span>
-                        <svg id="tips-chevron" class="w-5 h-5 md:w-5 md:h-5 lg:w-4 lg:h-4 transform transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg id="tips-chevron" class="w-3.5 h-3.5 sm:w-4 sm:h-4 md:w-5 md:h-5 lg:w-4 lg:h-4 transform transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
                         </svg>
                     </button>
 
                     <!-- Button 2: Panduan (Icon only on mobile/tablet, with text on laptop) -->
-                    <button onclick="openGuideModal()" class="inline-flex items-center justify-center gap-0 lg:gap-2 px-1.5 py-1.5 sm:px-2 sm:py-2 md:px-3 md:py-2.5 lg:px-4 lg:py-2.5 bg-gradient-to-r from-amber-50 to-orange-50 dark:from-amber-900/30 dark:to-orange-900/30 hover:from-amber-100 hover:to-orange-100 dark:hover:from-amber-900/40 dark:hover:to-orange-900/40 border border-amber-200 dark:border-amber-800 text-amber-700 dark:text-amber-300 font-semibold rounded-md md:rounded-lg transition-all shadow-sm hover:shadow-md text-[10px] sm:text-[11px] lg:text-sm whitespace-nowrap">
-                        <svg class="w-4 h-4 sm:w-4.5 sm:h-4.5 md:w-5 md:h-5 lg:w-4 lg:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <button onclick="openGuideModal()" class="inline-flex items-center justify-center gap-0 lg:gap-2 p-1 sm:px-2 sm:py-1.5 md:px-3 md:py-2.5 lg:px-4 lg:py-2.5 bg-gradient-to-r from-amber-50 to-orange-50 dark:from-amber-900/30 dark:to-orange-900/30 hover:from-amber-100 hover:to-orange-100 dark:hover:from-amber-900/40 dark:hover:to-orange-900/40 border border-amber-200 dark:border-amber-800 text-amber-700 dark:text-amber-300 font-semibold rounded sm:rounded-md md:rounded-lg transition-all shadow-sm hover:shadow-md text-[9px] sm:text-[11px] lg:text-sm whitespace-nowrap">
+                        <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4 md:w-5 md:h-5 lg:w-4 lg:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
                         </svg>
                         <span class="hidden lg:inline">Panduan</span>
@@ -56,11 +56,11 @@
                     <!-- Button 3: Mulai Supervisi Baru (Icon only on mobile/tablet, with text on laptop) -->
                     <!-- Only show when there are existing supervisions -->
                     @if($supervisiList->count() > 0)
-                    <button onclick="openSupervisiModal()" class="inline-flex items-center justify-center gap-1.5 lg:gap-2 px-2 py-1.5 sm:px-2.5 sm:py-2 md:px-3 md:py-2.5 lg:px-4 lg:py-2.5 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-semibold rounded-md md:rounded-lg transition-all shadow-md hover:shadow-lg text-[10px] sm:text-[11px] lg:text-sm whitespace-nowrap">
-                        <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4 md:w-5 md:h-5 lg:w-4 lg:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <button onclick="openSupervisiModal()" class="inline-flex items-center justify-center gap-1 lg:gap-2 px-1.5 py-1 sm:px-2.5 sm:py-1.5 md:px-3 md:py-2.5 lg:px-4 lg:py-2.5 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-semibold rounded sm:rounded-md md:rounded-lg transition-all shadow-md hover:shadow-lg text-[9px] sm:text-[11px] lg:text-sm whitespace-nowrap">
+                        <svg class="w-3 h-3 sm:w-4 sm:h-4 md:w-5 md:h-5 lg:w-4 lg:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
                         </svg>
-                        <span>Buat Baru</span>
+                        <span class="hidden sm:inline">Buat Baru</span>
                     </button>
                     @endif
                 </div>
@@ -419,22 +419,22 @@
                 <!-- End Inner Card 2: Timeline Content -->
             @else
                 <!-- Inner Card 2: Empty State -->
-                <div class="bg-white dark:bg-gray-800 rounded-xl shadow w-full">
-                    <div class="px-4 py-3 md:px-5 md:py-4 lg:px-6 lg:py-5">
-                        <div class="bg-gray-50 dark:bg-gray-900/30 rounded-xl border-2 border-dashed border-gray-300 dark:border-gray-700 p-12 text-center">
-                    <div class="w-20 h-20 bg-linear-to-br from-indigo-100 to-purple-100 dark:from-indigo-900/30 dark:to-purple-900/30 rounded-full flex items-center justify-center mx-auto mb-4 shadow-inner">
-                        <svg class="w-10 h-10 text-indigo-600 dark:text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div class="bg-white dark:bg-gray-800 rounded-md sm:rounded-xl shadow w-full">
+                    <div class="px-2 py-2 sm:px-4 sm:py-3 md:px-5 md:py-4 lg:px-6 lg:py-5">
+                        <div class="bg-gray-50 dark:bg-gray-900/30 rounded-lg sm:rounded-xl border-2 border-dashed border-gray-300 dark:border-gray-700 p-4 sm:p-8 md:p-12 text-center">
+                    <div class="w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 bg-gradient-to-br from-indigo-100 to-purple-100 dark:from-indigo-900/30 dark:to-purple-900/30 rounded-full flex items-center justify-center mx-auto mb-2 sm:mb-3 md:mb-4 shadow-inner">
+                        <svg class="w-6 h-6 sm:w-8 sm:h-8 md:w-10 md:h-10 text-indigo-600 dark:text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
                         </svg>
                     </div>
-                    <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-2">Belum Ada Supervisi</h3>
-                    <p class="text-sm text-gray-500 dark:text-gray-400 mb-6 max-w-md mx-auto">Mulai supervisi pertama Anda untuk melacak perkembangan dan mendokumentasikan proses pembelajaran</p>
+                    <h3 class="text-sm sm:text-base md:text-lg font-bold text-gray-900 dark:text-white mb-1 sm:mb-2">Belum Ada Supervisi</h3>
+                    <p class="text-xs sm:text-sm text-gray-500 dark:text-gray-400 mb-3 sm:mb-4 md:mb-6 max-w-md mx-auto leading-relaxed">Anda belum memiliki supervisi apapun. Mulai dengan membuat supervisi baru.</p>
 
-                    <button onclick="openSupervisiModal()" class="inline-flex items-center gap-2 px-6 py-3 bg-indigo-600 hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-600 text-white font-semibold rounded-lg transition-all shadow-md hover:shadow-lg transform hover:-translate-y-0.5">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <button onclick="openSupervisiModal()" class="inline-flex items-center gap-1.5 sm:gap-2 px-4 py-2 sm:px-5 sm:py-2.5 md:px-6 md:py-3 bg-indigo-600 hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-600 text-white text-xs sm:text-sm font-semibold rounded-lg transition-all shadow-md hover:shadow-lg transform hover:-translate-y-0.5">
+                        <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
                         </svg>
-                        Mulai Supervisi
+                        Buat Supervisi Baru
                     </button>
                 </div>
                         </div>

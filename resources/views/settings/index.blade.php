@@ -8,7 +8,7 @@
     <x-breadcrumb :items="[['label' => 'Pengaturan', 'icon' => true]]" />
 </div>
 
-<div class="max-w-7xl mx-auto">
+<div class="max-w-7xl mx-auto pb-24 md:pb-0">
     <!-- Page Header -->
     <div class="mb-6">
         <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Pengaturan</h2>
