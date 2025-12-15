@@ -88,7 +88,7 @@
     <div id="app-wrapper" class="transition-all duration-300 ease-in-out">
         
         <!-- HEADER -->
-        <header id="header" class="fixed top-0 left-0 right-0 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 px-2.5 sm:px-4 md:px-4 lg:px-6 py-2 sm:py-3 md:py-2 lg:py-2.5 z-50 transition-all duration-300 ease-in-out shadow-sm">
+        <header id="header" class="fixed top-0 left-0 right-0 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 px-3 sm:px-4 md:px-4 lg:px-6 py-2.5 sm:py-3 md:py-2 lg:py-2.5 z-50 transition-all duration-300 ease-in-out shadow-sm">
             <div class="flex items-center justify-between h-full">
                 <!-- Left: Hamburger Menu + Logo & Brand -->
                 <div class="flex items-center gap-2 md:gap-2 lg:gap-3">
@@ -101,14 +101,14 @@
                     
                     <!-- Logo & Brand - Clickable -->
                     <a href="@if(Auth::user()->isAdmin()){{ route('admin.dashboard') }}@elseif(Auth::user()->isGuru()){{ route('guru.home') }}@elseif(Auth::user()->isKepalaSekolah()){{ route('kepala.dashboard') }}@else{{ url('/') }}@endif" class="flex items-center gap-1.5 sm:gap-2 md:gap-2 lg:gap-2.5 hover:opacity-80 transition-opacity cursor-pointer group">
-                        <div class="w-7 h-7 sm:w-9 sm:h-9 md:w-8 md:h-8 lg:w-9 lg:h-9 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-lg flex items-center justify-center shadow-md group-hover:shadow-lg transition-shadow">
-                            <svg class="w-4 h-4 sm:w-5 sm:h-5 md:w-5 md:h-5 lg:w-5 lg:h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <div class="w-8 h-8 sm:w-9 sm:h-9 md:w-8 md:h-8 lg:w-9 lg:h-9 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-lg flex items-center justify-center shadow-md group-hover:shadow-lg transition-shadow">
+                            <svg class="w-4.5 h-4.5 sm:w-5 sm:h-5 md:w-5 md:h-5 lg:w-5 lg:h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
                             </svg>
                         </div>
                         <!-- Always show brand text, just adjust size -->
                         <div>
-                            <h3 class="text-xs sm:text-sm md:text-sm lg:text-base font-bold text-gray-900 dark:text-gray-100 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">E-Supervisi</h3>
+                            <h3 class="text-[13px] sm:text-sm md:text-sm lg:text-base font-bold text-gray-900 dark:text-gray-100 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">E-Supervisi</h3>
                             <p class="text-[9px] sm:text-[10px] md:text-xs lg:text-sm text-gray-500 dark:text-gray-400 hidden sm:block">Sistem Supervisi Pembelajaran</p>
                         </div>
                     </a>
@@ -143,7 +143,7 @@
                     <!-- Profile Dropdown -->
                     <div class="relative">
                         <button id="profile-dropdown-btn" class="flex items-center gap-1 sm:gap-1.5 md:gap-1.5 lg:gap-2 px-1.5 sm:px-2.5 md:px-2 lg:px-2.5 py-1.5 sm:py-2 md:py-1.5 lg:py-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-all focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
-                            <div class="w-7 h-7 sm:w-9 sm:h-9 md:w-8 md:h-8 lg:w-9 lg:h-9 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white font-semibold text-xs sm:text-sm md:text-sm lg:text-base shadow-md">
+                            <div class="w-8 h-8 sm:w-9 sm:h-9 md:w-8 md:h-8 lg:w-9 lg:h-9 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white font-semibold text-[13px] sm:text-sm md:text-sm lg:text-base shadow-md">
                                 {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
                             </div>
                             <div class="hidden md:block text-left">
@@ -380,7 +380,7 @@
         </aside>
 
         <!-- MAIN CONTENT -->
-        <main id="main-content" class="min-h-screen pt-14 sm:pt-20 md:pt-14 lg:pt-16 pb-20 sm:pb-20 md:pb-0 transition-all duration-300 flex flex-col bg-gray-50 dark:bg-gray-900">
+        <main id="main-content" class="min-h-screen pt-16 sm:pt-20 md:pt-14 lg:pt-16 pb-20 sm:pb-20 md:pb-0 transition-all duration-300 flex flex-col bg-gray-50 dark:bg-gray-900">
         <div class="p-2.5 sm:p-4 lg:p-8 bg-gray-50 dark:bg-gray-900 flex-1">
             @yield('content')
         </div>
@@ -1014,6 +1014,7 @@
 @endauth
 
 <!-- Back to Top Button -->
+@if(!View::hasSection('hide-back-to-top'))
 <button id="back-to-top" class="fixed bottom-24 md:bottom-8 left-1/2 -translate-x-1/2 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 px-4 py-2.5 rounded-full shadow-lg border border-gray-200 dark:border-gray-700 opacity-0 invisible transition-all duration-300 z-[55] hover:-translate-y-1 hover:shadow-xl group">
     <div class="flex items-center gap-2">
         <svg class="w-4 h-4 group-hover:-translate-y-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -1022,6 +1023,7 @@
         <span class="text-xs font-medium">Kembali ke Atas</span>
     </div>
 </button>
+@endif
 
 <script>
 // Back to Top Button Functionality

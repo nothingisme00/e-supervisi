@@ -13,7 +13,7 @@
 </div>
 
 <div class="min-h-screen bg-gray-50 dark:bg-gray-900 py-8">
-    <div class="w-full lg:w-3/4 mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="w-full lg:w-3/4 mx-auto px-4 sm:px-6 lg:px-8 pb-24 md:pb-0">
         
         <!-- Back Button -->
         <div class="mb-6">

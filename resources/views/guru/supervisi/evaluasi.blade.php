@@ -13,7 +13,7 @@
 </div>
 
 <!-- Wrapper Container (3/4 width, centered) -->
-<div class="w-full lg:w-3/4 mx-auto px-0 sm:px-4">
+<div class="w-full lg:w-3/4 mx-auto px-0 sm:px-4 pb-24 md:pb-0">
 
 <!-- Main Card -->
 <div class="bg-white dark:bg-gray-800 rounded-md sm:rounded-2xl border border-gray-200 dark:border-gray-700 shadow-lg">

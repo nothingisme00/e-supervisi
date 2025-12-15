@@ -29,79 +29,113 @@
         <input type="hidden" name="sort_by" value="{{ request('sort_by') }}">
         <input type="hidden" name="sort_direction" value="{{ request('sort_direction') }}">
 
-        <div class="grid grid-cols-1 md:grid-cols-12 gap-2 sm:gap-3">
-            <!-- Search -->
-            <div class="md:col-span-12 lg:col-span-4">
+        <!-- Search Row with Filter Toggle (Always Visible) -->
+        <div class="flex gap-2 mb-2 md:mb-0">
+            <!-- Search Input -->
+            <div class="flex-1">
                 <input type="text"
                        name="search"
                        value="{{ request('search') }}"
                        placeholder="Cari NIK, nama, atau email..."
                        class="w-full px-3 sm:px-4 py-2 sm:py-2.5 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-md sm:rounded-lg text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all">
             </div>
-
-            <!-- Role Filter -->
-            <div class="md:col-span-6 lg:col-span-2">
-                <div class="relative">
-                    <select name="role" class="w-full px-3 sm:px-4 py-2 sm:py-2.5 pr-8 sm:pr-10 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-md sm:rounded-lg text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:focus:border-indigo-400 transition-all appearance-none cursor-pointer">
-                        <option value="">Semua Role</option>
-                        <option value="admin" {{ request('role') == 'admin' ? 'selected' : '' }}>Administrator</option>
-                        <option value="guru" {{ request('role') == 'guru' ? 'selected' : '' }}>Guru</option>
-                        <option value="kepala_sekolah" {{ request('role') == 'kepala_sekolah' ? 'selected' : '' }}>Kepala Sekolah</option>
-                    </select>
-                    <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 sm:px-3 text-gray-500 dark:text-gray-400">
-                        <svg class="w-3 h-3 sm:w-4 sm:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                        </svg>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Tingkat Filter -->
-            <div class="md:col-span-6 lg:col-span-2">
-                <div class="relative">
-                    <select name="tingkat" class="w-full px-3 sm:px-4 py-2 sm:py-2.5 pr-8 sm:pr-10 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-md sm:rounded-lg text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:focus:border-indigo-400 transition-all appearance-none cursor-pointer">
-                        <option value="">Semua Tingkat</option>
-                        <option value="SD" {{ request('tingkat') == 'SD' ? 'selected' : '' }}>SD</option>
-                        <option value="SMP" {{ request('tingkat') == 'SMP' ? 'selected' : '' }}>SMP</option>
-                    </select>
-                    <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 sm:px-3 text-gray-500 dark:text-gray-400">
-                        <svg class="w-3 h-3 sm:w-4 sm:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                        </svg>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Status Filter -->
-            <div class="md:col-span-6 lg:col-span-2">
-                <div class="relative">
-                    <select name="status" class="w-full px-3 sm:px-4 py-2 sm:py-2.5 pr-8 sm:pr-10 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-md sm:rounded-lg text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:focus:border-indigo-400 transition-all appearance-none cursor-pointer">
-                        <option value="">Semua Status</option>
-                        <option value="active" {{ request('status') == 'active' ? 'selected' : '' }}>Aktif</option>
-                        <option value="inactive" {{ request('status') == 'inactive' ? 'selected' : '' }}>Nonaktif</option>
-                    </select>
-                    <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 sm:px-3 text-gray-500 dark:text-gray-400">
-                        <svg class="w-3 h-3 sm:w-4 sm:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                        </svg>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Buttons -->
-            <div class="md:col-span-6 lg:col-span-2 flex gap-1.5 sm:gap-2">
-                <button type="submit" class="flex-1 px-3 sm:px-4 py-2 sm:py-2.5 bg-indigo-600 hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-600 text-white text-xs sm:text-sm font-medium rounded-md sm:rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800">
-                    Filter
-                </button>
-                @if(request('search') || request('role') || request('tingkat') || request('status'))
-                <a href="{{ route('admin.users.index') }}" class="px-3 sm:px-4 py-2 sm:py-2.5 bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 text-xs sm:text-sm font-medium rounded-md sm:rounded-lg transition-colors">
-                    Reset
-                </a>
+            
+            <!-- Filter Toggle Button (Mobile Only) -->
+            <button type="button" id="filterToggle" class="md:hidden flex items-center justify-center gap-1.5 px-3 py-2 bg-indigo-50 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-300 rounded-md border border-indigo-200 dark:border-indigo-800 hover:bg-indigo-100 dark:hover:bg-indigo-900/50 transition-colors">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"></path>
+                </svg>
+                @if(request('role') || request('tingkat') || request('status'))
+                    <span class="w-2 h-2 bg-indigo-600 rounded-full"></span>
                 @endif
+                <svg id="filterChevron" class="w-4 h-4 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                </svg>
+            </button>
+        </div>
+
+        <!-- Filter Dropdowns (Hidden on mobile by default, shown on md+) -->
+        <div id="filterContent" class="hidden md:block mt-2 sm:mt-3">
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-2 sm:gap-3">
+                <!-- Role Filter -->
+                <div class="md:col-span-3 lg:col-span-2">
+                    <div class="relative">
+                        <select name="role" class="w-full px-3 sm:px-4 py-2 sm:py-2.5 pr-8 sm:pr-10 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-md sm:rounded-lg text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:focus:border-indigo-400 transition-all appearance-none cursor-pointer">
+                            <option value="">Semua Role</option>
+                            <option value="admin" {{ request('role') == 'admin' ? 'selected' : '' }}>Administrator</option>
+                            <option value="guru" {{ request('role') == 'guru' ? 'selected' : '' }}>Guru</option>
+                            <option value="kepala_sekolah" {{ request('role') == 'kepala_sekolah' ? 'selected' : '' }}>Kepala Sekolah</option>
+                        </select>
+                        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 sm:px-3 text-gray-500 dark:text-gray-400">
+                            <svg class="w-3 h-3 sm:w-4 sm:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tingkat Filter -->
+                <div class="md:col-span-3 lg:col-span-2">
+                    <div class="relative">
+                        <select name="tingkat" class="w-full px-3 sm:px-4 py-2 sm:py-2.5 pr-8 sm:pr-10 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-md sm:rounded-lg text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:focus:border-indigo-400 transition-all appearance-none cursor-pointer">
+                            <option value="">Semua Tingkat</option>
+                            <option value="SD" {{ request('tingkat') == 'SD' ? 'selected' : '' }}>SD</option>
+                            <option value="SMP" {{ request('tingkat') == 'SMP' ? 'selected' : '' }}>SMP</option>
+                        </select>
+                        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 sm:px-3 text-gray-500 dark:text-gray-400">
+                            <svg class="w-3 h-3 sm:w-4 sm:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Status Filter -->
+                <div class="md:col-span-3 lg:col-span-2">
+                    <div class="relative">
+                        <select name="status" class="w-full px-3 sm:px-4 py-2 sm:py-2.5 pr-8 sm:pr-10 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-md sm:rounded-lg text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:focus:border-indigo-400 transition-all appearance-none cursor-pointer">
+                            <option value="">Semua Status</option>
+                            <option value="active" {{ request('status') == 'active' ? 'selected' : '' }}>Aktif</option>
+                            <option value="inactive" {{ request('status') == 'inactive' ? 'selected' : '' }}>Nonaktif</option>
+                        </select>
+                        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 sm:px-3 text-gray-500 dark:text-gray-400">
+                            <svg class="w-3 h-3 sm:w-4 sm:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Buttons -->
+                <div class="md:col-span-3 lg:col-span-6 flex gap-1.5 sm:gap-2">
+                    <button type="submit" class="flex-1 md:flex-none px-3 sm:px-4 py-2 sm:py-2.5 bg-indigo-600 hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-600 text-white text-xs sm:text-sm font-medium rounded-md sm:rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800">
+                        Filter
+                    </button>
+                    @if(request('search') || request('role') || request('tingkat') || request('status'))
+                    <a href="{{ route('admin.users.index') }}" class="px-3 sm:px-4 py-2 sm:py-2.5 bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 text-xs sm:text-sm font-medium rounded-md sm:rounded-lg transition-colors">
+                        Reset
+                    </a>
+                    @endif
+                </div>
             </div>
         </div>
     </form>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const filterToggle = document.getElementById('filterToggle');
+    const filterContent = document.getElementById('filterContent');
+    const filterChevron = document.getElementById('filterChevron');
+    
+    if (filterToggle && filterContent && filterChevron) {
+        filterToggle.addEventListener('click', function() {
+            filterContent.classList.toggle('hidden');
+            filterChevron.classList.toggle('rotate-180');
+        });
+    }
+});
+</script>
 
 <!-- Tabel Pengguna -->
 <div class="bg-white dark:bg-gray-800 rounded-md sm:rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden">
@@ -175,9 +209,9 @@
                             <div class="min-w-0">
                                 <div class="text-[10px] sm:text-xs md:text-sm font-semibold text-gray-900 dark:text-white truncate">{{ $user->name }}</div>
                                 @if($user->mata_pelajaran && $user->tingkat)
-                                    <div class="text-[8px] sm:text-[10px] md:text-xs text-gray-500 dark:text-gray-400 truncate">{{ $user->mata_pelajaran }} • {{ $user->tingkat }}</div>
+                                    <div class="text-[9px] sm:text-[10px] md:text-xs text-gray-500 dark:text-gray-400 truncate">{{ $user->mata_pelajaran }} • {{ $user->tingkat }}</div>
                                 @elseif($user->tingkat)
-                                    <div class="text-[8px] sm:text-[10px] md:text-xs text-gray-500 dark:text-gray-400 truncate">{{ $user->tingkat }}</div>
+                                    <div class="text-[9px] sm:text-[10px] md:text-xs text-gray-500 dark:text-gray-400 truncate">{{ $user->tingkat }}</div>
                                 @endif
                             </div>
                         </div>
@@ -187,7 +221,7 @@
                     </td>
                     <td class="px-2 sm:px-3 md:px-6 py-2 sm:py-3 md:py-4 whitespace-nowrap">
                         @if($user->tingkat)
-                            <span class="inline-flex items-center px-1.5 sm:px-2 md:px-2.5 py-0.5 rounded-full text-[8px] sm:text-[10px] md:text-xs font-medium bg-indigo-100 dark:bg-indigo-900/30 text-indigo-800 dark:text-indigo-300">
+                            <span class="inline-flex items-center px-1.5 sm:px-2 md:px-2.5 py-0.5 rounded-full text-[9px] sm:text-[10px] md:text-xs font-medium bg-indigo-100 dark:bg-indigo-900/30 text-indigo-800 dark:text-indigo-300">
                                 {{ $user->tingkat }}
                             </span>
                         @else
@@ -196,21 +230,21 @@
                     </td>
                     <td class="px-2 sm:px-3 md:px-6 py-2 sm:py-3 md:py-4 whitespace-nowrap">
                         @if($user->role == 'admin')
-                            <span class="inline-flex items-center px-1.5 sm:px-2 md:px-2.5 py-0.5 rounded-full text-[8px] sm:text-[10px] md:text-xs font-medium bg-purple-100 dark:bg-purple-900/30 text-purple-800 dark:text-purple-300">
+                            <span class="inline-flex items-center px-1.5 sm:px-2 md:px-2.5 py-0.5 rounded-full text-[9px] sm:text-[10px] md:text-xs font-medium bg-purple-100 dark:bg-purple-900/30 text-purple-800 dark:text-purple-300">
                                 Admin
                             </span>
                         @elseif($user->role == 'guru')
-                            <span class="inline-flex items-center px-1.5 sm:px-2 md:px-2.5 py-0.5 rounded-full text-[8px] sm:text-[10px] md:text-xs font-medium bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300">
+                            <span class="inline-flex items-center px-1.5 sm:px-2 md:px-2.5 py-0.5 rounded-full text-[9px] sm:text-[10px] md:text-xs font-medium bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300">
                                 Guru
                             </span>
                         @else
-                            <span class="inline-flex items-center px-1.5 sm:px-2 md:px-2.5 py-0.5 rounded-full text-[8px] sm:text-[10px] md:text-xs font-medium bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300">
+                            <span class="inline-flex items-center px-1.5 sm:px-2 md:px-2.5 py-0.5 rounded-full text-[9px] sm:text-[10px] md:text-xs font-medium bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300">
                                 Kepsek
                             </span>
                         @endif
                     </td>
                     <td class="px-2 sm:px-3 md:px-6 py-2 sm:py-3 md:py-4 whitespace-nowrap">
-                        <button onclick="toggleStatus({{ $user->id }}, this)" class="inline-flex items-center px-1.5 sm:px-2 md:px-2.5 py-0.5 rounded-full text-[8px] sm:text-[10px] md:text-xs font-medium transition-all {{ $user->is_active ? 'bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300 hover:bg-green-200 dark:hover:bg-green-900/50' : 'bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-300 hover:bg-red-200 dark:hover:bg-red-900/50' }}" title="Klik untuk ubah status">
+                        <button onclick="toggleStatus({{ $user->id }}, this)" class="inline-flex items-center px-1.5 sm:px-2 md:px-2.5 py-0.5 rounded-full text-[9px] sm:text-[10px] md:text-xs font-medium transition-all {{ $user->is_active ? 'bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300 hover:bg-green-200 dark:hover:bg-green-900/50' : 'bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-300 hover:bg-red-200 dark:hover:bg-red-900/50' }}" title="Klik untuk ubah status">
                             <span class="w-1 h-1 sm:w-1.5 sm:h-1.5 {{ $user->is_active ? 'bg-green-500 dark:bg-green-400' : 'bg-red-500 dark:bg-red-400' }} rounded-full mr-1 sm:mr-1.5"></span>
                             <span class="status-text">{{ $user->is_active ? 'Aktif' : 'Nonaktif' }}</span>
                         </button>

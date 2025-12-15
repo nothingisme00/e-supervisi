@@ -13,7 +13,7 @@
 </div>
 
 <!-- Wrapper Container (3/4 width, centered) -->
-<div class="w-full lg:w-3/4 mx-auto space-y-3 sm:space-y-6 px-0 sm:px-4">
+<div class="w-full lg:w-3/4 mx-auto space-y-3 sm:space-y-6 px-0 sm:px-4 pb-24 md:pb-0">
 
 <!-- Form -->
 <form id="prosesForm">

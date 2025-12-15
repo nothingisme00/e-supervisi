@@ -2,6 +2,8 @@
 
 @section('page-title', 'Pengaturan')
 
+@section('hide-back-to-top', true)
+
 @section('content')
 <!-- Breadcrumb -->
 <div class="mb-4">
