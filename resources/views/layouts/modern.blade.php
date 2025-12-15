@@ -92,7 +92,7 @@
             <div class="flex items-center justify-between h-full">
                 <!-- Left: Hamburger Menu + Logo & Brand -->
                 <div class="flex items-center gap-2 md:gap-2 lg:gap-3">
-                    <!-- Hamburger Menu Button (Hidden on Mobile) -->
+                    <!-- Hamburger Menu Button (Hidden on Mobile, visible on Tablet and Desktop) -->
                     <button id="hamburger-menu" class="hidden md:block p-1.5 md:p-1.5 lg:p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 transition-all duration-300 ease-in-out" style="transform-origin: center;">
                         <svg class="w-5 h-5 md:w-5 md:h-5 lg:w-6 lg:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
@@ -229,8 +229,8 @@
         <!-- SIDEBAR BACKDROP (Mobile Only) -->
         <div id="sidebar-backdrop" class="fixed inset-0 bg-black/30 backdrop-blur-sm z-40 hidden md:hidden"></div>
 
-        <!-- SIDEBAR (Hidden on Mobile) -->
-        <aside id="sidebar" class="hidden md:block fixed top-0 left-0 h-screen w-72 bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 transition-transform duration-300 ease-in-out z-50 md:-translate-x-full shadow-lg">
+        <!-- SIDEBAR (Hidden by default, toggleable via hamburger) -->
+        <aside id="sidebar" class="hidden md:block fixed top-0 left-0 h-screen w-72 bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 transition-transform duration-300 ease-in-out z-50 -translate-x-full shadow-lg">
         <div class="h-full flex flex-col">
             <!-- User Profile Section with Hamburger - Match Header Height -->
             <div class="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 px-3 md:px-4 lg:px-6 py-1.5 md:py-2 lg:py-2.5">
