@@ -72,6 +72,8 @@
             to { transform: rotate(360deg); }
         }
     </style>
+    
+    @livewireStyles
 </head>
 <body class="bg-gray-300 text-gray-900 dark:bg-gray-950 dark:text-gray-100 transition-colors duration-300">
 
@@ -1101,6 +1103,8 @@ if (backToTopBtn) {
     checkModalState();
 }
 </script>
+
+@livewireScripts
 
 </body>
 </html>
