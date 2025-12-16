@@ -12,21 +12,21 @@
 <!-- Main Container -->
 <div class="bg-white dark:bg-gray-800 rounded-md sm:rounded-xl p-2.5 sm:p-5 shadow-sm">
 
-    <!-- Header Section with Border Bottom -->
-    <div class="pb-3 sm:pb-6 mb-3 sm:mb-6 border-b-2 border-gray-200 dark:border-gray-600">
+    <!-- Header Section with Border Bottom - Hidden on mobile -->
+    <div class="hidden sm:block pb-6 mb-6 border-b-2 border-gray-200 dark:border-gray-600">
         <!-- Header Row: Title + Buttons -->
         <div class="flex flex-row items-center justify-between gap-2 sm:gap-3 md:gap-5 w-full">
-            <!-- LEFT: Icon + Title -->
-            <div class="flex items-center gap-1.5 sm:gap-2 md:gap-4 flex-shrink min-w-0">
-                <div class="w-7 h-7 sm:w-10 sm:h-10 md:w-14 md:h-14 lg:w-16 lg:h-16 bg-gradient-to-r from-indigo-600 to-purple-600 dark:from-indigo-500 dark:to-purple-500 rounded-md sm:rounded-xl md:rounded-2xl flex items-center justify-center shadow-md sm:shadow-lg">
-                    <svg class="w-3.5 h-3.5 sm:w-5 sm:h-5 md:w-7 md:h-7 lg:w-8 lg:h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <!-- LEFT: Icon + Title - Hidden on mobile -->
+            <div class="hidden sm:flex items-center gap-2 md:gap-4 flex-shrink min-w-0">
+                <div class="w-10 h-10 md:w-14 md:h-14 lg:w-16 lg:h-16 bg-gradient-to-r from-indigo-600 to-purple-600 dark:from-indigo-500 dark:to-purple-500 rounded-xl md:rounded-2xl flex items-center justify-center shadow-lg">
+                    <svg class="w-5 h-5 md:w-7 md:h-7 lg:w-8 lg:h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
                     </svg>
                 </div>
                 <div class="min-w-0 flex-1">
-                    <h3 class="text-xs sm:text-base md:text-xl lg:text-2xl font-bold text-gray-900 dark:text-white truncate">Manajemen E-Supervisi</h3>
-                    <p class="text-[9px] sm:text-xs md:text-sm text-gray-500 dark:text-gray-400 hidden sm:block">Kelola pengguna dan monitor supervisi</p>
+                    <h3 class="text-base md:text-xl lg:text-2xl font-bold text-gray-900 dark:text-white truncate">Manajemen E-Supervisi</h3>
+                    <p class="text-xs md:text-sm text-gray-500 dark:text-gray-400">Kelola pengguna dan monitor supervisi</p>
                 </div>
             </div>
 
