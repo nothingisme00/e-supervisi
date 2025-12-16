@@ -116,32 +116,8 @@
                     </a>
                 </div>
                 
-                <!-- Right: Welcome Message + Profile Dropdown -->
+                <!-- Right: Profile Dropdown -->
                 <div class="flex items-center gap-2 md:gap-2.5 lg:gap-3">
-                    <!-- Welcome Message - HIDDEN on mobile, show on desktop only -->
-                    <div class="hidden lg:block text-right">
-                        <p class="text-xs lg:text-sm text-gray-600 dark:text-gray-400">
-                            Selamat datang, 
-                            <span class="font-bold text-gray-900 dark:text-gray-100 text-xs lg:text-sm">{{ Auth::user()->name }}</span>
-                        </p>
-                        <p class="text-[10px] lg:text-xs text-gray-500 dark:text-gray-400">
-                            @php
-                                $day = date('l');
-                                $date = date('d F Y');
-                                $dayIndo = [
-                                    'Sunday' => 'Minggu',
-                                    'Monday' => 'Senin',
-                                    'Tuesday' => 'Selasa',
-                                    'Wednesday' => 'Rabu',
-                                    'Thursday' => 'Kamis',
-                                    'Friday' => 'Jumat',
-                                    'Saturday' => 'Sabtu'
-                                ];
-                            @endphp
-                            {{ $dayIndo[$day] }}, {{ $date }}
-                        </p>
-                    </div>
-
                     <!-- Profile Dropdown -->
                     <div class="relative">
                         <button id="profile-dropdown-btn" class="flex items-center gap-1 sm:gap-1.5 md:gap-1.5 lg:gap-2 px-1.5 sm:px-2.5 md:px-2 lg:px-2.5 py-1.5 sm:py-2 md:py-1.5 lg:py-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-all focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
@@ -425,75 +401,75 @@
 
         <!-- BOTTOM NAVIGATION (Mobile Only) -->
         <nav class="md:hidden fixed bottom-0 left-0 right-0 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 z-50 safe-area-inset shadow-lg">
-            <div class="flex items-center justify-center gap-3 sm:gap-6 px-2 sm:px-3 py-1 sm:py-1.5">
+            <div class="flex items-center justify-center gap-4 sm:gap-8 px-3 sm:px-4 py-2 sm:py-3">
             @if(Auth::user()->isAdmin())
                 <!-- Admin: Dashboard -->
-                <a href="{{ route('admin.dashboard') }}" class="flex flex-col items-center justify-center gap-0.5 sm:gap-1 px-3 sm:px-5 py-1.5 sm:py-2.5 rounded-lg sm:rounded-xl transition-all duration-300 ease-in-out {{ request()->routeIs('admin.dashboard') ? 'text-indigo-600 dark:text-indigo-400 bg-indigo-100 dark:bg-indigo-900/40 scale-105 shadow-md' : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700/50' }}">
-                    <svg class="w-5 h-5 sm:w-7 sm:h-7 transition-transform duration-300 {{ request()->routeIs('admin.dashboard') ? 'scale-110' : '' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <a href="{{ route('admin.dashboard') }}" class="flex flex-col items-center justify-center gap-1 px-4 sm:px-6 py-2 sm:py-3 rounded-xl transition-all duration-300 ease-in-out {{ request()->routeIs('admin.dashboard') ? 'text-indigo-600 dark:text-indigo-400 bg-indigo-100 dark:bg-indigo-900/40 scale-105 shadow-md' : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700/50' }}">
+                    <svg class="w-6 h-6 sm:w-7 sm:h-7 transition-transform duration-300 {{ request()->routeIs('admin.dashboard') ? 'scale-110' : '' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
                     </svg>
-                    <span class="text-[10px] sm:text-xs font-semibold">Dashboard</span>
+                    <span class="text-xs sm:text-sm font-semibold">Dashboard</span>
                 </a>
                 <!-- Admin: Users -->
-                <a href="{{ route('admin.users.index') }}" class="flex flex-col items-center justify-center gap-0.5 sm:gap-1 px-3 sm:px-5 py-1.5 sm:py-2.5 rounded-lg sm:rounded-xl transition-all duration-300 ease-in-out {{ request()->routeIs('admin.users.*') ? 'text-indigo-600 dark:text-indigo-400 bg-indigo-100 dark:bg-indigo-900/40 scale-105 shadow-md' : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700/50' }}">
-                    <svg class="w-5 h-5 sm:w-7 sm:h-7 transition-transform duration-300 {{ request()->routeIs('admin.users.*') ? 'scale-110' : '' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <a href="{{ route('admin.users.index') }}" class="flex flex-col items-center justify-center gap-1 px-4 sm:px-6 py-2 sm:py-3 rounded-xl transition-all duration-300 ease-in-out {{ request()->routeIs('admin.users.*') ? 'text-indigo-600 dark:text-indigo-400 bg-indigo-100 dark:bg-indigo-900/40 scale-105 shadow-md' : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700/50' }}">
+                    <svg class="w-6 h-6 sm:w-7 sm:h-7 transition-transform duration-300 {{ request()->routeIs('admin.users.*') ? 'scale-110' : '' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
                     </svg>
-                    <span class="text-[10px] sm:text-xs font-semibold">Users</span>
+                    <span class="text-xs sm:text-sm font-semibold">Users</span>
                 </a>
                 <!-- Admin: Settings -->
-                <a href="{{ route('settings.index') }}" class="flex flex-col items-center justify-center gap-0.5 sm:gap-1 px-3 sm:px-5 py-1.5 sm:py-2.5 rounded-lg sm:rounded-xl transition-all duration-300 ease-in-out {{ request()->routeIs('settings.*') ? 'text-indigo-600 dark:text-indigo-400 bg-indigo-100 dark:bg-indigo-900/40 scale-105 shadow-md' : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700/50' }}">
-                    <svg class="w-5 h-5 sm:w-7 sm:h-7 transition-transform duration-300 {{ request()->routeIs('settings.*') ? 'scale-110' : '' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <a href="{{ route('settings.index') }}" class="flex flex-col items-center justify-center gap-1 px-4 sm:px-6 py-2 sm:py-3 rounded-xl transition-all duration-300 ease-in-out {{ request()->routeIs('settings.*') ? 'text-indigo-600 dark:text-indigo-400 bg-indigo-100 dark:bg-indigo-900/40 scale-105 shadow-md' : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700/50' }}">
+                    <svg class="w-6 h-6 sm:w-7 sm:h-7 transition-transform duration-300 {{ request()->routeIs('settings.*') ? 'scale-110' : '' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
                     </svg>
-                    <span class="text-[10px] sm:text-xs font-semibold">Settings</span>
+                    <span class="text-xs sm:text-sm font-semibold">Settings</span>
                 </a>
             @elseif(Auth::user()->isGuru())
                 <!-- Guru: Beranda (Left) -->
-                <a href="{{ route('guru.home') }}" class="flex flex-col items-center justify-center gap-0.5 sm:gap-1 px-3 sm:px-5 py-1.5 sm:py-2.5 rounded-lg sm:rounded-xl transition-all duration-300 ease-in-out {{ request()->routeIs('guru.home') ? 'text-indigo-600 dark:text-indigo-400 bg-indigo-100 dark:bg-indigo-900/40 scale-105 shadow-md' : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700/50' }}">
-                    <svg class="w-5 h-5 sm:w-7 sm:h-7 transition-transform duration-300 {{ request()->routeIs('guru.home') ? 'scale-110' : '' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <a href="{{ route('guru.home') }}" class="flex flex-col items-center justify-center gap-1 px-4 sm:px-6 py-2 sm:py-3 rounded-xl transition-all duration-300 ease-in-out {{ request()->routeIs('guru.home') ? 'text-indigo-600 dark:text-indigo-400 bg-indigo-100 dark:bg-indigo-900/40 scale-105 shadow-md' : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700/50' }}">
+                    <svg class="w-6 h-6 sm:w-7 sm:h-7 transition-transform duration-300 {{ request()->routeIs('guru.home') ? 'scale-110' : '' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
                     </svg>
-                    <span class="text-[10px] sm:text-xs font-semibold">Beranda</span>
+                    <span class="text-xs sm:text-sm font-semibold">Beranda</span>
                 </a>
                 <!-- Guru: Supervisi Saya (Center) -->
-                <a href="{{ route('guru.my-supervisi') }}" class="flex flex-col items-center justify-center gap-0.5 sm:gap-1 px-3 sm:px-5 py-1.5 sm:py-2.5 rounded-lg sm:rounded-xl transition-all duration-300 ease-in-out {{ request()->routeIs('guru.my-supervisi') ? 'text-indigo-600 dark:text-indigo-400 bg-indigo-100 dark:bg-indigo-900/40 scale-105 shadow-md' : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700/50' }}">
-                    <svg class="w-5 h-5 sm:w-7 sm:h-7 transition-transform duration-300 {{ request()->routeIs('guru.my-supervisi') ? 'scale-110' : '' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <a href="{{ route('guru.my-supervisi') }}" class="flex flex-col items-center justify-center gap-1 px-4 sm:px-6 py-2 sm:py-3 rounded-xl transition-all duration-300 ease-in-out {{ request()->routeIs('guru.my-supervisi') ? 'text-indigo-600 dark:text-indigo-400 bg-indigo-100 dark:bg-indigo-900/40 scale-105 shadow-md' : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700/50' }}">
+                    <svg class="w-6 h-6 sm:w-7 sm:h-7 transition-transform duration-300 {{ request()->routeIs('guru.my-supervisi') ? 'scale-110' : '' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
                     </svg>
-                    <span class="text-[10px] sm:text-xs font-semibold">Supervisi</span>
+                    <span class="text-xs sm:text-sm font-semibold">Supervisi</span>
                 </a>
                 <!-- Guru: Settings (Right) -->
-                <a href="{{ route('settings.index') }}" class="flex flex-col items-center justify-center gap-0.5 sm:gap-1 px-3 sm:px-5 py-1.5 sm:py-2.5 rounded-lg sm:rounded-xl transition-all duration-300 ease-in-out {{ request()->routeIs('settings.*') ? 'text-indigo-600 dark:text-indigo-400 bg-indigo-100 dark:bg-indigo-900/40 scale-105 shadow-md' : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700/50' }}">
-                    <svg class="w-5 h-5 sm:w-7 sm:h-7 transition-transform duration-300 {{ request()->routeIs('settings.*') ? 'scale-110' : '' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <a href="{{ route('settings.index') }}" class="flex flex-col items-center justify-center gap-1 px-4 sm:px-6 py-2 sm:py-3 rounded-xl transition-all duration-300 ease-in-out {{ request()->routeIs('settings.*') ? 'text-indigo-600 dark:text-indigo-400 bg-indigo-100 dark:bg-indigo-900/40 scale-105 shadow-md' : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700/50' }}">
+                    <svg class="w-6 h-6 sm:w-7 sm:h-7 transition-transform duration-300 {{ request()->routeIs('settings.*') ? 'scale-110' : '' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
                     </svg>
-                    <span class="text-[10px] sm:text-xs font-semibold">Settings</span>
+                    <span class="text-xs sm:text-sm font-semibold">Settings</span>
                 </a>
             @elseif(Auth::user()->isKepalaSekolah())
                 <!-- Kepala: Dashboard -->
-                <a href="{{ route('kepala.dashboard') }}" class="flex flex-col items-center justify-center gap-0.5 px-3 py-1.5 rounded-lg transition-all {{ request()->routeIs('kepala.dashboard') ? 'text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-900/20' : 'text-gray-600 dark:text-gray-400' }}">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <a href="{{ route('kepala.dashboard') }}" class="flex flex-col items-center justify-center gap-1 px-4 sm:px-6 py-2 sm:py-3 rounded-xl transition-all {{ request()->routeIs('kepala.dashboard') ? 'text-indigo-600 dark:text-indigo-400 bg-indigo-100 dark:bg-indigo-900/40 scale-105 shadow-md' : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700/50' }}">
+                    <svg class="w-6 h-6 sm:w-7 sm:h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
                     </svg>
-                    <span class="text-[10px] font-medium">Dashboard</span>
+                    <span class="text-xs sm:text-sm font-semibold">Dashboard</span>
                 </a>
                 <!-- Kepala: Evaluasi -->
-                <a href="{{ route('kepala.evaluasi.index') }}" class="flex flex-col items-center justify-center gap-0.5 px-3 py-1.5 rounded-lg transition-all {{ request()->routeIs('kepala.evaluasi.*') ? 'text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-900/20' : 'text-gray-600 dark:text-gray-400' }}">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <a href="{{ route('kepala.evaluasi.index') }}" class="flex flex-col items-center justify-center gap-1 px-4 sm:px-6 py-2 sm:py-3 rounded-xl transition-all {{ request()->routeIs('kepala.evaluasi.*') ? 'text-indigo-600 dark:text-indigo-400 bg-indigo-100 dark:bg-indigo-900/40 scale-105 shadow-md' : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700/50' }}">
+                    <svg class="w-6 h-6 sm:w-7 sm:h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path>
                     </svg>
-                    <span class="text-[10px] font-medium">Evaluasi</span>
+                    <span class="text-xs sm:text-sm font-semibold">Evaluasi</span>
                 </a>
                 <!-- Kepala: Settings -->
-                <a href="{{ route('settings.index') }}" class="flex flex-col items-center justify-center gap-0.5 px-3 py-1.5 rounded-lg transition-all {{ request()->routeIs('settings.*') ? 'text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-900/20' : 'text-gray-600 dark:text-gray-400' }}">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <a href="{{ route('settings.index') }}" class="flex flex-col items-center justify-center gap-1 px-4 sm:px-6 py-2 sm:py-3 rounded-xl transition-all {{ request()->routeIs('settings.*') ? 'text-indigo-600 dark:text-indigo-400 bg-indigo-100 dark:bg-indigo-900/40 scale-105 shadow-md' : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700/50' }}">
+                    <svg class="w-6 h-6 sm:w-7 sm:h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
                     </svg>
-                    <span class="text-[10px] font-medium">Settings</span>
+                    <span class="text-xs sm:text-sm font-semibold">Settings</span>
                 </a>
             @endif
             </div>
