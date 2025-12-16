@@ -90,7 +90,7 @@
     <div id="app-wrapper" class="transition-all duration-300 ease-in-out">
         
         <!-- HEADER -->
-        <header id="header" class="fixed top-0 left-0 right-0 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 px-3 sm:px-4 md:px-4 lg:px-6 py-2.5 sm:py-3 md:py-2 lg:py-2.5 z-50 transition-all duration-300 ease-in-out shadow-sm">
+        <header id="header" class="fixed top-0 left-0 right-0 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 px-4 sm:px-5 md:px-5 lg:px-6 py-4 sm:py-5 md:py-4 lg:py-5 z-50 transition-all duration-300 ease-in-out shadow-sm">
             <div class="flex items-center justify-between h-full">
                 <!-- Left: Hamburger Menu + Logo & Brand -->
                 <div class="flex items-center gap-2 md:gap-2 lg:gap-3">
@@ -358,7 +358,7 @@
         </aside>
 
         <!-- MAIN CONTENT -->
-        <main id="main-content" class="min-h-screen pt-16 sm:pt-20 md:pt-14 lg:pt-16 pb-20 sm:pb-20 md:pb-0 transition-all duration-300 flex flex-col bg-gray-50 dark:bg-gray-900">
+        <main id="main-content" class="min-h-screen pt-[72px] sm:pt-[88px] md:pt-[72px] lg:pt-[84px] pb-20 sm:pb-20 md:pb-0 transition-all duration-300 flex flex-col bg-gray-50 dark:bg-gray-900">
         <div class="p-2.5 sm:p-4 lg:p-8 bg-gray-50 dark:bg-gray-900 flex-1">
             @yield('content')
         </div>
