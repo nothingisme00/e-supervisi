@@ -88,7 +88,7 @@
     <div id="app-wrapper" class="transition-all duration-300 ease-in-out">
         
         <!-- HEADER -->
-        <header id="header" class="fixed top-0 left-0 right-0 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 px-3 sm:px-4 md:px-4 lg:px-6 py-2.5 sm:py-3 md:py-2 lg:py-2.5 z-50 transition-all duration-300 ease-in-out shadow-sm">
+        <header id="header" class="fixed top-0 left-0 right-0 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 px-3 sm:px-4 md:px-4 lg:px-6 py-3.5 sm:py-3.5 md:py-2 lg:py-2.5 z-50 transition-all duration-300 ease-in-out shadow-sm">
             <div class="flex items-center justify-between h-full">
                 <!-- Left: Hamburger Menu + Logo & Brand -->
                 <div class="flex items-center gap-2 md:gap-2 lg:gap-3">
@@ -114,31 +114,8 @@
                     </a>
                 </div>
                 
-                <!-- Right: Welcome Message + Profile Dropdown -->
+                <!-- Right: Profile Dropdown -->
                 <div class="flex items-center gap-2 md:gap-2.5 lg:gap-3">
-                    <!-- Welcome Message - HIDDEN on mobile, show on desktop only -->
-                    <div class="hidden lg:block text-right">
-                        <p class="text-xs lg:text-sm text-gray-600 dark:text-gray-400">
-                            Selamat datang, 
-                            <span class="font-bold text-gray-900 dark:text-gray-100 text-xs lg:text-sm">{{ Auth::user()->name }}</span>
-                        </p>
-                        <p class="text-[10px] lg:text-xs text-gray-500 dark:text-gray-400">
-                            @php
-                                $day = date('l');
-                                $date = date('d F Y');
-                                $dayIndo = [
-                                    'Sunday' => 'Minggu',
-                                    'Monday' => 'Senin',
-                                    'Tuesday' => 'Selasa',
-                                    'Wednesday' => 'Rabu',
-                                    'Thursday' => 'Kamis',
-                                    'Friday' => 'Jumat',
-                                    'Saturday' => 'Sabtu'
-                                ];
-                            @endphp
-                            {{ $dayIndo[$day] }}, {{ $date }}
-                        </p>
-                    </div>
 
                     <!-- Profile Dropdown -->
                     <div class="relative">
@@ -380,7 +357,7 @@
         </aside>
 
         <!-- MAIN CONTENT -->
-        <main id="main-content" class="min-h-screen pt-16 sm:pt-20 md:pt-14 lg:pt-16 pb-20 sm:pb-20 md:pb-0 transition-all duration-300 flex flex-col bg-gray-50 dark:bg-gray-900">
+        <main id="main-content" class="min-h-screen pt-[82px] sm:pt-[86px] md:pt-14 lg:pt-16 pb-20 sm:pb-20 md:pb-0 transition-all duration-300 flex flex-col bg-gray-50 dark:bg-gray-900">
         <div class="p-2.5 sm:p-4 lg:p-8 bg-gray-50 dark:bg-gray-900 flex-1">
             @yield('content')
         </div>
@@ -388,34 +365,20 @@
         <!-- FOOTER -->
         <footer class="hidden md:block py-6 border-t border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800">
             <div class="max-w-7xl mx-auto px-4">
-                <div class="flex flex-col md:flex-row items-center justify-between gap-4">
-                    <!-- Left: Brand -->
+                <div class="flex items-center justify-between">
+                    <!-- Left: Brand Logo -->
                     <a href="@if(Auth::user()->isAdmin()){{ route('admin.dashboard') }}@elseif(Auth::user()->isGuru()){{ route('guru.home') }}@elseif(Auth::user()->isKepalaSekolah()){{ route('kepala.dashboard') }}@endif" 
                        class="flex items-center gap-3 hover:opacity-80 transition-opacity group">
                         <div class="w-8 h-8 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-lg flex items-center justify-center shadow-sm group-hover:shadow-md transition-shadow">
-                            <svg class="w-4.5 h-4.5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
                             </svg>
                         </div>
-                        <div class="flex items-baseline gap-2">
-                            <span class="font-bold text-sm text-gray-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">E-Supervisi</span>
-                            <span class="text-gray-400 dark:text-gray-500">•</span>
-                            <span class="text-xs text-gray-600 dark:text-gray-400">
-                                @if(Auth::user()->isAdmin())
-                                    Admin Panel
-                                @elseif(Auth::user()->isGuru())
-                                    Portal Guru
-                                @elseif(Auth::user()->isKepalaSekolah())
-                                    Portal Kepala Sekolah
-                                @endif
-                            </span>
-                        </div>
+                        <span class="font-bold text-sm text-gray-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">E-Supervisi</span>
                     </a>
                     
                     <!-- Right: Copyright -->
-                    <div class="text-xs text-gray-500 dark:text-gray-400">
-                        <span>© 2025 Sistem Supervisi Pembelajaran</span>
-                    </div>
+                    <span class="text-xs text-gray-500 dark:text-gray-400">© 2025 Sistem Supervisi Pembelajaran</span>
                 </div>
             </div>
         </footer>
