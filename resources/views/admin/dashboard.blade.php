@@ -93,8 +93,8 @@
     </div>
     <!-- End Header Section -->
 
-    <!-- Quick Actions -->
-    <div class="grid grid-cols-2 gap-2 sm:gap-4 mb-4 sm:mb-6">
+    <!-- Quick Actions - Hidden on mobile, users access via bottom nav -->
+    <div class="hidden sm:grid grid-cols-2 gap-4 mb-6">
         <a href="{{ route('admin.users.create') }}" class="group flex items-center gap-2.5 sm:gap-4 p-2.5 sm:p-4 bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 hover:from-green-100 hover:to-emerald-100 dark:hover:from-green-900/30 dark:hover:to-emerald-900/30 rounded-lg sm:rounded-xl border-2 border-green-200 dark:border-green-800 hover:border-green-300 dark:hover:border-green-700 transition-all shadow-sm hover:shadow-md">
             <div class="w-9 h-9 sm:w-12 sm:h-12 bg-green-600 dark:bg-green-500 rounded-lg sm:rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform">
                 <svg class="w-4 h-4 sm:w-6 sm:h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
