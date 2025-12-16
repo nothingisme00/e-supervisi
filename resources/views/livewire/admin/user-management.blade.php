@@ -1,6 +1,31 @@
 <div>
-    <!-- Filter & Search -->
-    <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-4 sm:p-5 mb-5 shadow-sm">
+    <!-- Unified Header + Filter Card -->
+    <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm mb-5 overflow-hidden">
+        <!-- Header Section -->
+        <div class="p-4 sm:p-5 border-b border-gray-200 dark:border-gray-700">
+            <div class="flex items-center justify-between gap-3">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl flex items-center justify-center shadow-lg">
+                        <svg class="w-5 h-5 sm:w-6 sm:h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                        </svg>
+                    </div>
+                    <div>
+                        <h2 class="text-base sm:text-xl font-bold text-gray-900 dark:text-white">Kelola Pengguna</h2>
+                        <p class="text-[11px] sm:text-sm text-gray-500 dark:text-gray-400">Manajemen akun sistem</p>
+                    </div>
+                </div>
+                <a href="{{ route('admin.users.create') }}" class="flex-shrink-0 inline-flex items-center gap-1.5 px-3 py-2 sm:px-4 sm:py-2.5 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white text-xs sm:text-sm font-semibold rounded-lg transition-all shadow-md hover:shadow-lg">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                    </svg>
+                    <span class="hidden sm:inline">Tambah</span>
+                </a>
+            </div>
+        </div>
+        
+        <!-- Filter & Search Section -->
+        <div class="p-4 sm:p-5 bg-gray-50 dark:bg-gray-800/50">
         <!-- Desktop: All in one row | Mobile: Search + Filter Toggle -->
         <div class="flex flex-wrap md:flex-nowrap items-center gap-3">
             <!-- Search Input -->
@@ -134,8 +159,8 @@
                 @endif
             </div>
         </div>
+        </div>
     </div>
-
     <!-- Loading indicator -->
     <div wire:loading class="fixed inset-0 bg-gray-900/20 dark:bg-gray-900/40 z-50 flex items-center justify-center">
         <div class="bg-white dark:bg-gray-800 rounded-xl px-6 py-4 shadow-2xl flex items-center gap-3 border border-gray-200 dark:border-gray-700">

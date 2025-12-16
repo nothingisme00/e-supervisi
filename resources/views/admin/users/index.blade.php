@@ -8,20 +8,6 @@
     ['label' => 'Kelola Pengguna']
 ]" />
 
-<!-- Header dengan Tombol Tambah -->
-<div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-4 mb-4 sm:mb-6">
-    <div>
-        <h2 class="text-base sm:text-2xl font-bold text-gray-900 dark:text-white">Manajemen Pengguna</h2>
-        <p class="text-xs sm:text-sm text-gray-600 dark:text-gray-400 mt-0.5 sm:mt-1">Kelola data pengguna sistem E-Supervisi</p>
-    </div>
-    <a href="{{ route('admin.users.create') }}" class="inline-flex items-center px-3 py-2 sm:px-4 sm:py-2.5 bg-indigo-600 hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-600 text-white text-xs sm:text-sm font-medium rounded-md sm:rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900">
-        <svg class="w-4 h-4 sm:w-5 sm:h-5 mr-1 sm:mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
-        </svg>
-        Tambah Pengguna
-    </a>
-</div>
-
 <!-- Livewire User Management Component -->
 @livewire('admin.user-management')
 
