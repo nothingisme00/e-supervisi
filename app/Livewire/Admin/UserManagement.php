@@ -124,7 +124,7 @@ class UserManagement extends Component
         $sortBy = in_array($this->sortBy, $allowedSortColumns) ? $this->sortBy : 'created_at';
         $sortDirection = in_array($this->sortDirection, ['asc', 'desc']) ? $this->sortDirection : 'desc';
 
-        $users = $query->orderBy($sortBy, $sortDirection)->paginate(15);
+        $users = $query->orderBy($sortBy, $sortDirection)->paginate(10);
 
         return view('livewire.admin.user-management', [
             'users' => $users,

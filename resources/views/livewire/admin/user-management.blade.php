@@ -305,113 +305,152 @@
         @endif
     </div>
 
-    <!-- ==================== MOBILE CARD VIEW (< lg) ==================== -->
+    <!-- ==================== MOBILE TABLE VIEW (< md) ==================== -->
     <div class="md:hidden bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden shadow-sm">
         <!-- Header -->
         <div class="bg-gradient-to-r from-indigo-50 to-purple-50 dark:from-gray-700 dark:to-gray-700 border-b border-gray-200 dark:border-gray-600 px-4 py-3">
-            <div class="flex items-center gap-3">
-                <div class="w-9 h-9 rounded-lg bg-indigo-600 flex items-center justify-center shadow-lg shadow-indigo-500/30">
-                    <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                    </svg>
+            <div class="flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <div class="w-9 h-9 rounded-lg bg-indigo-600 flex items-center justify-center shadow-lg shadow-indigo-500/30">
+                        <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                        </svg>
+                    </div>
+                    <div>
+                        <h3 class="text-sm font-bold text-gray-900 dark:text-white">Daftar Pengguna</h3>
+                        <p class="text-xs text-gray-600 dark:text-gray-400">{{ $users->total() }} pengguna</p>
+                    </div>
                 </div>
-                <div>
-                    <h3 class="text-sm font-bold text-gray-900 dark:text-white">Daftar Pengguna</h3>
-                    <p class="text-xs text-gray-600 dark:text-gray-400">{{ $users->total() }} pengguna</p>
+                <div class="flex items-center gap-1 text-xs text-gray-500 dark:text-gray-400">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+                    </svg>
+                    <span>Geser</span>
                 </div>
             </div>
         </div>
 
-        <!-- User Cards -->
-        <div class="p-3 space-y-3">
-            @forelse($users as $user)
-            <div class="bg-gray-50 dark:bg-gray-700/30 rounded-xl border border-gray-200 dark:border-gray-600 p-4" wire:key="mobile-user-{{ $user->id }}">
-                <!-- User Info -->
-                <div class="flex items-center gap-3 mb-3">
-                    <div class="w-12 h-12 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl flex items-center justify-center text-white text-lg font-bold flex-shrink-0 shadow-lg">
-                        {{ strtoupper(substr($user->name, 0, 1)) }}
-                    </div>
-                    <div class="flex-1 min-w-0">
-                        <div class="flex items-center gap-2 mb-0.5">
-                            <h4 class="text-sm font-bold text-gray-900 dark:text-white truncate">{{ $user->name }}</h4>
-                            <button wire:click="toggleStatus({{ $user->id }})" 
-                                    class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-semibold {{ $user->is_active ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300' : 'bg-red-100 text-red-700 dark:bg-red-900/40 dark:text-red-300' }}">
-                                <span class="w-1.5 h-1.5 {{ $user->is_active ? 'bg-emerald-500' : 'bg-red-500' }} rounded-full mr-1"></span>
-                                {{ $user->is_active ? 'Aktif' : 'Nonaktif' }}
-                            </button>
-                        </div>
-                        <p class="text-xs text-gray-500 dark:text-gray-400 truncate">{{ $user->email }}</p>
-                    </div>
-                </div>
-                
-                <!-- Badges -->
-                <div class="flex flex-wrap items-center gap-1.5 mb-3">
-                    <span class="inline-flex items-center gap-1 px-2 py-1 rounded-md bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 text-[10px] font-mono border border-slate-200 dark:border-slate-600">
-                        <span class="font-semibold">NIK:</span> {{ $user->nik }}
-                    </span>
-                    @if($user->role == 'admin')
-                        <span class="px-2 py-1 rounded-md bg-purple-100 dark:bg-purple-900/40 text-purple-700 dark:text-purple-300 text-[10px] font-semibold">Admin</span>
-                    @elseif($user->role == 'guru')
-                        <span class="px-2 py-1 rounded-md bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300 text-[10px] font-semibold">Guru</span>
-                    @else
-                        <span class="px-2 py-1 rounded-md bg-teal-100 dark:bg-teal-900/40 text-teal-700 dark:text-teal-300 text-[10px] font-semibold">Kepsek</span>
-                    @endif
-                    @if($user->tingkat)
-                        <span class="px-2 py-1 rounded-md bg-indigo-100 dark:bg-indigo-900/40 text-indigo-700 dark:text-indigo-300 text-[10px] font-semibold">{{ $user->tingkat }}</span>
-                    @endif
-                    @if($user->mata_pelajaran)
-                        <span class="px-2 py-1 rounded-md bg-amber-100 dark:bg-amber-900/40 text-amber-700 dark:text-amber-300 text-[10px] font-semibold">{{ $user->mata_pelajaran }}</span>
-                    @endif
-                </div>
-                
-                <!-- Action Buttons -->
-                <div class="flex items-center justify-center gap-2">
-                    <a href="{{ route('admin.users.edit', $user->id) }}"
-                       class="flex-1 inline-flex items-center justify-center gap-1.5 px-3 py-2 bg-amber-500 hover:bg-amber-600 text-white text-xs font-semibold rounded-lg transition-colors">
-                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
-                        </svg>
-                        Edit
-                    </a>
-                    <button onclick="resetPassword({{ $user->id }}, '{{ $user->name }}')"
-                            class="flex-1 inline-flex items-center justify-center gap-1.5 px-3 py-2 bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold rounded-lg transition-colors">
-                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"></path>
-                        </svg>
-                        Reset
-                    </button>
-                    <form action="{{ route('admin.users.destroy', $user->id) }}" method="POST" class="flex-1" onsubmit="return handleDelete(event, '{{ $user->name }}')">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="w-full inline-flex items-center justify-center gap-1.5 px-3 py-2 bg-red-500 hover:bg-red-600 text-white text-xs font-semibold rounded-lg transition-colors">
-                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
-                            </svg>
-                            Hapus
-                        </button>
-                    </form>
-                </div>
+        <!-- Scrollable Table Container -->
+        <div class="relative">
+            <!-- Scroll Shadow Indicator (Right) -->
+            <div class="absolute right-0 top-0 bottom-0 w-6 bg-gradient-to-l from-white dark:from-gray-800 to-transparent pointer-events-none z-10"></div>
+            
+            <div class="overflow-x-auto">
+                <table class="w-full min-w-[700px]">
+                    <thead class="bg-gray-50 dark:bg-gray-700/50 border-b border-gray-200 dark:border-gray-600">
+                        <tr>
+                            <th style="position: sticky; left: 0;" class="z-20 bg-gray-50 dark:bg-gray-700 px-3 py-3 text-left text-[11px] font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider min-w-[140px] border-r border-gray-200 dark:border-gray-600">Nama</th>
+                            <th class="px-3 py-3 text-left text-[11px] font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider min-w-[130px]">NIK</th>
+                            <th class="px-3 py-3 text-left text-[11px] font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider min-w-[90px]">Role</th>
+                            <th class="px-3 py-3 text-left text-[11px] font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider min-w-[100px]">Tingkat</th>
+                            <th class="px-3 py-3 text-left text-[11px] font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider min-w-[80px]">Status</th>
+                            <th class="px-3 py-3 text-center text-[11px] font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider min-w-[160px]">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
+                        @forelse($users as $user)
+                        <tr class="hover:bg-gray-50 dark:hover:bg-gray-700/30" wire:key="mobile-table-user-{{ $user->id }}">
+                            <!-- Nama (Sticky) -->
+                            <td style="position: sticky; left: 0;" class="z-10 px-3 py-3 border-r border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-800">
+                                <div class="flex items-center gap-2">
+                                    <div class="w-8 h-8 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-lg flex items-center justify-center text-white text-xs font-bold flex-shrink-0">
+                                        {{ strtoupper(substr($user->name, 0, 1)) }}
+                                    </div>
+                                    <div class="min-w-0">
+                                        <div class="text-[13px] font-semibold text-gray-900 dark:text-white truncate max-w-[90px]">{{ $user->name }}</div>
+                                        <div class="text-[10px] text-gray-500 dark:text-gray-400 truncate max-w-[90px]">{{ $user->email }}</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <!-- NIK -->
+                            <td class="px-3 py-3">
+                                <span class="text-[12px] font-mono text-gray-700 dark:text-gray-300">{{ $user->nik }}</span>
+                            </td>
+                            <!-- Role -->
+                            <td class="px-3 py-3">
+                                @if($user->role == 'admin')
+                                    <span class="inline-flex items-center px-2 py-1 rounded-md text-[11px] font-semibold bg-purple-100 dark:bg-purple-900/40 text-purple-700 dark:text-purple-300">Admin</span>
+                                @elseif($user->role == 'guru')
+                                    <span class="inline-flex items-center px-2 py-1 rounded-md text-[11px] font-semibold bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300">Guru</span>
+                                @else
+                                    <span class="inline-flex items-center px-2 py-1 rounded-md text-[11px] font-semibold bg-teal-100 dark:bg-teal-900/40 text-teal-700 dark:text-teal-300">Kepsek</span>
+                                @endif
+                            </td>
+                            <!-- Tingkat -->
+                            <td class="px-3 py-3">
+                                @if($user->tingkat)
+                                    <div class="text-[12px] font-medium text-gray-800 dark:text-gray-200">{{ $user->tingkat }}</div>
+                                    @if($user->mata_pelajaran)
+                                        <div class="text-[10px] text-gray-500 dark:text-gray-400">{{ $user->mata_pelajaran }}</div>
+                                    @endif
+                                @else
+                                    <span class="text-[12px] text-gray-400 dark:text-gray-500">-</span>
+                                @endif
+                            </td>
+                            <!-- Status -->
+                            <td class="px-3 py-3">
+                                <button wire:click="toggleStatus({{ $user->id }})" 
+                                        class="inline-flex items-center px-2 py-1 rounded-md text-[11px] font-semibold transition-all {{ $user->is_active ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300' : 'bg-red-100 text-red-700 dark:bg-red-900/40 dark:text-red-300' }}">
+                                    <span class="w-1.5 h-1.5 {{ $user->is_active ? 'bg-emerald-500' : 'bg-red-500' }} rounded-full mr-1"></span>
+                                    {{ $user->is_active ? 'Aktif' : 'Off' }}
+                                </button>
+                            </td>
+                            <!-- Aksi -->
+                            <td class="px-3 py-3">
+                                <div class="flex items-center justify-center gap-1.5">
+                                    <a href="{{ route('admin.users.edit', $user->id) }}"
+                                       class="inline-flex items-center justify-center w-9 h-9 bg-amber-500 hover:bg-amber-600 text-white rounded-lg transition-colors"
+                                       title="Edit">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                                        </svg>
+                                    </a>
+                                    <button onclick="resetPassword({{ $user->id }}, '{{ $user->name }}')"
+                                            class="inline-flex items-center justify-center w-9 h-9 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors"
+                                            title="Reset Password">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"></path>
+                                        </svg>
+                                    </button>
+                                    <form action="{{ route('admin.users.destroy', $user->id) }}" method="POST" class="inline" onsubmit="return handleDelete(event, '{{ $user->name }}')">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" 
+                                                class="inline-flex items-center justify-center w-9 h-9 bg-red-500 hover:bg-red-600 text-white rounded-lg transition-colors"
+                                                title="Hapus">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                                            </svg>
+                                        </button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                        @empty
+                        <tr>
+                            <td colspan="6" class="px-4 py-12 text-center">
+                                <div class="w-14 h-14 mx-auto mb-3 rounded-full bg-gray-100 dark:bg-gray-700 flex items-center justify-center">
+                                    <svg class="w-7 h-7 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                    </svg>
+                                </div>
+                                <h3 class="text-sm font-semibold text-gray-900 dark:text-white mb-1">
+                                    {{ $hasFilters ? 'Tidak ditemukan' : 'Belum ada pengguna' }}
+                                </h3>
+                                <p class="text-xs text-gray-500 dark:text-gray-400 mb-3">
+                                    {{ $hasFilters ? 'Coba ubah filter' : 'Tambahkan pengguna baru' }}
+                                </p>
+                                @if($hasFilters)
+                                <button wire:click="resetFilters" class="inline-flex items-center gap-2 px-3 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-medium rounded-lg">
+                                    Reset Filter
+                                </button>
+                                @endif
+                            </td>
+                        </tr>
+                        @endforelse
+                    </tbody>
+                </table>
             </div>
-            @empty
-            <div class="py-12 text-center">
-                <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-gray-100 dark:bg-gray-700 flex items-center justify-center">
-                    <svg class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                    </svg>
-                </div>
-                <h3 class="text-base font-semibold text-gray-900 dark:text-white mb-1">
-                    {{ $hasFilters ? 'Tidak ditemukan' : 'Belum ada pengguna' }}
-                </h3>
-                <p class="text-xs text-gray-500 dark:text-gray-400 mb-4">
-                    {{ $hasFilters ? 'Coba ubah filter' : 'Tambahkan pengguna baru' }}
-                </p>
-                @if($hasFilters)
-                <button wire:click="resetFilters" class="inline-flex items-center gap-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-medium rounded-lg">
-                    Reset Filter
-                </button>
-                @endif
-            </div>
-            @endforelse
         </div>
 
         <!-- Pagination -->
