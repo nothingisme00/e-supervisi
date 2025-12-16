@@ -69,10 +69,14 @@ class CustomLoginController extends Controller
 
     public function logout(Request $request)
     {
-        $userName = Auth::user()->name;
+        $userName = Auth::check() ? Auth::user()->name : null;
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
-        return redirect('/')->with('success', 'Anda telah berhasil logout. Sampai jumpa, ' . $userName . '!');
+        
+        if ($userName) {
+            return redirect('/')->with('success', 'Anda telah berhasil logout. Sampai jumpa, ' . $userName . '!');
+        }
+        return redirect('/')->with('success', 'Anda telah berhasil logout.');
     }
 }

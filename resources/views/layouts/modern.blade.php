@@ -1271,6 +1271,145 @@ if (backToTopBtn) {
     });
 </script>
 
+@auth
+<!-- Auto Logout after Inactivity -->
+<script>
+(function() {
+    // CONFIGURATION
+    const INACTIVITY_TIMEOUT = 5 * 60 * 1000; // 5 menit
+    const WARNING_SECONDS = 10; // Warning 10 detik sebelum logout
+    
+    let logoutTimer = null;
+    let countdownInterval = null;
+    let warningModal = null;
+    let isLoggingOut = false;
+    
+    // Hitung kapan warning muncul
+    const WARNING_TIME = INACTIVITY_TIMEOUT - (WARNING_SECONDS * 1000);
+    
+    // Stop semua timer
+    function stopAllTimers() {
+        if (logoutTimer) {
+            clearTimeout(logoutTimer);
+            logoutTimer = null;
+        }
+        if (countdownInterval) {
+            clearInterval(countdownInterval);
+            countdownInterval = null;
+        }
+    }
+    
+    // Reset dan mulai timer baru
+    function resetTimer() {
+        if (isLoggingOut) return; // Jangan reset jika sedang logout
+        
+        stopAllTimers();
+        hideWarning();
+        
+        // Set timer untuk menampilkan warning
+        logoutTimer = setTimeout(showWarningAndStartCountdown, WARNING_TIME);
+    }
+    
+    // Tampilkan warning dan mulai countdown
+    function showWarningAndStartCountdown() {
+        if (isLoggingOut) return;
+        
+        let secondsRemaining = WARNING_SECONDS;
+        
+        // Buat modal jika belum ada
+        if (!warningModal) {
+            warningModal = document.createElement('div');
+            warningModal.id = 'inactivity-warning-modal';
+            document.body.appendChild(warningModal);
+        }
+        
+        // Render modal content
+        warningModal.innerHTML = `
+            <div class="fixed inset-0 bg-black/50 backdrop-blur-sm z-[99999] flex items-center justify-center p-4">
+                <div class="bg-white dark:bg-gray-800 rounded-xl shadow-2xl max-w-sm w-full p-6 text-center">
+                    <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-amber-100 dark:bg-amber-900/30 flex items-center justify-center">
+                        <svg class="w-8 h-8 text-amber-600 dark:text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-2">Sesi Akan Berakhir</h3>
+                    <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">
+                        Anda akan dikeluarkan dalam <span id="logout-countdown" class="font-bold text-amber-600 dark:text-amber-400">${secondsRemaining}</span> detik.
+                    </p>
+                    <button id="stay-logged-in-btn" class="w-full px-4 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-lg transition-colors">
+                        Tetap Login
+                    </button>
+                </div>
+            </div>
+        `;
+        warningModal.style.display = 'block';
+        
+        // Attach button handler
+        document.getElementById('stay-logged-in-btn').addEventListener('click', function() {
+            resetTimer();
+        });
+        
+        // Countdown interval
+        countdownInterval = setInterval(function() {
+            secondsRemaining--;
+            const countdownEl = document.getElementById('logout-countdown');
+            if (countdownEl) {
+                countdownEl.textContent = secondsRemaining;
+            }
+            
+            // Waktu habis - logout
+            if (secondsRemaining <= 0) {
+                stopAllTimers();
+                performLogout();
+            }
+        }, 1000);
+    }
+    
+    // Sembunyikan warning modal
+    function hideWarning() {
+        if (warningModal) {
+            warningModal.style.display = 'none';
+        }
+    }
+    
+    // Proses logout
+    function performLogout() {
+        if (isLoggingOut) return; // Cegah double logout
+        isLoggingOut = true;
+        
+        stopAllTimers();
+        hideWarning();
+        
+        // Submit logout form
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = '{{ route("logout") }}';
+        form.innerHTML = '@csrf';
+        document.body.appendChild(form);
+        form.submit();
+    }
+    
+    // Track aktivitas user
+    const activityEvents = ['mousedown', 'mousemove', 'keypress', 'scroll', 'touchstart', 'click'];
+    activityEvents.forEach(function(eventName) {
+        document.addEventListener(eventName, resetTimer, { passive: true });
+    });
+    
+    // Mulai timer saat load
+    resetTimer();
+    
+    // Re-init saat Livewire navigate
+    document.addEventListener('livewire:navigated', function() {
+        isLoggingOut = false;
+        resetTimer();
+    });
+    
+    // Cleanup saat halaman unload
+    window.addEventListener('beforeunload', stopAllTimers);
+})();
+</script>
+@endauth
+
 @livewireScripts
 
 </body>
