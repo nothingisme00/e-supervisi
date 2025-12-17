@@ -10,48 +10,9 @@
     ]" />
 
     <!-- Outer Container: Timeline Supervisi - Container + Inner Cards Architecture -->
-    <div class="bg-gray-50 dark:bg-gray-900/30 rounded-lg md:rounded-xl lg:rounded-2xl p-1.5 sm:p-3 md:p-5 lg:p-6 mb-2 sm:mb-3 md:mb-4 lg:mb-6 {{ $supervisiList->count() == 0 ? 'min-h-[60vh] flex items-center justify-center' : '' }}">
+    <div class="bg-gray-50 dark:bg-gray-900/30 rounded-lg md:rounded-xl lg:rounded-2xl p-1.5 sm:p-3 md:p-5 lg:p-6 mb-2 sm:mb-3 md:mb-4 lg:mb-6 min-h-[60vh] {{ $supervisiList->count() == 0 ? 'flex items-center justify-center' : '' }}">
         <!-- Cards Wrapper with flex column and gap -->
         <div class="flex flex-col gap-1.5 sm:gap-3 md:gap-4 w-full">
-            <!-- Inner Card 1: Header "Timeline Supervisi" - Hidden when no supervisi -->
-            @if($supervisiList->count() > 0)
-            <div class="bg-white dark:bg-gray-800 rounded-md sm:rounded-lg md:rounded-xl shadow w-full">
-                <!-- Header Content with optimized padding -->
-                <div class="px-2 py-1.5 sm:px-3 sm:py-2.5 md:px-6 md:py-4 lg:px-7 lg:py-5">
-            <!-- Top Row: Title and Buttons - FLEX CONTAINER -->
-            <div class="flex flex-row items-center justify-between gap-1.5 sm:gap-3 md:gap-5 w-full">
-                <!-- LEFT SECTION: Logo + Title -->
-                <div class="flex items-center gap-1.5 sm:gap-2 md:gap-4 flex-shrink min-w-0">
-                    <div class="w-7 h-7 sm:w-9 sm:h-9 md:w-14 md:h-14 lg:w-16 lg:h-16 bg-gradient-to-r from-indigo-600 to-purple-600 dark:from-indigo-500 dark:to-purple-500 rounded-md sm:rounded-lg md:rounded-xl flex items-center justify-center shadow-md sm:shadow-lg flex-shrink-0">
-                        <svg class="w-3.5 h-3.5 sm:w-5 sm:h-5 md:w-7 md:h-7 lg:w-8 lg:h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                        </svg>
-                    </div>
-                    <div class="min-w-0 flex-1">
-                        <h3 class="text-xs sm:text-sm md:text-xl lg:text-2xl font-bold text-gray-900 dark:text-gray-100 truncate">Supervisi</h3>
-                        <p class="text-[9px] sm:text-xs md:text-sm text-gray-500 dark:text-gray-400 hidden sm:block">{{ $supervisiList->count() }} supervisi</p>
-                    </div>
-                </div>
-
-                <!-- RIGHT SECTION: Buttons aligned to right on tablet/laptop -->
-                <div class="flex flex-nowrap items-center gap-1 sm:gap-1.5 md:gap-2 lg:gap-2.5 flex-shrink-0">
-                    <!-- Button: Mulai Supervisi Baru (Icon only on mobile, with text on tablet/laptop) -->
-                    <!-- Only show when there are existing supervisions -->
-                    @if($supervisiList->count() > 0)
-                    <button onclick="openSupervisiModal()" class="inline-flex items-center justify-center gap-1 lg:gap-2 px-2.5 py-1.5 sm:px-3 sm:py-2 md:px-4 md:py-2.5 lg:px-5 lg:py-3 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-semibold rounded-md sm:rounded-lg md:rounded-xl transition-all shadow-md hover:shadow-lg text-xs sm:text-sm lg:text-base whitespace-nowrap">
-                        <svg class="w-4 h-4 sm:w-4.5 sm:h-4.5 md:w-5 md:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
-                        </svg>
-                        <span class="hidden sm:inline">Buat Supervisi Baru</span>
-                        <span class="sm:hidden">Buat</span>
-                    </button>
-                    @endif
-                </div>
-            </div>
-                </div>
-                <!-- End padding wrapper for header content -->
-            <!-- End Inner Card 1: Header -->
-            @endif
 
             <!-- Tips & Informasi - Hidden div for desktop accordion (shown via JS on tablet/desktop) -->
             @if($supervisiList->count() > 0)
@@ -115,24 +76,24 @@
                     <div class="px-2 py-2 sm:px-3 sm:py-2.5 md:px-5 md:py-4 lg:px-6 lg:py-5">
                         <div class="space-y-2 sm:space-y-3 md:space-y-4">
                 @foreach($supervisiList as $item)
-                <div class="bg-gray-50 dark:bg-gray-900/30 rounded-lg md:rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md hover:border-indigo-300 dark:hover:border-indigo-700 transition-all duration-200 overflow-hidden">
+                <div class="bg-gray-50 dark:bg-gray-900/30 rounded-xl md:rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md hover:border-indigo-300 dark:hover:border-indigo-700 transition-all duration-200 overflow-hidden">
                     <!-- Header Card -->
-                    <div class="p-2.5 sm:p-3 md:p-4 bg-gradient-to-r from-indigo-50/80 to-purple-50/80 dark:from-indigo-900/20 dark:to-purple-900/20">
-                        <div class="flex items-start justify-between gap-2 sm:gap-2.5 md:gap-3">
-                            <div class="flex items-center gap-2 sm:gap-2.5 md:gap-3 flex-1 min-w-0">
+                    <div class="p-3 sm:p-3 md:p-4 bg-gradient-to-r from-indigo-50/80 to-purple-50/80 dark:from-indigo-900/20 dark:to-purple-900/20">
+                        <div class="flex items-start justify-between gap-3 sm:gap-2.5 md:gap-3">
+                            <div class="flex items-center gap-3 sm:gap-2.5 md:gap-3 flex-1 min-w-0">
                                 <div class="shrink-0">
-                                    <div class="w-9 h-9 sm:w-10 sm:h-10 md:w-12 md:h-12 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white font-bold text-sm sm:text-base md:text-lg shadow-md ring-2 ring-white dark:ring-gray-800">
+                                    <div class="w-11 h-11 sm:w-10 sm:h-10 md:w-12 md:h-12 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white font-bold text-base sm:text-base md:text-lg shadow-md ring-2 ring-white dark:ring-gray-800">
                                         {{ strtoupper(substr($item->user->name, 0, 1)) }}
                                     </div>
                                 </div>
                                 <div class="flex-1 min-w-0">
-                                    <div class="flex items-center gap-1.5 sm:gap-2 flex-wrap">
-                                        <h4 class="font-bold text-gray-900 dark:text-gray-100 text-sm sm:text-base truncate">
+                                    <div class="flex items-center gap-2 sm:gap-2 flex-wrap">
+                                        <h4 class="font-bold text-gray-900 dark:text-gray-100 text-base sm:text-base truncate">
                                             {{ $item->user->name }}
                                         </h4>
                                         @if($item->user_id == auth()->id())
-                                            <span class="inline-flex items-center gap-0.5 sm:gap-1 px-1.5 py-0.5 sm:px-2 bg-indigo-600 dark:bg-indigo-500 text-white text-[10px] sm:text-xs font-medium rounded-full">
-                                                <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                                            <span class="inline-flex items-center gap-1 sm:gap-1 px-2 py-0.5 sm:px-2 bg-indigo-600 dark:bg-indigo-500 text-white text-xs sm:text-xs font-medium rounded-full">
+                                                <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20">
                                                     <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
                                                 </svg>
                                                 Saya
@@ -140,10 +101,10 @@
                                         @endif
                                     </div>
                                     @if($item->user && ($item->user->mata_pelajaran || $item->user->tingkat))
-                                    <p class="text-xs sm:text-sm text-gray-600 dark:text-gray-400 flex items-center gap-1 sm:gap-1.5">
+                                    <p class="text-sm sm:text-sm text-gray-600 dark:text-gray-400 flex items-center gap-1.5 sm:gap-1.5 mt-0.5">
                                         @if($item->user->mata_pelajaran)
                                         <span class="inline-flex items-center gap-1">
-                                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
                                             </svg>
                                             {{ $item->user->mata_pelajaran }}
@@ -162,8 +123,8 @@
                                         @endif
                                     </p>
                                     @endif
-                                    <p class="text-[10px] sm:text-xs text-gray-500 dark:text-gray-500 mt-0.5">
-                                        <svg class="w-3 h-3 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <p class="text-xs sm:text-xs text-gray-500 dark:text-gray-500 mt-1">
+                                        <svg class="w-3.5 h-3.5 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
                                         </svg>
                                         {{ \Carbon\Carbon::parse($item->tanggal_supervisi)->format('d M Y') }}
@@ -211,19 +172,19 @@
                 </div>
 
                 <!-- Content Area -->
-                <div class="px-2.5 py-2 sm:px-3 sm:py-2.5 md:px-4 md:py-3 bg-white dark:bg-gray-800 border-t border-gray-100 dark:border-gray-700">
+                <div class="px-3 py-2.5 sm:px-3 sm:py-2.5 md:px-4 md:py-3 bg-white dark:bg-gray-800 border-t border-gray-100 dark:border-gray-700">
                     <!-- Info Cards (Dokumen & Proses) -->
-                    <div class="flex items-center gap-1.5 sm:gap-2 md:gap-3 flex-wrap mb-2 sm:mb-2.5 md:mb-3">
+                    <div class="flex items-center gap-2 sm:gap-2 md:gap-3 flex-wrap mb-3 sm:mb-2.5 md:mb-3">
                         @php
                             $docCount = $item->dokumenEvaluasi->count();
                             $hasProses = $item->prosesPembelajaran != null;
                         @endphp
 
-                        <div class="flex items-center gap-1 sm:gap-1.5 md:gap-2 px-2 py-1 sm:px-2.5 sm:py-1.5 md:px-3 bg-indigo-50 dark:bg-indigo-900/20 rounded-md md:rounded-lg border border-indigo-100 dark:border-indigo-800">
-                            <svg class="w-3 h-3 sm:w-3.5 sm:h-3.5 md:w-4 md:h-4 text-indigo-600 dark:text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <div class="flex items-center gap-1.5 sm:gap-1.5 md:gap-2 px-2.5 py-1.5 sm:px-2.5 sm:py-1.5 md:px-3 bg-indigo-50 dark:bg-indigo-900/20 rounded-lg md:rounded-lg border border-indigo-100 dark:border-indigo-800">
+                            <svg class="w-4 h-4 sm:w-3.5 sm:h-3.5 md:w-4 md:h-4 text-indigo-600 dark:text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
                             </svg>
-                            <span class="text-[10px] sm:text-xs font-semibold text-gray-700 dark:text-gray-300">Dokumen: <span class="{{ $docCount == 7 ? 'text-green-600 dark:text-green-400' : 'text-orange-600 dark:text-orange-400' }}">{{ $docCount }}/7</span></span>
+                            <span class="text-xs sm:text-xs font-semibold text-gray-700 dark:text-gray-300">Dokumen: <span class="{{ $docCount == 7 ? 'text-green-600 dark:text-green-400' : 'text-orange-600 dark:text-orange-400' }}">{{ $docCount }}/7</span></span>
                         </div>
 
                         @if($hasProses)
@@ -344,8 +305,8 @@
                 </div>
 
                 <!-- Action Footer -->
-                <div class="px-2.5 py-2 sm:px-3 sm:py-2.5 md:px-4 md:py-3 bg-gray-50 dark:bg-gray-900/30 border-t border-gray-100 dark:border-gray-700 flex items-center justify-end gap-2 sm:gap-2.5 md:gap-3">
-                    <div class="flex items-center gap-1.5 sm:gap-2">
+                <div class="px-3 py-2.5 sm:px-3 sm:py-2.5 md:px-4 md:py-3 bg-gray-50 dark:bg-gray-900/30 border-t border-gray-100 dark:border-gray-700 flex items-center justify-end gap-2.5 sm:gap-2.5 md:gap-3">
+                    <div class="flex items-center gap-2 sm:gap-2">
                         @if($item->user_id == auth()->id())
                             {{-- Only show delete button for draft status, not for revision --}}
                             @if($item->status == 'draft')
@@ -355,10 +316,10 @@
                                     <button
                                         type="button"
                                         onclick="confirmDeleteSupervisi({{ $item->id }})"
-                                        class="inline-flex items-center gap-1 sm:gap-1.5 px-2 py-1 sm:px-2.5 sm:py-1.5 md:px-3 bg-red-50 hover:bg-red-100 dark:bg-red-900/20 dark:hover:bg-red-900/30 text-red-600 dark:text-red-400 text-[10px] sm:text-xs font-semibold rounded-md md:rounded-lg transition-all border border-red-200 dark:border-red-800"
+                                        class="inline-flex items-center gap-1.5 sm:gap-1.5 px-3 py-2 sm:px-2.5 sm:py-1.5 md:px-3 bg-red-50 hover:bg-red-100 dark:bg-red-900/20 dark:hover:bg-red-900/30 text-red-600 dark:text-red-400 text-xs sm:text-xs font-semibold rounded-lg md:rounded-lg transition-all border border-red-200 dark:border-red-800"
                                         title="Hapus supervisi"
                                     >
-                                        <svg class="w-3 h-3 sm:w-3.5 sm:h-3.5 md:w-4 md:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <svg class="w-4 h-4 sm:w-3.5 sm:h-3.5 md:w-4 md:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
                                         </svg>
                                         <span class="hidden sm:inline">Hapus</span>
@@ -367,24 +328,24 @@
                             @endif
 
                             @if($item->status == 'draft')
-                                <a href="{{ route('guru.supervisi.continue', $item->id) }}" class="inline-flex items-center gap-1 sm:gap-1.5 px-2.5 py-1 sm:px-3 sm:py-1.5 md:px-4 bg-indigo-600 hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-600 text-white text-[10px] sm:text-xs font-semibold rounded-md md:rounded-lg transition-all shadow-sm">
-                                    <svg class="w-3 h-3 sm:w-3.5 sm:h-3.5 md:w-4 md:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <a href="{{ route('guru.supervisi.continue', $item->id) }}" class="inline-flex items-center gap-1.5 sm:gap-1.5 px-4 py-2 sm:px-3 sm:py-1.5 md:px-4 bg-indigo-600 hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-600 text-white text-xs sm:text-xs font-semibold rounded-lg md:rounded-lg transition-all shadow-sm">
+                                    <svg class="w-4 h-4 sm:w-3.5 sm:h-3.5 md:w-4 md:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
                                     </svg>
                                     Lanjutkan
                                 </a>
                             @elseif($item->status == 'revision')
                                 {{-- Button to edit/revise supervisi --}}
-                                <a href="{{ route('guru.supervisi.continue', $item->id) }}" class="inline-flex items-center gap-1 sm:gap-1.5 px-2.5 py-1 sm:px-3 sm:py-1.5 md:px-4 bg-orange-600 hover:bg-orange-700 dark:bg-orange-500 dark:hover:bg-orange-600 text-white text-[10px] sm:text-xs font-semibold rounded-md md:rounded-lg transition-all shadow-sm">
-                                    <svg class="w-3 h-3 sm:w-3.5 sm:h-3.5 md:w-4 md:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <a href="{{ route('guru.supervisi.continue', $item->id) }}" class="inline-flex items-center gap-1.5 sm:gap-1.5 px-4 py-2 sm:px-3 sm:py-1.5 md:px-4 bg-orange-600 hover:bg-orange-700 dark:bg-orange-500 dark:hover:bg-orange-600 text-white text-xs sm:text-xs font-semibold rounded-lg md:rounded-lg transition-all shadow-sm">
+                                    <svg class="w-4 h-4 sm:w-3.5 sm:h-3.5 md:w-4 md:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
                                     </svg>
                                     <span class="hidden sm:inline">Revisi</span>
                                     <span class="sm:hidden">Edit</span>
                                 </a>
                             @else
-                                <a href="{{ route('guru.supervisi.detail', $item->id) }}" class="inline-flex items-center gap-1 sm:gap-1.5 px-2.5 py-1 sm:px-3 sm:py-1.5 md:px-4 bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white text-[10px] sm:text-xs font-semibold rounded-md md:rounded-lg transition-all shadow-sm">
-                                    <svg class="w-3 h-3 sm:w-3.5 sm:h-3.5 md:w-4 md:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <a href="{{ route('guru.supervisi.detail', $item->id) }}" class="inline-flex items-center gap-1.5 sm:gap-1.5 px-4 py-2 sm:px-3 sm:py-1.5 md:px-4 bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white text-xs sm:text-xs font-semibold rounded-lg md:rounded-lg transition-all shadow-sm">
+                                    <svg class="w-4 h-4 sm:w-3.5 sm:h-3.5 md:w-4 md:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
                                     </svg>
@@ -392,8 +353,8 @@
                                 </a>
                             @endif
                         @else
-                            <a href="{{ route('guru.supervisi.view', $item->id) }}" class="inline-flex items-center gap-1 sm:gap-1.5 px-2.5 py-1 sm:px-3 sm:py-1.5 md:px-4 bg-gray-600 hover:bg-gray-700 dark:bg-gray-500 dark:hover:bg-gray-600 text-white text-[10px] sm:text-xs font-semibold rounded-md md:rounded-lg transition-all shadow-sm">
-                                <svg class="w-3 h-3 sm:w-3.5 sm:h-3.5 md:w-4 md:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <a href="{{ route('guru.supervisi.view', $item->id) }}" class="inline-flex items-center gap-1.5 sm:gap-1.5 px-4 py-2 sm:px-3 sm:py-1.5 md:px-4 bg-gray-600 hover:bg-gray-700 dark:bg-gray-500 dark:hover:bg-gray-600 text-white text-xs sm:text-xs font-semibold rounded-lg md:rounded-lg transition-all shadow-sm">
+                                <svg class="w-4 h-4 sm:w-3.5 sm:h-3.5 md:w-4 md:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
                                 </svg>
