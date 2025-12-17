@@ -77,7 +77,7 @@
                 @endphp
                 
                 <!-- Document Card -->
-                <div class="bg-gray-50 dark:bg-gray-700/50 rounded-xl p-4 border border-gray-200 dark:border-gray-600 {{ $isUploaded ? 'border-l-4 border-l-green-500' : '' }}">
+                <div id="doc-card-{{ $key }}" data-uploaded="{{ $isUploaded ? 'true' : 'false' }}" class="doc-card bg-gray-50 dark:bg-gray-700/50 rounded-xl p-4 border border-gray-200 dark:border-gray-600 {{ $isUploaded ? 'border-l-4 border-l-green-500' : '' }}">
                     <!-- Row 1: Number + Document Name + Status -->
                     <div class="flex items-start justify-between gap-3 mb-3">
                         <div class="flex items-start gap-3 flex-1 min-w-0">
@@ -203,7 +203,7 @@
                             $isUploaded = in_array($key, $uploadedDocuments);
                             $dokumen = $supervisi->dokumenEvaluasi->where('jenis_dokumen', $key)->first();
                         @endphp
-                        <tr class="hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors border-b border-gray-200 dark:border-gray-700">
+                        <tr id="doc-row-{{ $key }}" data-uploaded="{{ $isUploaded ? 'true' : 'false' }}" class="doc-card hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors border-b border-gray-200 dark:border-gray-700">
                             <td class="px-4 py-3 text-sm text-gray-900 dark:text-gray-100 align-top">{{ $loop->iteration }}</td>
                             <td class="px-4 py-3 text-sm text-gray-900 dark:text-gray-100 align-top">{{ $label }}</td>
                             <td class="px-4 py-3 text-sm align-top">
@@ -623,6 +623,13 @@ document.addEventListener('DOMContentLoaded', function() {
     // Check documents count and disable/enable proses tab button
     function updateProsesTabButton() {
         const prosesTabButton = document.getElementById('prosesTabButton');
+        
+        // Skip if button doesn't exist
+        if (!prosesTabButton) {
+            console.log('prosesTabButton not found, skipping...');
+            return;
+        }
+        
         const uploadedCount = uploadedDocs.length;
         const requiredCount = 7;
         
@@ -653,7 +660,45 @@ document.addEventListener('DOMContentLoaded', function() {
     // Update proses tab button state
     updateProsesTabButton();
 
-    console.log('Initialization complete');
+    // Auto-scroll to first incomplete document
+    function scrollToFirstIncomplete() {
+        // Check if we're on mobile or desktop
+        const isMobile = window.innerWidth < 768;
+        
+        // Get all document cards/rows
+        const docElements = document.querySelectorAll('.doc-card');
+        
+        for (let elem of docElements) {
+            // Check if element is actually visible using offsetParent (works with parent hidden elements)
+            // For table rows, check if the table is visible
+            const parent = elem.closest('.md\\:hidden') || elem.closest('.hidden.md\\:block') || elem.closest('table');
+            let isVisible = false;
+            
+            if (parent) {
+                const parentStyle = window.getComputedStyle(parent);
+                isVisible = parentStyle.display !== 'none';
+            } else {
+                // Direct visibility check
+                isVisible = elem.offsetParent !== null || elem.offsetWidth > 0;
+            }
+            
+            if (elem.dataset.uploaded === 'false' && isVisible) {
+                setTimeout(() => {
+                    elem.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    // Add highlight effect
+                    elem.classList.add('ring-2', 'ring-indigo-500', 'ring-offset-2');
+                    elem.style.transition = 'all 0.3s ease';
+                    setTimeout(() => {
+                        elem.classList.remove('ring-2', 'ring-indigo-500', 'ring-offset-2');
+                    }, 2500);
+                }, 800);
+                break;
+            }
+        }
+    }
+    
+    // Call auto-scroll on page load
+    scrollToFirstIncomplete();
 });
 
 // Helper function for form confirmation

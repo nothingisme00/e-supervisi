@@ -38,7 +38,7 @@
         <div class="p-4 sm:p-6">
             <div class="space-y-4 sm:space-y-6">
                 <!-- Link Video -->
-                <div class="bg-gray-50 dark:bg-gray-700/50 rounded-xl p-4 sm:p-5 border border-gray-200 dark:border-gray-600">
+                <div id="field-link_video" data-filled="{{ !empty($proses->link_video) ? 'true' : 'false' }}" class="input-field bg-gray-50 dark:bg-gray-700/50 rounded-xl p-4 sm:p-5 border border-gray-200 dark:border-gray-600">
                     <label for="link_video" class="flex items-center gap-2 text-sm sm:text-sm font-bold text-gray-800 dark:text-gray-200 mb-3">
                         <span class="flex items-center justify-center w-6 h-6 bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 rounded-full text-xs font-bold">1</span>
                         Link Video <span class="text-red-500">*</span>
@@ -69,7 +69,7 @@
                 </div>
 
                 <!-- Link Meeting -->
-                <div class="bg-gray-50 dark:bg-gray-700/50 rounded-xl p-4 sm:p-5 border border-gray-200 dark:border-gray-600">
+                <div id="field-link_meeting" data-filled="{{ !empty($proses->link_meeting) ? 'true' : 'false' }}" class="input-field bg-gray-50 dark:bg-gray-700/50 rounded-xl p-4 sm:p-5 border border-gray-200 dark:border-gray-600">
                     <label for="link_meeting" class="flex items-center gap-2 text-sm sm:text-sm font-bold text-gray-800 dark:text-gray-200 mb-3">
                         <span class="flex items-center justify-center w-6 h-6 bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 rounded-full text-xs font-bold">2</span>
                         Link Meeting <span class="text-gray-500 text-xs">(Opsional)</span>
@@ -118,7 +118,7 @@
 
         <div class="p-4 sm:p-6 space-y-4 sm:space-y-5">
             @foreach($refleksiQuestions as $field => $question)
-                <div class="bg-gray-50 dark:bg-gray-700/50 rounded-xl p-4 sm:p-5 border border-gray-200 dark:border-gray-600">
+                <div id="field-{{ $field }}" data-filled="{{ !empty($proses->$field) ? 'true' : 'false' }}" class="input-field bg-gray-50 dark:bg-gray-700/50 rounded-xl p-4 sm:p-5 border border-gray-200 dark:border-gray-600">
                     <label for="{{ $field }}" class="flex items-start gap-3 text-sm font-bold text-gray-800 dark:text-gray-200 mb-3">
                         <span class="flex items-center justify-center w-7 h-7 sm:w-8 sm:h-8 bg-purple-600 dark:bg-purple-500 text-white rounded-lg text-xs sm:text-sm font-bold shrink-0 shadow-md">{{ $loop->iteration }}</span>
                         <span class="flex-1 leading-relaxed pt-0.5">{{ $question }} <span class="text-red-500">*</span></span>
@@ -339,11 +339,6 @@ function validateForm() {
     const submitButton = document.getElementById('submitButton');
     const isValid = linkVideo && allRefleksiFilled;
 
-    console.log('Validation check:', {
-        linkVideo: !!linkVideo,
-        allRefleksiFilled: allRefleksiFilled,
-        isValid: isValid
-    });
 
     submitButton.disabled = !isValid;
 
@@ -351,11 +346,9 @@ function validateForm() {
     if (isValid) {
         // Enabled: hijau, teks putih
         submitButton.className = 'inline-flex items-center justify-center gap-2 px-6 py-3 bg-green-600 text-white font-bold rounded-lg hover:bg-green-700 transition-colors cursor-pointer shadow-md hover:shadow-lg';
-        console.log('Submit button ENABLED');
     } else {
         // Disabled: abu-abu terang dengan teks abu-abu gelap
         submitButton.className = 'inline-flex items-center justify-center gap-2 px-6 py-3 bg-gray-300 dark:bg-gray-600 text-gray-700 dark:text-gray-300 font-bold rounded-lg cursor-not-allowed opacity-60';
-        console.log('Submit button DISABLED');
     }
 }
 
@@ -590,5 +583,40 @@ document.getElementById('successModal').addEventListener('click', (e) => {
         window.location.href = '{{ route('guru.home') }}';
     }
 });
+
+// Auto-scroll to first incomplete field
+function scrollToFirstIncompleteField() {
+    const inputFields = document.querySelectorAll('.input-field');
+    
+    for (let field of inputFields) {
+        // Skip link_meeting as it's optional
+        if (field.id === 'field-link_meeting') continue;
+        
+        const isFilled = field.dataset.filled === 'true';
+        
+        if (!isFilled) {
+            setTimeout(() => {
+                field.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                // Add highlight effect
+                field.classList.add('ring-2', 'ring-indigo-500', 'ring-offset-2');
+                field.style.transition = 'all 0.3s ease';
+                
+                // Focus on the input inside
+                const input = field.querySelector('input, textarea');
+                if (input) {
+                    setTimeout(() => input.focus(), 300);
+                }
+                
+                setTimeout(() => {
+                    field.classList.remove('ring-2', 'ring-indigo-500', 'ring-offset-2');
+                }, 2500);
+            }, 800);
+            break;
+        }
+    }
+}
+
+// Call auto-scroll on page load
+scrollToFirstIncompleteField();
 </script>
 @endsection

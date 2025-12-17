@@ -712,6 +712,11 @@
 
     <!-- JS FUNCTIONALITY -->
     <script>
+    (function() {
+        // Prevent re-initialization
+        if (window._layoutInitialized) return;
+        window._layoutInitialized = true;
+
         const hamburgerButton = document.getElementById('hamburger-menu');
         const hamburgerSidebarButton = document.getElementById('hamburger-menu-sidebar');
         const sidebar = document.getElementById('sidebar');
@@ -894,6 +899,9 @@
             localStorage.setItem('theme', isDark ? 'dark' : 'light');
             updateThemeIcons();
         }
+        
+        // Expose toggleTheme to global scope for onclick handlers
+        window.toggleTheme = toggleTheme;
 
         // Theme toggle event listeners
         if (themeToggleDropdown) {
@@ -1205,6 +1213,7 @@
             });
         }
         } // END OF DISABLED PULL-TO-REFRESH
+    })(); // Close IIFE
     </script>
 
 @else
