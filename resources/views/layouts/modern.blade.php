@@ -126,8 +126,8 @@
                         </svg>
                     </button>
                     
-                    <!-- Logo & Brand - Clickable -->
-                    <a href="@if(Auth::user()->isAdmin()){{ route('admin.dashboard') }}@elseif(Auth::user()->isGuru()){{ route('guru.home') }}@elseif(Auth::user()->isKepalaSekolah()){{ route('kepala.dashboard') }}@else{{ url('/') }}@endif" wire:navigate class="flex items-center gap-1.5 sm:gap-2 md:gap-2 lg:gap-2.5 hover:opacity-80 transition-opacity cursor-pointer group">
+                    <!-- Logo & Brand - Clickable (Full reload to avoid SPA issues) -->
+                    <a href="@if(Auth::user()->isAdmin()){{ route('admin.dashboard') }}@elseif(Auth::user()->isGuru()){{ route('guru.home') }}@elseif(Auth::user()->isKepalaSekolah()){{ route('kepala.dashboard') }}@else{{ url('/') }}@endif" class="flex items-center gap-1.5 sm:gap-2 md:gap-2 lg:gap-2.5 hover:opacity-80 transition-opacity cursor-pointer group">
                         <div class="w-8 h-8 sm:w-9 sm:h-9 md:w-8 md:h-8 lg:w-9 lg:h-9 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-lg flex items-center justify-center shadow-md group-hover:shadow-lg transition-shadow">
                             <svg class="w-4.5 h-4.5 sm:w-5 sm:h-5 md:w-5 md:h-5 lg:w-5 lg:h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
@@ -736,6 +736,11 @@
 
         let sidebarOpen = false;
 
+        // Reset sidebar state after Livewire navigation (wire:navigate)
+        document.addEventListener('livewire:navigated', function() {
+            sidebarOpen = false;
+        });
+
         // Hide/Show Header on Scroll
         let lastScrollTop = 0;
         let scrollTimeout;
@@ -832,41 +837,54 @@
         }
 
         function toggleSidebar() {
+            // Fresh DOM lookup for wire:navigate compatibility
+            const currentSidebar = document.getElementById('sidebar');
+            const currentHamburgerButton = document.getElementById('hamburger-menu');
+            const currentSidebarBackdrop = document.getElementById('sidebar-backdrop');
+            const currentAppWrapper = document.getElementById('app-wrapper');
+            const currentHeader = document.getElementById('header');
+            
+            if (!currentSidebar) return; // Safety check
+            
             sidebarOpen = !sidebarOpen;
             
             if (sidebarOpen) {
                 // Open sidebar
-                sidebar.classList.remove('-translate-x-full');
+                currentSidebar.classList.remove('-translate-x-full');
                 
                 // Make hamburger "stay in place" - instant swap without animation
                 // Just hide header hamburger, show sidebar hamburger instantly
-                hamburgerButton.style.opacity = '0';
-                hamburgerButton.style.visibility = 'hidden';
+                if (currentHamburgerButton) {
+                    currentHamburgerButton.style.opacity = '0';
+                    currentHamburgerButton.style.visibility = 'hidden';
+                }
                 
                 if (isMobile()) {
                     // Mobile: Show backdrop blur overlay
-                    sidebarBackdrop.classList.remove('hidden');
+                    if (currentSidebarBackdrop) currentSidebarBackdrop.classList.remove('hidden');
                 } else {
                     // Desktop: Push effect - push the entire wrapper and header
-                    appWrapper.style.marginLeft = '288px'; // w-72 = 288px
-                    header.style.left = '288px'; // Push header too
+                    if (currentAppWrapper) currentAppWrapper.style.marginLeft = '288px'; // w-72 = 288px
+                    if (currentHeader) currentHeader.style.left = '288px'; // Push header too
                 }
             } else {
                 // Close sidebar
-                sidebar.classList.add('-translate-x-full');
+                currentSidebar.classList.add('-translate-x-full');
                 
                 // Show header hamburger back after sidebar closes
                 setTimeout(() => {
-                    hamburgerButton.style.visibility = 'visible';
-                    hamburgerButton.style.opacity = '1';
+                    if (currentHamburgerButton) {
+                        currentHamburgerButton.style.visibility = 'visible';
+                        currentHamburgerButton.style.opacity = '1';
+                    }
                 }, 300); // After sidebar animation completes
                 
                 // Hide backdrop
-                sidebarBackdrop.classList.add('hidden');
+                if (currentSidebarBackdrop) currentSidebarBackdrop.classList.add('hidden');
                 
                 // Reset push effect
-                appWrapper.style.marginLeft = '0';
-                header.style.left = '0'; // Reset header position
+                if (currentAppWrapper) currentAppWrapper.style.marginLeft = '0';
+                if (currentHeader) currentHeader.style.left = '0'; // Reset header position
             }
         }
 
@@ -936,16 +954,23 @@
             }
         });
 
-        // Event listeners
-        hamburgerButton?.addEventListener('click', function(e) {
-            e.stopPropagation();
-            toggleSidebar();
-        });
-        
-        // Hamburger button in sidebar
-        hamburgerSidebarButton?.addEventListener('click', function(e) {
-            e.stopPropagation();
-            toggleSidebar();
+        // Event listeners using event delegation for wire:navigate compatibility
+        document.body.addEventListener('click', function(e) {
+            // Hamburger menu button (in header)
+            const hamburgerBtn = e.target.closest('#hamburger-menu');
+            if (hamburgerBtn) {
+                e.stopPropagation();
+                toggleSidebar();
+                return;
+            }
+            
+            // Hamburger button in sidebar
+            const hamburgerSidebarBtn = e.target.closest('#hamburger-menu-sidebar');
+            if (hamburgerSidebarBtn) {
+                e.stopPropagation();
+                toggleSidebar();
+                return;
+            }
         });
 
         // Modal functions
@@ -1202,7 +1227,8 @@
 @endif
 
 <script>
-// Back to Top Button Functionality
+// Back to Top Button Functionality - Wrapped in IIFE to prevent re-declaration on wire:navigate
+(function() {
 const backToTopBtn = document.getElementById('back-to-top');
 
 if (backToTopBtn) {
@@ -1276,6 +1302,7 @@ if (backToTopBtn) {
     // Initial check
     checkModalState();
 }
+})();
 </script>
 
 <!-- Livewire Navigate Loading Bar Script -->

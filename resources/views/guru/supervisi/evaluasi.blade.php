@@ -16,44 +16,44 @@
 <div class="w-full lg:w-3/4 mx-auto px-0 sm:px-4 pb-24 md:pb-0">
 
 <!-- Main Card -->
-<div class="bg-white dark:bg-gray-800 rounded-md sm:rounded-2xl border border-gray-200 dark:border-gray-700 shadow-lg">
+<div class="bg-white dark:bg-gray-800 rounded-xl sm:rounded-2xl border border-gray-200 dark:border-gray-700 shadow-lg">
     <!-- Header -->
-    <div class="border-b border-gray-200 dark:border-gray-700 px-3 py-2.5 sm:px-6 sm:py-4 bg-gradient-to-r from-indigo-50/30 to-blue-50/30 dark:from-indigo-900/10 dark:to-blue-900/10">
-        <div class="flex items-start justify-between gap-2 sm:gap-4">
-            <div>
-                <h2 class="text-sm sm:text-xl font-bold text-gray-800 dark:text-gray-100">Upload Dokumen Evaluasi</h2>
-                <p class="mt-0.5 sm:mt-1 text-[10px] sm:text-sm text-gray-600 dark:text-gray-400">Upload 7 dokumen yang diperlukan</p>
+    <div class="border-b border-gray-200 dark:border-gray-700 px-4 py-4 sm:px-6 sm:py-5 bg-gradient-to-r from-indigo-50/30 to-blue-50/30 dark:from-indigo-900/10 dark:to-blue-900/10">
+        <div class="flex items-center justify-between gap-4">
+            <div class="min-w-0 flex-1">
+                <h2 class="text-lg sm:text-xl font-bold text-gray-800 dark:text-gray-100">Upload Dokumen Evaluasi</h2>
+                <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">Upload 7 dokumen yang diperlukan</p>
             </div>
             <!-- Progress Badge -->
-            <div class="flex items-center gap-1.5 sm:gap-2 bg-white dark:bg-gray-800 px-2 py-1.5 sm:px-4 sm:py-2 rounded-md sm:rounded-lg border border-gray-200 dark:border-gray-600 shadow-sm">
-                <svg class="w-4 h-4 sm:w-5 sm:h-5 text-indigo-600 dark:text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div class="flex items-center gap-2.5 bg-white dark:bg-gray-800 px-4 py-2.5 sm:px-5 sm:py-3 rounded-xl border border-gray-200 dark:border-gray-600 shadow-sm shrink-0">
+                <svg class="w-6 h-6 sm:w-7 sm:h-7 text-indigo-600 dark:text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
                 </svg>
                 <div>
-                    <span class="text-[9px] sm:text-xs text-gray-500 dark:text-gray-400 block">Progres</span>
-                    <span id="documentBadge" class="text-xs sm:text-sm font-bold text-indigo-600 dark:text-indigo-400">0/7</span>
+                    <span class="text-xs text-gray-500 dark:text-gray-400 block">Progres</span>
+                    <span id="documentBadge" class="text-base sm:text-lg font-bold text-indigo-600 dark:text-indigo-400">0/7 Dokumen</span>
                 </div>
             </div>
         </div>
     </div>
 
     <!-- Info Alert -->
-    <div class="px-3 pt-3 sm:px-6 sm:pt-6">
-        <div class="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-md sm:rounded-lg p-2.5 sm:p-4">
-            <div class="flex gap-2 sm:gap-3">
-                <svg class="w-4 h-4 sm:w-5 sm:h-5 text-blue-600 dark:text-blue-400 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <div class="px-4 pt-4 sm:px-6 sm:pt-5">
+        <div class="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-xl p-4 sm:p-5">
+            <div class="flex gap-3">
+                <svg class="w-6 h-6 text-blue-600 dark:text-blue-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                 </svg>
                 <div>
-                    <p class="text-[11px] sm:text-sm font-medium text-blue-900 dark:text-blue-200">Format: PDF, JPG, PNG</p>
-                    <p class="text-[10px] sm:text-sm text-blue-800 dark:text-blue-300 mt-0.5 sm:mt-1">Maks. 2MB per file</p>
+                    <p class="text-sm sm:text-base font-medium text-blue-900 dark:text-blue-200">Format: PDF, JPG, PNG</p>
+                    <p class="text-sm text-blue-800 dark:text-blue-300 mt-0.5">Maks. 2MB per file</p>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Documents Table -->
-    <div class="p-6">
+    <!-- Documents Section -->
+    <div class="p-4 sm:p-6">
         @php
             $documents = [
                 'capaian_pembelajaran' => 'Capaian Pembelajaran (CP)',
@@ -66,7 +66,127 @@
             ];
         @endphp
 
-        <div class="overflow-x-auto">
+        <!-- ======================= -->
+        <!-- MOBILE: Card Layout (visible only on mobile) -->
+        <!-- ======================= -->
+        <div class="md:hidden space-y-3">
+            @foreach($documents as $key => $label)
+                @php
+                    $isUploaded = in_array($key, $uploadedDocuments);
+                    $dokumen = $supervisi->dokumenEvaluasi->where('jenis_dokumen', $key)->first();
+                @endphp
+                
+                <!-- Document Card -->
+                <div class="bg-gray-50 dark:bg-gray-700/50 rounded-xl p-4 border border-gray-200 dark:border-gray-600 {{ $isUploaded ? 'border-l-4 border-l-green-500' : '' }}">
+                    <!-- Row 1: Number + Document Name + Status -->
+                    <div class="flex items-start justify-between gap-3 mb-3">
+                        <div class="flex items-start gap-3 flex-1 min-w-0">
+                            <!-- Number Badge -->
+                            <span class="inline-flex items-center justify-center w-8 h-8 bg-indigo-100 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-300 text-sm font-bold rounded-lg shrink-0">
+                                {{ $loop->iteration }}
+                            </span>
+                            <!-- Document Name -->
+                            <div class="min-w-0">
+                                <h4 class="text-base font-semibold text-gray-900 dark:text-white leading-tight">
+                                    {{ Str::beforeLast($label, ' (') }}
+                                </h4>
+                                @if(Str::contains($label, '('))
+                                    <p class="text-sm text-gray-500 dark:text-gray-400 mt-0.5">
+                                        {{ Str::between($label, '(', ')') }}
+                                    </p>
+                                @endif
+                            </div>
+                        </div>
+                        <!-- Status Badge -->
+                        @if($isUploaded)
+                            <span class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 text-sm font-semibold rounded-lg shrink-0">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                                Sudah
+                            </span>
+                        @else
+                            <span class="inline-flex items-center px-3 py-1.5 bg-gray-200 dark:bg-gray-600 text-gray-600 dark:text-gray-300 text-sm font-medium rounded-lg shrink-0">
+                                Belum
+                            </span>
+                        @endif
+                    </div>
+                    
+                    <!-- Row 2: File Name (if uploaded) -->
+                    @if($isUploaded && $dokumen)
+                        <div class="flex items-center gap-2 mb-3 px-3 py-2.5 bg-indigo-50 dark:bg-indigo-900/40 border border-indigo-200 dark:border-indigo-700 rounded-lg">
+                            <svg class="w-4 h-4 text-indigo-500 dark:text-indigo-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
+                            </svg>
+                            <span class="text-sm font-medium text-indigo-700 dark:text-indigo-200 truncate" title="{{ $dokumen->nama_file }}">
+                                {{ $dokumen->nama_file }}
+                            </span>
+                        </div>
+                    @endif
+                    
+                    <!-- Row 3: Action Buttons -->
+                    <div class="flex gap-2">
+                        @if($isUploaded && $dokumen)
+                            <!-- Preview Button -->
+                            <a
+                                href="{{ asset('storage/' . $dokumen->path_file) }}"
+                                target="_blank"
+                                class="flex-1 inline-flex items-center justify-center gap-2 px-4 py-3 bg-indigo-600 text-white text-sm font-semibold rounded-lg hover:bg-indigo-700 transition-colors"
+                            >
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                                </svg>
+                                Preview
+                            </a>
+                            <!-- Ganti Button -->
+                            <button
+                                type="button"
+                                data-upload-btn="{{ $key }}"
+                                class="flex-1 inline-flex items-center justify-center gap-2 px-4 py-3 bg-blue-600 text-white text-sm font-semibold rounded-lg hover:bg-blue-700 cursor-pointer transition-colors"
+                            >
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path>
+                                </svg>
+                                Ganti
+                            </button>
+                            <!-- Delete Button -->
+                            <form id="delete-form-mobile-{{ $key }}" method="POST" action="{{ route('guru.supervisi.delete-document', [$supervisi->id]) }}" class="contents">
+                                @csrf
+                                @method('DELETE')
+                                <input type="hidden" name="jenis_dokumen" value="{{ $key }}">
+                                <button
+                                    type="button"
+                                    onclick="confirmDeleteForm('delete-form-mobile-{{ $key }}', 'Apakah Anda yakin ingin menghapus dokumen ini?')"
+                                    class="inline-flex items-center justify-center px-4 py-3 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors cursor-pointer"
+                                >
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                                    </svg>
+                                </button>
+                            </form>
+                        @else
+                            <!-- Upload Button (Full Width) -->
+                            <button
+                                type="button"
+                                data-upload-btn="{{ $key }}"
+                                class="w-full inline-flex items-center justify-center gap-2 px-4 py-3 bg-blue-600 text-white text-sm font-bold rounded-lg hover:bg-blue-700 cursor-pointer transition-colors shadow-sm"
+                            >
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
+                                </svg>
+                                Upload Dokumen
+                            </button>
+                        @endif
+                    </div>
+                </div>
+            @endforeach
+        </div>
+
+        <!-- ======================= -->
+        <!-- DESKTOP: Table Layout (hidden on mobile, visible on md and above) -->
+        <!-- ======================= -->
+        <div class="hidden md:block overflow-x-auto">
             <table class="w-full border-collapse">
                 <thead>
                     <tr class="bg-gray-50 dark:bg-gray-700 border-b-2 border-gray-300 dark:border-gray-600">
@@ -115,12 +235,12 @@
                                 @endif
                             </td>
                             <td class="px-4 py-3 text-center">
-                                <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-2">
+                                <div class="flex items-center justify-center gap-2">
                                     @if($isUploaded && $dokumen)
                                         <a
                                             href="{{ asset('storage/' . $dokumen->path_file) }}"
                                             target="_blank"
-                                            class="inline-flex items-center justify-center gap-1.5 px-3 py-2 bg-indigo-600 text-white text-xs font-semibold rounded-lg hover:bg-indigo-700 transition-colors w-full sm:w-auto"
+                                            class="inline-flex items-center justify-center gap-1.5 px-3 py-2 bg-indigo-600 text-white text-xs font-semibold rounded-lg hover:bg-indigo-700 transition-colors"
                                             title="Preview dokumen"
                                         >
                                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -134,7 +254,7 @@
                                     <button
                                         type="button"
                                         data-upload-btn="{{ $key }}"
-                                        class="inline-flex items-center justify-center gap-1.5 px-4 py-2 bg-blue-600 text-white text-xs font-semibold rounded-lg hover:bg-blue-700 cursor-pointer w-full sm:w-auto"
+                                        class="inline-flex items-center justify-center gap-1.5 px-4 py-2 bg-blue-600 text-white text-xs font-semibold rounded-lg hover:bg-blue-700 cursor-pointer"
                                     >
                                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
@@ -142,17 +262,14 @@
                                         {{ $isUploaded ? 'Ganti' : 'Upload' }}
                                     </button>
                                     @if($isUploaded)
-                                        <form id="delete-form-{{ $key }}" method="POST" action="{{ route('guru.supervisi.delete-document', [$supervisi->id]) }}" class="w-full sm:w-auto">
+                                        <form id="delete-form-{{ $key }}" method="POST" action="{{ route('guru.supervisi.delete-document', [$supervisi->id]) }}" class="inline">
                                             @csrf
                                             @method('DELETE')
                                             <input type="hidden" name="jenis_dokumen" value="{{ $key }}">
                                             <button
                                                 type="button"
                                                 onclick="confirmDeleteForm('delete-form-{{ $key }}', 'Apakah Anda yakin ingin menghapus dokumen ini?')"
-                                                class="inline-flex items-center justify-center gap-1.5 px-4 py-2 text-xs font-semibold rounded-lg transition-colors text-white cursor-pointer w-full sm:w-auto"
-                                                style="background-color: #e63946;"
-                                                onmouseover="this.style.backgroundColor='#d62828'"
-                                                onmouseout="this.style.backgroundColor='#e63946'"
+                                                class="inline-flex items-center justify-center gap-1.5 px-4 py-2 bg-red-600 hover:bg-red-700 text-white text-xs font-semibold rounded-lg transition-colors cursor-pointer"
                                             >
                                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
@@ -164,7 +281,7 @@
                                         <button
                                             type="button"
                                             disabled
-                                            class="inline-flex items-center gap-1.5 px-4 py-2 text-xs font-semibold rounded-lg transition-colors bg-gray-300 dark:bg-gray-600 text-gray-700 dark:text-gray-300 cursor-not-allowed"
+                                            class="inline-flex items-center gap-1.5 px-4 py-2 text-xs font-semibold rounded-lg bg-gray-300 dark:bg-gray-600 text-gray-500 dark:text-gray-400 cursor-not-allowed"
                                         >
                                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
@@ -184,17 +301,17 @@
     <!-- File inputs will be created dynamically -->
 
     <!-- Action Buttons -->
-    <div class="border-t border-gray-200 dark:border-gray-700 px-3 py-3 sm:px-6 sm:py-4 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2 sm:gap-3">
-        <a href="{{ route('guru.home') }}" style="background-color: #eab308; color: white;" class="inline-flex items-center justify-center gap-1.5 sm:gap-2 px-4 py-2 sm:px-5 sm:py-3 text-xs sm:text-sm font-semibold rounded-md sm:rounded-lg cursor-pointer">
-            <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <div class="border-t border-gray-200 dark:border-gray-700 px-4 py-4 sm:px-6 sm:py-4 flex flex-row items-center justify-between gap-3 sm:gap-4">
+        <a href="{{ route('guru.home') }}" class="inline-flex items-center justify-center gap-2 px-4 py-2.5 md:px-5 md:py-2.5 min-h-[44px] md:min-h-0 bg-amber-500 hover:bg-amber-600 text-white text-sm font-semibold rounded-lg md:rounded-lg cursor-pointer transition-colors">
+            <svg class="w-5 h-5 md:w-4 md:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
             </svg>
             Kembali
         </a>
 
-        <button id="nextButton" class="inline-flex items-center justify-center gap-1.5 sm:gap-2 px-4 py-2 sm:px-6 sm:py-3 bg-blue-600 text-white text-xs sm:text-sm font-bold rounded-md sm:rounded-lg hover:bg-blue-700 cursor-pointer">
+        <button id="nextButton" class="inline-flex items-center justify-center gap-2 px-5 py-2.5 md:px-6 md:py-2.5 min-h-[44px] md:min-h-0 bg-blue-600 text-white text-sm font-bold rounded-lg md:rounded-lg hover:bg-blue-700 cursor-pointer transition-colors">
             Lanjut
-            <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg class="w-5 h-5 md:w-4 md:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
             </svg>
         </button>

@@ -661,8 +661,8 @@
 </div>
 
 <!-- Guru Guide Modal -->
-<div id="guideModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-70 items-center justify-center p-4 sm:p-6" style="display: none;" onclick="closeGuideModal()">
-    <div class="bg-white dark:bg-gray-800 rounded-xl sm:rounded-2xl shadow-2xl max-w-lg sm:max-w-4xl w-full max-h-[80vh] sm:max-h-[85vh] overflow-hidden transform transition-all duration-300 scale-95 opacity-0" onclick="event.stopPropagation()">
+<div id="guideModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-[70] flex items-center justify-center p-4 sm:p-6" style="display: none;" onclick="closeGuideModal()">
+    <div id="guideModalContent" class="bg-white dark:bg-gray-800 rounded-xl sm:rounded-2xl shadow-2xl max-w-lg sm:max-w-4xl w-full max-h-[80vh] sm:max-h-[85vh] overflow-hidden transition-all duration-300 scale-95 opacity-0" onclick="event.stopPropagation()">
         <!-- Modal Header -->
         <div class="px-3 py-2 sm:px-6 sm:py-4 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between bg-linear-to-r from-indigo-50 to-purple-50 dark:from-gray-700 dark:to-gray-700">
             <div class="flex items-center gap-2 sm:gap-3">
@@ -1219,6 +1219,41 @@
         }, 500);
     }
 
+    // Open Guide Modal
+    function openGuideModal() {
+        const modal = document.getElementById('guideModal');
+        const content = document.getElementById('guideModalContent');
+        
+        if (modal && content) {
+            modal.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+            
+            // Animate in with scale
+            setTimeout(() => {
+                content.classList.remove('scale-95', 'opacity-0');
+                content.classList.add('scale-100', 'opacity-100');
+            }, 10);
+        }
+    }
+
+    // Close Guide Modal
+    function closeGuideModal() {
+        const modal = document.getElementById('guideModal');
+        const content = document.getElementById('guideModalContent');
+        
+        if (modal && content) {
+            // Animate out
+            content.classList.remove('scale-100', 'opacity-100');
+            content.classList.add('scale-95', 'opacity-0');
+            
+            setTimeout(() => {
+                modal.style.display = 'none';
+                document.body.style.overflow = '';
+            }, 300);
+        }
+    }
+
+
     // Check if user should see welcome modal on page load
     document.addEventListener('DOMContentLoaded', function() {
         // Always show if user has no supervisions (regardless of whether they've seen it before)
@@ -1230,6 +1265,31 @@
                 showWelcomeModal();
             }, 800);
         }
+    });
+
+    // Close all modals after Livewire navigation (wire:navigate)
+    // This prevents modals from blocking clicks after SPA navigation
+    document.addEventListener('livewire:navigated', function() {
+        // Close guide modal if open
+        const guideModal = document.getElementById('guideModal');
+        if (guideModal) {
+            guideModal.style.display = 'none';
+        }
+        
+        // Close welcome modal if open
+        const welcomeModal = document.getElementById('welcomeModal');
+        if (welcomeModal) {
+            welcomeModal.style.display = 'none';
+        }
+        
+        // Close supervisi modal if open
+        const supervisiModal = document.getElementById('supervisiModal');
+        if (supervisiModal) {
+            supervisiModal.style.display = 'none';
+        }
+        
+        // Restore body scroll
+        document.body.style.overflow = '';
     });
 
     // Toggle Comments Accordion with smooth animation
@@ -1312,63 +1372,63 @@
 </script>
 
 <!-- Modal Konfirmasi Supervisi -->
-<div id="supervisiModal" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-[90] flex items-center justify-center p-4 sm:p-2 md:p-4 opacity-0 transition-opacity duration-500" style="display: none;" onclick="if(event.target === this) closeSupervisiModal()">
-    <div id="supervisiModalContent" class="bg-white dark:bg-gray-800 rounded-xl sm:rounded-lg md:rounded-xl shadow-2xl w-full max-w-[320px] sm:w-[90%] md:max-w-lg lg:max-w-2xl transform scale-90 opacity-0 transition-all duration-500" onclick="event.stopPropagation()">
+<div id="supervisiModal" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-[90] flex items-center justify-center p-4 sm:p-2 md:p-6 lg:p-8 opacity-0 transition-opacity duration-500" style="display: none;" onclick="if(event.target === this) closeSupervisiModal()">
+    <div id="supervisiModalContent" class="bg-white dark:bg-gray-800 rounded-2xl sm:rounded-xl md:rounded-3xl shadow-2xl w-full max-w-[320px] sm:w-[90%] md:max-w-xl lg:max-w-2xl transform scale-90 opacity-0 transition-all duration-500 overflow-hidden" onclick="event.stopPropagation()">
 
         <!-- Header -->
-        <div class="bg-gradient-to-r from-indigo-600 to-purple-600 dark:from-indigo-700 dark:to-purple-700 px-4 py-3 sm:px-3 sm:py-3 md:px-4 md:py-4 text-center relative">
-            <button onclick="closeSupervisiModal()" class="absolute top-2 right-2 sm:top-2 sm:right-2 w-7 h-7 sm:w-7 sm:h-7 rounded-lg hover:bg-white/20 flex items-center justify-center text-white transition-colors">
-                <svg class="w-4 h-4 sm:w-4 sm:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div class="bg-gradient-to-r from-indigo-600 to-purple-600 dark:from-indigo-700 dark:to-purple-700 px-4 py-3 sm:px-3 sm:py-3 md:px-6 md:py-5 lg:px-8 lg:py-6 text-center relative">
+            <button onclick="closeSupervisiModal()" class="absolute top-2 right-2 sm:top-2 sm:right-2 md:top-4 md:right-4 w-7 h-7 sm:w-7 sm:h-7 md:w-9 md:h-9 rounded-lg hover:bg-white/20 flex items-center justify-center text-white transition-colors">
+                <svg class="w-4 h-4 sm:w-4 sm:h-4 md:w-5 md:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                 </svg>
             </button>
-            <div class="w-10 h-10 sm:w-10 sm:h-10 md:w-12 md:h-12 bg-white/20 rounded-xl sm:rounded-lg flex items-center justify-center mx-auto mb-2 sm:mb-2">
-                <svg class="w-5 h-5 sm:w-5 sm:h-5 md:w-6 md:h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div class="w-10 h-10 sm:w-10 sm:h-10 md:w-14 md:h-14 lg:w-16 lg:h-16 bg-white/20 rounded-xl sm:rounded-lg md:rounded-2xl flex items-center justify-center mx-auto mb-2 sm:mb-2 md:mb-3">
+                <svg class="w-5 h-5 sm:w-5 sm:h-5 md:w-7 md:h-7 lg:w-8 lg:h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                 </svg>
             </div>
-            <h2 class="text-base sm:text-base md:text-lg font-bold text-white mb-1 sm:mb-1">Mulai Supervisi Baru?</h2>
-            <p class="text-indigo-100 dark:text-indigo-200 text-xs sm:text-[10px] md:text-xs">
+            <h2 class="text-base sm:text-base md:text-xl lg:text-2xl font-bold text-white mb-1 sm:mb-1 md:mb-2">Mulai Supervisi Baru?</h2>
+            <p class="text-indigo-100 dark:text-indigo-200 text-xs sm:text-[10px] md:text-sm lg:text-base">
                 Tanggal supervisi tercatat saat submit
             </p>
         </div>
 
         <!-- Body Content -->
-        <div class="p-4 sm:p-3 md:p-4">
+        <div class="p-4 sm:p-3 md:p-6 lg:p-8">
             <!-- Yang Perlu Disiapkan -->
-            <div class="mb-3 sm:mb-3">
-                <h3 class="text-xs sm:text-xs md:text-sm font-bold text-gray-900 dark:text-white mb-2 sm:mb-1.5">Yang Perlu Disiapkan:</h3>
-                <div class="space-y-1.5 sm:space-y-1.5">
-                    <div class="flex items-center gap-2 sm:gap-2 py-1.5 sm:p-2 bg-gray-50 dark:bg-gray-900/30 rounded-lg">
-                        <svg class="w-4 h-4 sm:w-3.5 sm:h-3.5 text-emerald-600 dark:text-emerald-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div class="mb-3 sm:mb-3 md:mb-5">
+                <h3 class="text-xs sm:text-xs md:text-base lg:text-lg font-bold text-gray-900 dark:text-white mb-2 sm:mb-1.5 md:mb-3">Yang Perlu Disiapkan:</h3>
+                <div class="space-y-1.5 sm:space-y-1.5 md:space-y-2.5 lg:space-y-3">
+                    <div class="flex items-center gap-2 sm:gap-2 md:gap-3 py-1.5 sm:p-2 md:py-3 md:px-4 bg-gray-50 dark:bg-gray-900/30 rounded-lg md:rounded-xl">
+                        <svg class="w-4 h-4 sm:w-3.5 sm:h-3.5 md:w-5 md:h-5 lg:w-6 lg:h-6 text-emerald-600 dark:text-emerald-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                         </svg>
-                        <p class="text-xs sm:text-[10px] md:text-xs text-gray-900 dark:text-white"><strong>7 Dokumen</strong> (RPP, Silabus, dll)</p>
+                        <p class="text-xs sm:text-[10px] md:text-sm lg:text-base text-gray-900 dark:text-white"><strong>7 Dokumen</strong> (RPP, Silabus, dll)</p>
                     </div>
-                    <div class="flex items-center gap-2 sm:gap-2 py-1.5 sm:p-2 bg-gray-50 dark:bg-gray-900/30 rounded-lg">
-                        <svg class="w-4 h-4 sm:w-3.5 sm:h-3.5 text-blue-600 dark:text-blue-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <div class="flex items-center gap-2 sm:gap-2 md:gap-3 py-1.5 sm:p-2 md:py-3 md:px-4 bg-gray-50 dark:bg-gray-900/30 rounded-lg md:rounded-xl">
+                        <svg class="w-4 h-4 sm:w-3.5 sm:h-3.5 md:w-5 md:h-5 lg:w-6 lg:h-6 text-blue-600 dark:text-blue-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                         </svg>
-                        <p class="text-xs sm:text-[10px] md:text-xs text-gray-900 dark:text-white"><strong>Video</strong> & Refleksi</p>
+                        <p class="text-xs sm:text-[10px] md:text-sm lg:text-base text-gray-900 dark:text-white"><strong>Video</strong> & Refleksi</p>
                     </div>
-                    <div class="flex items-center gap-2 sm:gap-2 py-1.5 sm:p-2 bg-gray-50 dark:bg-gray-900/30 rounded-lg">
-                        <svg class="w-4 h-4 sm:w-3.5 sm:h-3.5 text-purple-600 dark:text-purple-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <div class="flex items-center gap-2 sm:gap-2 md:gap-3 py-1.5 sm:p-2 md:py-3 md:px-4 bg-gray-50 dark:bg-gray-900/30 rounded-lg md:rounded-xl">
+                        <svg class="w-4 h-4 sm:w-3.5 sm:h-3.5 md:w-5 md:h-5 lg:w-6 lg:h-6 text-purple-600 dark:text-purple-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                         </svg>
-                        <p class="text-xs sm:text-[10px] md:text-xs text-gray-900 dark:text-white"><strong>Info Pembelajaran</strong></p>
+                        <p class="text-xs sm:text-[10px] md:text-sm lg:text-base text-gray-900 dark:text-white"><strong>Info Pembelajaran</strong></p>
                     </div>
                 </div>
             </div>
 
             <!-- Alur Proses -->
-            <div class="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-3 sm:p-2 md:p-3 mb-3 sm:mb-3 border border-blue-200 dark:border-blue-800">
-                <div class="flex gap-1.5 sm:gap-1.5 mb-1.5">
-                    <svg class="w-4 h-4 sm:w-3.5 sm:h-3.5 text-blue-600 dark:text-blue-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div class="bg-blue-50 dark:bg-blue-900/20 rounded-lg md:rounded-xl p-3 sm:p-2 md:p-4 lg:p-5 mb-3 sm:mb-3 md:mb-5 border border-blue-200 dark:border-blue-800">
+                <div class="flex gap-1.5 sm:gap-1.5 md:gap-2 mb-1.5 md:mb-2">
+                    <svg class="w-4 h-4 sm:w-3.5 sm:h-3.5 md:w-5 md:h-5 text-blue-600 dark:text-blue-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                     </svg>
-                    <p class="text-xs sm:text-[10px] md:text-xs font-semibold text-blue-900 dark:text-blue-200">Alur:</p>
+                    <p class="text-xs sm:text-[10px] md:text-sm lg:text-base font-semibold text-blue-900 dark:text-blue-200">Alur:</p>
                 </div>
-                <ol class="list-decimal list-inside space-y-0.5 text-xs sm:text-[10px] md:text-xs text-blue-800 dark:text-blue-300 ml-5 sm:ml-4">
+                <ol class="list-decimal list-inside space-y-0.5 md:space-y-1 text-xs sm:text-[10px] md:text-sm lg:text-base text-blue-800 dark:text-blue-300 ml-5 sm:ml-4 md:ml-6">
                     <li>Upload dokumen</li>
                     <li>Isi info & video</li>
                     <li>Submit review</li>
@@ -1379,13 +1439,13 @@
             <form id="supervisiForm" action="{{ route('guru.supervisi.store') }}" method="POST" style="display: none;">
                 @csrf
             </form>
-            <div class="flex gap-2 sm:gap-2">
-                <button onclick="closeSupervisiModal()" class="flex-1 inline-flex items-center justify-center px-4 py-2.5 sm:px-3 sm:py-2 md:px-4 md:py-2.5 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 font-semibold rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-all text-sm sm:text-xs md:text-sm">
+            <div class="flex gap-2 sm:gap-2 md:gap-4">
+                <button onclick="closeSupervisiModal()" class="flex-1 inline-flex items-center justify-center px-4 py-2.5 sm:px-3 sm:py-2 md:px-6 md:py-3 lg:py-4 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 font-semibold rounded-lg md:rounded-xl hover:bg-gray-50 dark:hover:bg-gray-700 transition-all text-sm sm:text-xs md:text-base lg:text-lg">
                     Batal
                 </button>
-                <button onclick="submitSupervisiForm()" class="flex-1 inline-flex items-center justify-center gap-1.5 px-4 py-2.5 sm:px-3 sm:py-2 md:px-4 md:py-2.5 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-bold rounded-lg transition-all shadow-md hover:shadow-lg text-sm sm:text-xs md:text-sm">
+                <button onclick="submitSupervisiForm()" class="flex-1 inline-flex items-center justify-center gap-1.5 md:gap-2 px-4 py-2.5 sm:px-3 sm:py-2 md:px-6 md:py-3 lg:py-4 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-bold rounded-lg md:rounded-xl transition-all shadow-md hover:shadow-lg text-sm sm:text-xs md:text-base lg:text-lg">
                     Mulai
-                    <svg class="w-4 h-4 sm:w-3.5 sm:h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg class="w-4 h-4 sm:w-3.5 sm:h-3.5 md:w-5 md:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
                     </svg>
                 </button>
