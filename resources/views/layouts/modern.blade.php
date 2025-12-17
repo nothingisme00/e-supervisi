@@ -1276,8 +1276,8 @@ if (backToTopBtn) {
 <script>
 (function() {
     // CONFIGURATION
-    const INACTIVITY_TIMEOUT = 5 * 60 * 1000; // 5 menit
-    const WARNING_SECONDS = 10; // Warning 10 detik sebelum logout
+    const INACTIVITY_TIMEOUT = 10 * 60 * 1000; // 10 menit
+    const WARNING_SECONDS = 15; // Warning 15 detik sebelum logout
     
     let logoutTimer = null;
     let countdownInterval = null;
@@ -1343,6 +1343,8 @@ if (backToTopBtn) {
             </div>
         `;
         warningModal.style.display = 'block';
+        warningModal.style.position = 'relative';
+        warningModal.style.zIndex = '2147483647';
         
         // Attach button handler
         document.getElementById('stay-logged-in-btn').addEventListener('click', function() {

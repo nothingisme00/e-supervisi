@@ -339,7 +339,7 @@
                 <table class="w-full min-w-[700px]">
                     <thead class="bg-gray-50 dark:bg-gray-700/50 border-b border-gray-200 dark:border-gray-600">
                         <tr>
-                            <th style="position: sticky; left: 0;" class="z-20 bg-gray-50 dark:bg-gray-700 px-3 py-3 text-left text-[11px] font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider min-w-[140px] border-r border-gray-200 dark:border-gray-600">Nama</th>
+                            <th style="position: sticky; left: 0;" class="z-[5] bg-gray-50 dark:bg-gray-700 px-3 py-3 text-left text-[11px] font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider min-w-[140px] border-r border-gray-200 dark:border-gray-600">Nama</th>
                             <th class="px-3 py-3 text-left text-[11px] font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider min-w-[130px]">NIK</th>
                             <th class="px-3 py-3 text-left text-[11px] font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider min-w-[90px]">Role</th>
                             <th class="px-3 py-3 text-left text-[11px] font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider min-w-[100px]">Tingkat</th>
@@ -351,7 +351,7 @@
                         @forelse($users as $user)
                         <tr class="hover:bg-gray-50 dark:hover:bg-gray-700/30" wire:key="mobile-table-user-{{ $user->id }}">
                             <!-- Nama (Sticky) -->
-                            <td style="position: sticky; left: 0;" class="z-10 px-3 py-3 border-r border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-800">
+                            <td style="position: sticky; left: 0;" class="z-[4] px-3 py-3 border-r border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-800">
                                 <div class="flex items-center gap-2">
                                     <div class="w-8 h-8 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-lg flex items-center justify-center text-white text-xs font-bold flex-shrink-0">
                                         {{ strtoupper(substr($user->name, 0, 1)) }}

@@ -11,10 +11,16 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
+        // Append session timeout middleware to web group
+        $middleware->web(append: [
+            \App\Http\Middleware\SessionTimeout::class,
+        ]);
+
         $middleware->alias([
             'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
             'prevent.back' => \App\Http\Middleware\PreventBackHistory::class,
             'must.change.password' => \App\Http\Middleware\MustChangePassword::class,
+            'session.timeout' => \App\Http\Middleware\SessionTimeout::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
