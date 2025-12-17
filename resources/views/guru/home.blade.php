@@ -33,58 +33,51 @@
                 </div>
 
                 <!-- RIGHT SECTION: Buttons aligned to right on tablet/laptop -->
-                <div class="flex flex-nowrap items-center gap-0.5 sm:gap-1.5 md:gap-2 lg:gap-2.5 flex-shrink-0">
-                    <!-- Button 1: Tips & Informasi (Icon only on mobile/tablet, with text on laptop) -->
-                    <button onclick="toggleTips()" class="inline-flex items-center justify-center gap-0 lg:gap-2 p-1 sm:px-2 sm:py-1.5 md:px-3 md:py-2.5 lg:px-4 lg:py-2.5 bg-gradient-to-r from-blue-50 to-cyan-50 dark:from-blue-900/30 dark:to-cyan-900/30 hover:from-blue-100 hover:to-cyan-100 dark:hover:from-blue-900/40 dark:hover:to-cyan-900/40 border border-blue-200 dark:border-blue-800 text-blue-700 dark:text-blue-300 font-semibold rounded sm:rounded-md md:rounded-lg transition-all shadow-sm hover:shadow-md text-[9px] sm:text-[11px] lg:text-sm whitespace-nowrap">
-                        <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4 md:w-5 md:h-5 lg:w-4 lg:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                        </svg>
-                        <span class="hidden lg:inline">Tips & Info</span>
-                        <svg id="tips-chevron" class="w-3.5 h-3.5 sm:w-4 sm:h-4 md:w-5 md:h-5 lg:w-4 lg:h-4 transform transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                        </svg>
-                    </button>
-
-                    <!-- Button 2: Panduan (Icon only on mobile/tablet, with text on laptop) -->
-                    <button onclick="openGuideModal()" class="inline-flex items-center justify-center gap-0 lg:gap-2 p-1 sm:px-2 sm:py-1.5 md:px-3 md:py-2.5 lg:px-4 lg:py-2.5 bg-gradient-to-r from-amber-50 to-orange-50 dark:from-amber-900/30 dark:to-orange-900/30 hover:from-amber-100 hover:to-orange-100 dark:hover:from-amber-900/40 dark:hover:to-orange-900/40 border border-amber-200 dark:border-amber-800 text-amber-700 dark:text-amber-300 font-semibold rounded sm:rounded-md md:rounded-lg transition-all shadow-sm hover:shadow-md text-[9px] sm:text-[11px] lg:text-sm whitespace-nowrap">
-                        <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4 md:w-5 md:h-5 lg:w-4 lg:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
-                        </svg>
-                        <span class="hidden lg:inline">Panduan</span>
-                    </button>
-
-                    <!-- Button 3: Mulai Supervisi Baru (Icon only on mobile/tablet, with text on laptop) -->
+                <div class="flex flex-nowrap items-center gap-1 sm:gap-1.5 md:gap-2 lg:gap-2.5 flex-shrink-0">
+                    <!-- Button: Mulai Supervisi Baru (Icon only on mobile, with text on tablet/laptop) -->
                     <!-- Only show when there are existing supervisions -->
                     @if($supervisiList->count() > 0)
-                    <button onclick="openSupervisiModal()" class="inline-flex items-center justify-center gap-1 lg:gap-2 px-1.5 py-1 sm:px-2.5 sm:py-1.5 md:px-3 md:py-2.5 lg:px-4 lg:py-2.5 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-semibold rounded sm:rounded-md md:rounded-lg transition-all shadow-md hover:shadow-lg text-[9px] sm:text-[11px] lg:text-sm whitespace-nowrap">
-                        <svg class="w-3 h-3 sm:w-4 sm:h-4 md:w-5 md:h-5 lg:w-4 lg:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <button onclick="openSupervisiModal()" class="inline-flex items-center justify-center gap-1 lg:gap-2 px-2.5 py-1.5 sm:px-3 sm:py-2 md:px-4 md:py-2.5 lg:px-5 lg:py-3 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-semibold rounded-md sm:rounded-lg md:rounded-xl transition-all shadow-md hover:shadow-lg text-xs sm:text-sm lg:text-base whitespace-nowrap">
+                        <svg class="w-4 h-4 sm:w-4.5 sm:h-4.5 md:w-5 md:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
                         </svg>
-                        <span class="hidden sm:inline">Buat Baru</span>
+                        <span class="hidden sm:inline">Buat Supervisi Baru</span>
+                        <span class="sm:hidden">Buat</span>
                     </button>
                     @endif
                 </div>
             </div>
+                </div>
+                <!-- End padding wrapper for header content -->
+            <!-- End Inner Card 1: Header -->
 
-            <!-- Tips Accordion Content -->
-            <div id="tips-content" class="overflow-hidden transition-all duration-300 ease-in-out mt-4" style="max-height: 0; opacity: 0;">
-                <div class="p-4 bg-gradient-to-r from-cyan-50/50 to-blue-50/50 dark:from-cyan-900/10 dark:to-blue-900/10 rounded-lg border border-gray-200 dark:border-gray-700">
+            <!-- Tips & Informasi - Hidden div for desktop accordion (shown via JS on tablet/desktop) -->
+            <div id="tips-content" class="hidden md:block overflow-hidden transition-all duration-300 ease-in-out bg-white dark:bg-gray-800 rounded-md sm:rounded-lg md:rounded-xl shadow" style="max-height: 0; opacity: 0;">
+                <div class="p-3 sm:p-4 md:p-5">
+                    <div class="flex items-center gap-2 mb-3 sm:mb-4">
+                        <div class="w-8 h-8 sm:w-9 sm:h-9 bg-gradient-to-r from-blue-600 to-cyan-600 rounded-lg flex items-center justify-center">
+                            <svg class="w-4 h-4 sm:w-5 sm:h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                        </div>
+                        <h4 class="text-sm sm:text-base md:text-lg font-bold text-gray-900 dark:text-white">Tips & Informasi</h4>
+                    </div>
                     <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
                         <!-- Tip 1: Quick Navigation -->
-                        <div class="bg-white dark:bg-gray-800 rounded-lg p-3 border border-blue-100 dark:border-blue-900/30 shadow-sm">
+                        <div class="bg-gray-50 dark:bg-gray-900/30 rounded-lg p-3 border border-blue-100 dark:border-blue-900/30">
                             <div class="flex items-start gap-2">
                                 <svg class="w-5 h-5 text-blue-600 dark:text-blue-400 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
                                 </svg>
                                 <div>
                                     <p class="text-sm font-semibold text-blue-900 dark:text-blue-300 mb-1">Quick Navigation</p>
-                                    <p class="text-xs text-gray-600 dark:text-gray-400">Gunakan tombol kuning "Panduan" untuk melihat langkah lengkap supervisi</p>
+                                    <p class="text-xs text-gray-600 dark:text-gray-400">Gunakan tombol "Panduan" untuk melihat langkah lengkap supervisi</p>
                                 </div>
                             </div>
                         </div>
 
                         <!-- Tip 2: Track Progress -->
-                        <div class="bg-white dark:bg-gray-800 rounded-lg p-3 border border-emerald-100 dark:border-emerald-900/30 shadow-sm">
+                        <div class="bg-gray-50 dark:bg-gray-900/30 rounded-lg p-3 border border-emerald-100 dark:border-emerald-900/30">
                             <div class="flex items-start gap-2">
                                 <svg class="w-5 h-5 text-emerald-600 dark:text-emerald-400 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path>
@@ -97,24 +90,20 @@
                         </div>
 
                         <!-- Tip 3: Collaboration -->
-                        <div class="bg-white dark:bg-gray-800 rounded-lg p-3 border border-purple-100 dark:border-purple-900/30 shadow-sm">
+                        <div class="bg-gray-50 dark:bg-gray-900/30 rounded-lg p-3 border border-purple-100 dark:border-purple-900/30">
                             <div class="flex items-start gap-2">
                                 <svg class="w-5 h-5 text-purple-600 dark:text-purple-400 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 14h4a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z"></path>
                                 </svg>
                                 <div>
                                     <p class="text-sm font-semibold text-purple-900 dark:text-purple-300 mb-1">Kolaborasi</p>
-                                    <p class="text-xs text-gray-600 dark:text-gray-400">Klik "Komentar" untuk melihat feedback dari Kepala Sekolah atau sesama guru</p>
+                                    <p class="text-xs text-gray-600 dark:text-gray-400">Klik "Komentar" untuk melihat feedback dari Kepala Sekolah</p>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-                </div>
-                <!-- End padding wrapper for header content -->
-            </div>
-            <!-- End Inner Card 1: Header -->
 
             <!-- Inner Card 2: Timeline Content Cards -->
             @if($supervisiList->count() > 0)
@@ -420,27 +409,24 @@
             @else
                 <!-- Inner Card 2: Empty State -->
                 <div class="bg-white dark:bg-gray-800 rounded-md sm:rounded-xl shadow w-full">
-                    <div class="px-2 py-2 sm:px-4 sm:py-3 md:px-5 md:py-4 lg:px-6 lg:py-5">
-                        <div class="bg-gray-50 dark:bg-gray-900/30 rounded-lg sm:rounded-xl border-2 border-dashed border-gray-300 dark:border-gray-700 p-4 sm:p-8 md:p-12 text-center">
-                    <div class="w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 bg-gradient-to-br from-indigo-100 to-purple-100 dark:from-indigo-900/30 dark:to-purple-900/30 rounded-full flex items-center justify-center mx-auto mb-2 sm:mb-3 md:mb-4 shadow-inner">
-                        <svg class="w-6 h-6 sm:w-8 sm:h-8 md:w-10 md:h-10 text-indigo-600 dark:text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
-                        </svg>
-                    </div>
-                    <h3 class="text-sm sm:text-base md:text-lg font-bold text-gray-900 dark:text-white mb-1 sm:mb-2">Belum Ada Supervisi</h3>
-                    <p class="text-xs sm:text-sm text-gray-500 dark:text-gray-400 mb-3 sm:mb-4 md:mb-6 max-w-md mx-auto leading-relaxed">Anda belum memiliki supervisi apapun. Mulai dengan membuat supervisi baru.</p>
+                    <div class="px-3 py-4 sm:px-5 sm:py-6 md:px-6 md:py-8 lg:px-8 lg:py-10">
+                        <div class="bg-gray-50 dark:bg-gray-900/30 rounded-xl sm:rounded-2xl border-2 border-dashed border-gray-300 dark:border-gray-700 p-6 sm:p-10 md:p-14 lg:p-16 text-center">
+                            <div class="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 lg:w-28 lg:h-28 bg-gradient-to-br from-indigo-100 to-purple-100 dark:from-indigo-900/30 dark:to-purple-900/30 rounded-full flex items-center justify-center mx-auto mb-4 sm:mb-5 md:mb-6 shadow-inner">
+                                <svg class="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 lg:w-14 lg:h-14 text-indigo-600 dark:text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                                </svg>
+                            </div>
+                            <h3 class="text-base sm:text-lg md:text-xl lg:text-2xl font-bold text-gray-900 dark:text-white mb-2 sm:mb-3">Belum Ada Supervisi</h3>
+                            <p class="text-sm sm:text-base md:text-base text-gray-500 dark:text-gray-400 mb-5 sm:mb-6 md:mb-8 max-w-md mx-auto leading-relaxed">Anda belum memiliki supervisi apapun. Mulai dengan membuat supervisi baru.</p>
 
-                    <button onclick="openSupervisiModal()" class="inline-flex items-center gap-1.5 sm:gap-2 px-4 py-2 sm:px-5 sm:py-2.5 md:px-6 md:py-3 bg-indigo-600 hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-600 text-white text-xs sm:text-sm font-semibold rounded-lg transition-all shadow-md hover:shadow-lg transform hover:-translate-y-0.5">
-                        <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
-                        </svg>
-                        Buat Supervisi Baru
-                    </button>
-                </div>
+                            <button onclick="openSupervisiModal()" class="inline-flex items-center gap-2 sm:gap-2.5 px-5 py-2.5 sm:px-6 sm:py-3 md:px-7 md:py-3.5 lg:px-8 lg:py-4 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white text-sm sm:text-base md:text-base font-semibold rounded-xl transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-0.5">
+                                <svg class="w-5 h-5 sm:w-5 sm:h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                                </svg>
+                                Buat Supervisi Baru
+                            </button>
                         </div>
-                        <!-- End dashed border container -->
                     </div>
-                    <!-- End padding wrapper -->
                 </div>
                 <!-- End Inner Card 2: Empty State -->
             @endif
@@ -503,6 +489,86 @@
                     </button>
                 </div>
             </div>
+        </div>
+    </div>
+</div>
+
+<!-- Tips & Informasi Modal (For Mobile) -->
+<div id="tipsModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-[75] items-center justify-center p-3 md:hidden" style="display: none;" onclick="closeTipsModal()">
+    <div id="tipsModalContent" class="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl w-full max-w-md max-h-[90vh] overflow-hidden transform transition-all duration-300 scale-95 opacity-0" onclick="event.stopPropagation()">
+        <!-- Modal Header -->
+        <div class="px-4 py-3 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between bg-gradient-to-r from-blue-50 to-cyan-50 dark:from-gray-700 dark:to-gray-700">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 bg-gradient-to-r from-blue-600 to-cyan-600 rounded-lg flex items-center justify-center">
+                    <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                </div>
+                <div>
+                    <h3 class="text-base font-bold text-gray-900 dark:text-white">Tips & Informasi</h3>
+                    <p class="text-xs text-gray-600 dark:text-gray-400">Panduan cepat supervisi</p>
+                </div>
+            </div>
+            <button onclick="closeTipsModal()" class="p-2 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg transition-colors">
+                <svg class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
+        </div>
+
+        <!-- Modal Content -->
+        <div class="p-4 overflow-y-auto max-h-[calc(90vh-60px)]">
+            <div class="space-y-3">
+                <!-- Tip 1: Quick Navigation -->
+                <div class="bg-blue-50 dark:bg-blue-900/30 rounded-xl p-4 border border-blue-100 dark:border-blue-800">
+                    <div class="flex items-start gap-3">
+                        <div class="w-10 h-10 bg-blue-600 dark:bg-blue-500 rounded-lg flex items-center justify-center shrink-0">
+                            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
+                            </svg>
+                        </div>
+                        <div>
+                            <p class="text-sm font-bold text-blue-900 dark:text-blue-300 mb-1">Quick Navigation</p>
+                            <p class="text-sm text-gray-600 dark:text-gray-400">Gunakan tombol "Panduan" untuk melihat langkah lengkap supervisi</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tip 2: Track Progress -->
+                <div class="bg-emerald-50 dark:bg-emerald-900/30 rounded-xl p-4 border border-emerald-100 dark:border-emerald-800">
+                    <div class="flex items-start gap-3">
+                        <div class="w-10 h-10 bg-emerald-600 dark:bg-emerald-500 rounded-lg flex items-center justify-center shrink-0">
+                            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path>
+                            </svg>
+                        </div>
+                        <div>
+                            <p class="text-sm font-bold text-emerald-900 dark:text-emerald-300 mb-1">Lacak Status</p>
+                            <p class="text-sm text-gray-600 dark:text-gray-400">Lihat badge status supervisi: Draft, Disubmit, Direview, atau Selesai</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tip 3: Collaboration -->
+                <div class="bg-purple-50 dark:bg-purple-900/30 rounded-xl p-4 border border-purple-100 dark:border-purple-800">
+                    <div class="flex items-start gap-3">
+                        <div class="w-10 h-10 bg-purple-600 dark:bg-purple-500 rounded-lg flex items-center justify-center shrink-0">
+                            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 14h4a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z"></path>
+                            </svg>
+                        </div>
+                        <div>
+                            <p class="text-sm font-bold text-purple-900 dark:text-purple-300 mb-1">Kolaborasi</p>
+                            <p class="text-sm text-gray-600 dark:text-gray-400">Klik "Komentar" untuk melihat feedback dari Kepala Sekolah</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Close Button -->
+            <button onclick="closeTipsModal()" class="w-full mt-4 px-4 py-3 bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 font-semibold rounded-xl transition-colors">
+                Tutup
+            </button>
         </div>
     </div>
 </div>
@@ -839,12 +905,75 @@
             // Open
             content.style.maxHeight = content.scrollHeight + 'px';
             content.style.opacity = '1';
-            chevron.style.transform = 'rotate(180deg)';
+            if (chevron) chevron.style.transform = 'rotate(180deg)';
         } else {
             // Close
             content.style.maxHeight = '0px';
             content.style.opacity = '0';
-            chevron.style.transform = 'rotate(0deg)';
+            if (chevron) chevron.style.transform = 'rotate(0deg)';
+        }
+    }
+
+    // Toggle Tips from Bottom Navigation
+    // This function is called from the Bantuan menu in the bottom navigation
+    function toggleTipsFromNav() {
+        // Check if mobile view (under md breakpoint = 768px)
+        const isMobile = window.innerWidth < 768;
+        
+        if (isMobile) {
+            // On mobile, open the Tips Modal
+            openTipsModal();
+        } else {
+            // On tablet/desktop, use the accordion
+            const content = document.getElementById('tips-content');
+            
+            if (content) {
+                // Scroll to top smoothly
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                
+                // Wait a bit for scroll then open the accordion
+                setTimeout(() => {
+                    // Open the tips accordion
+                    if (content.style.maxHeight === '0px' || content.style.maxHeight === '') {
+                        content.style.maxHeight = content.scrollHeight + 'px';
+                        content.style.opacity = '1';
+                    }
+                }, 300);
+            }
+        }
+    }
+
+    // Open Tips Modal (for mobile)
+    function openTipsModal() {
+        const modal = document.getElementById('tipsModal');
+        const content = document.getElementById('tipsModalContent');
+        
+        if (modal && content) {
+            modal.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+            
+            // Animate in with scale
+            setTimeout(() => {
+                content.classList.remove('scale-95', 'opacity-0');
+                content.classList.add('scale-100', 'opacity-100');
+            }, 10);
+        }
+    }
+
+    // Close Tips Modal
+    function closeTipsModal() {
+        const modal = document.getElementById('tipsModal');
+        const content = document.getElementById('tipsModalContent');
+        
+        if (modal && content) {
+            // Animate out
+            content.classList.remove('scale-100', 'opacity-100');
+            content.classList.add('scale-95', 'opacity-0');
+            
+            setTimeout(() => {
+                modal.style.display = 'none';
+                document.body.style.overflow = '';
+            }, 300);
         }
     }
 
