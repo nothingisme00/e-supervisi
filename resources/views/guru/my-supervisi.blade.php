@@ -31,6 +31,13 @@
 
                     <!-- RIGHT SECTION: Buttons -->
                     <div class="flex flex-nowrap items-center gap-1 sm:gap-2 md:gap-2.5 lg:gap-2.5 flex-shrink-0">
+                        <!-- Button: Panduan -->
+                        <button onclick="openSupervisiGuideModal()" class="inline-flex items-center justify-center gap-1.5 lg:gap-2 px-3 py-2 sm:px-2.5 sm:py-2 md:px-3 md:py-2.5 lg:px-4 lg:py-2.5 bg-amber-500 hover:bg-amber-600 text-white font-semibold rounded-lg sm:rounded-lg transition-all shadow-md hover:shadow-lg text-xs sm:text-[11px] lg:text-sm whitespace-nowrap">
+                            <svg class="w-4 h-4 sm:w-5 sm:h-5 md:w-5 md:h-5 lg:w-4 lg:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+                            </svg>
+                            <span class="hidden sm:inline">Panduan</span>
+                        </button>
                         <!-- Button: Buat Supervisi Baru -->
                         <button onclick="openSupervisiModal()" class="inline-flex items-center justify-center gap-1.5 lg:gap-2 px-3 py-2 sm:px-2.5 sm:py-2 md:px-3 md:py-2.5 lg:px-4 lg:py-2.5 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white font-semibold rounded-lg sm:rounded-lg transition-all shadow-md hover:shadow-lg text-xs sm:text-[11px] lg:text-sm whitespace-nowrap">
                             <svg class="w-4 h-4 sm:w-5 sm:h-5 md:w-5 md:h-5 lg:w-4 lg:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -239,13 +246,21 @@
                 <h3 class="text-lg sm:text-xl font-bold text-gray-900 dark:text-gray-100 mb-2">Belum Ada Supervisi</h3>
                 <p class="text-sm sm:text-base text-gray-500 dark:text-gray-400 mb-6 max-w-xs">Mulai proses supervisi pembelajaran Anda sekarang</p>
                 
-                <!-- CTA Button -->
-                <button onclick="openSupervisiModal()" class="inline-flex items-center gap-2 px-5 py-2.5 sm:px-6 sm:py-3 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white text-sm sm:text-base font-semibold rounded-lg transition-all">
-                    <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
-                    </svg>
-                    Buat Supervisi Baru
-                </button>
+                <!-- Buttons -->
+                <div class="flex items-center gap-3">
+                    <button onclick="openSupervisiGuideModal()" class="inline-flex items-center gap-2 px-4 py-2.5 sm:px-5 sm:py-3 bg-amber-500 hover:bg-amber-600 text-white text-sm sm:text-base font-semibold rounded-lg transition-all">
+                        <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+                        </svg>
+                        Lihat Panduan
+                    </button>
+                    <button onclick="openSupervisiModal()" class="inline-flex items-center gap-2 px-5 py-2.5 sm:px-6 sm:py-3 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white text-sm sm:text-base font-semibold rounded-lg transition-all">
+                        <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                        </svg>
+                        Buat Supervisi Baru
+                    </button>
+                </div>
             </div>
         @endif
     </div>
@@ -318,6 +333,26 @@
         modal.classList.remove('flex');
     }
 
+    function openSupervisiGuideModal() {
+        const modal = document.getElementById('supervisiGuideModal');
+        const content = document.getElementById('supervisiGuideModalContent');
+        modal.style.display = 'flex';
+        setTimeout(() => {
+            content.classList.remove('scale-95', 'opacity-0');
+            content.classList.add('scale-100', 'opacity-100');
+        }, 10);
+    }
+
+    function closeSupervisiGuideModal() {
+        const modal = document.getElementById('supervisiGuideModal');
+        const content = document.getElementById('supervisiGuideModalContent');
+        content.classList.remove('scale-100', 'opacity-100');
+        content.classList.add('scale-95', 'opacity-0');
+        setTimeout(() => {
+            modal.style.display = 'none';
+        }, 200);
+    }
+
     // Close modal on outside click
     document.getElementById('supervisiModal')?.addEventListener('click', function(e) {
         if (e.target === this) {
@@ -325,4 +360,130 @@
         }
     });
 </script>
+
+<!-- Panduan Modal with Responsive Content -->
+<div id="supervisiGuideModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-[75] items-center justify-center p-4" style="display: none;" onclick="closeSupervisiGuideModal()">
+    <div id="supervisiGuideModalContent" class="bg-white dark:bg-gray-800 rounded-xl shadow-2xl w-full max-w-lg max-h-[80vh] overflow-hidden transform transition-all duration-300 scale-95 opacity-0" onclick="event.stopPropagation()">
+        <!-- Header - Different subtitle for mobile/desktop -->
+        <div class="px-4 py-3 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between bg-gradient-to-r from-amber-50 to-orange-50 dark:from-gray-700 dark:to-gray-700">
+            <div class="flex items-center gap-3">
+                <div class="w-9 h-9 bg-gradient-to-r from-amber-600 to-orange-600 rounded-lg flex items-center justify-center">
+                    <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+                    </svg>
+                </div>
+                <div>
+                    <h3 class="text-sm font-bold text-gray-900 dark:text-white">Panduan Supervisi</h3>
+                    <p class="text-xs text-gray-500 dark:text-gray-400 hidden md:block">Langkah-langkah di Laptop/Desktop</p>
+                    <p class="text-xs text-gray-500 dark:text-gray-400 md:hidden">Langkah-langkah di Mobile</p>
+                </div>
+            </div>
+            <button onclick="closeSupervisiGuideModal()" class="p-1.5 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg transition-colors">
+                <svg class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
+        </div>
+        <div class="p-3 overflow-y-auto max-h-[calc(80vh-60px)]">
+            <!-- DESKTOP CONTENT - Hidden on mobile, shown on md and up -->
+            <div class="hidden md:block space-y-2.5">
+                <!-- LANGKAH 1 -->
+                <div class="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-3 border-l-4 border-blue-500">
+                    <span class="inline-block px-2 py-0.5 bg-blue-600 text-white text-[10px] font-bold rounded-full mb-1">LANGKAH 1</span>
+                    <h4 class="text-sm font-bold text-gray-900 dark:text-white">Akses Supervisi Saya</h4>
+                    <p class="text-xs text-gray-600 dark:text-gray-400 mt-1">Klik menu <strong>"Supervisi Saya"</strong> di sidebar kiri untuk masuk ke halaman ini.</p>
+                </div>
+
+                <!-- LANGKAH 2 -->
+                <div class="bg-emerald-50 dark:bg-emerald-900/20 rounded-lg p-3 border-l-4 border-emerald-500">
+                    <span class="inline-block px-2 py-0.5 bg-emerald-600 text-white text-[10px] font-bold rounded-full mb-1">LANGKAH 2</span>
+                    <h4 class="text-sm font-bold text-gray-900 dark:text-white">Buat Supervisi Baru</h4>
+                    <p class="text-xs text-gray-600 dark:text-gray-400 mt-1">Klik tombol <strong>"Buat Baru"</strong> di pojok kanan atas, lalu klik <strong>"Mulai"</strong>.</p>
+                </div>
+
+                <!-- LANGKAH 3 -->
+                <div class="bg-purple-50 dark:bg-purple-900/20 rounded-lg p-3 border-l-4 border-purple-500">
+                    <div class="flex items-center gap-2 mb-1">
+                        <span class="inline-block px-2 py-0.5 bg-purple-600 text-white text-[10px] font-bold rounded-full">LANGKAH 3</span>
+                        <span class="px-1.5 py-0.5 bg-red-100 dark:bg-red-900/30 text-red-600 text-[10px] font-bold rounded">WAJIB</span>
+                    </div>
+                    <h4 class="text-sm font-bold text-gray-900 dark:text-white">Upload 7 Dokumen</h4>
+                    <p class="text-xs text-gray-600 dark:text-gray-400 mt-1">Upload CP, ATP, Kalender, Prota, Prosem, Modul Ajar, dan Bahan Ajar (PDF/JPG/PNG, max 2MB).</p>
+                </div>
+
+                <!-- LANGKAH 4 -->
+                <div class="bg-green-50 dark:bg-green-900/20 rounded-lg p-3 border-l-4 border-green-500">
+                    <div class="flex items-center gap-2 mb-1">
+                        <span class="inline-block px-2 py-0.5 bg-green-600 text-white text-[10px] font-bold rounded-full">LANGKAH 4</span>
+                        <span class="px-1.5 py-0.5 bg-red-100 dark:bg-red-900/30 text-red-600 text-[10px] font-bold rounded">WAJIB</span>
+                    </div>
+                    <h4 class="text-sm font-bold text-gray-900 dark:text-white">Isi Proses Pembelajaran</h4>
+                    <p class="text-xs text-gray-600 dark:text-gray-400 mt-1">Klik tab <strong>"Proses"</strong>, masukkan link video dan jawab 5 pertanyaan refleksi.</p>
+                </div>
+
+                <!-- LANGKAH 5 -->
+                <div class="bg-amber-50 dark:bg-amber-900/20 rounded-lg p-3 border-l-4 border-amber-500">
+                    <span class="inline-block px-2 py-0.5 bg-amber-600 text-white text-[10px] font-bold rounded-full mb-1">LANGKAH 5</span>
+                    <h4 class="text-sm font-bold text-gray-900 dark:text-white">Submit Supervisi</h4>
+                    <p class="text-xs text-gray-600 dark:text-gray-400 mt-1">Klik tombol <strong>"Submit Supervisi"</strong> untuk mengirim ke Kepala Sekolah untuk direview.</p>
+                </div>
+
+                <!-- LANGKAH 6 -->
+                <div class="bg-indigo-50 dark:bg-indigo-900/20 rounded-lg p-3 border-l-4 border-indigo-500">
+                    <span class="inline-block px-2 py-0.5 bg-indigo-600 text-white text-[10px] font-bold rounded-full mb-1">LANGKAH 6</span>
+                    <h4 class="text-sm font-bold text-gray-900 dark:text-white">Tunggu Review</h4>
+                    <p class="text-xs text-gray-600 dark:text-gray-400 mt-1">Pantau status supervisi di halaman ini. Lihat feedback dari Kepala Sekolah jika ada.</p>
+                </div>
+            </div>
+
+            <!-- MOBILE CONTENT - Shown on mobile, hidden on md and up -->
+            <div class="md:hidden space-y-2.5">
+                <!-- LANGKAH 1 -->
+                <div class="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-3 border-l-4 border-blue-500">
+                    <span class="inline-block px-2 py-0.5 bg-blue-600 text-white text-[10px] font-bold rounded-full mb-1">LANGKAH 1</span>
+                    <h4 class="text-sm font-bold text-gray-900 dark:text-white">Buat Supervisi Baru</h4>
+                    <p class="text-xs text-gray-600 dark:text-gray-400 mt-1">Tap menu <strong>"Home"</strong> di bawah, lalu tap tombol <strong>"Mulai Supervisi"</strong> dan isi tanggal.</p>
+                </div>
+
+                <!-- LANGKAH 2 -->
+                <div class="bg-purple-50 dark:bg-purple-900/20 rounded-lg p-3 border-l-4 border-purple-500">
+                    <div class="flex items-center gap-2 mb-1">
+                        <span class="inline-block px-2 py-0.5 bg-purple-600 text-white text-[10px] font-bold rounded-full">LANGKAH 2</span>
+                        <span class="px-1.5 py-0.5 bg-red-100 dark:bg-red-900/30 text-red-600 text-[10px] font-bold rounded">WAJIB</span>
+                    </div>
+                    <h4 class="text-sm font-bold text-gray-900 dark:text-white">Upload 7 Dokumen</h4>
+                    <p class="text-xs text-gray-600 dark:text-gray-400 mt-1">Tap <strong>"Lanjutkan"</strong> di kartu supervisi, lalu upload dokumen satu per satu.</p>
+                </div>
+
+                <!-- LANGKAH 3 -->
+                <div class="bg-green-50 dark:bg-green-900/20 rounded-lg p-3 border-l-4 border-green-500">
+                    <div class="flex items-center gap-2 mb-1">
+                        <span class="inline-block px-2 py-0.5 bg-green-600 text-white text-[10px] font-bold rounded-full">LANGKAH 3</span>
+                        <span class="px-1.5 py-0.5 bg-red-100 dark:bg-red-900/30 text-red-600 text-[10px] font-bold rounded">WAJIB</span>
+                    </div>
+                    <h4 class="text-sm font-bold text-gray-900 dark:text-white">Isi Proses Pembelajaran</h4>
+                    <p class="text-xs text-gray-600 dark:text-gray-400 mt-1">Tap tab <strong>"Proses"</strong>, masukkan link video dan jawab 5 refleksi.</p>
+                </div>
+
+                <!-- LANGKAH 4 -->
+                <div class="bg-amber-50 dark:bg-amber-900/20 rounded-lg p-3 border-l-4 border-amber-500">
+                    <span class="inline-block px-2 py-0.5 bg-amber-600 text-white text-[10px] font-bold rounded-full mb-1">LANGKAH 4</span>
+                    <h4 class="text-sm font-bold text-gray-900 dark:text-white">Submit Supervisi</h4>
+                    <p class="text-xs text-gray-600 dark:text-gray-400 mt-1">Tap tombol <strong>"Submit"</strong> untuk kirim ke Kepala Sekolah.</p>
+                </div>
+
+                <!-- LANGKAH 5 -->
+                <div class="bg-indigo-50 dark:bg-indigo-900/20 rounded-lg p-3 border-l-4 border-indigo-500">
+                    <span class="inline-block px-2 py-0.5 bg-indigo-600 text-white text-[10px] font-bold rounded-full mb-1">LANGKAH 5</span>
+                    <h4 class="text-sm font-bold text-gray-900 dark:text-white">Tunggu Review</h4>
+                    <p class="text-xs text-gray-600 dark:text-gray-400 mt-1">Cek status di kartu supervisi. Tap <strong>"Komentar"</strong> untuk melihat feedback.</p>
+                </div>
+            </div>
+
+            <button onclick="closeSupervisiGuideModal()" class="w-full mt-3 px-4 py-2.5 bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 font-semibold rounded-xl transition-colors text-sm">
+                Tutup
+            </button>
+        </div>
+    </div>
+</div>
 @endsection

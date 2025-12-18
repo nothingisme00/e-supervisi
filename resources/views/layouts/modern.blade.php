@@ -713,6 +713,263 @@
 
     </div> <!-- Close app-wrapper -->
 
+    @auth
+    @if(Auth::user()->isAdmin() && !request()->routeIs('admin.dashboard'))
+    <!-- Admin Tips Modal (for non-dashboard pages) -->
+    <div id="adminTipsModal" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-[90] hidden items-center justify-center p-4 opacity-0 transition-opacity duration-500" onclick="if(event.target === this) closeAdminTipsModal();">
+        <div id="adminTipsModalContent" class="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl max-w-lg w-full max-h-[90vh] overflow-hidden transform scale-90 opacity-0 transition-all duration-500">
+            <!-- Header -->
+            <div class="bg-blue-600 px-6 py-4">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center">
+                            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-bold text-white">Tips & Informasi</h3>
+                            <p class="text-xs text-white opacity-70">Panduan cepat admin</p>
+                        </div>
+                    </div>
+                    <button onclick="closeAdminTipsModal()" class="w-9 h-9 rounded-lg hover:bg-white/20 flex items-center justify-center text-white transition-colors">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            <!-- Content -->
+            <div class="p-4 overflow-y-auto max-h-[calc(90vh-140px)]">
+                <div class="space-y-3">
+                    <!-- Tip 1: Bottom Navigation -->
+                    <div class="flex gap-3 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-xl border border-blue-200 dark:border-blue-800">
+                        <svg class="w-5 h-5 text-blue-600 dark:text-blue-400 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                        </svg>
+                        <div>
+                            <p class="font-semibold text-sm text-gray-900 dark:text-white mb-1">Navigasi Bawah</p>
+                            <p class="text-xs text-gray-600 dark:text-gray-400">Gunakan menu di bagian bawah layar untuk berpindah antara Dashboard, Users, dan Profil.</p>
+                        </div>
+                    </div>
+
+                    <!-- Tip 2: Dashboard Cards -->
+                    <div class="flex gap-3 p-3 bg-purple-50 dark:bg-purple-900/20 rounded-xl border border-purple-200 dark:border-purple-800">
+                        <svg class="w-5 h-5 text-purple-600 dark:text-purple-400 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                        </svg>
+                        <div>
+                            <p class="font-semibold text-sm text-gray-900 dark:text-white mb-1">Monitoring Supervisi</p>
+                            <p class="text-xs text-gray-600 dark:text-gray-400">Scroll card di Dashboard untuk melihat data Guru, Supervisi Dalam Proses, dan yang Selesai.</p>
+                        </div>
+                    </div>
+
+                    <!-- Tip 3: Add User -->
+                    <div class="flex gap-3 p-3 bg-emerald-50 dark:bg-emerald-900/20 rounded-xl border border-emerald-200 dark:border-emerald-800">
+                        <svg class="w-5 h-5 text-emerald-600 dark:text-emerald-400 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"></path>
+                        </svg>
+                        <div>
+                            <p class="font-semibold text-sm text-gray-900 dark:text-white mb-1">Tambah Pengguna</p>
+                            <p class="text-xs text-gray-600 dark:text-gray-400">Tap menu "Users" di navigasi bawah, lalu gunakan tombol + untuk menambah pengguna baru.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Modal Footer -->
+            <div class="border-t-2 border-gray-300 dark:border-gray-600 px-4 py-3 bg-gray-50 dark:bg-gray-900/50">
+                <button onclick="closeAdminTipsModal()" class="w-full px-5 py-3 bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white font-bold rounded-xl transition-all shadow-md hover:shadow-lg text-sm">
+                    Mengerti
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Guide Modal (for non-dashboard pages) -->
+    <div id="adminGuideModal" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-[90] hidden items-center justify-center p-4 opacity-0 transition-opacity duration-500" onclick="if(event.target === this) closeAdminGuideModal();">
+        <div id="adminGuideModalContent" class="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl max-w-lg w-full max-h-[90vh] overflow-hidden transform scale-90 opacity-0 transition-all duration-500">
+            <!-- Header -->
+            <div class="bg-indigo-600 px-6 py-4">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center">
+                            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-bold text-white">Panduan Admin</h3>
+                            <p class="text-xs text-white opacity-70">Cara menggunakan aplikasi</p>
+                        </div>
+                    </div>
+                    <button onclick="closeAdminGuideModal()" class="w-9 h-9 rounded-lg hover:bg-white/20 flex items-center justify-center text-white transition-colors">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            <!-- Content -->
+            <div class="p-6 overflow-y-auto max-h-[60vh]">
+                <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">Panduan penggunaan aplikasi untuk perangkat mobile.</p>
+                
+                <div class="space-y-3">
+                    <!-- Item 1: Navigasi -->
+                    <div class="p-3 bg-blue-50 dark:bg-blue-900/20 rounded-xl border border-blue-200 dark:border-blue-800">
+                        <div class="flex items-start gap-3">
+                            <div class="w-8 h-8 bg-blue-600 dark:bg-blue-500 rounded-lg flex items-center justify-center flex-shrink-0">
+                                <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-sm text-gray-900 dark:text-white mb-1">Navigasi Bawah</h4>
+                                <p class="text-xs text-gray-600 dark:text-gray-400">Gunakan menu di bagian bawah layar untuk berpindah antara Dashboard, Users, Bantuan, dan Profil.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Item 2: Tambah User -->
+                    <div class="p-3 bg-green-50 dark:bg-green-900/20 rounded-xl border border-green-200 dark:border-green-800">
+                        <div class="flex items-start gap-3">
+                            <div class="w-8 h-8 bg-green-600 dark:bg-green-500 rounded-lg flex items-center justify-center flex-shrink-0">
+                                <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-sm text-gray-900 dark:text-white mb-1">Tambah User Baru</h4>
+                                <p class="text-xs text-gray-600 dark:text-gray-400">Tap menu "Users" di navigasi bawah, lalu gunakan tombol + untuk menambah pengguna baru.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Item 3: Kelola User -->
+                    <div class="p-3 bg-purple-50 dark:bg-purple-900/20 rounded-xl border border-purple-200 dark:border-purple-800">
+                        <div class="flex items-start gap-3">
+                            <div class="w-8 h-8 bg-purple-600 dark:bg-purple-500 rounded-lg flex items-center justify-center flex-shrink-0">
+                                <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-sm text-gray-900 dark:text-white mb-1">Kelola Pengguna</h4>
+                                <p class="text-xs text-gray-600 dark:text-gray-400">Tap user di daftar untuk mengedit data, reset password, atau menghapus akun.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Item 4: Dashboard -->
+                    <div class="p-3 bg-indigo-50 dark:bg-indigo-900/20 rounded-xl border border-indigo-200 dark:border-indigo-800">
+                        <div class="flex items-start gap-3">
+                            <div class="w-8 h-8 bg-indigo-600 dark:bg-indigo-500 rounded-lg flex items-center justify-center flex-shrink-0">
+                                <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-sm text-gray-900 dark:text-white mb-1">Monitor Dashboard</h4>
+                                <p class="text-xs text-gray-600 dark:text-gray-400">Scroll card di Dashboard untuk melihat Data Guru, Supervisi Dalam Proses, dan Supervisi Selesai.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Modal Footer -->
+            <div class="border-t-2 border-gray-300 dark:border-gray-600 px-4 py-3 bg-gray-50 dark:bg-gray-900/50">
+                <button onclick="closeAdminGuideModal()" class="w-full px-5 py-3 bg-indigo-600 hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-600 text-white font-bold rounded-xl transition-all shadow-md hover:shadow-lg text-sm">
+                    Mengerti
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    // Admin Tips Modal Functions
+    function toggleTips() {
+        openAdminTipsModal();
+    }
+    
+    function openAdminTipsModal() {
+        const modal = document.getElementById('adminTipsModal');
+        const content = document.getElementById('adminTipsModalContent');
+        if (modal && content) {
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            setTimeout(() => {
+                modal.classList.remove('opacity-0');
+                modal.classList.add('opacity-100');
+                content.classList.remove('scale-90', 'opacity-0');
+                content.classList.add('scale-100', 'opacity-100');
+            }, 50);
+        }
+    }
+    
+    function closeAdminTipsModal() {
+        const modal = document.getElementById('adminTipsModal');
+        const content = document.getElementById('adminTipsModalContent');
+        if (modal && content) {
+            modal.classList.remove('opacity-100');
+            modal.classList.add('opacity-0');
+            content.classList.remove('scale-100', 'opacity-100');
+            content.classList.add('scale-90', 'opacity-0');
+            setTimeout(() => {
+                modal.classList.remove('flex');
+                modal.classList.add('hidden');
+            }, 300);
+        }
+    }
+    
+    // Admin Guide Modal Functions
+    function openGuideModal() {
+        openAdminGuideModal();
+    }
+    
+    function openAdminGuideModal() {
+        const modal = document.getElementById('adminGuideModal');
+        const content = document.getElementById('adminGuideModalContent');
+        if (modal && content) {
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            setTimeout(() => {
+                modal.classList.remove('opacity-0');
+                modal.classList.add('opacity-100');
+                content.classList.remove('scale-90', 'opacity-0');
+                content.classList.add('scale-100', 'opacity-100');
+            }, 50);
+        }
+    }
+    
+    function closeAdminGuideModal() {
+        const modal = document.getElementById('adminGuideModal');
+        const content = document.getElementById('adminGuideModalContent');
+        if (modal && content) {
+            modal.classList.remove('opacity-100');
+            modal.classList.add('opacity-0');
+            content.classList.remove('scale-100', 'opacity-100');
+            content.classList.add('scale-90', 'opacity-0');
+            setTimeout(() => {
+                modal.classList.remove('flex');
+                modal.classList.add('hidden');
+            }, 300);
+        }
+    }
+    
+    // ESC key handler for admin modals
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            if (document.getElementById('adminTipsModal')?.classList.contains('flex')) {
+                closeAdminTipsModal();
+            }
+            if (document.getElementById('adminGuideModal')?.classList.contains('flex')) {
+                closeAdminGuideModal();
+            }
+        }
+    });
+    </script>
+    @endif
+    @endauth
+
     <!-- TOAST CONTAINER -->
     <div id="toast-container" class="fixed top-24 left-1/2 -translate-x-1/2 z-[60] flex flex-col gap-3 pointer-events-none w-full max-w-2xl px-4"></div>
 
@@ -751,8 +1008,7 @@
     <!-- JS FUNCTIONALITY -->
     <script>
     (function() {
-        // Prevent re-initialization
-        if (window._layoutInitialized) return;
+        // Clear flag to allow fresh initialization on each page load
         window._layoutInitialized = true;
 
         const hamburgerButton = document.getElementById('hamburger-menu');
@@ -1539,7 +1795,7 @@ if (backToTopBtn) {
 <!-- Tips Modal (For Guru) -->
 <div id="tipsModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-[75] items-center justify-center p-4" style="display: none;" onclick="closeTipsModal()">
     <div id="tipsModalContent" class="bg-white dark:bg-gray-800 rounded-xl shadow-2xl w-full max-w-md max-h-[85vh] overflow-hidden transform transition-all duration-300 scale-95 opacity-0" onclick="event.stopPropagation()">
-        <!-- Modal Header -->
+        <!-- Modal Header with Subtitle -->
         <div class="px-4 py-3 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between bg-gradient-to-r from-blue-50 to-cyan-50 dark:from-gray-700 dark:to-gray-700">
             <div class="flex items-center gap-3">
                 <div class="w-9 h-9 bg-gradient-to-r from-blue-600 to-cyan-600 rounded-lg flex items-center justify-center">
@@ -1547,7 +1803,10 @@ if (backToTopBtn) {
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                     </svg>
                 </div>
-                <h3 class="text-sm font-bold text-gray-900 dark:text-white">Tips & Informasi</h3>
+                <div>
+                    <h3 class="text-sm font-bold text-gray-900 dark:text-white">Tips & Informasi</h3>
+                    <p class="text-xs text-gray-500 dark:text-gray-400">Panduan cepat supervisi</p>
+                </div>
             </div>
             <button onclick="closeTipsModal()" class="p-1.5 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg transition-colors">
                 <svg class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -1555,10 +1814,11 @@ if (backToTopBtn) {
                 </svg>
             </button>
         </div>
-        <!-- Modal Content -->
-        <div class="p-4 overflow-y-auto max-h-[calc(85vh-60px)]">
+        <!-- Modal Content - Mobile Usage Tips -->
+        <div class="p-4 overflow-y-auto max-h-[calc(85vh-80px)]">
             <div class="space-y-3">
-                <div class="bg-blue-50 dark:bg-blue-900/30 rounded-xl p-4 border border-blue-100 dark:border-blue-800">
+                <!-- Tip 1: Quick Navigation -->
+                <div class="bg-blue-50 dark:bg-blue-900/30 rounded-xl p-4 border-l-4 border-blue-500">
                     <div class="flex items-start gap-3">
                         <div class="w-10 h-10 bg-blue-600 dark:bg-blue-500 rounded-lg flex items-center justify-center shrink-0">
                             <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -1566,12 +1826,13 @@ if (backToTopBtn) {
                             </svg>
                         </div>
                         <div>
-                            <p class="text-sm font-bold text-blue-900 dark:text-blue-300 mb-1">Quick Navigation</p>
-                            <p class="text-sm text-gray-600 dark:text-gray-400">Gunakan tombol "Panduan" untuk melihat langkah lengkap supervisi</p>
+                            <p class="text-sm font-bold text-blue-900 dark:text-blue-300 mb-1">Lihat Panduan</p>
+                            <p class="text-xs text-gray-600 dark:text-gray-400">Tap menu <strong>"Bantuan"</strong> di bawah, lalu pilih <strong>"Panduan"</strong> untuk melihat langkah lengkap supervisi</p>
                         </div>
                     </div>
                 </div>
-                <div class="bg-emerald-50 dark:bg-emerald-900/30 rounded-xl p-4 border border-emerald-100 dark:border-emerald-800">
+                <!-- Tip 2: Lacak Status -->
+                <div class="bg-emerald-50 dark:bg-emerald-900/30 rounded-xl p-4 border-l-4 border-emerald-500">
                     <div class="flex items-start gap-3">
                         <div class="w-10 h-10 bg-emerald-600 dark:bg-emerald-500 rounded-lg flex items-center justify-center shrink-0">
                             <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -1580,11 +1841,12 @@ if (backToTopBtn) {
                         </div>
                         <div>
                             <p class="text-sm font-bold text-emerald-900 dark:text-emerald-300 mb-1">Lacak Status</p>
-                            <p class="text-sm text-gray-600 dark:text-gray-400">Lihat badge status supervisi: Draft, Disubmit, Direview, atau Selesai</p>
+                            <p class="text-xs text-gray-600 dark:text-gray-400">Lihat badge status supervisi: Draft, Disubmit, Direview, atau Selesai</p>
                         </div>
                     </div>
                 </div>
-                <div class="bg-purple-50 dark:bg-purple-900/30 rounded-xl p-4 border border-purple-100 dark:border-purple-800">
+                <!-- Tip 3: Kolaborasi -->
+                <div class="bg-purple-50 dark:bg-purple-900/30 rounded-xl p-4 border-l-4 border-purple-500">
                     <div class="flex items-start gap-3">
                         <div class="w-10 h-10 bg-purple-600 dark:bg-purple-500 rounded-lg flex items-center justify-center shrink-0">
                             <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -1593,7 +1855,7 @@ if (backToTopBtn) {
                         </div>
                         <div>
                             <p class="text-sm font-bold text-purple-900 dark:text-purple-300 mb-1">Kolaborasi</p>
-                            <p class="text-sm text-gray-600 dark:text-gray-400">Klik "Komentar" untuk melihat feedback dari Kepala Sekolah</p>
+                            <p class="text-xs text-gray-600 dark:text-gray-400">Tap accordion <strong>"Komentar"</strong> di kartu supervisi untuk melihat feedback dari Kepala Sekolah</p>
                         </div>
                     </div>
                 </div>
@@ -1604,6 +1866,7 @@ if (backToTopBtn) {
         </div>
     </div>
 </div>
+
 
 <!-- Fitur Penting Modal (For Guru) -->
 <div id="fiturPentingModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-[75] items-center justify-center p-4" style="display: none;" onclick="closeFiturPentingModal()">
@@ -1697,37 +1960,46 @@ if (backToTopBtn) {
             </button>
         </div>
         <div class="p-3 overflow-y-auto max-h-[calc(80vh-60px)]">
-            <div class="space-y-2">
-                <div class="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-3 border border-blue-200 dark:border-blue-800">
+            <div class="space-y-2.5">
+                <!-- LANGKAH 1 -->
+                <div class="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-3 border-l-4 border-blue-500">
                     <span class="inline-block px-2 py-0.5 bg-blue-600 text-white text-[10px] font-bold rounded-full mb-1">LANGKAH 1</span>
                     <h4 class="text-sm font-bold text-gray-900 dark:text-white">Buat Supervisi Baru</h4>
-                    <p class="text-xs text-gray-600 dark:text-gray-400 mt-1">Klik "Mulai Supervisi" dan isi tanggal supervisi.</p>
+                    <p class="text-xs text-gray-600 dark:text-gray-400 mt-1">Tap menu <strong>"Home"</strong>, lalu tap tombol <strong>"Mulai Supervisi"</strong> dan isi tanggal.</p>
                 </div>
-                <div class="bg-purple-50 dark:bg-purple-900/20 rounded-lg p-3 border border-purple-200 dark:border-purple-800">
-                    <div class="flex items-center gap-2">
+
+                <!-- LANGKAH 2 -->
+                <div class="bg-purple-50 dark:bg-purple-900/20 rounded-lg p-3 border-l-4 border-purple-500">
+                    <div class="flex items-center gap-2 mb-1">
                         <span class="inline-block px-2 py-0.5 bg-purple-600 text-white text-[10px] font-bold rounded-full">LANGKAH 2</span>
                         <span class="px-1.5 py-0.5 bg-red-100 dark:bg-red-900/30 text-red-600 text-[10px] font-bold rounded">WAJIB</span>
                     </div>
-                    <h4 class="text-sm font-bold text-gray-900 dark:text-white mt-1">Upload 7 Dokumen</h4>
-                    <p class="text-xs text-gray-600 dark:text-gray-400 mt-1">CP, ATP, Kalender, Prota, Prosem, Modul Ajar, Bahan Ajar.</p>
+                    <h4 class="text-sm font-bold text-gray-900 dark:text-white">Upload 7 Dokumen</h4>
+                    <p class="text-xs text-gray-600 dark:text-gray-400 mt-1">Tap <strong>"Lanjutkan"</strong> di kartu supervisi, lalu upload dokumen satu per satu.</p>
                 </div>
-                <div class="bg-green-50 dark:bg-green-900/20 rounded-lg p-3 border border-green-200 dark:border-green-800">
-                    <div class="flex items-center gap-2">
+
+                <!-- LANGKAH 3 -->
+                <div class="bg-green-50 dark:bg-green-900/20 rounded-lg p-3 border-l-4 border-green-500">
+                    <div class="flex items-center gap-2 mb-1">
                         <span class="inline-block px-2 py-0.5 bg-green-600 text-white text-[10px] font-bold rounded-full">LANGKAH 3</span>
                         <span class="px-1.5 py-0.5 bg-red-100 dark:bg-red-900/30 text-red-600 text-[10px] font-bold rounded">WAJIB</span>
                     </div>
-                    <h4 class="text-sm font-bold text-gray-900 dark:text-white mt-1">Isi Proses Pembelajaran</h4>
-                    <p class="text-xs text-gray-600 dark:text-gray-400 mt-1">Upload video dan jawab 5 pertanyaan refleksi.</p>
+                    <h4 class="text-sm font-bold text-gray-900 dark:text-white">Isi Proses Pembelajaran</h4>
+                    <p class="text-xs text-gray-600 dark:text-gray-400 mt-1">Tap tab <strong>"Proses"</strong>, masukkan link video dan jawab 5 refleksi.</p>
                 </div>
-                <div class="bg-amber-50 dark:bg-amber-900/20 rounded-lg p-3 border border-amber-200 dark:border-amber-800">
+
+                <!-- LANGKAH 4 -->
+                <div class="bg-amber-50 dark:bg-amber-900/20 rounded-lg p-3 border-l-4 border-amber-500">
                     <span class="inline-block px-2 py-0.5 bg-amber-600 text-white text-[10px] font-bold rounded-full mb-1">LANGKAH 4</span>
                     <h4 class="text-sm font-bold text-gray-900 dark:text-white">Submit Supervisi</h4>
-                    <p class="text-xs text-gray-600 dark:text-gray-400 mt-1">Klik "Submit Supervisi" untuk kirim ke Kepala Sekolah.</p>
+                    <p class="text-xs text-gray-600 dark:text-gray-400 mt-1">Tap tombol <strong>"Submit"</strong> untuk kirim ke Kepala Sekolah.</p>
                 </div>
-                <div class="bg-indigo-50 dark:bg-indigo-900/20 rounded-lg p-3 border border-indigo-200 dark:border-indigo-800">
+
+                <!-- LANGKAH 5 -->
+                <div class="bg-indigo-50 dark:bg-indigo-900/20 rounded-lg p-3 border-l-4 border-indigo-500">
                     <span class="inline-block px-2 py-0.5 bg-indigo-600 text-white text-[10px] font-bold rounded-full mb-1">LANGKAH 5</span>
                     <h4 class="text-sm font-bold text-gray-900 dark:text-white">Tunggu Review</h4>
-                    <p class="text-xs text-gray-600 dark:text-gray-400 mt-1">Kepala Sekolah akan mereview dan memberikan feedback.</p>
+                    <p class="text-xs text-gray-600 dark:text-gray-400 mt-1">Cek status di kartu supervisi. Tap <strong>"Komentar"</strong> untuk melihat feedback.</p>
                 </div>
             </div>
             <button onclick="closeGuideModal()" class="w-full mt-3 px-4 py-2.5 bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 font-semibold rounded-xl transition-colors text-sm">

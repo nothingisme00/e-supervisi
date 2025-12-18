@@ -484,8 +484,8 @@
         <!-- Modal Content -->
         <div class="p-4 overflow-y-auto max-h-[calc(90vh-60px)]">
             <div class="space-y-3">
-                <!-- Tip 1: Quick Navigation -->
-                <div class="bg-blue-50 dark:bg-blue-900/30 rounded-xl p-4 border border-blue-100 dark:border-blue-800">
+                <!-- Tip 1: Lihat Panduan -->
+                <div class="bg-blue-50 dark:bg-blue-900/30 rounded-xl p-4 border-l-4 border-blue-500">
                     <div class="flex items-start gap-3">
                         <div class="w-10 h-10 bg-blue-600 dark:bg-blue-500 rounded-lg flex items-center justify-center shrink-0">
                             <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -493,14 +493,14 @@
                             </svg>
                         </div>
                         <div>
-                            <p class="text-sm font-bold text-blue-900 dark:text-blue-300 mb-1">Quick Navigation</p>
-                            <p class="text-sm text-gray-600 dark:text-gray-400">Gunakan tombol "Panduan" untuk melihat langkah lengkap supervisi</p>
+                            <p class="text-sm font-bold text-blue-900 dark:text-blue-300 mb-1">Lihat Panduan</p>
+                            <p class="text-xs text-gray-600 dark:text-gray-400">Tap menu <strong>"Bantuan"</strong> di bawah, lalu pilih <strong>"Panduan"</strong> untuk melihat langkah lengkap supervisi</p>
                         </div>
                     </div>
                 </div>
 
-                <!-- Tip 2: Track Progress -->
-                <div class="bg-emerald-50 dark:bg-emerald-900/30 rounded-xl p-4 border border-emerald-100 dark:border-emerald-800">
+                <!-- Tip 2: Lacak Status -->
+                <div class="bg-emerald-50 dark:bg-emerald-900/30 rounded-xl p-4 border-l-4 border-emerald-500">
                     <div class="flex items-start gap-3">
                         <div class="w-10 h-10 bg-emerald-600 dark:bg-emerald-500 rounded-lg flex items-center justify-center shrink-0">
                             <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -509,13 +509,13 @@
                         </div>
                         <div>
                             <p class="text-sm font-bold text-emerald-900 dark:text-emerald-300 mb-1">Lacak Status</p>
-                            <p class="text-sm text-gray-600 dark:text-gray-400">Lihat badge status supervisi: Draft, Disubmit, Direview, atau Selesai</p>
+                            <p class="text-xs text-gray-600 dark:text-gray-400">Lihat badge status supervisi: Draft, Disubmit, Direview, atau Selesai</p>
                         </div>
                     </div>
                 </div>
 
-                <!-- Tip 3: Collaboration -->
-                <div class="bg-purple-50 dark:bg-purple-900/30 rounded-xl p-4 border border-purple-100 dark:border-purple-800">
+                <!-- Tip 3: Kolaborasi -->
+                <div class="bg-purple-50 dark:bg-purple-900/30 rounded-xl p-4 border-l-4 border-purple-500">
                     <div class="flex items-start gap-3">
                         <div class="w-10 h-10 bg-purple-600 dark:bg-purple-500 rounded-lg flex items-center justify-center shrink-0">
                             <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -524,7 +524,7 @@
                         </div>
                         <div>
                             <p class="text-sm font-bold text-purple-900 dark:text-purple-300 mb-1">Kolaborasi</p>
-                            <p class="text-sm text-gray-600 dark:text-gray-400">Klik "Komentar" untuk melihat feedback dari Kepala Sekolah</p>
+                            <p class="text-xs text-gray-600 dark:text-gray-400">Tap accordion <strong>"Komentar"</strong> di kartu supervisi untuk melihat feedback dari Kepala Sekolah</p>
                         </div>
                     </div>
                 </div>
@@ -622,297 +622,72 @@
 </div>
 
 <!-- Guru Guide Modal -->
-<div id="guideModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-[70] flex items-center justify-center p-4 sm:p-6" style="display: none;" onclick="closeGuideModal()">
-    <div id="guideModalContent" class="bg-white dark:bg-gray-800 rounded-xl sm:rounded-2xl shadow-2xl max-w-lg sm:max-w-4xl w-full max-h-[80vh] sm:max-h-[85vh] overflow-hidden transition-all duration-300 scale-95 opacity-0" onclick="event.stopPropagation()">
+<div id="guideModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-[70] flex items-center justify-center p-4" style="display: none;" onclick="closeGuideModal()">
+    <div id="guideModalContent" class="bg-white dark:bg-gray-800 rounded-xl shadow-2xl max-w-lg w-full max-h-[80vh] overflow-hidden transition-all duration-300 scale-95 opacity-0" onclick="event.stopPropagation()">
         <!-- Modal Header -->
-        <div class="px-3 py-2 sm:px-6 sm:py-4 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between bg-linear-to-r from-indigo-50 to-purple-50 dark:from-gray-700 dark:to-gray-700">
-            <div class="flex items-center gap-2 sm:gap-3">
-                <div class="w-8 h-8 sm:w-10 sm:h-10 bg-indigo-600 dark:bg-indigo-500 rounded-lg flex items-center justify-center">
-                    <svg class="w-4 h-4 sm:w-5 sm:h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div class="px-4 py-3 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between bg-gradient-to-r from-amber-50 to-orange-50 dark:from-gray-700 dark:to-gray-700">
+            <div class="flex items-center gap-3">
+                <div class="w-9 h-9 bg-gradient-to-r from-amber-600 to-orange-600 rounded-lg flex items-center justify-center">
+                    <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
                     </svg>
                 </div>
-                <h3 class="text-sm sm:text-lg font-bold text-gray-900 dark:text-white">Panduan Supervisi</h3>
+                <h3 class="text-sm font-bold text-gray-900 dark:text-white">Panduan Supervisi</h3>
             </div>
-            <button onclick="closeGuideModal()" class="p-1.5 sm:p-2 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg transition-colors">
+            <button onclick="closeGuideModal()" class="p-1.5 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg transition-colors">
                 <svg class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                 </svg>
             </button>
         </div>
 
-        <!-- Modal Content -->
-        <div class="p-3 sm:p-6 overflow-y-auto max-h-[calc(80vh-50px)] sm:max-h-[calc(85vh-80px)]">
-            <!-- Introduction - Hidden on mobile -->
-            <div class="hidden sm:block mb-4 sm:mb-6 p-3 sm:p-4 bg-indigo-50 dark:bg-indigo-900/20 rounded-lg sm:rounded-xl border border-indigo-200 dark:border-indigo-800">
-                <p class="text-xs sm:text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
-                    Dashboard Guru adalah pusat kontrol supervisi pembelajaran Anda. Ikuti langkah-langkah berikut untuk menyelesaikan supervisi.
-                </p>
-            </div>
-
-            <!-- Timeline Journey with connecting lines -->
-            <div class="relative">
-                <!-- Vertical Timeline Line -->
-                <div class="absolute left-[16px] sm:left-[26px] top-8 sm:top-12 bottom-8 sm:bottom-12 w-0.5 bg-gradient-to-b from-blue-400 via-purple-400 via-green-400 via-amber-400 to-indigo-400 dark:from-blue-500 dark:via-purple-500 dark:via-green-500 dark:via-amber-500 dark:to-indigo-500"></div>
-
-                <div class="space-y-3 sm:space-y-6">
-                <!-- Step 1: Buat Supervisi -->
-                <div class="relative group">
-                    <!-- Timeline Dot -->
-                    <div class="absolute left-0 top-3 sm:top-5 w-9 h-9 sm:w-14 sm:h-14 bg-gradient-to-br from-blue-500 to-blue-600 dark:from-blue-400 dark:to-blue-500 rounded-full flex items-center justify-center shadow-lg ring-2 sm:ring-4 ring-white dark:ring-gray-800 group-hover:scale-110 transition-transform z-10">
-                        <svg class="w-4 h-4 sm:w-7 sm:h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
-                        </svg>
-                    </div>
-
-                    <!-- Content Card -->
-                    <div class="ml-12 sm:ml-20 bg-blue-50 dark:bg-blue-900/20 rounded-lg sm:rounded-xl p-3 sm:p-5 border sm:border-2 border-blue-200 dark:border-blue-800 hover:border-blue-400 dark:hover:border-blue-600 hover:shadow-lg transition-all">
-                        <div class="flex items-start justify-between mb-2 sm:mb-3">
-                            <div>
-                                <span class="inline-block px-2 py-0.5 sm:px-2.5 bg-blue-600 dark:bg-blue-500 text-white text-[10px] sm:text-xs font-bold rounded-full mb-1 sm:mb-2">LANGKAH 1</span>
-                                <h4 class="text-sm sm:text-base font-bold text-gray-900 dark:text-white">Buat Supervisi Baru</h4>
-                            </div>
-                        </div>
-                        <p class="text-xs sm:text-sm text-gray-700 dark:text-gray-300 leading-relaxed mb-2 sm:mb-3">Klik tombol <strong>"Mulai Supervisi"</strong> untuk memulai. Isi tanggal supervisi dan catatan awal (opsional).</p>
-                        <div class="flex items-center gap-2 p-2 sm:p-2.5 bg-white/80 dark:bg-gray-800/50 rounded-lg">
-                            <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-blue-600 dark:text-blue-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                            </svg>
-                            <span class="text-[10px] sm:text-xs text-gray-700 dark:text-gray-300 font-medium">Data dapat disimpan sebagai draft kapan saja</span>
-                        </div>
-                    </div>
+        <!-- Modal Content - Simple Card Style -->
+        <div class="p-3 overflow-y-auto max-h-[calc(80vh-60px)]">
+            <div class="space-y-2.5">
+                <!-- LANGKAH 1 -->
+                <div class="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-3 border-l-4 border-blue-500">
+                    <span class="inline-block px-2 py-0.5 bg-blue-600 text-white text-[10px] font-bold rounded-full mb-1">LANGKAH 1</span>
+                    <h4 class="text-sm font-bold text-gray-900 dark:text-white">Buat Supervisi Baru</h4>
+                    <p class="text-xs text-gray-600 dark:text-gray-400 mt-1">Tap menu <strong>"Home"</strong>, lalu tap tombol <strong>"Mulai Supervisi"</strong> dan isi tanggal.</p>
                 </div>
 
-                <!-- Step 2: Upload Dokumen -->
-                <div class="relative group">
-                    <!-- Timeline Dot -->
-                    <div class="absolute left-0 top-3 sm:top-5 w-9 h-9 sm:w-14 sm:h-14 bg-gradient-to-br from-purple-500 to-purple-600 dark:from-purple-400 dark:to-purple-500 rounded-full flex items-center justify-center shadow-lg ring-2 sm:ring-4 ring-white dark:ring-gray-800 group-hover:scale-110 transition-transform z-10">
-                        <svg class="w-4 h-4 sm:w-7 sm:h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/>
-                        </svg>
+                <!-- LANGKAH 2 -->
+                <div class="bg-purple-50 dark:bg-purple-900/20 rounded-lg p-3 border-l-4 border-purple-500">
+                    <div class="flex items-center gap-2 mb-1">
+                        <span class="inline-block px-2 py-0.5 bg-purple-600 text-white text-[10px] font-bold rounded-full">LANGKAH 2</span>
+                        <span class="px-1.5 py-0.5 bg-red-100 dark:bg-red-900/30 text-red-600 text-[10px] font-bold rounded">WAJIB</span>
                     </div>
-
-                    <!-- Content Card -->
-                    <div class="ml-12 sm:ml-20 bg-purple-50 dark:bg-purple-900/20 rounded-lg sm:rounded-xl p-3 sm:p-5 border sm:border-2 border-purple-200 dark:border-purple-800 hover:border-purple-400 dark:hover:border-purple-600 hover:shadow-lg transition-all">
-                        <div class="flex items-start justify-between mb-2 sm:mb-3">
-                            <div>
-                                <span class="inline-block px-2 py-0.5 sm:px-2.5 bg-purple-600 dark:bg-purple-500 text-white text-[10px] sm:text-xs font-bold rounded-full mb-1 sm:mb-2">LANGKAH 2</span>
-                                <h4 class="text-sm sm:text-base font-bold text-gray-900 dark:text-white">Upload Dokumen Evaluasi Diri</h4>
-                            </div>
-                            <span class="px-1.5 sm:px-2 py-0.5 sm:py-1 bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400 text-[10px] sm:text-xs font-bold rounded">WAJIB</span>
-                        </div>
-                        <p class="text-xs sm:text-sm text-gray-700 dark:text-gray-300 leading-relaxed mb-2 sm:mb-3">Upload 7 dokumen: Capaian Pembelajaran, ATP, Kalender, Prota, Prosem, Modul Ajar, dan Bahan Ajar.</p>
-                        <div class="flex flex-wrap gap-1.5 sm:gap-2">
-                            <span class="inline-flex items-center gap-1 px-2 py-1 sm:px-3 sm:py-1.5 bg-white/80 dark:bg-gray-800/50 text-[10px] sm:text-xs font-semibold text-gray-700 dark:text-gray-300 rounded-lg">
-                                📎 Max 2MB
-                            </span>
-                            <span class="inline-flex items-center gap-1 px-2 py-1 sm:px-3 sm:py-1.5 bg-white/80 dark:bg-gray-800/50 text-[10px] sm:text-xs font-semibold text-gray-700 dark:text-gray-300 rounded-lg">
-                                📄 PDF/JPG/PNG
-                            </span>
-                        </div>
-                    </div>
+                    <h4 class="text-sm font-bold text-gray-900 dark:text-white">Upload 7 Dokumen</h4>
+                    <p class="text-xs text-gray-600 dark:text-gray-400 mt-1">Tap <strong>"Lanjutkan"</strong> di kartu supervisi, lalu upload dokumen satu per satu.</p>
                 </div>
 
-                <!-- Step 3: Proses Pembelajaran -->
-                <div class="relative group">
-                    <!-- Timeline Dot -->
-                    <div class="absolute left-0 top-3 sm:top-5 w-9 h-9 sm:w-14 sm:h-14 bg-gradient-to-br from-green-500 to-green-600 dark:from-green-400 dark:to-green-500 rounded-full flex items-center justify-center shadow-lg ring-2 sm:ring-4 ring-white dark:ring-gray-800 group-hover:scale-110 transition-transform z-10">
-                        <svg class="w-4 h-4 sm:w-7 sm:h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/>
-                        </svg>
+                <!-- LANGKAH 3 -->
+                <div class="bg-green-50 dark:bg-green-900/20 rounded-lg p-3 border-l-4 border-green-500">
+                    <div class="flex items-center gap-2 mb-1">
+                        <span class="inline-block px-2 py-0.5 bg-green-600 text-white text-[10px] font-bold rounded-full">LANGKAH 3</span>
+                        <span class="px-1.5 py-0.5 bg-red-100 dark:bg-red-900/30 text-red-600 text-[10px] font-bold rounded">WAJIB</span>
                     </div>
-
-                    <!-- Content Card -->
-                    <div class="ml-12 sm:ml-20 bg-green-50 dark:bg-green-900/20 rounded-lg sm:rounded-xl p-3 sm:p-5 border sm:border-2 border-green-200 dark:border-green-800 hover:border-green-400 dark:hover:border-green-600 hover:shadow-lg transition-all">
-                        <div class="flex items-start justify-between mb-2 sm:mb-3">
-                            <div>
-                                <span class="inline-block px-2 py-0.5 sm:px-2.5 bg-green-600 dark:bg-green-500 text-white text-[10px] sm:text-xs font-bold rounded-full mb-1 sm:mb-2">LANGKAH 3</span>
-                                <h4 class="text-sm sm:text-base font-bold text-gray-900 dark:text-white">Isi Proses Pembelajaran</h4>
-                            </div>
-                            <span class="px-1.5 sm:px-2 py-0.5 sm:py-1 bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400 text-[10px] sm:text-xs font-bold rounded">WAJIB</span>
-                        </div>
-                        <p class="text-xs sm:text-sm text-gray-700 dark:text-gray-300 leading-relaxed mb-2 sm:mb-3">Masukkan <strong>Link Video Pembelajaran</strong> (wajib) dan jawab <strong>5 pertanyaan refleksi</strong>.</p>
-                        <div class="flex items-center gap-2 p-2 sm:p-2.5 bg-white/80 dark:bg-gray-800/50 rounded-lg">
-                            <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-green-600 dark:text-green-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                            </svg>
-                            <span class="text-[10px] sm:text-xs text-gray-700 dark:text-gray-300 font-medium">Auto-save setiap 30 detik</span>
-                        </div>
-                    </div>
+                    <h4 class="text-sm font-bold text-gray-900 dark:text-white">Isi Proses Pembelajaran</h4>
+                    <p class="text-xs text-gray-600 dark:text-gray-400 mt-1">Tap tab <strong>"Proses"</strong>, masukkan link video dan jawab 5 refleksi.</p>
                 </div>
 
-                <!-- Step 4: Submit -->
-                <div class="relative group">
-                    <!-- Timeline Dot -->
-                    <div class="absolute left-0 top-3 sm:top-5 w-9 h-9 sm:w-14 sm:h-14 bg-gradient-to-br from-amber-500 to-amber-600 dark:from-amber-400 dark:to-amber-500 rounded-full flex items-center justify-center shadow-lg ring-2 sm:ring-4 ring-white dark:ring-gray-800 group-hover:scale-110 transition-transform z-10">
-                        <svg class="w-4 h-4 sm:w-7 sm:h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/>
-                        </svg>
-                    </div>
-
-                    <!-- Content Card -->
-                    <div class="ml-12 sm:ml-20 bg-amber-50 dark:bg-amber-900/20 rounded-lg sm:rounded-xl p-3 sm:p-5 border sm:border-2 border-amber-200 dark:border-amber-800 hover:border-amber-400 dark:hover:border-amber-600 hover:shadow-lg transition-all">
-                        <div class="flex items-start justify-between mb-2 sm:mb-3">
-                            <div>
-                                <span class="inline-block px-2 py-0.5 sm:px-2.5 bg-amber-600 dark:bg-amber-500 text-white text-[10px] sm:text-xs font-bold rounded-full mb-1 sm:mb-2">LANGKAH 4</span>
-                                <h4 class="text-sm sm:text-base font-bold text-gray-900 dark:text-white">Submit Supervisi</h4>
-                            </div>
-                        </div>
-                        <p class="text-xs sm:text-sm text-gray-700 dark:text-gray-300 leading-relaxed mb-2 sm:mb-3">Setelah semua lengkap, klik tombol <strong>"Submit Supervisi"</strong> untuk kirim ke Kepala Sekolah.</p>
-                        <div class="flex items-center gap-2 p-2 sm:p-2.5 bg-white/80 dark:bg-gray-800/50 rounded-lg">
-                            <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-amber-600 dark:text-amber-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
-                            </svg>
-                            <span class="text-[10px] sm:text-xs text-gray-700 dark:text-gray-300 font-medium">Data terkunci setelah submit</span>
-                        </div>
-                    </div>
+                <!-- LANGKAH 4 -->
+                <div class="bg-amber-50 dark:bg-amber-900/20 rounded-lg p-3 border-l-4 border-amber-500">
+                    <span class="inline-block px-2 py-0.5 bg-amber-600 text-white text-[10px] font-bold rounded-full mb-1">LANGKAH 4</span>
+                    <h4 class="text-sm font-bold text-gray-900 dark:text-white">Submit Supervisi</h4>
+                    <p class="text-xs text-gray-600 dark:text-gray-400 mt-1">Tap tombol <strong>"Submit"</strong> untuk kirim ke Kepala Sekolah.</p>
                 </div>
 
-                <!-- Step 5: Review & Feedback -->
-                <div class="relative group">
-                    <!-- Timeline Dot -->
-                    <div class="absolute left-0 top-3 sm:top-5 w-9 h-9 sm:w-14 sm:h-14 bg-gradient-to-br from-indigo-500 to-indigo-600 dark:from-indigo-400 dark:to-indigo-500 rounded-full flex items-center justify-center shadow-lg ring-2 sm:ring-4 ring-white dark:ring-gray-800 group-hover:scale-110 transition-transform z-10">
-                        <svg class="w-4 h-4 sm:w-7 sm:h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                        </svg>
-                    </div>
-
-                    <!-- Content Card -->
-                    <div class="ml-12 sm:ml-20 bg-indigo-50 dark:bg-indigo-900/20 rounded-lg sm:rounded-xl p-3 sm:p-5 border sm:border-2 border-indigo-200 dark:border-indigo-800 hover:border-indigo-400 dark:hover:border-indigo-600 hover:shadow-lg transition-all">
-                        <div class="flex items-start justify-between mb-2 sm:mb-3">
-                            <div>
-                                <span class="inline-block px-2 py-0.5 sm:px-2.5 bg-indigo-600 dark:bg-indigo-500 text-white text-[10px] sm:text-xs font-bold rounded-full mb-1 sm:mb-2">LANGKAH 5</span>
-                                <h4 class="text-sm sm:text-base font-bold text-gray-900 dark:text-white">Tunggu Review & Feedback</h4>
-                            </div>
-                        </div>
-                        <p class="text-xs sm:text-sm text-gray-700 dark:text-gray-300 leading-relaxed mb-2 sm:mb-3">Kepala Sekolah akan mereview. Jika perlu perbaikan, status berubah menjadi "Perlu Revisi".</p>
-                        <div class="flex flex-wrap gap-1.5 sm:gap-2">
-                            <span class="inline-flex items-center px-2 py-1 sm:px-3 sm:py-1.5 bg-blue-100 dark:bg-blue-900/40 text-[10px] sm:text-xs font-bold text-blue-700 dark:text-blue-300 rounded-lg">
-                                📋 Direview
-                            </span>
-                            <span class="inline-flex items-center px-2 py-1 sm:px-3 sm:py-1.5 bg-orange-100 dark:bg-orange-900/40 text-[10px] sm:text-xs font-bold text-orange-700 dark:text-orange-300 rounded-lg">
-                                ✏️ Revisi
-                            </span>
-                            <span class="inline-flex items-center px-2 py-1 sm:px-3 sm:py-1.5 bg-green-100 dark:bg-green-900/40 text-[10px] sm:text-xs font-bold text-green-700 dark:text-green-300 rounded-lg">
-                                ✅ Selesai
-                            </span>
-                        </div>
-                    </div>
-                </div>
+                <!-- LANGKAH 5 -->
+                <div class="bg-indigo-50 dark:bg-indigo-900/20 rounded-lg p-3 border-l-4 border-indigo-500">
+                    <span class="inline-block px-2 py-0.5 bg-indigo-600 text-white text-[10px] font-bold rounded-full mb-1">LANGKAH 5</span>
+                    <h4 class="text-sm font-bold text-gray-900 dark:text-white">Tunggu Review</h4>
+                    <p class="text-xs text-gray-600 dark:text-gray-400 mt-1">Cek status di kartu supervisi. Tap <strong>"Komentar"</strong> untuk melihat feedback.</p>
                 </div>
             </div>
-
-            <!-- Separator - Hidden on mobile -->
-            <div class="hidden sm:block my-4 sm:my-8 border-t border-gray-200 dark:border-gray-700"></div>
-
-            <!-- Fitur Penting Heading - Hidden on mobile -->
-            <div class="hidden sm:block mb-3 sm:mb-4">
-                <h4 class="text-sm sm:text-base font-bold text-gray-900 dark:text-white flex items-center gap-2">
-                    <svg class="w-4 h-4 sm:w-5 sm:h-5 text-indigo-600 dark:text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path>
-                    </svg>
-                    Fitur-Fitur Penting
-                </h4>
-                <p class="text-xs sm:text-sm text-gray-600 dark:text-gray-400 mt-1">Klik untuk melihat detail</p>
-            </div>
-
-            <!-- Accordion Container - Hidden on mobile -->
-            <div class="hidden sm:block space-y-2 sm:space-y-3 mb-4 sm:mb-6">
-                <!-- Accordion 1: Kelola Draft & Revisi -->
-                <div class="border border-gray-200 dark:border-gray-700 rounded-xl overflow-hidden">
-                    <button onclick="toggleAccordion('guru-feature-1')" class="w-full flex items-center justify-between p-4 bg-amber-50 dark:bg-amber-900/20 hover:bg-amber-100 dark:hover:bg-amber-900/30 transition-colors">
-                        <div class="flex items-center gap-3">
-                            <div class="w-8 h-8 bg-amber-600 dark:bg-amber-500 rounded-lg flex items-center justify-center flex-shrink-0">
-                                <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-                                </svg>
-                            </div>
-                            <h4 class="font-bold text-gray-900 dark:text-white text-left">Kelola Draft & Revisi</h4>
-                        </div>
-                        <svg id="chevron-guru-feature-1" class="w-5 h-5 text-gray-500 dark:text-gray-400 transform transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                        </svg>
-                    </button>
-                    <div id="guru-feature-1" class="overflow-hidden transition-all duration-300" style="max-height: 0;">
-                        <div class="p-4 bg-white dark:bg-gray-800 border-t border-amber-200 dark:border-amber-800">
-                            <p class="text-sm text-gray-600 dark:text-gray-400 mb-3">Kelola draft supervisi dan lakukan revisi dengan mudah.</p>
-                            <ul class="text-sm text-gray-600 dark:text-gray-400 space-y-2 ml-4 list-disc">
-                                <li><strong>Lanjutkan Draft:</strong> Klik tombol biru "Lanjutkan" untuk melanjutkan supervisi yang disimpan</li>
-                                <li><strong>Revisi Sekarang:</strong> Klik tombol oranye "Revisi Sekarang" jika diminta perbaikan</li>
-                                <li><strong>Hapus Draft:</strong> Gunakan tombol merah "Hapus" untuk menghapus draft</li>
-                                <li><strong>Auto-Save:</strong> Data tersimpan otomatis setiap 30 detik</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Accordion 2: Lihat & Beri Komentar -->
-                <div class="border border-gray-200 dark:border-gray-700 rounded-xl overflow-hidden">
-                    <button onclick="toggleAccordion('guru-feature-2')" class="w-full flex items-center justify-between p-4 bg-purple-50 dark:bg-purple-900/20 hover:bg-purple-100 dark:hover:bg-purple-900/30 transition-colors">
-                        <div class="flex items-center gap-3">
-                            <div class="w-8 h-8 bg-purple-600 dark:bg-purple-500 rounded-lg flex items-center justify-center flex-shrink-0">
-                                <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
-                                </svg>
-                            </div>
-                            <h4 class="font-bold text-gray-900 dark:text-white text-left">Lihat & Beri Komentar</h4>
-                        </div>
-                        <svg id="chevron-guru-feature-2" class="w-5 h-5 text-gray-500 dark:text-gray-400 transform transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                        </svg>
-                    </button>
-                    <div id="guru-feature-2" class="overflow-hidden transition-all duration-300" style="max-height: 0;">
-                        <div class="p-4 bg-white dark:bg-gray-800 border-t border-purple-200 dark:border-purple-800">
-                            <p class="text-sm text-gray-600 dark:text-gray-400 mb-3">Berkolaborasi dengan sesama guru dan baca feedback dari Kepala Sekolah.</p>
-                            <ul class="text-sm text-gray-600 dark:text-gray-400 space-y-2 ml-4 list-disc">
-                                <li><strong>Lihat Supervisi Rekan:</strong> Klik "Lihat" pada supervisi guru lain untuk belajar</li>
-                                <li><strong>Baca Komentar:</strong> Klik accordion "Komentar" untuk melihat feedback</li>
-                                <li><strong>Badge "Kepsek":</strong> Komentar dari Kepala Sekolah ditandai khusus</li>
-                                <li><strong>Counter Komentar:</strong> Angka menunjukkan total komentar pada setiap supervisi</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Accordion 3: Lihat Detail Supervisi -->
-                <div class="border border-gray-200 dark:border-gray-700 rounded-xl overflow-hidden">
-                    <button onclick="toggleAccordion('guru-feature-3')" class="w-full flex items-center justify-between p-4 bg-emerald-50 dark:bg-emerald-900/20 hover:bg-emerald-100 dark:hover:bg-emerald-900/30 transition-colors">
-                        <div class="flex items-center gap-3">
-                            <div class="w-8 h-8 bg-emerald-600 dark:bg-emerald-500 rounded-lg flex items-center justify-center flex-shrink-0">
-                                <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
-                                </svg>
-                            </div>
-                            <h4 class="font-bold text-gray-900 dark:text-white text-left">Lihat Detail Supervisi</h4>
-                        </div>
-                        <svg id="chevron-guru-feature-3" class="w-5 h-5 text-gray-500 dark:text-gray-400 transform transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                        </svg>
-                    </button>
-                    <div id="guru-feature-3" class="overflow-hidden transition-all duration-300" style="max-height: 0;">
-                        <div class="p-4 bg-white dark:bg-gray-800 border-t border-emerald-200 dark:border-emerald-800">
-                            <p class="text-sm text-gray-600 dark:text-gray-400 mb-3">Akses detail supervisi Anda dan supervisi rekan guru.</p>
-                            <ul class="text-sm text-gray-600 dark:text-gray-400 space-y-2 ml-4 list-disc">
-                                <li><strong>Detail Sendiri:</strong> Klik tombol biru "Detail" untuk melihat supervisi lengkap</li>
-                                <li><strong>Supervisi Rekan:</strong> Klik tombol abu "Lihat" pada supervisi guru lain</li>
-                                <li><strong>View Dokumen:</strong> Lihat semua 7 dokumen evaluasi yang diupload</li>
-                                <li><strong>Video & Refleksi:</strong> Akses video pembelajaran dan jawaban refleksi</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Bottom Note - Hidden on mobile -->
-            <div class="hidden sm:block mt-6 pt-5 border-t-2 border-gray-200 dark:border-gray-700">
-                <div class="flex items-center justify-center gap-2 p-4 bg-gradient-to-r from-indigo-50 to-purple-50 dark:from-indigo-900/20 dark:to-purple-900/20 rounded-xl border border-indigo-200 dark:border-indigo-800">
-                    <svg class="w-5 h-5 text-indigo-600 dark:text-indigo-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                    </svg>
-                    <p class="text-sm text-gray-700 dark:text-gray-300"><strong>Tip:</strong> Manfaatkan semua fitur untuk pengalaman supervisi yang optimal dan kolaboratif!</p>
-                </div>
-            </div>
+            <button onclick="closeGuideModal()" class="w-full mt-3 px-4 py-2.5 bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 font-semibold rounded-xl transition-colors text-sm">
+                Tutup
+            </button>
         </div>
     </div>
 </div>
