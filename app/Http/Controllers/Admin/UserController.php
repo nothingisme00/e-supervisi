@@ -200,6 +200,16 @@ class UserController extends Controller
                     ->with('error', 'Anda tidak dapat menghapus akun Anda sendiri');
             }
 
+            // Nullify foreign key references before deleting
+            // This handles the supervisi.reviewed_by constraint
+            \App\Models\Supervisi::where('reviewed_by', $user->id)->update(['reviewed_by' => null]);
+            
+            // Also handle user_id in supervisi (supervisi owned by this user)
+            \App\Models\Supervisi::where('user_id', $user->id)->delete();
+            
+            // Handle feedback created by this user
+            \App\Models\Feedback::where('user_id', $user->id)->delete();
+
             $user->delete();
 
             return redirect()->route('admin.users.index')

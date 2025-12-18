@@ -54,7 +54,6 @@
                             type="url"
                             name="link_video"
                             id="link_video"
-                            required
                             placeholder="https://youtube.com/... atau https://drive.google.com/..."
                             value="{{ old('link_video', $proses->link_video ?? '') }}"
                             class="w-full pl-11 pr-4 py-3 sm:py-3 text-sm border-2 border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-800 dark:text-white transition-all"
@@ -128,7 +127,6 @@
                             name="{{ $field }}"
                             id="{{ $field }}"
                             rows="4"
-                            required
                             maxlength="500"
                             placeholder="Tulis jawaban Anda di sini (minimal 10 karakter)..."
                             class="w-full px-4 py-3 text-sm border-2 border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-purple-500 dark:bg-gray-800 dark:text-white transition-all resize-none"
@@ -291,6 +289,47 @@
     </div>
 </div>
 
+<!-- Save Options Modal -->
+<div id="saveOptionsModal" class="hidden fixed inset-0 bg-black/50 backdrop-blur-sm z-50 items-center justify-center p-4">
+    <div id="saveOptionsModalContent" class="bg-white dark:bg-gray-800 rounded-xl shadow-2xl max-w-sm w-full transform transition-all duration-200 scale-95 opacity-0">
+        <!-- Content -->
+        <div class="p-6 text-center">
+            <!-- Icon -->
+            <div class="w-14 h-14 rounded-full flex items-center justify-center bg-green-100 dark:bg-green-900/30 mx-auto mb-4">
+                <svg class="w-7 h-7 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                </svg>
+            </div>
+
+            <!-- Title -->
+            <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3">
+                Data Berhasil Disimpan!
+            </h3>
+
+            <!-- Description -->
+            <p class="text-sm text-gray-600 dark:text-gray-400 mb-6 leading-relaxed">
+                Anda dapat melanjutkan mengisi data atau kembali ke beranda.
+            </p>
+
+            <!-- Buttons -->
+            <div class="flex flex-col gap-3">
+                <button onclick="closeSaveOptionsModal(); window.location.href='{{ route('guru.home') }}';" class="w-full px-4 py-2.5 bg-indigo-600 hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-600 text-white font-medium rounded-lg transition-colors flex items-center justify-center gap-2">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
+                    </svg>
+                    Kembali ke Beranda
+                </button>
+                <button onclick="closeSaveOptionsModal()" class="w-full px-4 py-2.5 bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-200 font-medium rounded-lg transition-colors flex items-center justify-center gap-2">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                    </svg>
+                    Lanjut Mengisi
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- Success Toast -->
 <div id="successToast" class="hidden fixed top-4 right-4 z-50 animate-slide-in">
     <div class="bg-gradient-to-r from-green-500 to-emerald-500 text-white px-5 py-3.5 rounded-lg shadow-xl flex items-center gap-3 min-w-[300px]">
@@ -424,7 +463,8 @@ document.getElementById('saveButton').addEventListener('click', async () => {
         console.log('Response data:', result);
 
         if (result.success) {
-            showToast('Data berhasil disimpan!');
+            // Show options modal instead of just toast
+            showSaveOptionsModal();
             console.log('Save successful');
         } else {
             showToast(result.message || 'Gagal menyimpan data', true);
@@ -439,6 +479,34 @@ document.getElementById('saveButton').addEventListener('click', async () => {
         saveButton.innerHTML = originalHTML;
     }
 });
+
+// Show save options modal
+function showSaveOptionsModal() {
+    const modal = document.getElementById('saveOptionsModal');
+    const content = document.getElementById('saveOptionsModalContent');
+    
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
+    
+    setTimeout(() => {
+        content.classList.remove('scale-95', 'opacity-0');
+        content.classList.add('scale-100', 'opacity-100');
+    }, 10);
+}
+
+// Close save options modal
+function closeSaveOptionsModal() {
+    const modal = document.getElementById('saveOptionsModal');
+    const content = document.getElementById('saveOptionsModalContent');
+    
+    content.classList.remove('scale-100', 'opacity-100');
+    content.classList.add('scale-95', 'opacity-0');
+    
+    setTimeout(() => {
+        modal.classList.remove('flex');
+        modal.classList.add('hidden');
+    }, 200);
+}
 
 // Show confirm modal
 function confirmSubmit() {

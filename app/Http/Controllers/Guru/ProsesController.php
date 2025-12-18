@@ -60,14 +60,15 @@ class ProsesController extends Controller
 
     public function save(Request $request, $id)
     {
+        // Validation for partial save - only link_video required, others optional
         $request->validate([
-            'link_video' => 'required|url',
+            'link_video' => 'nullable|url',
             'link_meeting' => 'nullable|url',
-            'refleksi_1' => 'required|string|min:10|max:500',
-            'refleksi_2' => 'required|string|min:10|max:500',
-            'refleksi_3' => 'required|string|min:10|max:500',
-            'refleksi_4' => 'required|string|min:10|max:500',
-            'refleksi_5' => 'required|string|min:10|max:500'
+            'refleksi_1' => 'nullable|string|max:500',
+            'refleksi_2' => 'nullable|string|max:500',
+            'refleksi_3' => 'nullable|string|max:500',
+            'refleksi_4' => 'nullable|string|max:500',
+            'refleksi_5' => 'nullable|string|max:500'
         ]);
 
         Supervisi::where('id', $id)
