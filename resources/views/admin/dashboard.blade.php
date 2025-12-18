@@ -282,12 +282,83 @@
     </div>
 </div>
 
+<!-- Modal Tips & Info (For Mobile) -->
+<div id="tipsModal" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-[90] items-center justify-center p-4 opacity-0 transition-opacity duration-500" style="display: none;" onclick="if(event.target === this) closeTipsModal();">
+    <div id="tipsModalContent" class="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl max-w-lg w-full max-h-[90vh] overflow-hidden transform scale-90 opacity-0 transition-all duration-500">
+
+        <!-- Modal Header -->
+        <div class="bg-blue-600 dark:bg-blue-700 px-5 py-4 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center">
+                    <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                </div>
+                <div>
+                    <h3 class="text-lg font-bold text-white">Tips & Informasi</h3>
+                    <p class="text-xs text-blue-100">Panduan cepat admin</p>
+                </div>
+            </div>
+            <button onclick="closeTipsModal()" class="w-9 h-9 rounded-lg hover:bg-white/20 flex items-center justify-center text-white transition-colors">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
+        </div>
+
+        <!-- Modal Body -->
+        <div class="p-4 overflow-y-auto max-h-[calc(90vh-140px)]">
+            <div class="space-y-3">
+                <!-- Tip 1 -->
+                <div class="flex gap-3 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-xl border border-blue-200 dark:border-blue-800">
+                    <svg class="w-5 h-5 text-blue-600 dark:text-blue-400 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                    </svg>
+                    <div>
+                        <p class="font-semibold text-sm text-gray-900 dark:text-white mb-1">Quick Access</p>
+                        <p class="text-xs text-gray-600 dark:text-gray-400">Gunakan tombol hijau dan biru untuk akses cepat ke fitur utama.</p>
+                    </div>
+                </div>
+
+                <!-- Tip 2 -->
+                <div class="flex gap-3 p-3 bg-purple-50 dark:bg-purple-900/20 rounded-xl border border-purple-200 dark:border-purple-800">
+                    <svg class="w-5 h-5 text-purple-600 dark:text-purple-400 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+                    </svg>
+                    <div>
+                        <p class="font-semibold text-sm text-gray-900 dark:text-white mb-1">Cek Status Real-time</p>
+                        <p class="text-xs text-gray-600 dark:text-gray-400">Dashboard menampilkan data supervisi terkini secara real-time.</p>
+                    </div>
+                </div>
+
+                <!-- Tip 3 -->
+                <div class="flex gap-3 p-3 bg-emerald-50 dark:bg-emerald-900/20 rounded-xl border border-emerald-200 dark:border-emerald-800">
+                    <svg class="w-5 h-5 text-emerald-600 dark:text-emerald-400 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+                    </svg>
+                    <div>
+                        <p class="font-semibold text-sm text-gray-900 dark:text-white mb-1">Baca Panduan</p>
+                        <p class="text-xs text-gray-600 dark:text-gray-400">Klik tombol "Panduan" untuk melihat fitur lengkap aplikasi.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal Footer -->
+        <div class="border-t-2 border-gray-300 dark:border-gray-600 px-4 py-3 bg-gray-50 dark:bg-gray-900/50">
+            <button onclick="closeTipsModal()" class="w-full px-5 py-3 bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white font-bold rounded-xl transition-all shadow-md hover:shadow-lg text-sm">
+                Mengerti
+            </button>
+        </div>
+    </div>
+</div>
+
 <!-- Modal Panduan Admin -->
-<div id="guideModal" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-[90] items-center justify-center p-4 opacity-0 transition-opacity duration-500" style="display: none;">
+<div id="guideModal" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-[90] items-center justify-center p-4 opacity-0 transition-opacity duration-500" style="display: none;" onclick="if(event.target === this) closeGuideModal();">
     <div id="guideModalContent" class="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl max-w-3xl w-full max-h-[90vh] overflow-hidden transform scale-90 opacity-0 transition-all duration-500">
 
         <!-- Modal Header -->
-        <div class="bg-gradient-to-r from-indigo-600 to-purple-600 px-6 py-5 flex items-center justify-between">
+        <div class="bg-indigo-600 dark:bg-indigo-700 px-6 py-5 flex items-center justify-between">
             <div class="flex items-center gap-3">
                 <div class="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center">
                     <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -296,7 +367,7 @@
                 </div>
                 <div>
                     <h3 class="text-xl font-bold text-white">Panduan Admin</h3>
-                    <p class="text-sm text-indigo-100">Cara menggunakan dashboard admin</p>
+                    <p class="text-sm text-indigo-200">Cara menggunakan dashboard admin</p>
                 </div>
             </div>
             <button onclick="closeGuideModal()" class="w-10 h-10 rounded-lg hover:bg-white/20 flex items-center justify-center text-white transition-colors">
@@ -408,7 +479,7 @@
 
         <!-- Modal Footer -->
         <div class="border-t-2 border-gray-300 dark:border-gray-600 px-6 py-4 bg-gray-50 dark:bg-gray-900/50 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)]">
-            <button onclick="closeGuideModal()" class="w-full px-6 py-3.5 bg-gradient-to-r from-indigo-500 to-purple-500 hover:from-indigo-600 hover:to-purple-600 text-white font-bold rounded-xl transition-all shadow-lg hover:shadow-xl text-base">
+            <button onclick="closeGuideModal()" class="w-full px-6 py-3.5 bg-indigo-600 hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-600 text-white font-bold rounded-xl transition-all shadow-md hover:shadow-lg text-base">
                 Mengerti, Tutup Panduan
             </button>
         </div>
@@ -416,8 +487,14 @@
 </div>
 
 <script>
-// Toggle Tips Accordion
+// Toggle Tips Accordion (desktop)
 function toggleTips() {
+    // On mobile, open the modal instead
+    if (window.innerWidth < 768) {
+        openTipsModal();
+        return;
+    }
+    
     const content = document.getElementById('tips-content');
     const chevron = document.getElementById('tips-chevron');
 
@@ -425,28 +502,71 @@ function toggleTips() {
         // Expand
         content.style.maxHeight = content.scrollHeight + 'px';
         content.style.opacity = '1';
-        chevron.style.transform = 'rotate(180deg)';
+        if (chevron) chevron.style.transform = 'rotate(180deg)';
     } else {
         // Collapse
         content.style.maxHeight = '0px';
         content.style.opacity = '0';
-        chevron.style.transform = 'rotate(0deg)';
+        if (chevron) chevron.style.transform = 'rotate(0deg)';
     }
 }
 
-// Toggle Accordion in Modal Panduan
+// Tips Modal Functions (for mobile)
+function openTipsModal() {
+    const modal = document.getElementById('tipsModal');
+    const modalContent = document.getElementById('tipsModalContent');
+
+    modal.style.display = 'flex';
+
+    setTimeout(() => {
+        modal.classList.remove('opacity-0');
+        modal.classList.add('opacity-100');
+
+        modalContent.classList.remove('scale-90', 'opacity-0');
+        modalContent.classList.add('scale-100', 'opacity-100');
+    }, 50);
+}
+
+function closeTipsModal() {
+    const modal = document.getElementById('tipsModal');
+    const modalContent = document.getElementById('tipsModalContent');
+
+    modal.classList.remove('opacity-100');
+    modal.classList.add('opacity-0');
+
+    modalContent.classList.remove('scale-100', 'opacity-100');
+    modalContent.classList.add('scale-90', 'opacity-0');
+
+    setTimeout(() => {
+        modal.style.display = 'none';
+    }, 500);
+}
+
+// Toggle Accordion in Modal Panduan (exclusive - only one open at a time)
 function toggleAccordion(id) {
     const content = document.getElementById(id);
     const chevron = document.getElementById('chevron-' + id);
+    const isOpening = content.style.maxHeight === '0px' || content.style.maxHeight === '';
+    
+    // Close all accordions first
+    const allAccordions = ['admin-feature-1', 'admin-feature-2', 'admin-feature-3'];
+    allAccordions.forEach(function(accId) {
+        const accContent = document.getElementById(accId);
+        const accChevron = document.getElementById('chevron-' + accId);
+        if (accContent && accId !== id) {
+            accContent.style.maxHeight = '0px';
+            if (accChevron) accChevron.style.transform = 'rotate(0deg)';
+        }
+    });
 
-    if (content.style.maxHeight === '0px' || content.style.maxHeight === '') {
-        // Expand
+    if (isOpening) {
+        // Expand the clicked one
         content.style.maxHeight = content.scrollHeight + 'px';
-        chevron.style.transform = 'rotate(180deg)';
+        if (chevron) chevron.style.transform = 'rotate(180deg)';
     } else {
-        // Collapse
+        // Collapse if clicking the same one that's open
         content.style.maxHeight = '0px';
-        chevron.style.transform = 'rotate(0deg)';
+        if (chevron) chevron.style.transform = 'rotate(0deg)';
     }
 }
 
@@ -481,10 +601,22 @@ function closeGuideModal() {
     }, 500);
 }
 
+// Expose functions to window scope for bottom navigation access
+window.toggleTips = toggleTips;
+window.openTipsModal = openTipsModal;
+window.closeTipsModal = closeTipsModal;
+window.openGuideModal = openGuideModal;
+window.closeGuideModal = closeGuideModal;
+
 // Close modal on ESC key
 document.addEventListener('keydown', function(e) {
-    if (e.key === 'Escape' && document.getElementById('guideModal').style.display === 'flex') {
-        closeGuideModal();
+    if (e.key === 'Escape') {
+        if (document.getElementById('guideModal').style.display === 'flex') {
+            closeGuideModal();
+        }
+        if (document.getElementById('tipsModal').style.display === 'flex') {
+            closeTipsModal();
+        }
     }
 });
 </script>
