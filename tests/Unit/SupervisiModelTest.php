@@ -44,6 +44,7 @@ class SupervisiModelTest extends TestCase
         DokumenEvaluasi::create([
             'supervisi_id' => $supervisi->id,
             'jenis_dokumen' => 'rpp',
+            'nama_file' => 'test.pdf',
             'file_path' => 'documents/test.pdf'
         ]);
 
@@ -94,6 +95,7 @@ class SupervisiModelTest extends TestCase
         DokumenEvaluasi::create([
             'supervisi_id' => $supervisi->id,
             'jenis_dokumen' => 'rpp',
+            'nama_file' => 'test.pdf',
             'file_path' => 'documents/test.pdf'
         ]);
 
