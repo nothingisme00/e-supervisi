@@ -43,13 +43,45 @@
         </div>
 
         <!-- Status Filter -->
-        <div class="w-full sm:w-48">
-            <select name="status" class="w-full px-3 sm:px-4 py-2 sm:py-2.5 text-xs sm:text-sm border border-gray-300 dark:border-gray-600 rounded-md sm:rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all">
-                <option value="">Semua Status</option>
-                <option value="submitted" {{ request('status') == 'submitted' ? 'selected' : '' }}>Perlu Review</option>
-                <option value="under_review" {{ request('status') == 'under_review' ? 'selected' : '' }}>Sedang Ditinjau</option>
-                <option value="completed" {{ request('status') == 'completed' ? 'selected' : '' }}>Telah Ditinjau</option>
-            </select>
+        <div class="w-full sm:w-56">
+            <div class="relative custom-dropdown-container" id="status-dropdown-container">
+                <input type="hidden" name="status" id="status" value="{{ request('status') }}">
+                <button type="button" 
+                        class="dropdown-button w-full px-3 sm:px-4 py-2 sm:py-2.5 text-left border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-md sm:rounded-lg text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all flex items-center justify-between">
+                    <span class="dropdown-label flex items-center gap-2 {{ request('status') ? '' : 'text-gray-400 dark:text-gray-500' }}">
+                        @if(request('status') == 'submitted')
+                            Perlu Review
+                        @elseif(request('status') == 'under_review')
+                            Sedang Ditinjau
+                        @elseif(request('status') == 'completed')
+                            Telah Ditinjau
+                        @else
+                            Semua Status
+                        @endif
+                    </span>
+                    <span class="material-symbols-outlined text-gray-400 transition-transform duration-200 dropdown-arrow">expand_more</span>
+                </button>
+                <div class="dropdown-menu-custom absolute top-full mt-1 left-0 w-full bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-xl z-50 hidden opacity-0 transform scale-95 transition-all duration-200 origin-top">
+                    <div class="p-1.5 space-y-1">
+                        <div class="dropdown-item px-4 py-2.5 rounded-md text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-indigo-50 dark:hover:bg-indigo-900/30 hover:text-indigo-600 dark:hover:text-indigo-400 cursor-pointer transition-colors flex items-center gap-3 {{ !request('status') ? 'active' : '' }}" data-value="">
+                            <span class="material-symbols-outlined text-lg">filter_list</span>
+                            Semua Status
+                        </div>
+                        <div class="dropdown-item px-4 py-2.5 rounded-md text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-indigo-50 dark:hover:bg-indigo-900/30 hover:text-indigo-600 dark:hover:text-indigo-400 cursor-pointer transition-colors flex items-center gap-3 {{ request('status') == 'submitted' ? 'active' : '' }}" data-value="submitted">
+                            <span class="material-symbols-outlined text-lg">send</span>
+                            Perlu Review
+                        </div>
+                        <div class="dropdown-item px-4 py-2.5 rounded-md text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-indigo-50 dark:hover:bg-indigo-900/30 hover:text-indigo-600 dark:hover:text-indigo-400 cursor-pointer transition-colors flex items-center gap-3 {{ request('status') == 'under_review' ? 'active' : '' }}" data-value="under_review">
+                            <span class="material-symbols-outlined text-lg">visibility</span>
+                            Sedang Ditinjau
+                        </div>
+                        <div class="dropdown-item px-4 py-2.5 rounded-md text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-indigo-50 dark:hover:bg-indigo-900/30 hover:text-indigo-600 dark:hover:text-indigo-400 cursor-pointer transition-colors flex items-center gap-3 {{ request('status') == 'completed' ? 'active' : '' }}" data-value="completed">
+                            <span class="material-symbols-outlined text-lg">check_circle</span>
+                            Telah Ditinjau
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <!-- Filter Button -->

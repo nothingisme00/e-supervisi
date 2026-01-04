@@ -100,11 +100,11 @@
                             class="dropdown-button w-full px-3 sm:px-4 py-2 sm:py-3 text-left border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-md sm:rounded-lg text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all flex items-center justify-between @error('role') border-red-500 @enderror">
                         <span class="dropdown-label flex items-center gap-2 {{ old('role') ? '' : 'text-gray-400 dark:text-gray-500' }}">
                             @if(old('role') == 'admin')
-                                <span class="material-symbols-outlined text-lg">shield_person</span> Admin
+                                Admin
                             @elseif(old('role') == 'kepala_sekolah')
-                                <span class="material-symbols-outlined text-lg">account_balance</span> Kepala Sekolah
+                                Kepala Sekolah
                             @elseif(old('role') == 'guru')
-                                <span class="material-symbols-outlined text-lg">person</span> Guru
+                                Guru
                             @else
                                 -- Pilih Role --
                             @endif
@@ -144,9 +144,9 @@
                             class="dropdown-button w-full px-3 sm:px-4 py-2 sm:py-3 text-left border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-md sm:rounded-lg text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all flex items-center justify-between @error('tingkat') border-red-500 @enderror">
                         <span class="dropdown-label flex items-center gap-2 {{ old('tingkat') ? '' : 'text-gray-400 dark:text-gray-500' }}">
                             @if(old('tingkat') == 'SD')
-                                <span class="material-symbols-outlined text-lg">school</span> SD
+                                SD
                             @elseif(old('tingkat') == 'SMP')
-                                <span class="material-symbols-outlined text-lg">corporate_fare</span> SMP
+                                SMP
                             @else
                                 -- Pilih Tingkat --
                             @endif

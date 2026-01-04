@@ -118,10 +118,10 @@
             color: white !important;
         }
 
-        #dropdown-menu.show {
-            display: block;
-            opacity: 1;
-            transform: scale(1);
+        .dropdown-menu-custom.show {
+            display: block !important;
+            opacity: 1 !important;
+            transform: scale(1) !important;
         }
         
         select option[disabled] {
@@ -320,18 +320,29 @@
                     e.stopPropagation();
                     const isShowing = dropdownMenu.classList.contains('show');
                     
-                    // Close all other dropdowns if any
-                    dropdownMenu.classList.toggle('show');
-                    dropdownArrow.style.transform = isShowing ? 'rotate(0deg)' : 'rotate(180deg)';
+                    if (isShowing) {
+                        dropdownMenu.classList.remove('show');
+                        dropdownArrow.style.transform = 'rotate(0deg)';
+                    } else {
+                        dropdownMenu.classList.add('show');
+                        dropdownArrow.style.transform = 'rotate(180deg)';
+                    }
                 });
 
                 dropdownItems.forEach(item => {
                     item.addEventListener('click', () => {
                         const value = item.getAttribute('data-value');
-                        const text = item.textContent.trim().replace(/^[a-z_]+\s+/, ''); // Remove icon text
+                        const content = item.innerHTML;
                         
                         roleInput.value = value;
-                        dropdownLabel.textContent = item.innerText.split('\n').pop().trim();
+                        
+                        // Extract text only, excluding material icons to avoid "person Guru" issue
+                        const tempDiv = document.createElement('div');
+                        tempDiv.innerHTML = content;
+                        const icons = tempDiv.querySelectorAll('.material-symbols-outlined');
+                        icons.forEach(icon => icon.remove());
+                        
+                        dropdownLabel.textContent = tempDiv.textContent.trim();
                         dropdownLabel.classList.remove('text-gray-400', 'dark:text-gray-500');
                         
                         dropdownItems.forEach(i => i.classList.remove('active'));
@@ -525,7 +536,7 @@
 
                         <!-- Dropdown Menu -->
                         <div id="dropdown-menu" 
-                             class="absolute top-full mt-2 left-0 w-full bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl shadow-2xl z-50 hidden opacity-0 transform scale-95 transition-all duration-200 origin-top">
+                             class="dropdown-menu-custom absolute top-full mt-2 left-0 w-full bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl shadow-2xl z-50 hidden opacity-0 transform scale-95 transition-all duration-200 origin-top">
                             <div class="p-1.5 space-y-1">
                                 <div class="dropdown-item px-4 py-2.5 rounded-lg text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-indigo-50 dark:hover:bg-indigo-900/30 hover:text-indigo-600 dark:hover:text-indigo-400 cursor-pointer transition-colors flex items-center gap-3" data-value="admin">
                                     <span class="material-symbols-outlined text-lg">shield_person</span>

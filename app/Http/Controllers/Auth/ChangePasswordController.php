@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\CarouselSlide;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules\Password;
@@ -26,9 +27,12 @@ class ChangePasswordController extends Controller
             }
         }
 
+        // Get active carousel slides
+        $carouselSlides = CarouselSlide::active()->ordered()->get();
+
         // Add cache control headers to prevent browser caching
         return response()
-            ->view('auth.change-password')
+            ->view('auth.change-password', compact('carouselSlides'))
             ->header('Cache-Control', 'no-cache, no-store, must-revalidate')
             ->header('Pragma', 'no-cache')
             ->header('Expires', '0');

@@ -96,6 +96,27 @@
         [wire\:navigate] {
             transition: opacity 0.15s ease;
         }
+
+        /* Custom Dropdown Styles */
+        .dropdown-menu-custom {
+            display: none;
+            opacity: 0;
+            transform: scale(0.95);
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .dropdown-menu-custom.show {
+            display: block;
+            opacity: 1;
+            transform: scale(1);
+        }
+        .dropdown-item.active {
+            background-color: rgb(238 242 255);
+            color: rgb(79 70 229);
+        }
+        .dark .dropdown-item.active {
+            background-color: rgba(49, 46, 129, 0.3);
+            color: rgb(129 140 248);
+        }
     </style>
     
     @livewireStyles
@@ -2103,6 +2124,102 @@ function closeGuideModal() {
             document.body.style.overflow = '';
         }, 300);
     }
+}
+
+// Global Custom Dropdown Logic
+document.addEventListener('DOMContentLoaded', function() {
+    initCustomDropdowns();
+});
+
+// Re-init on Livewire navigate or load
+document.addEventListener('livewire:navigated', () => {
+    initCustomDropdowns();
+});
+
+function initCustomDropdowns() {
+    const dropdownContainers = document.querySelectorAll('.custom-dropdown-container');
+    
+    dropdownContainers.forEach(container => {
+        // Skip if already initialized
+        if (container.dataset.initialized) return;
+        container.dataset.initialized = 'true';
+
+        const btn = container.querySelector('.dropdown-button');
+        const menu = container.querySelector('.dropdown-menu-custom');
+        const label = container.querySelector('.dropdown-label');
+        const arrow = container.querySelector('.dropdown-arrow');
+        const input = container.querySelector('input[type="hidden"]');
+        const items = container.querySelectorAll('.dropdown-item');
+
+        if (!btn || !menu) return;
+
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const isShowing = menu.classList.contains('show');
+            
+            // Close all other dropdowns
+            document.querySelectorAll('.dropdown-menu-custom').forEach(m => {
+                if (m !== menu) {
+                    m.classList.remove('show');
+                    const otherArrow = m.closest('.custom-dropdown-container')?.querySelector('.dropdown-arrow');
+                    if (otherArrow) otherArrow.style.transform = 'rotate(0deg)';
+                }
+            });
+
+            menu.classList.toggle('show');
+            if (arrow) arrow.style.transform = isShowing ? 'rotate(0deg)' : 'rotate(180deg)';
+        });
+
+        items.forEach(item => {
+            item.addEventListener('click', () => {
+                const value = item.getAttribute('data-value');
+                const content = item.innerHTML;
+                
+                if (input) {
+                    input.value = value;
+                    // Trigger change event for any listeners
+                    input.dispatchEvent(new Event('change', { bubbles: true }));
+                    // For Livewire
+                    if (input.hasAttribute('wire:model')) {
+                        const model = input.getAttribute('wire:model');
+                        if (window.Livewire) {
+                            const component = window.Livewire.find(input.closest('[wire\\:id]').getAttribute('wire:id'));
+                            if (component) component.set(model, value);
+                        }
+                    }
+                }
+
+                if (label) {
+                    // Extract text only, excluding material icons to avoid "person Guru" issue
+                    const tempDiv = document.createElement('div');
+                    tempDiv.innerHTML = content;
+                    const icons = tempDiv.querySelectorAll('.material-symbols-outlined');
+                    icons.forEach(icon => icon.remove());
+                    
+                    label.innerHTML = tempDiv.textContent.trim();
+                    label.classList.remove('text-gray-400', 'dark:text-gray-500');
+                }
+                
+                // Update active state
+                items.forEach(i => i.classList.remove('active'));
+                item.classList.add('active');
+                
+                menu.classList.remove('show');
+                if (arrow) arrow.style.transform = 'rotate(0deg)';
+            });
+        });
+    });
+
+    // Close dropdowns when clicking outside
+    document.addEventListener('click', (e) => {
+        if (!e.target.closest('.custom-dropdown-container')) {
+            document.querySelectorAll('.dropdown-menu-custom').forEach(m => {
+                m.classList.remove('show');
+                const arrow = m.closest('.custom-dropdown-container')?.querySelector('.dropdown-arrow');
+                if (arrow) arrow.style.transform = 'rotate(0deg)';
+            });
+        }
+    });
 }
 </script>
 @endif
