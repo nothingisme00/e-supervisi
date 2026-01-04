@@ -45,7 +45,7 @@ class SupervisiModelTest extends TestCase
             'supervisi_id' => $supervisi->id,
             'jenis_dokumen' => 'rpp',
             'nama_file' => 'test.pdf',
-            'file_path' => 'documents/test.pdf'
+            'path_file' => 'documents/test.pdf'
         ]);
 
         $this->assertCount(1, $supervisi->dokumenEvaluasi);
@@ -96,7 +96,7 @@ class SupervisiModelTest extends TestCase
             'supervisi_id' => $supervisi->id,
             'jenis_dokumen' => 'rpp',
             'nama_file' => 'test.pdf',
-            'file_path' => 'documents/test.pdf'
+            'path_file' => 'documents/test.pdf'
         ]);
 
         ProsesPembelajaran::create([
