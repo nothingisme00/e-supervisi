@@ -11,6 +11,14 @@ class Supervisi extends Model
 
     protected $table = 'supervisi';
 
+    // Status constants untuk menghindari typo
+    const STATUS_DRAFT = 'draft';
+    const STATUS_SUBMITTED = 'submitted';
+    const STATUS_IN_PROGRESS = 'in_progress';
+    const STATUS_REVIEWED = 'reviewed';
+    const STATUS_COMPLETED = 'completed';
+    const STATUS_REVISION_REQUESTED = 'revision_requested';
+
     protected $fillable = [
         'user_id',
         'status',
@@ -74,5 +82,18 @@ class Supervisi extends Model
     public function feedback()
     {
         return $this->hasMany(Feedback::class);
+    }
+
+    // Helper method untuk list semua status
+    public static function getStatuses()
+    {
+        return [
+            self::STATUS_DRAFT,
+            self::STATUS_SUBMITTED,
+            self::STATUS_IN_PROGRESS,
+            self::STATUS_REVIEWED,
+            self::STATUS_COMPLETED,
+            self::STATUS_REVISION_REQUESTED,
+        ];
     }
 }
