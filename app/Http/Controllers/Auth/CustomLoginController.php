@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\CarouselSlide;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -10,9 +11,12 @@ class CustomLoginController extends Controller
 {
     public function showLoginForm()
     {
+        // Get active carousel slides
+        $carouselSlides = CarouselSlide::active()->ordered()->get();
+        
         // Add cache control headers to prevent browser caching
         return response()
-            ->view('auth.custom-login')
+            ->view('auth.login', compact('carouselSlides'))
             ->header('Cache-Control', 'no-cache, no-store, must-revalidate')
             ->header('Pragma', 'no-cache')
             ->header('Expires', '0');

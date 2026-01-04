@@ -10,6 +10,7 @@ use App\Http\Controllers\Guru\ProsesController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\Admin\SupervisiController as AdminSupervisiController;
+use App\Http\Controllers\Admin\CarouselController;
 use App\Http\Controllers\KepalaSekolah\DashboardController as KepalaDashboardController;
 use App\Http\Controllers\KepalaSekolah\EvaluasiController;
 
@@ -102,6 +103,16 @@ Route::middleware(['auth', 'prevent.back', 'must.change.password'])->group(funct
             Route::post('/{id}/feedback', [AdminSupervisiController::class, 'storeFeedback'])->name('feedback');
             Route::post('/{id}/revision', [AdminSupervisiController::class, 'requestRevision'])->name('revision');
             Route::get('/download/{id}', [AdminSupervisiController::class, 'downloadDocument'])->name('download');
+        });
+
+        // Carousel Management
+        Route::prefix('carousel')->name('carousel.')->group(function () {
+            Route::get('/', [CarouselController::class, 'index'])->name('index');
+            Route::post('/', [CarouselController::class, 'store'])->name('store');
+            Route::put('/{carousel}', [CarouselController::class, 'update'])->name('update');
+            Route::delete('/{carousel}', [CarouselController::class, 'destroy'])->name('destroy');
+            Route::post('/reorder', [CarouselController::class, 'reorder'])->name('reorder');
+            Route::patch('/{carousel}/toggle', [CarouselController::class, 'toggle'])->name('toggle');
         });
     });
 

@@ -1,135 +1,512 @@
-<!doctype html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<!DOCTYPE html>
+<html lang="id">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>{{ __('Login') }} - {{ config('app.name', 'Laravel') }}</title>
+    <title>Login - {{ config('app.name', 'E-Supervisi') }}</title>
     
-    <!-- Fonts -->
-    <link rel="dns-prefetch" href="//fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
+    <!-- User Provided Tailwind CDN and Config -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com" rel="preconnect"/>
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
     
-    <!-- Scripts -->
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
-    <style>
-        html, body { overflow: hidden; height: 100%; }
+    <style type="text/tailwindcss">
+        .carousel-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            border-radius: 0; 
+        }
+        .carousel-slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+            visibility: hidden; /* Added visibility hidden for cleaner fade */
+        }
+        .carousel-slide.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        .carousel-slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+        }
+        .carousel-nav-button {
+            background-color: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(8px);
+            color: white;
+            padding: 0;
+            width: 3.5rem;
+            height: 3.5rem;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            pointer-events: auto;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .carousel-nav-button:hover {
+            background-color: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+            border-color: rgba(255, 255, 255, 0.5);
+        }
+        .carousel-dots {
+            display: flex;
+            gap: 0.5rem;
+            pointer-events: auto;
+            background: rgba(0,0,0,0.25);
+            padding: 0.5rem 0.875rem;
+            border-radius: 99px;
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255,255,255,0.15);
+        }
+        .carousel-dot {
+            width: 0.5rem;
+            height: 0.5rem;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.4);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .carousel-dot:hover {
+            background-color: rgba(255, 255, 255, 0.7);
+            transform: scale(1.2);
+        }
+        .carousel-dot.active {
+            background-color: #ffffff;
+            width: 1.5rem;
+            border-radius: 99px;
+        }
+        .modern-input:focus ~ label,
+        .modern-input:not(:placeholder-shown) ~ label {
+            transform: translateY(-0.7rem) scale(0.85);
+            color: var(--primary-color);
+        }
+        
+        /* Hide default select arrow */
+        select {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            background-image: none;
+        }
+        select::-ms-expand {
+            display: none;
+        }
+        
+        /* Modern Select Dropdown Styling */
+        select option {
+            background-color: white;
+            color: #1e293b;
+            padding: 12px 16px;
+            font-weight: 500;
+        }
+        
+        /* Dark mode select options */
+        @media (prefers-color-scheme: dark) {
+            select option {
+                background-color: #1e293b;
+                color: #f8fafc;
+            }
+        }
+        
+        html.dark select option {
+            background-color: #1e293b;
+            color: #f8fafc;
+        }
+        
+        select option:hover {
+            background-color: #6366f1;
+            color: white;
+        }
+        
+        select option:checked {
+            background-color: #6366f1;
+            color: white;
+            font-weight: 600;
+        }
+        
+        select option[disabled] {
+            color: #94a3b8;
+            font-style: italic;
+        }
     </style>
-</head>
-<body class="bg-gradient-to-br from-gray-900 via-gray-800 to-indigo-900 h-screen overflow-hidden">
-    <div class="h-screen flex flex-col items-center justify-center px-4 sm:px-6 lg:px-8">
-        <div class="max-w-md w-full space-y-3 sm:space-y-6">
-            <!-- Logo/Brand -->
-            <div class="text-center">
-                <h1 class="text-xl sm:text-3xl lg:text-4xl font-bold text-white mb-0.5 sm:mb-2">
-                    {{ config('app.name', 'E-Supervisi') }}
-                </h1>
-                <p class="text-gray-300 text-[10px] sm:text-sm">
-                    Sistem Supervisi Pembelajaran
-                </p>
-            </div>
+
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#6366F1", // Indigo-500 for a fresher look
+                        primaryHover: "#4F46E5", // Indigo-600
+                        "background-light": "#F8FAFC", 
+                        "background-dark": "#0F172A", 
+                        "card-light": "#FFFFFF",
+                        "card-dark": "#1E293B",
+                        "text-primary-light": "#1E293B",
+                        "text-primary-dark": "#F8FAFC",
+                        "text-secondary-light": "#64748B",
+                        "text-secondary-dark": "#94A3B8",
+                        "border-light": "#E2E8F0",
+                        "border-dark": "#334155",
+                    },
+                    fontFamily: {
+                        display: ["Inter", "sans-serif"],
+                        sans: ["Inter", "sans-serif"],
+                    },
+                    borderRadius: {
+                        DEFAULT: "0.5rem",
+                        xl: "1rem",
+                        "2xl": "1.5rem",
+                        "3xl": "2rem",
+                    },
+                    boxShadow: {
+                        'soft': '0 20px 40px -10px rgba(0,0,0,0.08)',
+                        'card': '0 0 0 1px rgba(0,0,0,0.03), 0 1px 2px rgba(0,0,0,0.05), 0 10px 40px -10px rgba(0,0,0,0.05)',
+                        'input-focus': '0 0 0 4px rgba(99, 102, 241, 0.1)',
+                    }
+                },
+            },
+        };
+
+        function toggleTheme() {
+            const html = document.documentElement;
+            const themeText = document.getElementById('theme-text');
+            const themeIcon = document.getElementById('theme-icon');
             
-            <!-- Login Card -->
-            <div class="bg-white shadow-2xl rounded-xl p-4 sm:p-8 space-y-3 sm:space-y-5 animate-fade-in">
-                <div class="text-center">
-                    <h2 class="text-lg sm:text-2xl font-bold text-gray-900">
-                        {{ __('Login') }}
-                    </h2>
-                    <p class="mt-0.5 sm:mt-2 text-[10px] sm:text-sm text-gray-600">
-                        Silakan masuk ke akun Anda
-                    </p>
-                </div>
+            if (html.classList.contains('dark')) {
+                html.classList.remove('dark');
+                localStorage.setItem('theme', 'light');
+                if(themeText) themeText.textContent = 'Light Mode';
+                if(themeIcon) themeIcon.textContent = 'light_mode';
+            } else {
+                html.classList.add('dark');
+                localStorage.setItem('theme', 'dark');
+                if(themeText) themeText.textContent = 'Dark Mode';
+                if(themeIcon) themeIcon.textContent = 'dark_mode';
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // Theme Initialization
+            const themeText = document.getElementById('theme-text');
+            const themeIcon = document.getElementById('theme-icon');
+            
+            if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                document.documentElement.classList.add('dark');
+                if(themeText) themeText.textContent = 'Dark Mode';
+                if(themeIcon) themeIcon.textContent = 'dark_mode';
+            } else {
+                document.documentElement.classList.remove('dark');
+                if(themeText) themeText.textContent = 'Light Mode';
+                if(themeIcon) themeIcon.textContent = 'light_mode';
+            }
+
+            // Carousel Logic
+            const slides = document.querySelectorAll('.carousel-slide');
+            const dotsContainer = document.querySelector('.carousel-dots');
+            let currentSlide = 0;
+            let slideInterval;
+
+            function showSlide(index) {
+                if (slides.length === 0) return;
                 
-                <form method="POST" action="{{ route('login') }}" class="space-y-3 sm:space-y-5">
-                    @csrf
+                slides.forEach((slide, i) => {
+                    slide.classList.remove('active');
+                    if (dotsContainer && dotsContainer.children[i]) {
+                        dotsContainer.children[i].classList.remove('active');
+                    }
+                });
+                
+                slides[index].classList.add('active');
+                if (dotsContainer && dotsContainer.children[index]) {
+                    dotsContainer.children[index].classList.add('active');
+                }
+                currentSlide = index;
+            }
 
-                    <!-- Email Field -->
-                    <div>
-                        <label for="email" class="block text-xs sm:text-sm font-medium text-gray-700 mb-0.5 sm:mb-1">
-                            {{ __('Email Address') }}
-                        </label>
-                        <input id="email"
-                               type="email"
-                               name="email"
-                               value="{{ old('email') }}"
-                               required
-                               autocomplete="email"
-                               autofocus
-                               placeholder="nama@email.com"
-                               pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}"
-                               title="Masukkan alamat email yang valid (contoh: nama@email.com)"
-                               class="appearance-none block w-full px-3 py-2 sm:py-3 border rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-xs sm:text-sm transition-all @error('email') border-red-500 @else border-gray-300 @enderror">
-                        
-                        @error('email')
-                            <p class="mt-2 text-sm text-red-600 flex items-center">
-                                <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
-                                </svg>
-                                {{ $message }}
-                            </p>
-                        @enderror
+            function nextSlide() {
+                if (slides.length === 0) return;
+                let next = (currentSlide + 1) % slides.length;
+                showSlide(next);
+            }
+
+            function prevSlide() {
+                if (slides.length === 0) return;
+                let prev = (currentSlide - 1 + slides.length) % slides.length;
+                showSlide(prev);
+            }
+
+            // Build Dots
+            if (dotsContainer && slides.length > 0 && dotsContainer.children.length === 0) {
+                slides.forEach((_, i) => {
+                    const dot = document.createElement('div');
+                    dot.classList.add('carousel-dot');
+                    dot.addEventListener('click', () => {
+                        showSlide(i);
+                        resetInterval();
+                    });
+                    dotsContainer.appendChild(dot);
+                });
+            }
+
+            if (slides.length > 0) {
+                showSlide(0);
+                startInterval();
+            }
+
+            // Carousel Controls
+            document.getElementById('prevSlide')?.addEventListener('click', () => {
+                prevSlide();
+                resetInterval();
+            });
+            document.getElementById('nextSlide')?.addEventListener('click', () => {
+                nextSlide();
+                resetInterval();
+            });
+
+            function startInterval() {
+                if (slideInterval) clearInterval(slideInterval);
+                slideInterval = setInterval(nextSlide, 5000);
+            }
+
+            function resetInterval() {
+                clearInterval(slideInterval);
+                startInterval();
+            }
+            
+            // Password Toggle
+            const togglePasswordBtn = document.getElementById('toggle-password-btn');
+            const passwordInput = document.getElementById('password');
+            if (togglePasswordBtn && passwordInput) {
+                togglePasswordBtn.addEventListener('click', function() {
+                    const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+                    passwordInput.setAttribute('type', type);
+                    // Optionally change icon if you want, but user design just had one icon which usually toggles
+                    // Let's toggle the icon text content
+                    const iconSpan = this.querySelector('span');
+                    if(iconSpan) {
+                         iconSpan.textContent = type === 'password' ? 'visibility' : 'visibility_off';
+                    }
+                });
+            }
+        });
+    </script>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-sans antialiased h-screen w-full flex overflow-hidden selection:bg-primary selection:text-white">
+
+<main class="hidden md:flex flex-1 relative bg-slate-100 dark:bg-slate-900 overflow-hidden rounded-r-3xl">
+    <!-- Carousel Slides Dynamic -->
+    <div class="carousel-container absolute inset-0">
+        @if(isset($carouselSlides) && $carouselSlides->count() > 0)
+            @foreach($carouselSlides as $index => $slide)
+            <div class="carousel-slide {{ $index === 0 ? 'active' : '' }}">
+                @if($slide->image_path)
+                    <img alt="{{ $slide->title }}" class="transform scale-105" src="{{ $slide->image_url }}"/>
+                @else
+                    <div class="w-full h-full bg-slate-800 flex items-center justify-center">
+                        <span class="material-symbols-outlined text-9xl text-slate-600">image</span>
                     </div>
-
-                    <!-- Password Field -->
-                    <div>
-                        <label for="password" class="block text-xs sm:text-sm font-medium text-gray-700 mb-0.5 sm:mb-1">
-                            {{ __('Password') }}
-                        </label>
-                        <input id="password" 
-                               type="password" 
-                               name="password" 
-                               required 
-                               autocomplete="current-password"
-                               placeholder="••••••••"
-                               class="appearance-none block w-full px-3 py-2 sm:py-3 border rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-xs sm:text-sm transition-all @error('password') border-red-500 @else border-gray-300 @enderror">
-                        
-                        @error('password')
-                            <p class="mt-2 text-sm text-red-600 flex items-center">
-                                <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
-                                </svg>
-                                {{ $message }}
-                            </p>
-                        @enderror
-                    </div>
-
-                    <!-- Remember & Forgot Password -->
-                    <div class="flex items-center justify-between">
-                        <div class="flex items-center">
-                            <input id="remember" 
-                                   name="remember" 
-                                   type="checkbox" 
-                                   {{ old('remember') ? 'checked' : '' }}
-                                   class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded cursor-pointer">
-                            <label for="remember" class="ml-2 block text-xs sm:text-sm text-gray-700 cursor-pointer">
-                                {{ __('Remember Me') }}
-                            </label>
+                @endif
+                
+                <div class="absolute inset-0 bg-gradient-to-r from-background-dark/80 via-transparent to-transparent"></div>
+                <div class="absolute inset-0 bg-gradient-to-t from-background-dark/90 via-background-dark/20 to-transparent"></div>
+                
+                <div class="absolute bottom-0 w-full p-12 lg:p-16 flex items-end justify-between z-10 pointer-events-none">
+                    <div class="space-y-6 max-w-xl">
+                        <div class="inline-flex px-4 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white text-xs font-medium tracking-wide uppercase">
+                            Fitur Unggulan
                         </div>
-
-                        @if (Route::has('password.request'))
-                            <div class="text-xs sm:text-sm">
-                                <a href="{{ route('password.request') }}" class="font-medium text-indigo-600 hover:text-indigo-500 transition-colors">
-                                    {{ __('Forgot Password?') }}
-                                </a>
-                            </div>
+                        <h2 class="text-4xl lg:text-5xl font-bold text-white leading-tight drop-shadow-sm">
+                            {{ $slide->title }} <br/>
+                            <span class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-300 to-white">{{ $slide->subtitle }}</span>
+                        </h2>
+                        @if($slide->description)
+                        <p class="text-gray-300 text-lg max-w-md leading-relaxed">
+                            {{ $slide->description }}
+                        </p>
                         @endif
                     </div>
-
-                    <!-- Submit Button -->
-                    <div>
-                        <button type="submit" 
-                                class="w-full flex justify-center py-2 sm:py-3 px-4 border border-transparent text-xs sm:text-sm font-semibold rounded-lg text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all duration-200 shadow-lg hover:shadow-xl">
-                            {{ __('Login') }}
-                        </button>
-                    </div>
-                </form>
+                </div>
             </div>
+            @endforeach
+            
+            <!-- Dots Container (Center Bottom) -->
+            <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-20">
+                <div class="carousel-dots"></div>
+            </div>
+        @else
+            <!-- Fallback Static Slide (User Design) -->
+            <div class="carousel-slide active">
+                <img alt="Teachers collaborating on E-Supervisi" class="transform scale-105" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAGIzlDZr5Wfd2gYd6cD-0hcujbc1twwDB47vpHpt4n8A7FwHHFcPJKF_o0Ad0VpVYKKpuTFf5ozXdN1eEmuyME3UY40ZKqfHhab5SS5lr_NFrhpqgwcTQ7S_rha-KHxU2ybGQ_Y-Bui4ZLL46RIYhEQbbEVYEJhPmS4twltgQPPV-lV2jApRm7E5tcyDYeWxKLDeyh64ztLYENS8e5pRkMZnK92edrMF_73JW_LLzHo8lg4qVTOPh3SgwW7KiHSUP20dZ6ZTjkkafI"/>
+                <div class="absolute inset-0 bg-gradient-to-r from-background-dark/80 via-transparent to-transparent"></div>
+                <div class="absolute inset-0 bg-gradient-to-t from-background-dark/90 via-background-dark/20 to-transparent"></div>
+                
+                <div class="absolute bottom-0 w-full p-12 lg:p-16 flex items-end justify-between z-10">
+                    <div class="space-y-6 max-w-xl">
+                        <div class="inline-flex px-4 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white text-xs font-medium tracking-wide uppercase">
+                            Fitur Unggulan
+                        </div>
+                        <h2 class="text-4xl lg:text-5xl font-bold text-white leading-tight drop-shadow-sm">
+                            Meningkatkan Kualitas <br/>
+                            <span class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-300 to-white">Pendidikan Digital</span>
+                        </h2>
+                        <p class="text-gray-300 text-lg max-w-md leading-relaxed">
+                            Platform terintegrasi untuk pemantauan, evaluasi, dan pengembangan profesional guru yang lebih efektif.
+                        </p>
+                        <div class="pt-4 carousel-dots"></div>
+                    </div>
+                </div>
+            </div>
+        @endif
+    </div>
 
-            <!-- Footer -->
-            <p class="text-center text-[10px] sm:text-sm text-gray-400">
-                &copy; {{ date('Y') }} {{ config('app.name', 'E-Supervisi') }}. All rights reserved.
+    <!-- Navigation Buttons -->
+    <div class="absolute bottom-12 right-12 flex items-center gap-5 z-20">
+        <button aria-label="Previous Slide" class="carousel-nav-button group" id="prevSlide">
+            <span class="material-symbols-outlined text-3xl group-hover:-translate-x-0.5 transition-transform">arrow_back</span>
+        </button>
+        <button aria-label="Next Slide" class="carousel-nav-button group" id="nextSlide">
+            <span class="material-symbols-outlined text-3xl group-hover:translate-x-0.5 transition-transform">arrow_forward</span>
+        </button>
+    </div>
+</main>
+
+<aside class="w-full md:w-[480px] lg:w-[500px] xl:w-[550px] flex-shrink-0 flex flex-col h-full bg-white dark:bg-card-dark border-l border-border-light dark:border-border-dark shadow-2xl z-20 overflow-y-auto relative transition-colors duration-300 rounded-l-3xl">
+    <div class="flex-1 flex flex-col justify-center px-8 py-10 sm:px-12 lg:px-16 max-w-lg mx-auto w-full">
+        <div class="mb-10 text-center sm:text-left animate-[fadeIn_0.6s_ease-out]">
+            <div class="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-primary to-primaryHover rounded-2xl mb-8 shadow-lg shadow-primary/30 transform hover:scale-105 transition-transform duration-300">
+                <span class="material-symbols-outlined text-4xl text-white">verified_user</span>
+            </div>
+            <h1 class="text-3xl sm:text-4xl font-extrabold text-text-primary-light dark:text-text-primary-dark tracking-tight mb-3">
+                {{ config('app.name', 'E-Supervisi') }}
+            </h1>
+            <p class="text-text-secondary-light dark:text-text-secondary-dark text-base leading-relaxed">
+                Sistem Supervisi Pembelajaran Terpadu.
+                <br class="hidden sm:block"/>
+                <span class="opacity-90">Silakan masuk untuk melanjutkan.</span>
+            </p>
+        </div>
+
+        @if($errors->any())
+        <div class="mb-6 bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 p-4 rounded-xl text-sm font-medium border border-red-100 dark:border-red-800 animate-[slideUp_0.5s_ease-out_both] flex items-center gap-2">
+            <span class="material-symbols-outlined text-lg">error</span>
+            <span>{{ $errors->first() }}</span>
+        </div>
+        @endif
+
+        <div class="bg-white dark:bg-slate-800/50 rounded-3xl p-1 sm:p-0 shadow-none sm:shadow-none animate-[slideUp_0.5s_ease-out_0.1s_both]">
+            <form action="{{ route('login') }}" class="space-y-6" method="POST">
+                @csrf
+                <div class="space-y-2">
+                    <label class="block text-xs font-bold uppercase tracking-wider text-text-secondary-light dark:text-text-secondary-dark ml-1 mb-1" for="nik">
+                        Nomor Induk Kependudukan
+                    </label>
+                    <div class="relative group">
+                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none transition-colors duration-300">
+                            <span class="material-symbols-outlined text-text-secondary-light dark:text-text-secondary-dark text-[22px] group-focus-within:text-primary group-hover:text-primary/70">badge</span>
+                        </div>
+                        <input autocomplete="username" 
+                               class="block w-full pl-12 pr-4 py-4 border border-border-light dark:border-border-dark bg-gray-50/50 dark:bg-slate-900/50 rounded-2xl text-text-primary-light dark:text-text-primary-dark placeholder-gray-400 dark:placeholder-gray-500 focus:ring-4 focus:ring-primary/10 focus:border-primary transition-all duration-300 sm:text-sm font-medium hover:bg-white dark:hover:bg-slate-800" 
+                               id="nik" 
+                               name="nik" 
+                               value="{{ old('nik') }}"
+                               placeholder="Masukkan 16 digit NIK" 
+                               type="text"
+                               required
+                               maxlength="16"
+                               oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 16)"/>
+                    </div>
+                </div>
+                <div class="space-y-2">
+                    <div class="flex justify-between items-center ml-1 mb-1">
+                        <label class="block text-xs font-bold uppercase tracking-wider text-text-secondary-light dark:text-text-secondary-dark" for="password">
+                            Password
+                        </label>
+                        {{-- <a class="text-xs font-semibold text-primary hover:text-primaryHover transition-colors" href="#">Lupa Password?</a> --}}
+                    </div>
+                    <div class="relative group">
+                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none transition-colors duration-300">
+                            <span class="material-symbols-outlined text-text-secondary-light dark:text-text-secondary-dark text-[22px] group-focus-within:text-primary group-hover:text-primary/70">lock</span>
+                        </div>
+                        <input autocomplete="current-password" 
+                               class="block w-full pl-12 pr-12 py-4 border border-border-light dark:border-border-dark bg-gray-50/50 dark:bg-slate-900/50 rounded-2xl text-text-primary-light dark:text-text-primary-dark placeholder-gray-400 dark:placeholder-gray-500 focus:ring-4 focus:ring-primary/10 focus:border-primary transition-all duration-300 sm:text-sm font-medium hover:bg-white dark:hover:bg-slate-800" 
+                               id="password" 
+                               name="password" 
+                               placeholder="Masukkan password" 
+                               type="password"
+                               required/>
+                        <div id="toggle-password-btn" class="absolute inset-y-0 right-0 pr-4 flex items-center cursor-pointer text-text-secondary-light dark:text-text-secondary-dark hover:text-primary transition-colors duration-200">
+                            <span class="material-symbols-outlined text-[22px]">visibility</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="space-y-2">
+                    <label class="block text-xs font-bold uppercase tracking-wider text-text-secondary-light dark:text-text-secondary-dark ml-1 mb-1" for="role">
+                        Peran Pengguna
+                    </label>
+                    <div class="relative group">
+                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none transition-colors duration-300">
+                            <span class="material-symbols-outlined text-text-secondary-light dark:text-text-secondary-dark text-[22px] group-focus-within:text-primary group-hover:text-primary/70">admin_panel_settings</span>
+                        </div>
+                        <select class="block w-full pl-12 pr-10 py-4 border border-border-light dark:border-border-dark bg-gray-50/50 dark:bg-slate-900/50 rounded-2xl text-text-primary-light dark:text-text-primary-dark focus:ring-4 focus:ring-primary/10 focus:border-primary transition-all duration-300 sm:text-sm font-medium appearance-none cursor-pointer hover:bg-white dark:hover:bg-slate-800" 
+                                id="role" 
+                                name="role"
+                                required>
+                            <option disabled {{ old('role') ? '' : 'selected' }} value="">Pilih role Anda</option>
+                            <option value="admin" {{ old('role') == 'admin' ? 'selected' : '' }}>Admin</option>
+                            <option value="kepala_sekolah" {{ old('role') == 'kepala_sekolah' ? 'selected' : '' }}>Kepala Sekolah</option>
+                            <option value="guru" {{ old('role') == 'guru' ? 'selected' : '' }}>Guru</option>
+                        </select>
+                        <div class="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none text-text-secondary-light dark:text-text-secondary-dark">
+                            <span class="material-symbols-outlined text-[22px]">expand_more</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex items-center justify-between pt-2">
+                    <label class="flex items-center cursor-pointer group select-none">
+                        <div class="relative">
+                            <input class="peer sr-only" id="remember-me" name="remember" type="checkbox"/>
+                            <div class="w-5 h-5 border-2 border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-slate-800 peer-checked:bg-primary peer-checked:border-primary transition-all duration-200"></div>
+                            <span class="material-symbols-outlined absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-white text-[14px] opacity-0 peer-checked:opacity-100 transition-opacity duration-200">check</span>
+                        </div>
+                        <span class="ml-3 text-sm font-medium text-text-secondary-light dark:text-text-secondary-dark group-hover:text-primary transition-colors">Ingat saya</span>
+                    </label>
+                </div>
+                <div class="pt-4">
+                    <button class="group w-full flex justify-center items-center py-4 px-6 border border-transparent rounded-2xl shadow-lg shadow-primary/30 text-base font-bold text-white bg-gradient-to-r from-primary to-primaryHover hover:shadow-primary/50 focus:outline-none focus:ring-4 focus:ring-primary/30 transition-all duration-300 transform hover:-translate-y-1 active:scale-[0.98]" type="submit">
+                        Masuk Sekarang
+                        <span class="material-symbols-outlined ml-2 transition-transform duration-300 group-hover:translate-x-1">arrow_forward</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+        <div class="mt-12 pt-6 border-t border-gray-100 dark:border-border-dark flex items-center justify-between animate-[fadeIn_0.6s_ease-out_0.2s_both]">
+            <button class="group flex items-center space-x-2.5 px-4 py-2.5 rounded-xl text-xs font-semibold text-text-secondary-light dark:text-text-secondary-dark bg-gray-50 dark:bg-slate-800/50 hover:bg-primary/10 dark:hover:bg-primary/20 hover:text-primary transition-all duration-300" onclick="toggleTheme()">
+                <span class="material-symbols-outlined text-lg transition-transform duration-500 rotate-0 group-hover:rotate-90" id="theme-icon">light_mode</span>
+                <span id="theme-text">Light Mode</span>
+            </button>
+            <p class="text-xs font-medium text-text-secondary-light dark:text-text-secondary-dark opacity-60">
+                © {{ date('Y') }} {{ config('app.name', 'E-Supervisi') }}
             </p>
         </div>
     </div>
+</aside>
+
+</body>
+
 </body>
 </html>
