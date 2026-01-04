@@ -109,35 +109,19 @@
         }
         
         /* Modern Select Dropdown Styling */
-        select option {
-            background-color: white;
-            color: #1e293b;
-            padding: 12px 16px;
-            font-weight: 500;
-        }
-        
-        /* Dark mode select options */
-        @media (prefers-color-scheme: dark) {
-            select option {
-                background-color: #1e293b;
-                color: #f8fafc;
-            }
-        }
-        
-        html.dark select option {
-            background-color: #1e293b;
-            color: #f8fafc;
-        }
-        
-        select option:hover {
+        .dropdown-item.active {
             background-color: #6366f1;
-            color: white;
+            color: white !important;
         }
         
-        select option:checked {
-            background-color: #6366f1;
-            color: white;
-            font-weight: 600;
+        .dropdown-item.active span {
+            color: white !important;
+        }
+
+        #dropdown-menu.show {
+            display: block;
+            opacity: 1;
+            transform: scale(1);
         }
         
         select option[disabled] {
@@ -316,11 +300,53 @@
                 togglePasswordBtn.addEventListener('click', function() {
                     const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
                     passwordInput.setAttribute('type', type);
-                    // Optionally change icon if you want, but user design just had one icon which usually toggles
-                    // Let's toggle the icon text content
                     const iconSpan = this.querySelector('span');
                     if(iconSpan) {
                          iconSpan.textContent = type === 'password' ? 'visibility' : 'visibility_off';
+                    }
+                });
+            }
+
+            // Custom Dropdown Logic
+            const dropdownBtn = document.getElementById('dropdown-button');
+            const dropdownMenu = document.getElementById('dropdown-menu');
+            const dropdownLabel = document.getElementById('dropdown-label');
+            const dropdownArrow = document.getElementById('dropdown-arrow');
+            const roleInput = document.getElementById('role-input');
+            const dropdownItems = document.querySelectorAll('.dropdown-item');
+
+            if (dropdownBtn && dropdownMenu) {
+                dropdownBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const isShowing = dropdownMenu.classList.contains('show');
+                    
+                    // Close all other dropdowns if any
+                    dropdownMenu.classList.toggle('show');
+                    dropdownArrow.style.transform = isShowing ? 'rotate(0deg)' : 'rotate(180deg)';
+                });
+
+                dropdownItems.forEach(item => {
+                    item.addEventListener('click', () => {
+                        const value = item.getAttribute('data-value');
+                        const text = item.textContent.trim().replace(/^[a-z_]+\s+/, ''); // Remove icon text
+                        
+                        roleInput.value = value;
+                        dropdownLabel.textContent = item.innerText.split('\n').pop().trim();
+                        dropdownLabel.classList.remove('text-gray-400', 'dark:text-gray-500');
+                        
+                        dropdownItems.forEach(i => i.classList.remove('active'));
+                        item.classList.add('active');
+                        
+                        dropdownMenu.classList.remove('show');
+                        dropdownArrow.style.transform = 'rotate(0deg)';
+                    });
+                });
+
+                // Close on click outside
+                document.addEventListener('click', (e) => {
+                    if (!dropdownBtn.contains(e.target) && !dropdownMenu.contains(e.target)) {
+                        dropdownMenu.classList.remove('show');
+                        dropdownArrow.style.transform = 'rotate(0deg)';
                     }
                 });
             }
@@ -407,8 +433,8 @@
     </div>
 </main>
 
-<aside class="w-full md:w-[480px] lg:w-[520px] xl:w-[560px] flex-shrink-0 flex flex-col h-screen bg-white dark:bg-slate-900 border-l border-gray-200 dark:border-slate-800 shadow-2xl z-20 overflow-hidden relative transition-colors duration-300">
-    <div class="h-full flex flex-col justify-center px-6 py-4 sm:px-10 lg:px-12 max-w-md mx-auto w-full overflow-y-auto scrollbar-hide">
+<aside class="w-full md:w-[560px] lg:w-[600px] xl:w-[640px] flex-shrink-0 flex flex-col h-screen bg-white dark:bg-slate-900 border-l border-gray-200 dark:border-slate-800 shadow-2xl z-20 overflow-hidden relative transition-colors duration-300">
+    <div class="h-full flex flex-col justify-center px-6 py-4 sm:px-10 lg:px-14 max-w-lg mx-auto w-full overflow-y-auto scrollbar-hide">
         <div class="mb-6 sm:mb-8 text-center animate-[fadeIn_0.6s_ease-out]">
             <div class="inline-flex items-center justify-center w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br from-indigo-600 to-purple-600 rounded-2xl sm:rounded-3xl mb-4 sm:mb-6 shadow-xl shadow-indigo-500/30 transform hover:scale-105 hover:rotate-3 transition-all duration-300">
                 <span class="material-symbols-outlined text-4xl sm:text-5xl text-white font-light">school</span>
@@ -465,13 +491,13 @@
                             <span class="material-symbols-outlined text-gray-400 dark:text-gray-500 text-xl group-focus-within:text-indigo-600 dark:group-focus-within:text-indigo-400 transition-colors">lock</span>
                         </div>
                         <input autocomplete="current-password" 
-                               class="block w-full pl-12 pr-12 py-3 sm:py-3.5 border border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-800/50 rounded-xl text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:focus:ring-indigo-400 dark:focus:border-indigo-400 transition-all duration-200 text-sm font-medium hover:border-gray-300 dark:hover:border-slate-600" 
+                               class="block w-full pl-12 pr-14 py-3 sm:py-3.5 border border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-800/50 rounded-xl text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:focus:ring-indigo-400 dark:focus:border-indigo-400 transition-all duration-200 text-sm font-medium hover:border-gray-300 dark:hover:border-slate-600" 
                                id="password" 
                                name="password" 
                                placeholder="Password" 
                                type="password"
                                required/>
-                        <div id="toggle-password-btn" class="absolute inset-y-0 right-0 pr-4 flex items-center cursor-pointer text-gray-400 dark:text-gray-500 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
+                        <div id="toggle-password-btn" class="absolute inset-y-0 right-0 pr-5 flex items-center cursor-pointer text-gray-400 dark:text-gray-500 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
                             <span class="material-symbols-outlined text-xl">visibility</span>
                         </div>
                     </div>
@@ -480,21 +506,40 @@
                     <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300" for="role">
                         Role
                     </label>
-                    <div class="relative group">
-                        <div class="absolute inset-y-0 left-0 pl-4 sm:pl-4 flex items-center pointer-events-none">
+                    <div class="relative" id="custom-dropdown">
+                        <input type="hidden" name="role" id="role-input" value="{{ old('role') }}" required>
+                        <div class="absolute inset-y-0 left-0 pl-4 sm:pl-4 flex items-center pointer-events-none z-10">
                             <span class="material-symbols-outlined text-gray-400 dark:text-gray-500 text-xl group-focus-within:text-indigo-600 dark:group-focus-within:text-indigo-400 transition-colors">admin_panel_settings</span>
                         </div>
-                        <select class="block w-full pl-12 pr-10 py-3 sm:py-3.5 border border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-800/50 rounded-xl text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:focus:ring-indigo-400 dark:focus:border-indigo-400 transition-all duration-200 text-sm font-medium appearance-none cursor-pointer hover:border-gray-300 dark:hover:border-slate-600" 
-                                id="role" 
-                                name="role"
-                                required>
-                            <option disabled {{ old('role') ? '' : 'selected' }} value="">Pilih role</option>
-                            <option value="admin" {{ old('role') == 'admin' ? 'selected' : '' }}>Admin</option>
-                            <option value="kepala_sekolah" {{ old('role') == 'kepala_sekolah' ? 'selected' : '' }}>Kepala Sekolah</option>
-                            <option value="guru" {{ old('role') == 'guru' ? 'selected' : '' }}>Guru</option>
-                        </select>
-                        <div class="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none text-gray-400 dark:text-gray-500">
-                            <span class="material-symbols-outlined text-xl">expand_more</span>
+                        
+                        <button type="button" 
+                                id="dropdown-button"
+                                class="relative w-full pl-12 pr-14 py-3 sm:py-3.5 text-left border border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-800/50 rounded-xl text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:focus:ring-indigo-400 dark:focus:border-indigo-400 transition-all duration-200 text-sm font-medium hover:border-gray-300 dark:hover:border-slate-600 cursor-pointer">
+                            <span id="dropdown-label" class="{{ old('role') ? '' : 'text-gray-400 dark:text-gray-500' }}">
+                                {{ old('role') ? ucfirst(str_replace('_', ' ', old('role'))) : 'Pilih role' }}
+                            </span>
+                            <div class="absolute inset-y-0 right-0 pr-5 flex items-center pointer-events-none text-gray-400 dark:text-gray-500">
+                                <span class="material-symbols-outlined text-xl transition-transform duration-200" id="dropdown-arrow">expand_more</span>
+                            </div>
+                        </button>
+
+                        <!-- Dropdown Menu -->
+                        <div id="dropdown-menu" 
+                             class="absolute top-full mt-2 left-0 w-full bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl shadow-2xl z-50 hidden opacity-0 transform scale-95 transition-all duration-200 origin-top">
+                            <div class="p-1.5 space-y-1">
+                                <div class="dropdown-item px-4 py-2.5 rounded-lg text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-indigo-50 dark:hover:bg-indigo-900/30 hover:text-indigo-600 dark:hover:text-indigo-400 cursor-pointer transition-colors flex items-center gap-3" data-value="admin">
+                                    <span class="material-symbols-outlined text-lg">shield_person</span>
+                                    Admin
+                                </div>
+                                <div class="dropdown-item px-4 py-2.5 rounded-lg text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-indigo-50 dark:hover:bg-indigo-900/30 hover:text-indigo-600 dark:hover:text-indigo-400 cursor-pointer transition-colors flex items-center gap-3" data-value="kepala_sekolah">
+                                    <span class="material-symbols-outlined text-lg">account_balance</span>
+                                    Kepala Sekolah
+                                </div>
+                                <div class="dropdown-item px-4 py-2.5 rounded-lg text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-indigo-50 dark:hover:bg-indigo-900/30 hover:text-indigo-600 dark:hover:text-indigo-400 cursor-pointer transition-colors flex items-center gap-3" data-value="guru">
+                                    <span class="material-symbols-outlined text-lg">person</span>
+                                    Guru
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
