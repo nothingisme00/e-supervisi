@@ -195,26 +195,33 @@ php artisan test --filter=UserTest  # Test spesifik
 ## Panduan Livewire
 
 ### Kapan Menggunakan Livewire
+
 Gunakan Livewire untuk fitur-fitur yang memerlukan interaktivitas real-time tanpa reload halaman:
-- **Tabel Data dengan Filter**: Tabel yang bisa difilter, sort, dan search secara real-time
-- **Form dengan Validasi Real-time**: Form yang menampilkan error saat user mengetik
-- **Modal/Dialog Interaktif**: Modal yang bisa dibuka/tutup tanpa reload
-- **Komponen yang Sering Update**: Counter, notifikasi, status yang berubah otomatis
+
+-   **Tabel Data dengan Filter**: Tabel yang bisa difilter, sort, dan search secara real-time
+-   **Form dengan Validasi Real-time**: Form yang menampilkan error saat user mengetik
+-   **Modal/Dialog Interaktif**: Modal yang bisa dibuka/tutup tanpa reload
+-   **Komponen yang Sering Update**: Counter, notifikasi, status yang berubah otomatis
 
 ### Kapan TIDAK Menggunakan Livewire
+
 Gunakan Blade biasa untuk:
-- Form CRUD standar yang tidak perlu validasi real-time
-- Halaman static (dashboard view, detail view)
-- Report/Export yang tidak interaktif
-- Halaman yang jarang di-update user
+
+-   Form CRUD standar yang tidak perlu validasi real-time
+-   Halaman static (dashboard view, detail view)
+-   Report/Export yang tidak interaktif
+-   Halaman yang jarang di-update user
 
 ### Contoh Implementasi
+
 Lihat [app/Livewire/Admin/UserManagement.php](app/Livewire/Admin/UserManagement.php) untuk pattern yang benar.
 
 ## Panduan API Routes
 
 ### Struktur API
+
 API menggunakan `routes/api.php` dengan prefix `/api`:
+
 ```php
 // routes/api.php
 Route::middleware('auth:sanctum')->group(function () {
@@ -229,7 +236,9 @@ Route::middleware('auth:sanctum')->group(function () {
 ```
 
 ### Response Format
+
 Semua API harus return JSON dengan format konsisten:
+
 ```php
 // Success
 return response()->json([
@@ -247,7 +256,9 @@ return response()->json([
 ```
 
 ### Autentikasi API
+
 Gunakan Laravel Sanctum untuk autentikasi API:
+
 ```bash
 php artisan vendor:publish --provider="Laravel\Sanctum\SanctumServiceProvider"
 php artisan migrate
@@ -256,19 +267,23 @@ php artisan migrate
 ## Panduan Queue Jobs
 
 ### Kapan Menggunakan Queue
+
 Gunakan queue untuk operasi yang memakan waktu lama (>3 detik):
-- Mengirim email massal (notifikasi ke banyak user)
-- Generate laporan PDF besar
-- Optimasi/resize gambar batch
-- Export data ke Excel/CSV
-- Sinkronisasi dengan sistem eksternal
+
+-   Mengirim email massal (notifikasi ke banyak user)
+-   Generate laporan PDF besar
+-   Optimasi/resize gambar batch
+-   Export data ke Excel/CSV
+-   Sinkronisasi dengan sistem eksternal
 
 ### Membuat Queue Job
+
 ```bash
 php artisan make:job SendSupervisiNotification
 ```
 
 ### Struktur Job
+
 ```php
 // app/Jobs/SendSupervisiNotification.php
 <?php
@@ -300,6 +315,7 @@ class SendSupervisiNotification implements ShouldQueue
 ```
 
 ### Dispatch Job
+
 ```php
 // Di Controller
 use App\Jobs\SendSupervisiNotification;
@@ -308,6 +324,7 @@ SendSupervisiNotification::dispatch($supervisi);
 ```
 
 ### Menjalankan Queue Worker
+
 ```bash
 php artisan queue:work
 # Atau gunakan 'composer dev' yang sudah include queue:listen
@@ -316,18 +333,21 @@ php artisan queue:work
 ## Panduan Testing
 
 ### Struktur Test
+
 ```bash
 php artisan make:test SupervisiTest        # Feature test
 php artisan make:test SupervisiTest --unit  # Unit test
 ```
 
 ### Test yang Wajib Dibuat
+
 1. **Model Test**: Test relationships, scopes, mutators
 2. **Controller Test**: Test semua endpoint (CRUD)
 3. **Middleware Test**: Test authorization dan authentication
 4. **Validation Test**: Test form validation rules
 
 ### Contoh Feature Test
+
 ```php
 // tests/Feature/SupervisiTest.php
 <?php
@@ -342,33 +362,34 @@ class SupervisiTest extends TestCase
     public function test_guru_can_create_supervisi()
     {
         $guru = User::factory()->create(['role' => 'guru']);
-        
+
         $response = $this->actingAs($guru)
             ->post('/guru/supervisi/store', [
                 'tanggal_supervisi' => now()->addDays(7),
                 'catatan' => 'Test supervisi'
             ]);
-        
+
         $response->assertRedirect();
         $this->assertDatabaseHas('supervisi', [
             'user_id' => $guru->id,
             'status' => 'draft'
         ]);
     }
-    
+
     public function test_admin_cannot_create_supervisi()
     {
         $admin = User::factory()->create(['role' => 'admin']);
-        
+
         $response = $this->actingAs($admin)
             ->get('/guru/supervisi/create');
-        
+
         $response->assertForbidden();
     }
 }
 ```
 
 ### Menjalankan Test
+
 ```bash
 php artisan test                    # Semua test
 php artisan test --filter=Supervisi # Test spesifik
@@ -378,7 +399,9 @@ php artisan test --coverage         # Dengan coverage report
 ## Konstanta Status Workflow
 
 ### Implementasi Konstanta
+
 Tambahkan konstanta di Model Supervisi untuk menghindari typo:
+
 ```php
 // app/Models/Supervisi.php
 class Supervisi extends Model
@@ -390,7 +413,7 @@ class Supervisi extends Model
     const STATUS_REVIEWED = 'reviewed';
     const STATUS_COMPLETED = 'completed';
     const STATUS_REVISION_REQUESTED = 'revision_requested';
-    
+
     // Helper method untuk list semua status
     public static function getStatuses()
     {
@@ -407,6 +430,7 @@ class Supervisi extends Model
 ```
 
 ### Penggunaan di Controller
+
 ```php
 // SALAH - Rawan typo
 $supervisi->status = 'darft'; // Typo tidak ketahuan
@@ -421,6 +445,7 @@ if ($supervisi->status === Supervisi::STATUS_DRAFT) {
 ```
 
 ### Validation Rule
+
 ```php
 // Validasi dengan konstanta
 'status' => ['required', Rule::in(Supervisi::getStatuses())]
