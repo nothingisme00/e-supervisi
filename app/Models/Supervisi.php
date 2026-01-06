@@ -11,19 +11,41 @@ class Supervisi extends Model
 
     protected $table = 'supervisi';
 
+    // Status constants
+    const STATUS_DRAFT = 'draft';
+    const STATUS_SUBMITTED = 'submitted';
+    const STATUS_UNDER_REVIEW = 'under_review';
+    const STATUS_COMPLETED = 'completed';
+    const STATUS_REVISION = 'revision';
+
     protected $fillable = [
         'user_id',
         'status',
         'tanggal_supervisi',
         'catatan',
         'reviewed_by',
-        'reviewed_at'
+        'reviewed_at',
+        'needs_revision',
+        'revision_notes'
     ];
 
     protected $casts = [
         'tanggal_supervisi' => 'date',
-        'reviewed_at' => 'datetime'
+        'reviewed_at' => 'datetime',
+        'needs_revision' => 'boolean'
     ];
+
+    // Helper method untuk list semua status
+    public static function getStatuses()
+    {
+        return [
+            self::STATUS_DRAFT,
+            self::STATUS_SUBMITTED,
+            self::STATUS_UNDER_REVIEW,
+            self::STATUS_COMPLETED,
+            self::STATUS_REVISION,
+        ];
+    }
 
     // Boot method for cascade delete and cache clearing
     protected static function boot()

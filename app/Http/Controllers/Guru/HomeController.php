@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Supervisi;
 use App\Models\Feedback;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
@@ -13,7 +14,7 @@ class HomeController extends Controller
     {
         // Get all supervisi (timeline) excluding drafts - only show submitted/reviewed supervisi
         $supervisiList = Supervisi::with(['user', 'dokumenEvaluasi', 'prosesPembelajaran', 'feedback.user', 'feedback.replies.user'])
-            ->whereNotIn('status', ['draft'])
+            ->whereNotIn('status', [Supervisi::STATUS_DRAFT])
             ->orderBy('created_at', 'desc')
             ->get();
 
@@ -24,7 +25,7 @@ class HomeController extends Controller
     {
         // Get only current user's draft supervisi
         $mySupervisi = Supervisi::with(['dokumenEvaluasi', 'prosesPembelajaran'])
-            ->where('user_id', auth()->id())
+            ->where('user_id', Auth::id())
             ->orderBy('created_at', 'desc')
             ->get();
 
@@ -35,7 +36,7 @@ class HomeController extends Controller
     {
         $supervisi = Supervisi::with(['dokumenEvaluasi', 'prosesPembelajaran', 'feedback.user', 'feedback.replies.user'])
             ->where('id', $id)
-            ->where('user_id', auth()->id())
+            ->where('user_id', Auth::id())
             ->firstOrFail();
 
         return view('guru.supervisi.detail', compact('supervisi'));
@@ -46,7 +47,7 @@ class HomeController extends Controller
         // Get supervisi from other teacher (not own supervisi)
         $supervisi = Supervisi::with(['user', 'dokumenEvaluasi', 'prosesPembelajaran', 'feedback.user', 'feedback.replies.user'])
             ->where('id', $id)
-            ->where('user_id', '!=', auth()->id())
+            ->where('user_id', '!=', Auth::id())
             ->firstOrFail();
 
         return view('guru.supervisi.view', compact('supervisi'));
@@ -64,13 +65,13 @@ class HomeController extends Controller
 
         // Allow comments from supervisi owner or others
         // But only if supervisi is not in draft status
-        if ($supervisi->status === 'draft') {
+        if ($supervisi->status === Supervisi::STATUS_DRAFT) {
             return redirect()->back()->with('error', 'Tidak dapat menambahkan komentar pada supervisi yang masih draft.');
         }
 
         Feedback::create([
             'supervisi_id' => $id,
-            'user_id' => auth()->id(),
+            'user_id' => Auth::id(),
             'parent_id' => $request->parent_id,
             'komentar' => $request->komentar,
             'is_revision_request' => false, // Comments from peers/owners are not revision requests

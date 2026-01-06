@@ -28,15 +28,15 @@ class DashboardController extends Controller
         
         // Kategori Review - Cached
         $supervisiPending = cache()->remember('stats.supervisi_pending', 300, function() {
-            return Supervisi::where('status', 'submitted')->count();
+            return Supervisi::where('status', Supervisi::STATUS_SUBMITTED)->count();
         });
         
         $supervisiInProgress = cache()->remember('stats.supervisi_in_progress', 300, function() {
-            return Supervisi::where('status', 'under_review')->count();
+            return Supervisi::where('status', Supervisi::STATUS_UNDER_REVIEW)->count();
         });
         
         $supervisiReviewed = cache()->remember('stats.supervisi_reviewed', 300, function() {
-            return Supervisi::where('status', 'completed')->count();
+            return Supervisi::where('status', Supervisi::STATUS_COMPLETED)->count();
         });
         
         // Untuk backward compatibility
@@ -49,16 +49,16 @@ class DashboardController extends Controller
             ->withCount([
                 'supervisi as total_supervisi',
                 'supervisi as supervisi_draft' => function($query) {
-                    $query->where('status', 'draft');
+                    $query->where('status', Supervisi::STATUS_DRAFT);
                 },
                 'supervisi as supervisi_submitted' => function($query) {
-                    $query->where('status', 'submitted');
+                    $query->where('status', Supervisi::STATUS_SUBMITTED);
                 },
                 'supervisi as supervisi_under_review' => function($query) {
-                    $query->where('status', 'under_review');
+                    $query->where('status', Supervisi::STATUS_UNDER_REVIEW);
                 },
                 'supervisi as supervisi_completed' => function($query) {
-                    $query->where('status', 'completed');
+                    $query->where('status', Supervisi::STATUS_COMPLETED);
                 }
             ])
             ->with(['supervisi' => function($query) {
@@ -70,14 +70,14 @@ class DashboardController extends Controller
 
         // Supervisi yang sedang direview - Eager Loading with pagination
         $supervisiUnderReviewList = Supervisi::with(['user:id,name,nik', 'reviewer:id,name'])
-            ->whereIn('status', ['submitted', 'under_review'])
+            ->whereIn('status', [Supervisi::STATUS_SUBMITTED, Supervisi::STATUS_UNDER_REVIEW])
             ->orderBy('updated_at', 'desc')
             ->take(10)
             ->get();
 
         // Supervisi yang sudah completed - Eager Loading with pagination
         $supervisiCompletedList = Supervisi::with(['user:id,name,nik', 'reviewer:id,name'])
-            ->where('status', 'completed')
+            ->where('status', Supervisi::STATUS_COMPLETED)
             ->orderBy('reviewed_at', 'desc')
             ->take(10)
             ->get();

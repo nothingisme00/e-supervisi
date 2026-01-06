@@ -10,6 +10,11 @@ class User extends Authenticatable
 {
     use HasFactory, Notifiable;
 
+    // Role constants
+    const ROLE_ADMIN = 'admin';
+    const ROLE_GURU = 'guru';
+    const ROLE_KEPALA_SEKOLAH = 'kepala_sekolah';
+
     protected $fillable = [
         'nik',
         'name',
@@ -68,16 +73,16 @@ class User extends Authenticatable
     // Helper Methods
     public function isAdmin()
     {
-        return $this->role === 'admin';
+        return $this->role === self::ROLE_ADMIN;
     }
 
     public function isGuru()
     {
-        return $this->role === 'guru';
+        return $this->role === self::ROLE_GURU;
     }
 
     public function isKepalaSekolah()
     {
-        return $this->role === 'kepala_sekolah';
+        return $this->role === self::ROLE_KEPALA_SEKOLAH;
     }
 }
