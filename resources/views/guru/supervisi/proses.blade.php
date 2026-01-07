@@ -258,31 +258,31 @@
 
 <!-- Success Modal -->
 <!-- Success Submit Modal -->
-<div id="successModal" class="hidden fixed inset-0 bg-black/50 backdrop-blur-sm z-[70] items-center justify-center p-4">
-    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-2xl max-w-md w-full transform transition-all duration-200 scale-95 opacity-0">
-        <!-- Icon & Content -->
-        <div class="p-6 text-center">
-            <!-- Success Icon -->
-            <div class="w-14 h-14 rounded-full flex items-center justify-center bg-green-100 dark:bg-green-900/30 mx-auto mb-4">
-                <svg class="w-7 h-7 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+<div id="successModal" class="hidden fixed inset-0 bg-black/40 backdrop-blur-sm z-[70] items-center justify-center p-4">
+    <div id="successModalContent" class="bg-white dark:bg-gray-800 rounded-3xl shadow-2xl max-w-sm w-full transform transition-all duration-300 scale-95 opacity-0">
+        <!-- Content -->
+        <div class="p-8 text-center">
+            <!-- Success Icon - Large circle -->
+            <div class="w-20 h-20 rounded-full bg-emerald-100 dark:bg-emerald-900/30 flex items-center justify-center mx-auto mb-5">
+                <svg class="w-10 h-10 text-emerald-500 dark:text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path>
                 </svg>
             </div>
 
             <!-- Title -->
-            <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3">
+            <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">
                 Supervisi Berhasil Disubmit!
             </h3>
 
             <!-- Description -->
-            <p class="text-sm text-gray-600 dark:text-gray-400 mb-6 leading-relaxed">
+            <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed mb-6">
                 Data akan direview oleh Kepala Sekolah. Anda akan diberitahu jika ada revisi.
             </p>
 
             <!-- Button -->
             <button
                 onclick="window.location.href='{{ route('guru.home') }}'"
-                class="w-full px-4 py-2.5 bg-indigo-600 hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-600 text-white font-medium rounded-lg transition-colors">
+                class="w-full px-6 py-3 bg-indigo-500 hover:bg-indigo-600 text-white font-semibold rounded-full transition-all duration-200 hover:shadow-lg">
                 Kembali ke Beranda
             </button>
         </div>
@@ -290,39 +290,33 @@
 </div>
 
 <!-- Save Options Modal -->
-<div id="saveOptionsModal" class="hidden fixed inset-0 bg-black/50 backdrop-blur-sm z-50 items-center justify-center p-4">
-    <div id="saveOptionsModalContent" class="bg-white dark:bg-gray-800 rounded-xl shadow-2xl max-w-sm w-full transform transition-all duration-200 scale-95 opacity-0">
+<div id="saveOptionsModal" class="hidden fixed inset-0 bg-black/40 backdrop-blur-sm z-50 items-center justify-center p-4">
+    <div id="saveOptionsModalContent" class="bg-white dark:bg-gray-800 rounded-3xl shadow-2xl max-w-sm w-full transform transition-all duration-300 scale-95 opacity-0">
         <!-- Content -->
-        <div class="p-6 text-center">
-            <!-- Icon -->
-            <div class="w-14 h-14 rounded-full flex items-center justify-center bg-green-100 dark:bg-green-900/30 mx-auto mb-4">
-                <svg class="w-7 h-7 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+        <div class="p-8 text-center">
+            <!-- Success Icon - Large circle -->
+            <div class="w-20 h-20 rounded-full bg-emerald-100 dark:bg-emerald-900/30 flex items-center justify-center mx-auto mb-5">
+                <svg class="w-10 h-10 text-emerald-500 dark:text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path>
                 </svg>
             </div>
 
             <!-- Title -->
-            <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3">
+            <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">
                 Data Berhasil Disimpan!
             </h3>
 
             <!-- Description -->
-            <p class="text-sm text-gray-600 dark:text-gray-400 mb-6 leading-relaxed">
+            <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed mb-6">
                 Anda dapat melanjutkan mengisi data atau kembali ke beranda.
             </p>
 
             <!-- Buttons -->
             <div class="flex flex-col gap-3">
-                <button onclick="closeSaveOptionsModal(); window.location.href='{{ route('guru.home') }}';" class="w-full px-4 py-2.5 bg-indigo-600 hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-600 text-white font-medium rounded-lg transition-colors flex items-center justify-center gap-2">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
-                    </svg>
+                <button onclick="closeSaveOptionsModal(); window.location.href='{{ route('guru.home') }}';" class="w-full px-6 py-3 bg-indigo-500 hover:bg-indigo-600 text-white font-semibold rounded-full transition-all duration-200 hover:shadow-lg">
                     Kembali ke Beranda
                 </button>
-                <button onclick="closeSaveOptionsModal()" class="w-full px-4 py-2.5 bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-200 font-medium rounded-lg transition-colors flex items-center justify-center gap-2">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
-                    </svg>
+                <button onclick="closeSaveOptionsModal()" class="w-full text-sm text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 font-medium py-2 transition-colors">
                     Lanjut Mengisi
                 </button>
             </div>
@@ -330,27 +324,53 @@
     </div>
 </div>
 
-<!-- Success Toast -->
-<div id="successToast" class="hidden fixed top-4 right-4 z-50 animate-slide-in">
-    <div class="bg-gradient-to-r from-green-500 to-emerald-500 text-white px-5 py-3.5 rounded-lg shadow-xl flex items-center gap-3 min-w-[300px]">
-        <div class="w-8 h-8 bg-white/20 rounded-lg flex items-center justify-center flex-shrink-0">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+<!-- Success Toast - Minimal tanpa tombol -->
+<div id="successToast" class="hidden fixed top-4 left-1/2 -translate-x-1/2 z-50 transform -translate-y-20 opacity-0 transition-all duration-300">
+    <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl px-5 py-4 flex items-center gap-3 min-w-[280px]">
+        <div class="w-10 h-10 rounded-full bg-emerald-100 dark:bg-emerald-900/30 flex items-center justify-center flex-shrink-0">
+            <svg class="w-5 h-5 text-emerald-500 dark:text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path>
             </svg>
         </div>
-        <span class="font-semibold">Data berhasil disimpan!</span>
+        <div class="flex-1">
+            <p class="font-semibold text-gray-900 dark:text-white text-sm">Berhasil!</p>
+            <p class="text-gray-500 dark:text-gray-400 text-xs">Data berhasil disimpan</p>
+        </div>
     </div>
 </div>
 
-<!-- Error Toast -->
-<div id="errorToast" class="hidden fixed top-4 right-4 z-50 animate-slide-in">
-    <div class="bg-gradient-to-r from-red-500 to-rose-500 text-white px-5 py-3.5 rounded-lg shadow-xl flex items-center gap-3 min-w-[300px]">
-        <div class="w-8 h-8 bg-white/20 rounded-lg flex items-center justify-center flex-shrink-0">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"></path>
-            </svg>
+<!-- Error Modal - Dengan tombol seperti referensi -->
+<div id="errorModal" class="hidden fixed inset-0 bg-black/40 backdrop-blur-sm z-50 items-center justify-center p-4">
+    <div id="errorModalContent" class="bg-white dark:bg-gray-800 rounded-3xl shadow-2xl max-w-sm w-full transform transition-all duration-300 scale-95 opacity-0">
+        <!-- Content -->
+        <div class="p-8 text-center">
+            <!-- Error Icon - Large circle -->
+            <div class="w-20 h-20 rounded-full bg-red-100 dark:bg-red-900/30 flex items-center justify-center mx-auto mb-5">
+                <svg class="w-10 h-10 text-red-500 dark:text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </div>
+
+            <!-- Title -->
+            <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">
+                Terjadi Kesalahan
+            </h3>
+
+            <!-- Description -->
+            <p id="errorMessage" class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed mb-6">
+                Sistem tidak dapat menyimpan data. Silakan periksa koneksi internet Anda dan coba lagi.
+            </p>
+
+            <!-- Buttons -->
+            <div class="flex flex-col gap-3">
+                <button onclick="hideErrorModal(); retryLastAction();" class="w-full px-6 py-3 bg-red-500 hover:bg-red-600 text-white font-semibold rounded-full transition-all duration-200 hover:shadow-lg">
+                    Coba Lagi
+                </button>
+                <button onclick="hideErrorModal()" class="w-full text-sm text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 font-medium py-2 transition-colors">
+                    Batalkan dan kembali
+                </button>
+            </div>
         </div>
-        <span id="errorMessage" class="font-semibold">Terjadi kesalahan!</span>
     </div>
 </div>
 
@@ -421,18 +441,72 @@ function updateCharCount(field) {
     }
 }
 
+// Last action for retry functionality
+let lastAction = null;
+
 function showToast(message, isError = false) {
-    const toast = isError ? document.getElementById('errorToast') : document.getElementById('successToast');
-
     if (isError) {
-        document.getElementById('errorMessage').textContent = message;
+        // Show error modal instead of toast
+        showErrorModal(message);
+    } else {
+        // Show success toast
+        const toast = document.getElementById('successToast');
+        toast.classList.remove('hidden');
+        
+        setTimeout(() => {
+            toast.classList.remove('-translate-y-20', 'opacity-0');
+            toast.classList.add('translate-y-0', 'opacity-100');
+        }, 10);
+
+        setTimeout(() => {
+            toast.classList.remove('translate-y-0', 'opacity-100');
+            toast.classList.add('-translate-y-20', 'opacity-0');
+            setTimeout(() => toast.classList.add('hidden'), 300);
+        }, 3000);
     }
+}
 
-    toast.classList.remove('hidden');
-
+function showErrorModal(message) {
+    const modal = document.getElementById('errorModal');
+    const content = document.getElementById('errorModalContent');
+    document.getElementById('errorMessage').textContent = message;
+    
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
+    
     setTimeout(() => {
-        toast.classList.add('hidden');
-    }, 3000);
+        content.classList.remove('scale-95', 'opacity-0');
+        content.classList.add('scale-100', 'opacity-100');
+    }, 10);
+}
+
+function hideErrorModal() {
+    const modal = document.getElementById('errorModal');
+    const content = document.getElementById('errorModalContent');
+    
+    content.classList.remove('scale-100', 'opacity-100');
+    content.classList.add('scale-95', 'opacity-0');
+    
+    setTimeout(() => {
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+    }, 300);
+}
+
+function retryLastAction() {
+    if (lastAction === 'save') {
+        document.getElementById('saveButton').click();
+    } else if (lastAction === 'submit') {
+        document.getElementById('submitButton').click();
+    }
+}
+
+// Helper functions for manual toast dismissal
+function hideSuccessToast() {
+    const toast = document.getElementById('successToast');
+    toast.classList.remove('translate-y-0', 'opacity-100');
+    toast.classList.add('-translate-y-20', 'opacity-0');
+    setTimeout(() => toast.classList.add('hidden'), 300);
 }
 
 // Save button

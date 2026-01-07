@@ -52,16 +52,26 @@ class Supervisi extends Model
     {
         parent::boot();
 
-        // Clear cache when supervisi is created, updated, or deleted
+        // Clear cache when supervisi is created
         static::created(function () {
             \App\Helpers\CacheHelper::clearSupervisiCache();
         });
 
-        static::updated(function () {
-            \App\Helpers\CacheHelper::clearSupervisiCache();
+        // Only clear cache when status changes (performance optimization)
+        static::updated(function ($supervisi) {
+            if ($supervisi->isDirty('status')) {
+                \App\Helpers\CacheHelper::clearSupervisiCache();
+            }
         });
 
         static::deleting(function ($supervisi) {
+            // Delete related files before records
+            foreach ($supervisi->dokumenEvaluasi as $dokumen) {
+                if ($dokumen->path_file) {
+                    \Illuminate\Support\Facades\Storage::disk('public')->delete($dokumen->path_file);
+                }
+            }
+            
             // Delete related records
             $supervisi->dokumenEvaluasi()->delete();
             $supervisi->prosesPembelajaran()->delete();
@@ -70,6 +80,32 @@ class Supervisi extends Model
             // Clear cache
             \App\Helpers\CacheHelper::clearSupervisiCache();
         });
+    }
+
+    // Query Scopes for efficient filtering
+    public function scopeByStatus($query, $status)
+    {
+        return $query->where('status', $status);
+    }
+
+    public function scopePending($query)
+    {
+        return $query->where('status', self::STATUS_SUBMITTED);
+    }
+
+    public function scopeUnderReview($query)
+    {
+        return $query->where('status', self::STATUS_UNDER_REVIEW);
+    }
+
+    public function scopeCompleted($query)
+    {
+        return $query->where('status', self::STATUS_COMPLETED);
+    }
+
+    public function scopeExcludeDrafts($query)
+    {
+        return $query->whereNotIn('status', [self::STATUS_DRAFT]);
     }
 
     // Relationships

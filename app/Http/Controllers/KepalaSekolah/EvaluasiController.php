@@ -12,7 +12,12 @@ class EvaluasiController extends Controller
     public function index(Request $request)
     {
         // Include 'revision' status so kepala can see supervisi that need revision
-        $query = Supervisi::with(['user', 'dokumenEvaluasi', 'prosesPembelajaran', 'feedback'])
+        // Optimized eager loading - only load essential columns
+        $query = Supervisi::with([
+            'user:id,name,nik,tingkat',
+            'dokumenEvaluasi:id,supervisi_id,jenis_dokumen,nama_file',
+            'prosesPembelajaran:id,supervisi_id,link_video,link_meeting'
+        ])->withCount('feedback') // Count feedback instead of loading all
             ->whereIn('status', ['submitted', 'under_review', 'revision', 'completed']);
 
         // Filter by status

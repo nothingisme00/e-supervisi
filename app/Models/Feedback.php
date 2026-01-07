@@ -37,9 +37,15 @@ class Feedback extends Model
         return $this->belongsTo(Feedback::class, 'parent_id');
     }
 
-    // Child comments (replies)
+    // Child comments (replies) - without recursive eager loading to prevent N+1
     public function replies()
     {
-        return $this->hasMany(Feedback::class, 'parent_id')->with('user', 'replies')->latest();
+        return $this->hasMany(Feedback::class, 'parent_id')->latest();
+    }
+
+    // Get replies with user (for controlled eager loading)
+    public function repliesWithUser()
+    {
+        return $this->hasMany(Feedback::class, 'parent_id')->with('user:id,name,role')->latest();
     }
 }

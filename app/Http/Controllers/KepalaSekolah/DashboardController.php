@@ -11,53 +11,40 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        // Cache statistics for 5 minutes
-        $totalSupervisi = cache()->remember('kepala.stats.total_supervisi', 300, function() {
-            return Supervisi::count();
+        // Cache all statistics in a single query (performance optimization)
+        $stats = cache()->remember('kepala.stats.all', 300, function() {
+            return Supervisi::selectRaw("
+                COUNT(*) as total,
+                SUM(CASE WHEN status = 'submitted' THEN 1 ELSE 0 END) as pending,
+                SUM(CASE WHEN status = 'under_review' THEN 1 ELSE 0 END) as in_progress,
+                SUM(CASE WHEN status = 'completed' THEN 1 ELSE 0 END) as completed
+            ")->first();
         });
-        
-        $supervisiPending = cache()->remember('kepala.stats.supervisi_pending', 300, function() {
-            return Supervisi::where('status', 'submitted')->count();
-        });
-        
-        $supervisiInProgress = cache()->remember('kepala.stats.supervisi_in_progress', 300, function() {
-            return Supervisi::where('status', 'under_review')->count();
-        });
-        
-        $supervisiReviewed = cache()->remember('kepala.stats.supervisi_reviewed', 300, function() {
-            return Supervisi::where('status', 'completed')->count();
-        });
+
+        $totalSupervisi = $stats->total;
+        $supervisiPending = $stats->pending;
+        $supervisiInProgress = $stats->in_progress;
+        $supervisiReviewed = $stats->completed;
 
         // For backward compatibility
         $supervisiSubmitted = $supervisiPending;
         $supervisiUnderReview = $supervisiInProgress;
         $supervisiCompleted = $supervisiReviewed;
 
-        // Recent supervisi with eager loading - only load needed columns
-        $recentSupervisi = Supervisi::with('user:id,name,nik,tingkat')
-            ->whereIn('status', ['submitted', 'under_review'])
-            ->latest()
-            ->take(10)
-            ->get();
+        // Single query to get all recent supervisi, then filter in PHP (avoid 4 separate queries)
+        $allRecentSupervisi = cache()->remember('kepala.recent_supervisi', 60, function() {
+            return Supervisi::with('user:id,name,nik,tingkat')
+                ->whereIn('status', ['submitted', 'under_review', 'completed'])
+                ->latest()
+                ->take(30) // Get enough for all 3 lists
+                ->get();
+        });
 
-        // Separate lists for each status
-        $pendingList = Supervisi::with('user:id,name,nik,tingkat')
-            ->where('status', 'submitted')
-            ->latest()
-            ->take(5)
-            ->get();
-            
-        $inProgressList = Supervisi::with('user:id,name,nik,tingkat')
-            ->where('status', 'under_review')
-            ->latest()
-            ->take(5)
-            ->get();
-            
-        $completedList = Supervisi::with('user:id,name,nik,tingkat')
-            ->where('status', 'completed')
-            ->latest()
-            ->take(5)
-            ->get();
+        // Filter from cached collection (no additional queries)
+        $recentSupervisi = $allRecentSupervisi->whereIn('status', ['submitted', 'under_review'])->take(10)->values();
+        $pendingList = $allRecentSupervisi->where('status', 'submitted')->take(5)->values();
+        $inProgressList = $allRecentSupervisi->where('status', 'under_review')->take(5)->values();
+        $completedList = $allRecentSupervisi->where('status', 'completed')->take(5)->values();
 
         return view('kepala.dashboard', compact(
             'totalSupervisi',

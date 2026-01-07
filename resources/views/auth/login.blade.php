@@ -361,6 +361,20 @@
                     }
                 });
             }
+
+            // Login form loading state
+            const loginForm = document.getElementById('loginForm');
+            const loginBtn = document.getElementById('loginBtn');
+            const loginBtnText = document.getElementById('loginBtnText');
+            const loginSpinner = document.getElementById('loginSpinner');
+
+            if (loginForm && loginBtn) {
+                loginForm.addEventListener('submit', function() {
+                    loginBtn.disabled = true;
+                    loginBtnText.textContent = 'Memproses...';
+                    loginSpinner.classList.remove('hidden');
+                });
+            }
         });
     </script>
 </head>
@@ -446,32 +460,37 @@
 
 <aside class="w-full md:w-[560px] lg:w-[600px] xl:w-[640px] flex-shrink-0 flex flex-col h-screen bg-white dark:bg-slate-900 border-l border-gray-200 dark:border-slate-800 shadow-2xl z-20 overflow-hidden relative transition-colors duration-300">
     <div class="h-full flex flex-col justify-center px-6 py-4 sm:px-10 lg:px-14 max-w-lg mx-auto w-full overflow-y-auto scrollbar-hide">
-        <div class="mb-6 sm:mb-8 text-center animate-[fadeIn_0.6s_ease-out]">
-            <div class="inline-flex items-center justify-center w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br from-indigo-600 to-purple-600 rounded-2xl sm:rounded-3xl mb-4 sm:mb-6 shadow-xl shadow-indigo-500/30 transform hover:scale-105 hover:rotate-3 transition-all duration-300">
-                <span class="material-symbols-outlined text-4xl sm:text-5xl text-white font-light">school</span>
+        <!-- Header Section -->
+        <div class="mb-8 sm:mb-10 text-center animate-[fadeIn_0.6s_ease-out]">
+            <!-- Logo -->
+            <div class="inline-flex items-center justify-center w-14 h-14 sm:w-16 sm:h-16 bg-indigo-600 rounded-xl mb-5 shadow-lg">
+                <span class="material-symbols-outlined text-2xl sm:text-3xl text-white">school</span>
             </div>
-            <h1 class="text-2xl sm:text-4xl font-bold text-gray-900 dark:text-white tracking-tight mb-1 sm:mb-2">
+            
+            <!-- App Name -->
+            <h1 class="text-2xl sm:text-3xl font-semibold text-gray-900 dark:text-white mb-1">
                 {{ config('app.name', 'E-Supervisi') }}
             </h1>
-            <p class="text-gray-600 dark:text-gray-400 text-xs sm:text-sm font-medium">
+            <p class="text-gray-500 dark:text-gray-400 text-sm">
                 Sistem Supervisi Pembelajaran Terpadu
             </p>
         </div>
 
-        <!-- Login Card -->
-            @if($errors->any())
-            <div class="mb-4 sm:mb-6 bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 p-3 sm:p-4 rounded-xl sm:rounded-2xl text-xs sm:text-sm font-medium border border-red-200 dark:border-red-800 flex items-center gap-2 sm:gap-3 animate-[slideUp_0.5s_ease-out_0.1s_both]">
-                <span class="material-symbols-outlined text-lg sm:text-xl">error</span>
-                <span>{{ $errors->first() }}</span>
-            </div>
-            @endif
+        <!-- Error Alert -->
+        @if($errors->any())
+        <div class="mb-5 bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 p-3.5 rounded-lg text-sm border border-red-100 dark:border-red-800/50 flex items-center gap-3 animate-[slideUp_0.4s_ease-out]">
+            <span class="material-symbols-outlined text-lg">error</span>
+            <span>{{ $errors->first() }}</span>
+        </div>
+        @endif
 
-            <div class="mb-6 sm:mb-8 animate-[slideUp_0.5s_ease-out_0.1s_both]">
-                <h2 class="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-1 sm:mb-2">Selamat Datang</h2>
-                <p class="text-gray-600 dark:text-gray-400 text-sm sm:text-base">Masuk untuk melanjutkan ke sistem</p>
-            </div>
+        <!-- Welcome Text -->
+        <div class="mb-6 animate-[slideUp_0.4s_ease-out]">
+            <h2 class="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white mb-1">Selamat Datang</h2>
+            <p class="text-gray-500 dark:text-gray-400 text-sm">Masuk untuk melanjutkan ke sistem</p>
+        </div>
 
-            <form action="{{ route('login') }}" class="space-y-4 sm:space-y-6 animate-[slideUp_0.5s_ease-out_0.2s_both]" method="POST">
+            <form action="{{ route('login') }}" class="space-y-4 sm:space-y-6 animate-[slideUp_0.5s_ease-out_0.2s_both]" method="POST" id="loginForm">
                 @csrf
                 <div class="space-y-1.5 sm:space-y-2">
                     <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300" for="nik">
@@ -565,9 +584,12 @@
                     </label>
                 </div>
                 <div class="pt-4 sm:pt-6">
-                    <button class="group w-full flex justify-center items-center py-3.5 px-6 border border-transparent rounded-xl shadow-lg shadow-indigo-500/30 text-base font-semibold text-white bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 hover:shadow-indigo-500/40 focus:outline-none focus:ring-4 focus:ring-indigo-500/50 transition-all duration-200 transform hover:-translate-y-0.5 active:scale-[0.98]" type="submit">
-                        Masuk Sekarang
-                        <span class="material-symbols-outlined ml-2 transition-transform duration-200 group-hover:translate-x-1 text-xl">arrow_forward</span>
+                    <button id="loginBtn" class="group relative w-full flex justify-center items-center py-3 sm:py-3.5 px-6 rounded-lg text-sm sm:text-base font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-slate-900 transition-colors duration-200 disabled:opacity-70 disabled:cursor-not-allowed" type="submit">
+                        <span id="loginBtnText">Masuk</span>
+                        <svg id="loginSpinner" class="hidden ml-2 h-4 w-4 sm:h-5 sm:w-5 animate-spin text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
                     </button>
                 </div>
             </form>

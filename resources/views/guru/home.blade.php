@@ -9,6 +9,30 @@
         ['label' => 'Dashboard Guru', 'icon' => true]
     ]" />
 
+    <!-- Hero Carousel Section -->
+    @if(isset($carouselSlides) && $carouselSlides->count() > 0)
+    <div class="mb-3 sm:mb-4 md:mb-6">
+        <div class="guru-carousel-container relative w-full h-32 sm:h-44 md:h-56 lg:h-64 rounded-lg sm:rounded-xl md:rounded-2xl overflow-hidden shadow-md sm:shadow-lg">
+            <!-- Carousel Inner -->
+            <div class="guru-carousel-inner flex w-full h-full transition-transform duration-700 ease-out">
+                @foreach($carouselSlides as $index => $slide)
+                <div class="guru-carousel-slide flex-shrink-0 w-full h-full relative">
+                    @if($slide->image_path)
+                        <img src="{{ $slide->image_url }}" alt="{{ $slide->title }}" class="w-full h-full object-cover">
+                    @else
+                        <div class="w-full h-full bg-gradient-to-br from-indigo-600 via-purple-600 to-indigo-800 flex items-center justify-center">
+                            <svg class="w-12 h-12 sm:w-16 sm:h-16 text-white/30" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                            </svg>
+                        </div>
+                    @endif
+                </div>
+                @endforeach
+            </div>
+        </div>
+    </div>
+    @endif
+
     <!-- Outer Container: Timeline Supervisi - Container + Inner Cards Architecture -->
     <div class="bg-gray-50 dark:bg-gray-900/30 rounded-lg md:rounded-xl lg:rounded-2xl p-1.5 sm:p-3 md:p-5 lg:p-6 mb-2 sm:mb-3 md:mb-4 lg:mb-6 min-h-[60vh] {{ $supervisiList->count() == 0 ? 'flex items-center justify-center' : '' }}">
         <!-- Cards Wrapper with flex column and gap -->
@@ -367,6 +391,13 @@
             @endforeach
                         </div>
                         <!-- End space-y-4 -->
+                        
+                        <!-- Pagination Links -->
+                        @if($supervisiList->hasPages())
+                        <div class="mt-6 px-2">
+                            {{ $supervisiList->links() }}
+                        </div>
+                        @endif
                     </div>
                     <!-- End padding wrapper -->
                 </div>
@@ -763,5 +794,31 @@
 
     </div>
 </div>
+
+<!-- Guru Carousel Script -->
+<script>
+(function() {
+    const carouselInner = document.querySelector('.guru-carousel-inner');
+    const slides = document.querySelectorAll('.guru-carousel-slide');
+    
+    if (!carouselInner || slides.length <= 1) return;
+    
+    let currentSlide = 0;
+    const SLIDE_DURATION = 4000; // 4 seconds
+    
+    function showSlide(index) {
+        if (index >= slides.length) index = 0;
+        currentSlide = index;
+        carouselInner.style.transform = `translateX(-${index * 100}%)`;
+    }
+    
+    function nextSlide() {
+        showSlide(currentSlide + 1);
+    }
+    
+    // Start auto-sliding
+    setInterval(nextSlide, SLIDE_DURATION);
+})();
+</script>
 
 @endsection

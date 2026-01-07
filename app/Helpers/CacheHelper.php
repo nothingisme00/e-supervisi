@@ -7,53 +7,77 @@ use Illuminate\Support\Facades\Cache;
 class CacheHelper
 {
     /**
-     * Clear all dashboard statistics cache
+     * All supervisi-related cache keys
      */
-    public static function clearDashboardCache()
+    private static function getSupervisiCacheKeys(): array
     {
-        $keys = [
-            'stats.total_users',
-            'stats.total_guru',
+        return [
+            // Legacy individual keys
             'stats.total_supervisi',
             'stats.supervisi_pending',
             'stats.supervisi_in_progress',
             'stats.supervisi_reviewed',
+            // Admin consolidated keys
+            'stats.supervisi_all',
+            'admin.guru_list',
+            'admin.recent_supervisi',
+            // Kepala consolidated keys
+            'kepala.stats.all',
             'kepala.stats.total_supervisi',
             'kepala.stats.supervisi_pending',
             'kepala.stats.supervisi_in_progress',
             'kepala.stats.supervisi_reviewed',
+            'kepala.recent_supervisi',
         ];
+    }
 
-        foreach ($keys as $key) {
-            Cache::forget($key);
-        }
+    /**
+     * All user-related cache keys
+     */
+    private static function getUserCacheKeys(): array
+    {
+        return [
+            'stats.total_users',
+            'stats.total_guru',
+            'stats.users_all',      // Admin consolidated user stats
+            'admin.guru_list',      // Guru list in admin dashboard
+        ];
+    }
+
+    /**
+     * Clear all dashboard statistics cache
+     */
+    public static function clearDashboardCache(): void
+    {
+        $keys = array_merge(
+            self::getUserCacheKeys(),
+            self::getSupervisiCacheKeys()
+        );
+
+        self::forgetKeys($keys);
     }
 
     /**
      * Clear user-related cache
      */
-    public static function clearUserCache()
+    public static function clearUserCache(): void
     {
-        Cache::forget('stats.total_users');
-        Cache::forget('stats.total_guru');
+        self::forgetKeys(self::getUserCacheKeys());
     }
 
     /**
      * Clear supervisi-related cache
      */
-    public static function clearSupervisiCache()
+    public static function clearSupervisiCache(): void
     {
-        $keys = [
-            'stats.total_supervisi',
-            'stats.supervisi_pending',
-            'stats.supervisi_in_progress',
-            'stats.supervisi_reviewed',
-            'kepala.stats.total_supervisi',
-            'kepala.stats.supervisi_pending',
-            'kepala.stats.supervisi_in_progress',
-            'kepala.stats.supervisi_reviewed',
-        ];
+        self::forgetKeys(self::getSupervisiCacheKeys());
+    }
 
+    /**
+     * Helper to forget multiple cache keys efficiently
+     */
+    private static function forgetKeys(array $keys): void
+    {
         foreach ($keys as $key) {
             Cache::forget($key);
         }

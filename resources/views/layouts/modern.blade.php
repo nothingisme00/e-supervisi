@@ -198,6 +198,100 @@
 <body class="bg-gray-300 text-gray-900 dark:bg-gray-950 dark:text-gray-100 transition-colors duration-300" @auth data-role="{{ auth()->user()->role }}" @endauth>
 
 @auth
+    <!-- Welcome Modal (shown only on first login) -->
+    @if(session('just_logged_in'))
+    @php
+        $hour = now()->format('H');
+        if ($hour >= 5 && $hour < 12) {
+            $greeting = 'Selamat Pagi';
+        } elseif ($hour >= 12 && $hour < 15) {
+            $greeting = 'Selamat Siang';
+        } elseif ($hour >= 15 && $hour < 18) {
+            $greeting = 'Selamat Sore';
+        } else {
+            $greeting = 'Selamat Malam';
+        }
+        
+        $role = auth()->user()->isAdmin() ? 'Administrator' : (auth()->user()->isGuru() ? 'Guru' : 'Kepala Sekolah');
+    @endphp
+    <style>
+        @keyframes checkDraw {
+            0% { stroke-dashoffset: 24; }
+            100% { stroke-dashoffset: 0; }
+        }
+        @keyframes iconPop {
+            0% { transform: scale(0); opacity: 0; }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        @keyframes progressShrink {
+            0% { width: 100%; }
+            100% { width: 0%; }
+        }
+        .welcome-check-icon { animation: iconPop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; }
+        .welcome-check-path { stroke-dasharray: 24; stroke-dashoffset: 24; animation: checkDraw 0.4s ease 0.3s forwards; }
+        .welcome-progress { animation: progressShrink 2.5s linear forwards; }
+    </style>
+    <div id="welcomeLoginModal" class="fixed inset-0 z-[9999] flex items-center justify-center p-4" style="background: rgba(15,23,42,0.4); backdrop-filter: blur(4px); opacity: 0; transition: opacity 0.3s ease;">
+        <div id="welcomeLoginModalContent" class="bg-white dark:bg-gray-900 rounded-2xl shadow-2xl w-full max-w-xs overflow-hidden" style="transform: translateY(16px); opacity: 0; transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);">
+            
+            <div class="pt-8 pb-6 px-6 text-center">
+                <!-- Animated Check Icon -->
+                <div class="welcome-check-icon mx-auto w-16 h-16 bg-gradient-to-br from-emerald-400 to-teal-500 rounded-full flex items-center justify-center mb-5 shadow-lg shadow-emerald-500/30" style="opacity: 0;">
+                    <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path class="welcome-check-path" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path>
+                    </svg>
+                </div>
+                
+                <!-- Greeting -->
+                <p class="text-xs font-medium text-gray-400 dark:text-gray-500 uppercase tracking-widest mb-2">{{ $greeting }}</p>
+                <h2 class="text-lg font-bold text-gray-900 dark:text-white mb-0.5">
+                    {{ auth()->user()->name }}
+                </h2>
+                <p class="text-sm text-indigo-500 dark:text-indigo-400 font-medium mb-4">{{ $role }}</p>
+                
+                <!-- Message -->
+                <p class="text-gray-500 dark:text-gray-400 text-sm">
+                    Login berhasil. Selamat bekerja!
+                </p>
+            </div>
+            
+            <!-- Progress Bar -->
+            <div class="h-1 bg-gray-100 dark:bg-gray-800">
+                <div class="welcome-progress h-full bg-gradient-to-r from-indigo-500 to-purple-500 rounded-r-full"></div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        (function() {
+            const modal = document.getElementById('welcomeLoginModal');
+            const content = document.getElementById('welcomeLoginModalContent');
+            
+            if (modal && content) {
+                setTimeout(function() {
+                    modal.style.opacity = '1';
+                    content.style.transform = 'translateY(0)';
+                    content.style.opacity = '1';
+                }, 50);
+                
+                setTimeout(function() {
+                    content.style.transform = 'translateY(-12px)';
+                    content.style.opacity = '0';
+                    modal.style.opacity = '0';
+                    
+                    setTimeout(function() {
+                        if (modal.parentNode) {
+                            modal.parentNode.removeChild(modal);
+                        }
+                    }, 300);
+                }, 2600);
+            }
+        })();
+    </script>
+    {{ session()->forget('just_logged_in') }}
+    @endif
+
     <!-- Livewire Navigate Loading Bar -->
     <div id="navigate-loading-bar" class="navigate-loading-bar" style="width: 0%; display: none;"></div>
 
@@ -821,37 +915,40 @@
     </div> <!-- Close app-wrapper -->
 
 
-    <!-- TOAST CONTAINER -->
-    <div id="toast-container" class="fixed top-24 left-1/2 -translate-x-1/2 z-[60] flex flex-col gap-3 pointer-events-none w-full max-w-2xl px-4"></div>
+    <!-- TOAST/SUCCESS MODAL CONTAINER -->
+    <div id="toast-container" class="fixed inset-0 bg-black/30 backdrop-blur-sm z-[60] flex items-center justify-center p-4 hidden opacity-0 transition-all duration-300"></div>
 
     <!-- MODAL CONFIRMATION -->
-    <div id="modal-backdrop" class="hidden fixed inset-0 bg-black/50 backdrop-blur-sm z-[70] items-center justify-center p-4">
-        <div id="modal-content" class="bg-white dark:bg-gray-800 rounded-xl shadow-2xl max-w-md w-full transform transition-all duration-200 scale-95 opacity-0">
-            <!-- Header with Icon -->
-            <div class="flex items-start gap-4 p-6 pb-4">
-                <div id="modal-icon" class="flex-shrink-0 w-12 h-12 rounded-full flex items-center justify-center bg-amber-100 dark:bg-amber-900/30">
-                    <svg class="w-6 h-6 text-amber-600 dark:text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <div id="modal-backdrop" class="hidden fixed inset-0 bg-black/40 backdrop-blur-sm z-[70] items-center justify-center p-4">
+        <div id="modal-content" class="bg-white dark:bg-gray-800 rounded-3xl shadow-2xl max-w-sm w-full transform transition-all duration-300 scale-95 opacity-0">
+            <!-- Content -->
+            <div class="p-8 text-center">
+                <!-- Warning Icon - Large circle -->
+                <div id="modal-icon" class="w-20 h-20 rounded-full bg-amber-100 dark:bg-amber-900/30 flex items-center justify-center mx-auto mb-5">
+                    <svg class="w-10 h-10 text-amber-500 dark:text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
                     </svg>
                 </div>
-                <div class="flex-1 min-w-0">
-                    <h3 id="modal-title" class="text-lg font-bold text-gray-900 dark:text-white mb-1">
-                        Konfirmasi
-                    </h3>
-                    <p id="modal-message" class="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
-                        Apakah Anda yakin ingin melanjutkan?
-                    </p>
-                </div>
-            </div>
 
-            <!-- Buttons -->
-            <div class="flex gap-3 px-6 pb-6">
-                <button onclick="closeModal()" class="flex-1 px-4 py-2.5 bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-200 font-medium rounded-lg transition-colors">
-                    Batal
-                </button>
-                <button id="modal-confirm-btn" class="flex-1 px-4 py-2.5 bg-indigo-600 hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-600 text-white font-medium rounded-lg transition-colors">
-                    Ya, Lanjutkan
-                </button>
+                <!-- Title -->
+                <h3 id="modal-title" class="text-xl font-bold text-gray-900 dark:text-white mb-2">
+                    Konfirmasi
+                </h3>
+
+                <!-- Description -->
+                <p id="modal-message" class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed mb-6">
+                    Apakah Anda yakin ingin melanjutkan?
+                </p>
+
+                <!-- Buttons -->
+                <div class="flex flex-col gap-3">
+                    <button id="modal-confirm-btn" class="w-full px-6 py-3 bg-indigo-500 hover:bg-indigo-600 text-white font-semibold rounded-full transition-all duration-200 hover:shadow-lg">
+                        Ya, Lanjutkan
+                    </button>
+                    <button onclick="closeModal()" class="w-full text-sm text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 font-medium py-2 transition-colors">
+                        Batal
+                    </button>
+                </div>
             </div>
         </div>
     </div>
@@ -1160,19 +1257,19 @@
                 config.iconColor = 'text-blue-600 dark:text-blue-400';
             }
 
-            // Update icon styling
-            icon.className = `flex-shrink-0 w-12 h-12 rounded-full flex items-center justify-center ${config.iconBg}`;
+            // Update icon styling - keep large size (w-20 h-20)
+            icon.className = `w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-5 ${config.iconBg}`;
             const iconSvg = icon.querySelector('svg');
-            iconSvg.className = `w-6 h-6 ${config.iconColor}`;
+            iconSvg.className = `w-10 h-10 ${config.iconColor}`;
 
             // Update content
             titleEl.textContent = title;
             messageEl.textContent = message;
             modalCallback = onConfirm;
 
-            // Update confirm button
+            // Update confirm button - pill style
             confirmBtn.textContent = config.confirmText;
-            confirmBtn.className = `flex-1 px-4 py-2.5 ${config.confirmClass} text-white font-medium rounded-lg transition-colors`;
+            confirmBtn.className = `w-full px-6 py-3 ${config.confirmClass} text-white font-semibold rounded-full transition-all duration-200 hover:shadow-lg`;
 
             // Show modal
             backdrop.classList.remove('hidden');
@@ -1222,52 +1319,136 @@
             }
         });
 
-        // Toast Notification System
-        function showToast(message, type = 'success', duration = 4000) {
+        // Toast/Success Modal System - Centered modal popup
+        let toastTimer = null;
+        const TOAST_DURATION = 2500; // 2.5 seconds
+        
+        function showToast(message, type = 'success', duration = TOAST_DURATION) {
             const container = document.getElementById('toast-container');
-            const toast = document.createElement('div');
             
-            // Define colors based on type
-            const colors = {
-                success: 'bg-green-500 dark:bg-green-600',
-                error: 'bg-red-500 dark:bg-red-600',
-                warning: 'bg-amber-500 dark:bg-amber-600',
-                info: 'bg-blue-500 dark:bg-blue-600'
+            // Clear any existing timer and content
+            if (toastTimer) {
+                clearTimeout(toastTimer);
+                toastTimer = null;
+            }
+            container.innerHTML = '';
+            
+            // Define icon backgrounds based on type
+            const iconBgs = {
+                success: 'bg-emerald-100 dark:bg-emerald-900/30',
+                error: 'bg-red-100 dark:bg-red-900/30',
+                warning: 'bg-amber-100 dark:bg-amber-900/30',
+                info: 'bg-blue-100 dark:bg-blue-900/30'
+            };
+
+            // Define icon colors based on type
+            const iconColors = {
+                success: 'text-emerald-500 dark:text-emerald-400',
+                error: 'text-red-500 dark:text-red-400',
+                warning: 'text-amber-500 dark:text-amber-400',
+                info: 'text-blue-500 dark:text-blue-400'
             };
             
             // Define icons based on type
             const icons = {
-                success: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>',
-                error: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"></path>',
+                success: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path>',
+                error: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"></path>',
                 warning: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>',
                 info: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>'
             };
-            
-            toast.className = `${colors[type] || colors.success} text-white px-6 py-5 rounded-xl shadow-2xl flex items-center gap-4 w-full pointer-events-auto transform transition-all duration-500 -translate-y-32 opacity-0`;
-            toast.innerHTML = `
-                <svg class="w-7 h-7 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    ${icons[type] || icons.success}
-                </svg>
-                <p class="flex-1 text-base font-semibold leading-relaxed">${message}</p>
-                <button onclick="this.parentElement.remove()" class="text-white/80 hover:text-white transition-colors ml-2">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                    </svg>
-                </button>
+
+            // Define titles based on type
+            const titles = {
+                success: 'Berhasil!',
+                error: 'Terjadi Kesalahan',
+                warning: 'Peringatan!',
+                info: 'Informasi'
+            };
+
+            // Create modal content
+            const modal = document.createElement('div');
+            modal.className = 'bg-white dark:bg-gray-800 rounded-3xl shadow-2xl max-w-xs w-full transform transition-all duration-300 scale-90 opacity-0';
+            modal.innerHTML = `
+                <div class="p-6 text-center">
+                    <!-- Icon -->
+                    <div class="w-16 h-16 rounded-full ${iconBgs[type] || iconBgs.success} flex items-center justify-center mx-auto mb-4">
+                        <svg class="w-8 h-8 ${iconColors[type] || iconColors.success}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            ${icons[type] || icons.success}
+                        </svg>
+                    </div>
+                    
+                    <!-- Title -->
+                    <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-1">
+                        ${titles[type] || titles.success}
+                    </h3>
+                    
+                    <!-- Message -->
+                    <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed">
+                        ${message}
+                    </p>
+                    
+                    <!-- Progress bar -->
+                    <div class="mt-4 h-1 bg-gray-100 dark:bg-gray-700 rounded-full overflow-hidden">
+                        <div class="h-full ${type === 'error' ? 'bg-red-500' : type === 'warning' ? 'bg-amber-500' : 'bg-emerald-500'} rounded-full toast-progress" style="width: 100%;"></div>
+                    </div>
+                </div>
             `;
             
-            container.appendChild(toast);
+            container.appendChild(modal);
             
-            // Trigger animation - slide down from top
-            setTimeout(() => {
-                toast.classList.remove('-translate-y-32', 'opacity-0');
-            }, 10);
+            // Show backdrop and modal with animation
+            container.classList.remove('hidden');
+            requestAnimationFrame(() => {
+                container.classList.remove('opacity-0');
+                container.classList.add('opacity-100');
+                
+                requestAnimationFrame(() => {
+                    modal.classList.remove('scale-90', 'opacity-0');
+                    modal.classList.add('scale-100', 'opacity-100');
+                    
+                    // Start progress bar animation
+                    const progressBar = modal.querySelector('.toast-progress');
+                    if (progressBar) {
+                        progressBar.style.transition = `width ${duration}ms linear`;
+                        progressBar.style.width = '0%';
+                    }
+                });
+            });
             
-            // Auto remove with slide up animation
-            setTimeout(() => {
-                toast.classList.add('-translate-y-32', 'opacity-0');
-                setTimeout(() => toast.remove(), 500);
+            // Auto hide modal after duration
+            toastTimer = setTimeout(() => {
+                hideToast();
             }, duration);
+            
+            // Allow click on backdrop to dismiss
+            container.onclick = function(e) {
+                if (e.target === container) {
+                    hideToast();
+                }
+            };
+        }
+        
+        function hideToast() {
+            const container = document.getElementById('toast-container');
+            const modal = container.querySelector('div');
+            
+            if (toastTimer) {
+                clearTimeout(toastTimer);
+                toastTimer = null;
+            }
+            
+            if (modal) {
+                modal.classList.remove('scale-100', 'opacity-100');
+                modal.classList.add('scale-90', 'opacity-0');
+            }
+            
+            container.classList.remove('opacity-100');
+            container.classList.add('opacity-0');
+            
+            setTimeout(() => {
+                container.classList.add('hidden');
+                container.innerHTML = '';
+            }, 300);
         }
 
         // Show session flash messages as toast
@@ -1283,6 +1464,11 @@
         @if(session('info'))
             showToast('{{ session('info') }}', 'info');
         @endif
+
+        // Expose functions to global scope for use in child views
+        window.showConfirmModal = showConfirmModal;
+        window.closeModal = closeModal;
+        window.showToast = showToast;
 
         // Pull to Refresh Functionality (Mobile & Tablet only) - TEMPORARILY DISABLED FOR DEBUGGING
         if (false) { // DISABLED to fix hamburger menu and profile dropdown click issues

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Guru;
 use App\Http\Controllers\Controller;
 use App\Models\Supervisi;
 use App\Models\Feedback;
+use App\Models\CarouselSlide;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -12,13 +13,30 @@ class HomeController extends Controller
 {
     public function index(Request $request)
     {
-        // Get all supervisi (timeline) excluding drafts - only show submitted/reviewed supervisi
-        $supervisiList = Supervisi::with(['user', 'dokumenEvaluasi', 'prosesPembelajaran', 'feedback.user', 'feedback.replies.user'])
-            ->whereNotIn('status', [Supervisi::STATUS_DRAFT])
+        // Get supervisi timeline with pagination - optimized eager loading
+        $supervisiList = Supervisi::with([
+                'user:id,name,role',
+                'dokumenEvaluasi:id,supervisi_id,jenis_dokumen,nama_file,path_file',
+                'prosesPembelajaran:id,supervisi_id,link_video,link_meeting',
+                'feedback' => function ($query) {
+                    // Only load top-level feedback with limited fields
+                    $query->whereNull('parent_id')
+                        ->with('user:id,name,role')
+                        ->latest()
+                        ->take(5);
+                }
+            ])
+            ->excludeDrafts()
             ->orderBy('created_at', 'desc')
+            ->paginate(15);
+
+        // Get active carousel slides (limited fields)
+        $carouselSlides = CarouselSlide::active()
+            ->ordered()
+            ->select('id', 'image_path', 'title', 'is_active', 'order')
             ->get();
 
-        return view('guru.home', compact('supervisiList'));
+        return view('guru.home', compact('supervisiList', 'carouselSlides'));
     }
 
     public function mySupervisi()

@@ -319,18 +319,35 @@
 </div>
 
 <!-- Success Modal -->
-<div id="successModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden opacity-0 transition-opacity duration-300">
-    <div class="bg-white dark:bg-gray-800 rounded-lg p-6 max-w-sm mx-4 shadow-xl">
-        <div class="flex items-center gap-3">
-            <div class="flex-shrink-0">
-                <svg class="w-8 h-8 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+<div id="successModal" class="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-50 hidden opacity-0 transition-all duration-300">
+    <div class="bg-white dark:bg-gray-800 rounded-3xl p-8 max-w-sm mx-4 shadow-2xl transform transition-all duration-300 scale-95" id="successModalContent">
+        <!-- Close button -->
+        <button onclick="hideSuccessModal()" class="absolute top-4 right-4 w-8 h-8 flex items-center justify-center text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+        </button>
+        
+        <div class="text-center">
+            <!-- Success Icon - Large circle -->
+            <div class="w-20 h-20 rounded-full bg-emerald-100 dark:bg-emerald-900/30 flex items-center justify-center mx-auto mb-5">
+                <svg class="w-10 h-10 text-emerald-500 dark:text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path>
                 </svg>
             </div>
-            <div>
-                <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100">Berhasil!</h3>
-                <p id="modalMessage" class="text-sm text-gray-600 dark:text-gray-400 mt-1"></p>
-            </div>
+
+            <!-- Title -->
+            <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">
+                Berhasil!
+            </h3>
+
+            <!-- Description -->
+            <p id="modalMessage" class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed mb-1"></p>
+        </div>
+        
+        <!-- Progress indicator -->
+        <div class="mt-6 h-1 bg-gray-100 dark:bg-gray-700 rounded-full overflow-hidden">
+            <div id="successProgress" class="h-full bg-emerald-500 rounded-full" style="width: 100%; transition: width 3s linear;"></div>
         </div>
     </div>
 </div>
@@ -458,26 +475,83 @@ function updateProgress() {
     }
 }
 
+// Auto-close timer reference
+let successModalTimer = null;
+const AUTO_CLOSE_DURATION = 3000; // 3 seconds
+
 function showToast(message, type = 'success', position = 'bottom-right') {
     const modal = document.getElementById('successModal');
+    const modalContent = document.getElementById('successModalContent');
     const modalMessage = document.getElementById('modalMessage');
+    const progressBar = document.getElementById('successProgress');
+
+    // Clear any existing timer
+    if (successModalTimer) {
+        clearTimeout(successModalTimer);
+        successModalTimer = null;
+    }
 
     // Set message
     modalMessage.textContent = message;
+    
+    // Reset progress bar immediately
+    if (progressBar) {
+        progressBar.style.transition = 'none';
+        progressBar.style.width = '100%';
+        // Force reflow to ensure the reset takes effect
+        progressBar.offsetWidth;
+    }
 
-    // Show modal with fade in
+    // Show modal with smooth animation
     modal.classList.remove('hidden');
-    setTimeout(() => {
+    
+    // Use requestAnimationFrame for smoother animation
+    requestAnimationFrame(() => {
         modal.classList.remove('opacity-0');
-    }, 10);
+        if (modalContent) {
+            modalContent.classList.remove('scale-95');
+            modalContent.classList.add('scale-100');
+        }
+        
+        // Start progress bar countdown after modal is visible
+        requestAnimationFrame(() => {
+            if (progressBar) {
+                progressBar.style.transition = `width ${AUTO_CLOSE_DURATION}ms linear`;
+                progressBar.style.width = '0%';
+            }
+        });
+    });
 
-    // Hide modal after 5 seconds with fade out
+    // Hide modal after countdown
+    successModalTimer = setTimeout(() => {
+        hideSuccessModal();
+    }, AUTO_CLOSE_DURATION);
+}
+
+function hideSuccessModal() {
+    const modal = document.getElementById('successModal');
+    const modalContent = document.getElementById('successModalContent');
+    const progressBar = document.getElementById('successProgress');
+    
+    // Clear timer if manually closed
+    if (successModalTimer) {
+        clearTimeout(successModalTimer);
+        successModalTimer = null;
+    }
+    
+    // Stop progress bar animation
+    if (progressBar) {
+        progressBar.style.transition = 'none';
+    }
+    
+    modal.classList.add('opacity-0');
+    if (modalContent) {
+        modalContent.classList.remove('scale-100');
+        modalContent.classList.add('scale-95');
+    }
     setTimeout(() => {
-        modal.classList.add('opacity-0');
-        setTimeout(() => {
-            modal.classList.add('hidden');
-        }, 300);
-    }, 5000);
+        modal.classList.add('hidden');
+    }, 300);
 }
 
 // Delete document function
@@ -660,10 +734,13 @@ document.addEventListener('DOMContentLoaded', function() {
     // Update proses tab button state
     updateProsesTabButton();
 
-    // Auto-scroll to first incomplete document
+    // Auto-scroll to first incomplete document (mobile only)
     function scrollToFirstIncomplete() {
-        // Check if we're on mobile or desktop
+        // Only run on mobile view
         const isMobile = window.innerWidth < 768;
+        if (!isMobile) {
+            return; // Skip auto-scroll on desktop
+        }
         
         // Get all document cards/rows
         const docElements = document.querySelectorAll('.doc-card');

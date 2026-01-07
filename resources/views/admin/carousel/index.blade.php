@@ -6,8 +6,8 @@
     <div class="mb-6 sm:mb-8">
         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div>
-                <h1 class="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">Kelola Carousel Login</h1>
-                <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">Atur gambar dan teks yang tampil di halaman login</p>
+                <h1 class="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">Kelola Carousel</h1>
+                <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">Atur gambar dan teks yang tampil di halaman login & dashboard guru</p>
             </div>
             <button onclick="openAddModal()" class="inline-flex items-center gap-2 px-4 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-xl transition-colors shadow-md">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -294,11 +294,16 @@
     }
     
     function confirmDelete(id) {
-        if (confirm('Apakah Anda yakin ingin menghapus slide ini?')) {
-            const form = document.getElementById('deleteForm');
-            form.action = `${carouselBaseUrl}/${id}`;
-            form.submit();
-        }
+        showConfirmModal(
+            'Apakah Anda yakin ingin menghapus slide ini?',
+            'Konfirmasi Hapus Slide',
+            function() {
+                const form = document.getElementById('deleteForm');
+                form.action = `${carouselBaseUrl}/${id}`;
+                form.submit();
+            },
+            { type: 'danger', confirmText: 'Ya, Hapus' }
+        );
     }
 </script>
 @endsection

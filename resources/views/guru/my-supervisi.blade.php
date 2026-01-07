@@ -201,10 +201,10 @@
                                     </svg>
                                     Lanjutkan
                                 </a>
-                                <form action="{{ route('guru.supervisi.delete', $item->id) }}" method="POST" class="inline-block" onsubmit="return confirm('Apakah Anda yakin ingin menghapus supervisi ini?')">
+                                <form id="delete-form-{{ $item->id }}" action="{{ route('guru.supervisi.delete', $item->id) }}" method="POST" class="inline-block">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="inline-flex items-center gap-1 sm:gap-1.5 px-2.5 py-1 sm:px-4 sm:py-1.5 bg-red-600 hover:bg-red-700 text-white text-[10px] sm:text-xs font-semibold rounded-md sm:rounded-lg transition-all shadow-sm">
+                                    <button type="button" onclick="confirmDeleteSupervisi('delete-form-{{ $item->id }}')" class="inline-flex items-center gap-1 sm:gap-1.5 px-2.5 py-1 sm:px-4 sm:py-1.5 bg-red-600 hover:bg-red-700 text-white text-[10px] sm:text-xs font-semibold rounded-md sm:rounded-lg transition-all shadow-sm">
                                         <svg class="w-3 h-3 sm:w-4 sm:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
                                         </svg>
@@ -486,4 +486,18 @@
         </div>
     </div>
 </div>
+
+<script>
+// Helper function for delete confirmation
+function confirmDeleteSupervisi(formId) {
+    showConfirmModal(
+        'Apakah Anda yakin ingin menghapus supervisi ini? Data yang dihapus tidak dapat dikembalikan.',
+        'Konfirmasi Hapus Supervisi',
+        function() {
+            document.getElementById(formId).submit();
+        },
+        { type: 'danger', confirmText: 'Ya, Hapus' }
+    );
+}
+</script>
 @endsection

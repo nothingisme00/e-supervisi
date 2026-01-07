@@ -18,7 +18,13 @@ class SupervisiController extends Controller
     {
         $status = $request->get('status', Supervisi::STATUS_SUBMITTED);
         
-        $query = Supervisi::with(['user', 'dokumenEvaluasi', 'prosesPembelajaran', 'feedback'])
+        // Optimized eager loading - only load needed columns, use withCount for feedback
+        $query = Supervisi::with([
+                'user:id,name,nik,tingkat',
+                'dokumenEvaluasi:id,supervisi_id,jenis_dokumen,nama_file',
+                'prosesPembelajaran:id,supervisi_id,link_video,link_meeting'
+            ])
+            ->withCount('feedback')
             ->whereIn('status', [Supervisi::STATUS_SUBMITTED, Supervisi::STATUS_UNDER_REVIEW, Supervisi::STATUS_COMPLETED]);
 
         // Filter by status
@@ -46,10 +52,11 @@ class SupervisiController extends Controller
     public function show($id)
     {
         $supervisi = Supervisi::with([
-            'user',
+            'user:id,name,nik,email,tingkat,mata_pelajaran',
             'dokumenEvaluasi',
             'prosesPembelajaran',
-            'feedback.admin'
+            'feedback.user:id,name,role',
+            'feedback.replies.user:id,name,role'
         ])->findOrFail($id);
 
         // Auto-mark as under_review if submitted

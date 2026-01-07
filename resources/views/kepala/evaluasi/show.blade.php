@@ -656,9 +656,14 @@ function confirmComplete() {
         return false;
     }
 
-    if (confirm('Apakah Anda yakin ingin menandai supervisi ini sebagai selesai ditinjau?\n\nStatus akan berubah menjadi "Telah Selesai" dan supervisi akan dipindahkan ke tab Telah Selesai.')) {
-        document.getElementById('completeForm').submit();
-    }
+    showConfirmModal(
+        'Apakah Anda yakin ingin menandai supervisi ini sebagai selesai ditinjau? Status akan berubah menjadi "Telah Selesai" dan supervisi akan dipindahkan ke tab Telah Selesai.',
+        'Konfirmasi Selesaikan Tinjauan',
+        function() {
+            document.getElementById('completeForm').submit();
+        },
+        { type: 'info', confirmText: 'Ya, Selesaikan' }
+    );
 }
 
 // Revision Modal Functions
