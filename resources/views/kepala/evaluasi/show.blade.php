@@ -3,15 +3,6 @@
 @section('page-title', 'Detail Evaluasi Supervisi - ' . $supervisi->user->name)
 
 @section('content')
-<!-- Breadcrumb -->
-<div class="mb-2 sm:mb-4">
-    <x-breadcrumb :items="[
-        ['label' => 'Dashboard', 'url' => route('kepala.dashboard')],
-        ['label' => 'Evaluasi Supervisi', 'url' => route('kepala.evaluasi.index')],
-        ['label' => 'Detail', 'icon' => true]
-    ]" />
-</div>
-
 <div class="w-full lg:w-3/4 mx-auto px-0 sm:px-4 pb-24 md:pb-0">
     
     <!-- Back Button -->

@@ -17,11 +17,6 @@
         transform: scale(1);
     }
 </style>
-<x-breadcrumb :items="[
-    ['label' => 'Dashboard', 'url' => route('admin.dashboard')],
-    ['label' => 'Kelola Pengguna', 'url' => route('admin.users.index')],
-    ['label' => 'Tambah Pengguna']
-]" />
 
 <div class="max-w-3xl mx-auto pb-24 md:pb-0">
     <div class="bg-white dark:bg-gray-800 rounded-md sm:rounded-lg border border-gray-200 dark:border-gray-700 p-3 sm:p-6 lg:p-8">

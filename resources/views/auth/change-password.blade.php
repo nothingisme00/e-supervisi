@@ -275,7 +275,7 @@
                 @foreach($carouselSlides as $index => $slide)
                 <div class="carousel-slide">
                     @if($slide->image_path)
-                        <img alt="{{ $slide->title }}" class="transform scale-105" src="{{ $slide->image_url }}"/>
+                        <img alt="{{ $slide->title }}" class="transform scale-105" src="{{ $slide->image_url }}" loading="lazy" decoding="async"/>
                     @else
                         <div class="w-full h-full bg-slate-800 flex items-center justify-center">
                             <span class="material-symbols-outlined text-9xl text-slate-600">image</span>
@@ -306,7 +306,7 @@
             @else
                 <!-- Fallback Static Slide -->
                 <div class="carousel-slide">
-                    <img alt="Teachers collaborating" class="transform scale-105" src="https://images.unsplash.com/photo-1524178232363-1fb2b075b655?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80"/>
+                    <img alt="Teachers collaborating" class="transform scale-105" src="https://images.unsplash.com/photo-1524178232363-1fb2b075b655?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80" loading="lazy" decoding="async"/>
                     <div class="absolute inset-0 bg-gradient-to-r from-background-dark/80 via-transparent to-transparent"></div>
                     <div class="absolute inset-0 bg-gradient-to-t from-background-dark/90 via-background-dark/20 to-transparent"></div>
                     

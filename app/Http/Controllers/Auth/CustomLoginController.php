@@ -37,7 +37,7 @@ class CustomLoginController extends Controller
             'role' => $request->role
         ];
 
-        if (Auth::attempt($credentials, $request->remember)) {
+        if (Auth::attempt($credentials, $request->boolean('remember'))) {
             $user = Auth::user();
 
             // Cek apakah user aktif

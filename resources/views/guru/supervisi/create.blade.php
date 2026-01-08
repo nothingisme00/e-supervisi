@@ -3,15 +3,6 @@
 @section('page-title', 'Mulai Supervisi Pembelajaran Baru')
 
 @section('content')
-<!-- Breadcrumb -->
-<div class="mb-2 sm:mb-4 px-0 sm:px-0">
-    <x-breadcrumb :items="[
-        ['label' => 'Beranda', 'url' => route('guru.home')],
-        ['label' => 'Supervisi'],
-        ['label' => 'Buat Baru', 'icon' => true]
-    ]" />
-</div>
-
 <!-- Main Container -->
 <div class="max-w-3xl mx-auto px-0 sm:px-4 pb-24 md:pb-0">
     <!-- Confirmation Card -->

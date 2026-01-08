@@ -4,11 +4,6 @@
 
 @section('content')
 <div class="w-full lg:w-11/12 xl:w-5/6 mx-auto px-0 sm:px-3 md:px-6 lg:px-8">
-    <!-- Breadcrumb -->
-    <x-breadcrumb :items="[
-        ['label' => 'Dashboard Guru', 'icon' => true]
-    ]" />
-
     <!-- Hero Carousel Section -->
     @if(isset($carouselSlides) && $carouselSlides->count() > 0)
     <div class="mb-3 sm:mb-4 md:mb-6">
@@ -18,7 +13,7 @@
                 @foreach($carouselSlides as $index => $slide)
                 <div class="guru-carousel-slide flex-shrink-0 w-full h-full relative">
                     @if($slide->image_path)
-                        <img src="{{ $slide->image_url }}" alt="{{ $slide->title }}" class="w-full h-full object-cover">
+                        <img src="{{ $slide->image_url }}" alt="{{ $slide->title }}" class="w-full h-full object-cover" loading="lazy" decoding="async">
                     @else
                         <div class="w-full h-full bg-gradient-to-br from-indigo-600 via-purple-600 to-indigo-800 flex items-center justify-center">
                             <svg class="w-12 h-12 sm:w-16 sm:h-16 text-white/30" fill="none" stroke="currentColor" viewBox="0 0 24 24">

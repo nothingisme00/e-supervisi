@@ -5,11 +5,6 @@
 @section('hide-back-to-top', true)
 
 @section('content')
-<!-- Breadcrumb -->
-<div class="mb-4">
-    <x-breadcrumb :items="[['label' => 'Pengaturan', 'icon' => true]]" />
-</div>
-
 <div class="max-w-7xl mx-auto pb-24 md:pb-0">
     <!-- Page Header -->
     <div class="mb-6">

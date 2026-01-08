@@ -18,11 +18,6 @@
         color: rgb(129 140 248);
     }
 </style>
-<x-breadcrumb :items="[
-    ['label' => 'Dashboard', 'url' => route('admin.dashboard')],
-    ['label' => 'Kelola Pengguna', 'url' => route('admin.users.index')],
-    ['label' => 'Edit Pengguna']
-]" />
 
 <div class="max-w-3xl mx-auto pb-24 md:pb-0">
     <!-- Warning Banner untuk Edit Diri Sendiri -->

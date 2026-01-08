@@ -3,15 +3,6 @@
 @section('page-title', 'Lembar Evaluasi Diri')
 
 @section('content')
-<!-- Breadcrumb -->
-<div class="mb-2 sm:mb-4">
-    <x-breadcrumb :items="[
-        ['label' => 'Beranda', 'url' => route('guru.home')],
-        ['label' => 'Supervisi'],
-        ['label' => 'Evaluasi Diri', 'icon' => true]
-    ]" />
-</div>
-
 <!-- Wrapper Container (3/4 width, centered) -->
 <div class="w-full lg:w-3/4 mx-auto px-0 sm:px-4 pb-24 md:pb-0">
 

@@ -3,11 +3,6 @@
 @section('page-title', 'Kelola Pengguna')
 
 @section('content')
-<x-breadcrumb :items="[
-    ['label' => 'Dashboard', 'url' => route('admin.dashboard')],
-    ['label' => 'Kelola Pengguna']
-]" />
-
 <!-- Livewire User Management Component -->
 @livewire('admin.user-management')
 

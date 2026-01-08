@@ -1692,14 +1692,53 @@ if (backToTopBtn) {
     // CONFIGURATION
     const INACTIVITY_TIMEOUT = 10 * 60 * 1000; // 10 menit
     const WARNING_SECONDS = 15; // Warning 15 detik sebelum logout
+    const STORAGE_KEY = 'lastActivityTime';
+    const LOGOUT_TIME_KEY = 'sessionLogoutTime';
     
     let logoutTimer = null;
     let countdownInterval = null;
     let warningModal = null;
     let isLoggingOut = false;
+    let warningStartTime = null;
     
     // Hitung kapan warning muncul
     const WARNING_TIME = INACTIVITY_TIMEOUT - (WARNING_SECONDS * 1000);
+    
+    // Simpan waktu aktivitas terakhir ke localStorage
+    function saveActivityTime() {
+        const now = Date.now();
+        localStorage.setItem(STORAGE_KEY, now.toString());
+        // Reset logout time saat ada aktivitas
+        localStorage.removeItem(LOGOUT_TIME_KEY);
+    }
+    
+    // Ambil waktu aktivitas terakhir
+    function getLastActivityTime() {
+        const stored = localStorage.getItem(STORAGE_KEY);
+        return stored ? parseInt(stored, 10) : Date.now();
+    }
+    
+    // Cek apakah session sudah expired
+    function isSessionExpired() {
+        const lastActivity = getLastActivityTime();
+        const elapsed = Date.now() - lastActivity;
+        return elapsed >= INACTIVITY_TIMEOUT;
+    }
+    
+    // Cek apakah sudah melewati warning time
+    function shouldShowWarning() {
+        const lastActivity = getLastActivityTime();
+        const elapsed = Date.now() - lastActivity;
+        return elapsed >= WARNING_TIME && elapsed < INACTIVITY_TIMEOUT;
+    }
+    
+    // Hitung sisa waktu countdown
+    function getRemainingSeconds() {
+        const lastActivity = getLastActivityTime();
+        const elapsed = Date.now() - lastActivity;
+        const remaining = INACTIVITY_TIMEOUT - elapsed;
+        return Math.max(0, Math.ceil(remaining / 1000));
+    }
     
     // Stop semua timer
     function stopAllTimers() {
@@ -1719,6 +1758,8 @@ if (backToTopBtn) {
         
         stopAllTimers();
         hideWarning();
+        saveActivityTime();
+        warningStartTime = null;
         
         // Set timer untuk menampilkan warning
         logoutTimer = setTimeout(showWarningAndStartCountdown, WARNING_TIME);
@@ -1728,7 +1769,20 @@ if (backToTopBtn) {
     function showWarningAndStartCountdown() {
         if (isLoggingOut) return;
         
-        let secondsRemaining = WARNING_SECONDS;
+        // Simpan waktu mulai warning jika belum ada
+        if (!warningStartTime) {
+            warningStartTime = Date.now();
+            // Simpan logout time ke localStorage
+            localStorage.setItem(LOGOUT_TIME_KEY, (Date.now() + (WARNING_SECONDS * 1000)).toString());
+        }
+        
+        let secondsRemaining = getRemainingSeconds();
+        
+        // Jika sudah 0 atau kurang, langsung logout
+        if (secondsRemaining <= 0) {
+            performLogout();
+            return;
+        }
         
         // Buat modal jika belum ada
         if (!warningModal) {
@@ -1765,9 +1819,9 @@ if (backToTopBtn) {
             resetTimer();
         });
         
-        // Countdown interval
+        // Countdown interval - cek setiap 500ms untuk responsif
         countdownInterval = setInterval(function() {
-            secondsRemaining--;
+            secondsRemaining = getRemainingSeconds();
             const countdownEl = document.getElementById('logout-countdown');
             if (countdownEl) {
                 countdownEl.textContent = secondsRemaining;
@@ -1778,7 +1832,7 @@ if (backToTopBtn) {
                 stopAllTimers();
                 performLogout();
             }
-        }, 1000);
+        }, 500);
     }
     
     // Sembunyikan warning modal
@@ -1796,6 +1850,10 @@ if (backToTopBtn) {
         stopAllTimers();
         hideWarning();
         
+        // Bersihkan localStorage
+        localStorage.removeItem(STORAGE_KEY);
+        localStorage.removeItem(LOGOUT_TIME_KEY);
+        
         // Submit logout form
         const form = document.createElement('form');
         form.method = 'POST';
@@ -1805,14 +1863,125 @@ if (backToTopBtn) {
         form.submit();
     }
     
-    // Track aktivitas user
-    const activityEvents = ['mousedown', 'mousemove', 'keypress', 'scroll', 'touchstart', 'click'];
+    // Cek status session saat visibility berubah (user kembali ke tab)
+    function checkSessionOnVisibilityChange() {
+        if (document.visibilityState === 'visible') {
+            // User kembali ke tab - cek apakah session expired
+            if (isSessionExpired()) {
+                // Session sudah expired, langsung logout
+                performLogout();
+                return;
+            }
+            
+            // Cek apakah harus tampilkan warning
+            if (shouldShowWarning()) {
+                // Masih dalam periode warning, tampilkan modal dengan sisa waktu
+                stopAllTimers();
+                showWarningAndStartCountdown();
+            } else {
+                // Session masih aktif, hitung ulang timer
+                const lastActivity = getLastActivityTime();
+                const elapsed = Date.now() - lastActivity;
+                const remainingToWarning = WARNING_TIME - elapsed;
+                
+                if (remainingToWarning > 0) {
+                    stopAllTimers();
+                    hideWarning();
+                    logoutTimer = setTimeout(showWarningAndStartCountdown, remainingToWarning);
+                }
+            }
+        }
+    }
+    
+    // Cek session saat focus (backup untuk visibilitychange)
+    function checkSessionOnFocus() {
+        if (isSessionExpired()) {
+            performLogout();
+            return;
+        }
+        
+        if (shouldShowWarning() && (!warningModal || warningModal.style.display === 'none')) {
+            stopAllTimers();
+            showWarningAndStartCountdown();
+        }
+    }
+    
+    // Track aktivitas user - dengan debounce untuk performa
+    let activityDebounce = null;
+    function handleActivity() {
+        if (activityDebounce) return;
+        activityDebounce = setTimeout(function() {
+            activityDebounce = null;
+        }, 1000);
+        
+        // Jangan reset jika warning modal sedang tampil dan user tidak klik tombol
+        if (warningModal && warningModal.style.display === 'block') {
+            return;
+        }
+        
+        resetTimer();
+    }
+    
+    const activityEvents = ['mousedown', 'keypress', 'scroll', 'touchstart', 'click'];
     activityEvents.forEach(function(eventName) {
-        document.addEventListener(eventName, resetTimer, { passive: true });
+        document.addEventListener(eventName, handleActivity, { passive: true });
     });
     
-    // Mulai timer saat load
-    resetTimer();
+    // Listen untuk visibility change (user pindah/kembali tab)
+    document.addEventListener('visibilitychange', checkSessionOnVisibilityChange);
+    
+    // Listen untuk focus (backup)
+    window.addEventListener('focus', checkSessionOnFocus);
+    
+    // Periodic check setiap 30 detik (backup jika timer throttled)
+    setInterval(function() {
+        if (document.visibilityState === 'visible' && !isLoggingOut) {
+            if (isSessionExpired()) {
+                performLogout();
+            } else if (shouldShowWarning() && (!warningModal || warningModal.style.display === 'none')) {
+                showWarningAndStartCountdown();
+            }
+        }
+    }, 30000);
+    
+    // Inisialisasi saat load
+    function init() {
+        // Cek apakah ada stored logout time yang sudah lewat
+        const storedLogoutTime = localStorage.getItem(LOGOUT_TIME_KEY);
+        if (storedLogoutTime && Date.now() >= parseInt(storedLogoutTime, 10)) {
+            // Waktu logout sudah lewat, langsung logout
+            performLogout();
+            return;
+        }
+        
+        // Cek session expired
+        if (isSessionExpired()) {
+            performLogout();
+            return;
+        }
+        
+        // Cek apakah perlu tampilkan warning
+        if (shouldShowWarning()) {
+            showWarningAndStartCountdown();
+            return;
+        }
+        
+        // Jika tidak ada stored activity time, set sekarang
+        if (!localStorage.getItem(STORAGE_KEY)) {
+            saveActivityTime();
+        }
+        
+        // Hitung sisa waktu ke warning
+        const lastActivity = getLastActivityTime();
+        const elapsed = Date.now() - lastActivity;
+        const remainingToWarning = Math.max(0, WARNING_TIME - elapsed);
+        
+        // Set timer
+        logoutTimer = setTimeout(showWarningAndStartCountdown, remainingToWarning);
+    }
+    
+    // Mulai
+    init();
     
     // Re-init saat Livewire navigate
     document.addEventListener('livewire:navigated', function() {
@@ -1821,7 +1990,9 @@ if (backToTopBtn) {
     });
     
     // Cleanup saat halaman unload
-    window.addEventListener('beforeunload', stopAllTimers);
+    window.addEventListener('beforeunload', function() {
+        stopAllTimers();
+    });
 })();
 </script>
 @endauth

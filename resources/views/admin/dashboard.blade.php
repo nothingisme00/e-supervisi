@@ -3,12 +3,6 @@
 @section('page-title', 'Dashboard Admin')
 
 @section('content')
-
-<!-- Breadcrumb -->
-<x-breadcrumb :items="[
-    ['label' => 'Dashboard Admin', 'icon' => true]
-]" />
-
 <!-- Main Container -->
 <div class="bg-white dark:bg-gray-800 rounded-md sm:rounded-xl p-2.5 sm:p-5 shadow-sm">
 

@@ -4,12 +4,6 @@
 
 @section('content')
 <div class="w-full lg:w-11/12 xl:w-5/6 mx-auto px-0 sm:px-4 md:px-6 lg:px-8">
-    <!-- Breadcrumb -->
-    <x-breadcrumb :items="[
-        ['label' => 'Beranda', 'url' => route('guru.home')],
-        ['label' => 'Supervisi Saya', 'icon' => true]
-    ]" />
-
     <!-- Main Container -->
     <div class="bg-gray-50 dark:bg-gray-900/30 rounded-lg md:rounded-2xl p-1.5 sm:p-3 md:p-5 lg:p-6 mb-2 sm:mb-4 md:mb-6">
         <!-- Header Card -->
