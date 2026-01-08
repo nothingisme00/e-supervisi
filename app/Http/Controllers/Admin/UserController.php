@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -75,15 +76,15 @@ class UserController extends Controller
             'nik' => 'required|string|size:16|regex:/^[0-9]{16}$/|unique:users',
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users',
-            'role' => 'required|in:admin,guru,kepala_sekolah',
+            'role' => 'required|in:' . User::ROLE_ADMIN . ',' . User::ROLE_GURU . ',' . User::ROLE_KEPALA_SEKOLAH,
         ];
 
         // Add conditional validation for guru and kepala_sekolah
-        if ($request->role === 'guru' || $request->role === 'kepala_sekolah') {
+        if ($request->role === User::ROLE_GURU || $request->role === User::ROLE_KEPALA_SEKOLAH) {
             $rules['tingkat'] = 'required|in:SD,SMP';
         }
 
-        if ($request->role === 'guru') {
+        if ($request->role === User::ROLE_GURU) {
             $rules['mata_pelajaran'] = 'required|string|max:255';
         }
 
@@ -96,8 +97,8 @@ class UserController extends Controller
             'email' => $request->email,
             'password' => Hash::make($defaultPassword),
             'role' => $request->role,
-            'tingkat' => ($request->role === 'guru' || $request->role === 'kepala_sekolah') ? $request->tingkat : null,
-            'mata_pelajaran' => ($request->role === 'guru') ? $request->mata_pelajaran : null,
+            'tingkat' => ($request->role === User::ROLE_GURU || $request->role === User::ROLE_KEPALA_SEKOLAH) ? $request->tingkat : null,
+            'mata_pelajaran' => ($request->role === User::ROLE_GURU) ? $request->mata_pelajaran : null,
             'is_active' => true,
             'must_change_password' => true
         ];
@@ -105,9 +106,9 @@ class UserController extends Controller
         User::create($userData);
 
         $roleName = [
-            'admin' => 'Admin',
-            'guru' => 'Guru',
-            'kepala_sekolah' => 'Kepala Sekolah'
+            User::ROLE_ADMIN => 'Admin',
+            User::ROLE_GURU => 'Guru',
+            User::ROLE_KEPALA_SEKOLAH => 'Kepala Sekolah'
         ];
 
         return redirect()->route('admin.users.index')
@@ -117,7 +118,7 @@ class UserController extends Controller
     public function edit($id)
     {
         $user = User::findOrFail($id);
-        $isEditingSelf = auth()->id() == $user->id;
+        $isEditingSelf = Auth::id() == $user->id;
         
         return view('admin.users.edit', compact('user', 'isEditingSelf'));
     }
@@ -125,22 +126,22 @@ class UserController extends Controller
     public function update(Request $request, $id)
     {
         $user = User::findOrFail($id);
-        $isEditingSelf = auth()->id() == $user->id;
+        $isEditingSelf = Auth::id() == $user->id;
 
         // Validation rules
         $rules = [
             'nik' => 'required|string|size:16|regex:/^[0-9]{16}$/|unique:users,nik,' . $id,
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email,' . $id,
-            'role' => 'required|in:admin,guru,kepala_sekolah',
+            'role' => 'required|in:' . User::ROLE_ADMIN . ',' . User::ROLE_GURU . ',' . User::ROLE_KEPALA_SEKOLAH,
         ];
 
         // Add conditional validation for guru and kepala_sekolah
-        if ($request->role === 'guru' || $request->role === 'kepala_sekolah') {
+        if ($request->role === User::ROLE_GURU || $request->role === User::ROLE_KEPALA_SEKOLAH) {
             $rules['tingkat'] = 'required|in:SD,SMP';
         }
 
-        if ($request->role === 'guru') {
+        if ($request->role === User::ROLE_GURU) {
             $rules['mata_pelajaran'] = 'required|string|max:255';
         }
 
@@ -152,8 +153,8 @@ class UserController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'role' => $request->role,
-            'tingkat' => ($request->role === 'guru' || $request->role === 'kepala_sekolah') ? $request->tingkat : null,
-            'mata_pelajaran' => ($request->role === 'guru') ? $request->mata_pelajaran : null,
+            'tingkat' => ($request->role === User::ROLE_GURU || $request->role === User::ROLE_KEPALA_SEKOLAH) ? $request->tingkat : null,
+            'mata_pelajaran' => ($request->role === User::ROLE_GURU) ? $request->mata_pelajaran : null,
         ];
 
         $user->update($userData);
@@ -164,9 +165,9 @@ class UserController extends Controller
         }
 
         $roleName = [
-            'admin' => 'Admin',
-            'guru' => 'Guru',
-            'kepala_sekolah' => 'Kepala Sekolah'
+            User::ROLE_ADMIN => 'Admin',
+            User::ROLE_GURU => 'Guru',
+            User::ROLE_KEPALA_SEKOLAH => 'Kepala Sekolah'
         ];
 
         return redirect()->route('admin.users.index')
@@ -195,7 +196,7 @@ class UserController extends Controller
             $user = User::findOrFail($id);
 
             // Prevent deleting self
-            if ($user->id === auth()->id()) {
+            if ($user->id === Auth::id()) {
                 return redirect()->route('admin.users.index')
                     ->with('error', 'Anda tidak dapat menghapus akun Anda sendiri');
             }

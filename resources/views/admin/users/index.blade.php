@@ -3,11 +3,6 @@
 @section('page-title', 'Kelola Pengguna')
 
 @section('content')
-<x-breadcrumb :items="[
-    ['label' => 'Dashboard', 'url' => route('admin.dashboard')],
-    ['label' => 'Kelola Pengguna']
-]" />
-
 <!-- Livewire User Management Component -->
 @livewire('admin.user-management')
 
@@ -32,45 +27,53 @@
     // Handle delete form submission
     function handleDelete(event, userName) {
         event.preventDefault();
-        const confirmed = confirm(`Apakah Anda yakin ingin menghapus pengguna ${userName}?\n\nData yang dihapus tidak dapat dikembalikan.`);
-        if (confirmed) {
-            event.target.submit();
-        }
+        const form = event.target;
+        showConfirmModal(
+            `Apakah Anda yakin ingin menghapus pengguna ${userName}? Data yang dihapus tidak dapat dikembalikan.`,
+            'Konfirmasi Hapus',
+            function() {
+                form.submit();
+            },
+            { type: 'danger', confirmText: 'Ya, Hapus' }
+        );
         return false;
     }
 
     // Reset password
     function resetPassword(userId, userName) {
-        if (!confirm(`Apakah Anda yakin ingin mereset password untuk user "${userName}"?\n\nPassword akan direset ke: pass123456`)) {
-            return;
-        }
+        showConfirmModal(
+            `Apakah Anda yakin ingin mereset password untuk user "${userName}"? Password akan direset ke: pass123456`,
+            'Konfirmasi Reset Password',
+            function() {
+                const url = `{{ url('admin/users') }}/${userId}/reset-password`;
 
-        const url = `{{ url('admin/users') }}/${userId}/reset-password`;
-
-        fetch(url, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-            }
-        })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            return response.json();
-        })
-        .then(data => {
-            if (data.success) {
-                alert('Password Berhasil Direset!\n\n' + data.message);
-            } else {
-                throw new Error('Response success is false');
-            }
-        })
-        .catch(error => {
-            console.error('Error details:', error);
-            alert('Terjadi kesalahan saat mereset password. Silakan coba lagi.\n\nError: ' + error.message);
-        });
+                fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                    }
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.success) {
+                        showToast(data.message || 'Password berhasil direset!', 'success');
+                    } else {
+                        showToast(data.message || 'Gagal mereset password', 'error');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    showToast('Terjadi kesalahan saat mereset password', 'error');
+                });
+            },
+            { type: 'warning', confirmText: 'Ya, Reset Password' }
+        );
     }
 
     // Listen for Livewire events

@@ -7,6 +7,7 @@ use App\Models\Supervisi;
 use App\Models\ProsesPembelajaran;
 use App\Models\DokumenEvaluasi;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ProsesController extends Controller
 {
@@ -25,8 +26,8 @@ class ProsesController extends Controller
     {
         // Allow access to proses page for both draft and revision status
         $supervisi = Supervisi::where('id', $id)
-            ->where('user_id', auth()->id())
-            ->whereIn('status', ['draft', 'revision'])
+            ->where('user_id', Auth::id())
+            ->whereIn('status', [Supervisi::STATUS_DRAFT, Supervisi::STATUS_REVISION])
             ->firstOrFail();
 
         // Check if all required documents are uploaded
@@ -72,8 +73,8 @@ class ProsesController extends Controller
         ]);
 
         Supervisi::where('id', $id)
-            ->where('user_id', auth()->id())
-            ->whereIn('status', ['draft', 'revision'])
+            ->where('user_id', Auth::id())
+            ->whereIn('status', [Supervisi::STATUS_DRAFT, Supervisi::STATUS_REVISION])
             ->firstOrFail();
 
         ProsesPembelajaran::updateOrCreate(
@@ -98,8 +99,8 @@ class ProsesController extends Controller
     public function submit($id)
     {
         $supervisi = Supervisi::where('id', $id)
-            ->where('user_id', auth()->id())
-            ->whereIn('status', ['draft', 'revision'])
+            ->where('user_id', Auth::id())
+            ->whereIn('status', [Supervisi::STATUS_DRAFT, Supervisi::STATUS_REVISION])
             ->firstOrFail();
 
         // Check if proses data exists and all mandatory fields are filled
@@ -120,7 +121,7 @@ class ProsesController extends Controller
 
         // Update status to submitted and set tanggal_supervisi
         $supervisi->update([
-            'status' => 'submitted',
+            'status' => Supervisi::STATUS_SUBMITTED,
             'tanggal_supervisi' => now() // Set tanggal saat submit
         ]);
 

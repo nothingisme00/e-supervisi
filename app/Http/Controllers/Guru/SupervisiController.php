@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Supervisi;
 use App\Models\DokumenEvaluasi;
 use App\Models\ProsesPembelajaran;
+use App\Services\ImageService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -13,6 +14,13 @@ class SupervisiController extends Controller
 {
     // Required documents count for supervisi evaluation
     private const REQUIRED_DOCUMENTS_COUNT = 7;
+
+    protected $imageService;
+
+    public function __construct(ImageService $imageService)
+    {
+        $this->imageService = $imageService;
+    }
 
     public function create()
     {
@@ -91,19 +99,37 @@ class SupervisiController extends Controller
                 $existingDoc->delete();
             }
 
-            // Upload new file with sanitized filename
+            // Upload new file with optimization for images
             $file = $request->file('file');
-            $jenisDoc = preg_replace('/[^a-zA-Z0-9_-]/', '', $request->jenis_dokumen);
-            $filename = time() . '_' . $jenisDoc . '.' . $file->getClientOriginalExtension();
-            $path = $file->storeAs('supervisi/' . $id, $filename, 'public');
+            $extension = strtolower($file->getClientOriginalExtension());
+            $isImage = in_array($extension, ['jpg', 'jpeg', 'png']);
+
+            if ($isImage) {
+                // Kompresi dan optimasi gambar dokumen (max 1920px, quality 90%)
+                $path = $this->imageService->uploadDocument($file, 'supervisi/' . $id);
+                if (!$path) {
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'Gagal mengoptimasi gambar'
+                    ], 500);
+                }
+                // Get file size after optimization
+                $fileSize = Storage::disk('public')->size($path);
+            } else {
+                // PDF - store without compression
+                $jenisDoc = preg_replace('/[^a-zA-Z0-9_-]/', '', $request->jenis_dokumen);
+                $filename = time() . '_' . $jenisDoc . '.' . $extension;
+                $path = $file->storeAs('supervisi/' . $id, $filename, 'public');
+                $fileSize = $file->getSize();
+            }
 
             DokumenEvaluasi::create([
                 'supervisi_id' => $id,
                 'jenis_dokumen' => $request->jenis_dokumen,
                 'nama_file' => $file->getClientOriginalName(),
                 'path_file' => $path,
-                'tipe_file' => $file->getClientOriginalExtension(),
-                'ukuran_file' => $file->getSize()
+                'tipe_file' => $extension,
+                'ukuran_file' => $fileSize
             ]);
 
             return response()->json([

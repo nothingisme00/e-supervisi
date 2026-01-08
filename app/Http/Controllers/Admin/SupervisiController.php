@@ -16,20 +16,26 @@ class SupervisiController extends Controller
      */
     public function index(Request $request)
     {
-        $status = $request->get('status', 'submitted');
+        $status = $request->get('status', Supervisi::STATUS_SUBMITTED);
         
-        $query = Supervisi::with(['user', 'dokumenEvaluasi', 'prosesPembelajaran', 'feedback'])
-            ->whereIn('status', ['submitted', 'under_review', 'completed']);
+        // Optimized eager loading - only load needed columns, use withCount for feedback
+        $query = Supervisi::with([
+                'user:id,name,nik,tingkat',
+                'dokumenEvaluasi:id,supervisi_id,jenis_dokumen,nama_file',
+                'prosesPembelajaran:id,supervisi_id,link_video,link_meeting'
+            ])
+            ->withCount('feedback')
+            ->whereIn('status', [Supervisi::STATUS_SUBMITTED, Supervisi::STATUS_UNDER_REVIEW, Supervisi::STATUS_COMPLETED]);
 
         // Filter by status
-        if ($status === 'submitted') {
-            $query->where('status', 'submitted');
+        if ($status === Supervisi::STATUS_SUBMITTED) {
+            $query->where('status', Supervisi::STATUS_SUBMITTED);
             $title = 'Menunggu Peninjauan';
-        } elseif ($status === 'under_review') {
-            $query->where('status', 'under_review');
+        } elseif ($status === Supervisi::STATUS_UNDER_REVIEW) {
+            $query->where('status', Supervisi::STATUS_UNDER_REVIEW);
             $title = 'Sedang Ditinjau';
-        } elseif ($status === 'completed') {
-            $query->where('status', 'completed');
+        } elseif ($status === Supervisi::STATUS_COMPLETED) {
+            $query->where('status', Supervisi::STATUS_COMPLETED);
             $title = 'Telah Ditinjau';
         } else {
             $title = 'Semua Supervisi';
@@ -46,16 +52,17 @@ class SupervisiController extends Controller
     public function show($id)
     {
         $supervisi = Supervisi::with([
-            'user',
+            'user:id,name,nik,email,tingkat,mata_pelajaran',
             'dokumenEvaluasi',
             'prosesPembelajaran',
-            'feedback.admin'
+            'feedback.user:id,name,role',
+            'feedback.replies.user:id,name,role'
         ])->findOrFail($id);
 
         // Auto-mark as under_review if submitted
-        if ($supervisi->status === 'submitted') {
+        if ($supervisi->status === Supervisi::STATUS_SUBMITTED) {
             $supervisi->update([
-                'status' => 'under_review',
+                'status' => Supervisi::STATUS_UNDER_REVIEW,
                 'reviewer_id' => Auth::id()
             ]);
         }
@@ -85,7 +92,7 @@ class SupervisiController extends Controller
         // Update status if mark as completed
         if ($request->mark_as_completed) {
             $supervisi->update([
-                'status' => 'completed',
+                'status' => Supervisi::STATUS_COMPLETED,
                 'reviewed_at' => now(),
                 'reviewer_id' => Auth::id()
             ]);

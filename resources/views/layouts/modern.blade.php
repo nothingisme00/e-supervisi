@@ -19,6 +19,9 @@
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     
+    <!-- Material Symbols -->
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+    
     <style>
         /* Global button cursor pointer */
         button, 
@@ -93,13 +96,202 @@
         [wire\:navigate] {
             transition: opacity 0.15s ease;
         }
+
+        /* Custom Dropdown Styles */
+        .dropdown-menu-custom {
+            display: none;
+            opacity: 0;
+            transform: scale(0.95);
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .dropdown-menu-custom.show {
+            display: block;
+            opacity: 1;
+            transform: scale(1);
+        }
+        .dropdown-item.active {
+            background-color: rgb(238 242 255);
+            color: rgb(79 70 229);
+        }
+        .dark .dropdown-item.active {
+            background-color: rgba(49, 46, 129, 0.3);
+            color: rgb(129 140 248);
+        }
+
+        /* Guide Modal Styles - Seamless Single Card Transitions */
+        #guideModalContent {
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        
+        #guideProgressBar {
+            transition: width 0.6s cubic-bezier(0.65, 0, 0.35, 1);
+        }
+        
+        #journeyStepsContainer {
+            position: relative;
+            min-height: 400px;
+        }
+        
+        .step-content {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(20px);
+            transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+            width: 100%;
+        }
+        
+        .step-content.active {
+            position: relative;
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+            z-index: 1;
+        }
+        
+        @keyframes fadeInUp {
+            from { 
+                opacity: 0; 
+                transform: translateY(15px);
+            }
+            to { 
+                opacity: 1; 
+                transform: translateY(0);
+            }
+        }
+
+        .guide-card {
+            border-radius: 20px;
+            overflow: hidden;
+            border: 1px solid rgba(0,0,0,0.05);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .step-content.active .guide-card {
+            animation: fadeInUp 0.5s ease backwards;
+        }
+        
+        .step-content.active .guide-card:nth-child(1) { animation-delay: 0.1s; }
+        .step-content.active .guide-card:nth-child(2) { animation-delay: 0.2s; }
+        .step-content.active .guide-card:nth-child(3) { animation-delay: 0.3s; }
+        .step-content.active .guide-card:nth-child(4) { animation-delay: 0.4s; }
+        .dark .guide-card {
+            border-color: rgba(255,255,255,0.05);
+        }
+
+        @keyframes bounce-subtle {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+
+        .animate-bounce-subtle {
+            animation: bounce-subtle 2s infinite ease-in-out;
+        }
+        }
     </style>
     
     @livewireStyles
 </head>
-<body class="bg-gray-300 text-gray-900 dark:bg-gray-950 dark:text-gray-100 transition-colors duration-300">
+<body class="bg-gray-300 text-gray-900 dark:bg-gray-950 dark:text-gray-100 transition-colors duration-300" @auth data-role="{{ auth()->user()->role }}" @endauth>
 
 @auth
+    <!-- Welcome Modal (shown only on first login) -->
+    @if(session('just_logged_in'))
+    @php
+        $hour = now()->format('H');
+        if ($hour >= 5 && $hour < 12) {
+            $greeting = 'Selamat Pagi';
+        } elseif ($hour >= 12 && $hour < 15) {
+            $greeting = 'Selamat Siang';
+        } elseif ($hour >= 15 && $hour < 18) {
+            $greeting = 'Selamat Sore';
+        } else {
+            $greeting = 'Selamat Malam';
+        }
+        
+        $role = auth()->user()->isAdmin() ? 'Administrator' : (auth()->user()->isGuru() ? 'Guru' : 'Kepala Sekolah');
+    @endphp
+    <style>
+        @keyframes checkDraw {
+            0% { stroke-dashoffset: 24; }
+            100% { stroke-dashoffset: 0; }
+        }
+        @keyframes iconPop {
+            0% { transform: scale(0); opacity: 0; }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        @keyframes progressShrink {
+            0% { width: 100%; }
+            100% { width: 0%; }
+        }
+        .welcome-check-icon { animation: iconPop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; }
+        .welcome-check-path { stroke-dasharray: 24; stroke-dashoffset: 24; animation: checkDraw 0.4s ease 0.3s forwards; }
+        .welcome-progress { animation: progressShrink 2.5s linear forwards; }
+    </style>
+    <div id="welcomeLoginModal" class="fixed inset-0 z-[9999] flex items-center justify-center p-4" style="background: rgba(15,23,42,0.4); backdrop-filter: blur(4px); opacity: 0; transition: opacity 0.3s ease;">
+        <div id="welcomeLoginModalContent" class="bg-white dark:bg-gray-900 rounded-2xl shadow-2xl w-full max-w-xs overflow-hidden" style="transform: translateY(16px); opacity: 0; transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);">
+            
+            <div class="pt-8 pb-6 px-6 text-center">
+                <!-- Animated Check Icon -->
+                <div class="welcome-check-icon mx-auto w-16 h-16 bg-gradient-to-br from-emerald-400 to-teal-500 rounded-full flex items-center justify-center mb-5 shadow-lg shadow-emerald-500/30" style="opacity: 0;">
+                    <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path class="welcome-check-path" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path>
+                    </svg>
+                </div>
+                
+                <!-- Greeting -->
+                <p class="text-xs font-medium text-gray-400 dark:text-gray-500 uppercase tracking-widest mb-2">{{ $greeting }}</p>
+                <h2 class="text-lg font-bold text-gray-900 dark:text-white mb-0.5">
+                    {{ auth()->user()->name }}
+                </h2>
+                <p class="text-sm text-indigo-500 dark:text-indigo-400 font-medium mb-4">{{ $role }}</p>
+                
+                <!-- Message -->
+                <p class="text-gray-500 dark:text-gray-400 text-sm">
+                    Login berhasil. Selamat bekerja!
+                </p>
+            </div>
+            
+            <!-- Progress Bar -->
+            <div class="h-1 bg-gray-100 dark:bg-gray-800">
+                <div class="welcome-progress h-full bg-gradient-to-r from-indigo-500 to-purple-500 rounded-r-full"></div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        (function() {
+            const modal = document.getElementById('welcomeLoginModal');
+            const content = document.getElementById('welcomeLoginModalContent');
+            
+            if (modal && content) {
+                setTimeout(function() {
+                    modal.style.opacity = '1';
+                    content.style.transform = 'translateY(0)';
+                    content.style.opacity = '1';
+                }, 50);
+                
+                setTimeout(function() {
+                    content.style.transform = 'translateY(-12px)';
+                    content.style.opacity = '0';
+                    modal.style.opacity = '0';
+                    
+                    setTimeout(function() {
+                        if (modal.parentNode) {
+                            modal.parentNode.removeChild(modal);
+                        }
+                    }, 300);
+                }, 2600);
+            }
+        })();
+    </script>
+    {{ session()->forget('just_logged_in') }}
+    @endif
+
     <!-- Livewire Navigate Loading Bar -->
     <div id="navigate-loading-bar" class="navigate-loading-bar" style="width: 0%; display: none;"></div>
 
@@ -127,7 +319,7 @@
                     </button>
                     
                     <!-- Logo & Brand - Clickable (Full reload to avoid SPA issues) -->
-                    <a href="@if(Auth::user()->isAdmin()){{ route('admin.dashboard') }}@elseif(Auth::user()->isGuru()){{ route('guru.home') }}@elseif(Auth::user()->isKepalaSekolah()){{ route('kepala.dashboard') }}@else{{ url('/') }}@endif" class="flex items-center gap-1.5 sm:gap-2 md:gap-2 lg:gap-2.5 hover:opacity-80 transition-opacity cursor-pointer group">
+                    <a href="{{ Auth::user()->isAdmin() ? route('admin.dashboard') : (Auth::user()->isGuru() ? route('guru.home') : (Auth::user()->isKepalaSekolah() ? route('kepala.dashboard') : url('/'))) }}" class="flex items-center gap-1.5 sm:gap-2 md:gap-2 lg:gap-2.5 hover:opacity-80 transition-opacity cursor-pointer group">
                         <div class="w-8 h-8 sm:w-9 sm:h-9 md:w-8 md:h-8 lg:w-9 lg:h-9 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-lg flex items-center justify-center shadow-md group-hover:shadow-lg transition-shadow">
                             <svg class="w-4.5 h-4.5 sm:w-5 sm:h-5 md:w-5 md:h-5 lg:w-5 lg:h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
@@ -402,7 +594,7 @@
             <div class="max-w-7xl mx-auto px-4">
                 <div class="flex flex-col md:flex-row items-center justify-between gap-4">
                     <!-- Left: Brand -->
-                    <a href="@if(Auth::user()->isAdmin()){{ route('admin.dashboard') }}@elseif(Auth::user()->isGuru()){{ route('guru.home') }}@elseif(Auth::user()->isKepalaSekolah()){{ route('kepala.dashboard') }}@endif" 
+                    <a href="{{ Auth::user()->isAdmin() ? route('admin.dashboard') : (Auth::user()->isGuru() ? route('guru.home') : (Auth::user()->isKepalaSekolah() ? route('kepala.dashboard') : url('/'))) }}" 
                        wire:navigate class="flex items-center gap-3 hover:opacity-80 transition-opacity group">
                         <div class="w-8 h-8 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-lg flex items-center justify-center shadow-sm group-hover:shadow-md transition-shadow">
                             <svg class="w-4.5 h-4.5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -722,294 +914,41 @@
 
     </div> <!-- Close app-wrapper -->
 
-    @auth
-    @if(Auth::user()->isAdmin() && !request()->routeIs('admin.dashboard'))
-    <!-- Admin Tips Modal (for non-dashboard pages) -->
-    <div id="adminTipsModal" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-[90] hidden items-center justify-center p-4 opacity-0 transition-opacity duration-500" onclick="if(event.target === this) closeAdminTipsModal();">
-        <div id="adminTipsModalContent" class="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl max-w-lg w-full max-h-[90vh] overflow-hidden transform scale-90 opacity-0 transition-all duration-500">
-            <!-- Header -->
-            <div class="bg-blue-600 px-6 py-4">
-                <div class="flex items-center justify-between">
-                    <div class="flex items-center gap-3">
-                        <div class="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center">
-                            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                            </svg>
-                        </div>
-                        <div>
-                            <h3 class="text-lg font-bold text-white">Tips & Informasi</h3>
-                            <p class="text-xs text-white opacity-70">Panduan cepat admin</p>
-                        </div>
-                    </div>
-                    <button onclick="closeAdminTipsModal()" class="w-9 h-9 rounded-lg hover:bg-white/20 flex items-center justify-center text-white transition-colors">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                        </svg>
-                    </button>
-                </div>
-            </div>
-            <!-- Content -->
-            <div class="p-4 overflow-y-auto max-h-[calc(90vh-140px)]">
-                <div class="space-y-3">
-                    <!-- Tip 1: Bottom Navigation -->
-                    <div class="flex gap-3 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-xl border border-blue-200 dark:border-blue-800">
-                        <svg class="w-5 h-5 text-blue-600 dark:text-blue-400 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-                        </svg>
-                        <div>
-                            <p class="font-semibold text-sm text-gray-900 dark:text-white mb-1">Navigasi Bawah</p>
-                            <p class="text-xs text-gray-600 dark:text-gray-400">Gunakan menu di bagian bawah layar untuk berpindah antara Dashboard, Users, dan Profil.</p>
-                        </div>
-                    </div>
 
-                    <!-- Tip 2: Dashboard Cards -->
-                    <div class="flex gap-3 p-3 bg-purple-50 dark:bg-purple-900/20 rounded-xl border border-purple-200 dark:border-purple-800">
-                        <svg class="w-5 h-5 text-purple-600 dark:text-purple-400 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
-                        </svg>
-                        <div>
-                            <p class="font-semibold text-sm text-gray-900 dark:text-white mb-1">Monitoring Supervisi</p>
-                            <p class="text-xs text-gray-600 dark:text-gray-400">Scroll card di Dashboard untuk melihat data Guru, Supervisi Dalam Proses, dan yang Selesai.</p>
-                        </div>
-                    </div>
-
-                    <!-- Tip 3: Add User -->
-                    <div class="flex gap-3 p-3 bg-emerald-50 dark:bg-emerald-900/20 rounded-xl border border-emerald-200 dark:border-emerald-800">
-                        <svg class="w-5 h-5 text-emerald-600 dark:text-emerald-400 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"></path>
-                        </svg>
-                        <div>
-                            <p class="font-semibold text-sm text-gray-900 dark:text-white mb-1">Tambah Pengguna</p>
-                            <p class="text-xs text-gray-600 dark:text-gray-400">Tap menu "Users" di navigasi bawah, lalu gunakan tombol + untuk menambah pengguna baru.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- Modal Footer -->
-            <div class="border-t-2 border-gray-300 dark:border-gray-600 px-4 py-3 bg-gray-50 dark:bg-gray-900/50">
-                <button onclick="closeAdminTipsModal()" class="w-full px-5 py-3 bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white font-bold rounded-xl transition-all shadow-md hover:shadow-lg text-sm">
-                    Mengerti
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Admin Guide Modal (for non-dashboard pages) -->
-    <div id="adminGuideModal" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-[90] hidden items-center justify-center p-4 opacity-0 transition-opacity duration-500" onclick="if(event.target === this) closeAdminGuideModal();">
-        <div id="adminGuideModalContent" class="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl max-w-lg w-full max-h-[90vh] overflow-hidden transform scale-90 opacity-0 transition-all duration-500">
-            <!-- Header -->
-            <div class="bg-indigo-600 px-6 py-4">
-                <div class="flex items-center justify-between">
-                    <div class="flex items-center gap-3">
-                        <div class="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center">
-                            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
-                            </svg>
-                        </div>
-                        <div>
-                            <h3 class="text-lg font-bold text-white">Panduan Admin</h3>
-                            <p class="text-xs text-white opacity-70">Cara menggunakan aplikasi</p>
-                        </div>
-                    </div>
-                    <button onclick="closeAdminGuideModal()" class="w-9 h-9 rounded-lg hover:bg-white/20 flex items-center justify-center text-white transition-colors">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                        </svg>
-                    </button>
-                </div>
-            </div>
-            <!-- Content -->
-            <div class="p-6 overflow-y-auto max-h-[60vh]">
-                <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">Panduan penggunaan aplikasi untuk perangkat mobile.</p>
-                
-                <div class="space-y-3">
-                    <!-- Item 1: Navigasi -->
-                    <div class="p-3 bg-blue-50 dark:bg-blue-900/20 rounded-xl border border-blue-200 dark:border-blue-800">
-                        <div class="flex items-start gap-3">
-                            <div class="w-8 h-8 bg-blue-600 dark:bg-blue-500 rounded-lg flex items-center justify-center flex-shrink-0">
-                                <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-                                </svg>
-                            </div>
-                            <div>
-                                <h4 class="font-bold text-sm text-gray-900 dark:text-white mb-1">Navigasi Bawah</h4>
-                                <p class="text-xs text-gray-600 dark:text-gray-400">Gunakan menu di bagian bawah layar untuk berpindah antara Dashboard, Users, Bantuan, dan Profil.</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Item 2: Tambah User -->
-                    <div class="p-3 bg-green-50 dark:bg-green-900/20 rounded-xl border border-green-200 dark:border-green-800">
-                        <div class="flex items-start gap-3">
-                            <div class="w-8 h-8 bg-green-600 dark:bg-green-500 rounded-lg flex items-center justify-center flex-shrink-0">
-                                <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"></path>
-                                </svg>
-                            </div>
-                            <div>
-                                <h4 class="font-bold text-sm text-gray-900 dark:text-white mb-1">Tambah User Baru</h4>
-                                <p class="text-xs text-gray-600 dark:text-gray-400">Tap menu "Users" di navigasi bawah, lalu gunakan tombol + untuk menambah pengguna baru.</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Item 3: Kelola User -->
-                    <div class="p-3 bg-purple-50 dark:bg-purple-900/20 rounded-xl border border-purple-200 dark:border-purple-800">
-                        <div class="flex items-start gap-3">
-                            <div class="w-8 h-8 bg-purple-600 dark:bg-purple-500 rounded-lg flex items-center justify-center flex-shrink-0">
-                                <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
-                                </svg>
-                            </div>
-                            <div>
-                                <h4 class="font-bold text-sm text-gray-900 dark:text-white mb-1">Kelola Pengguna</h4>
-                                <p class="text-xs text-gray-600 dark:text-gray-400">Tap user di daftar untuk mengedit data, reset password, atau menghapus akun.</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Item 4: Dashboard -->
-                    <div class="p-3 bg-indigo-50 dark:bg-indigo-900/20 rounded-xl border border-indigo-200 dark:border-indigo-800">
-                        <div class="flex items-start gap-3">
-                            <div class="w-8 h-8 bg-indigo-600 dark:bg-indigo-500 rounded-lg flex items-center justify-center flex-shrink-0">
-                                <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
-                                </svg>
-                            </div>
-                            <div>
-                                <h4 class="font-bold text-sm text-gray-900 dark:text-white mb-1">Monitor Dashboard</h4>
-                                <p class="text-xs text-gray-600 dark:text-gray-400">Scroll card di Dashboard untuk melihat Data Guru, Supervisi Dalam Proses, dan Supervisi Selesai.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- Modal Footer -->
-            <div class="border-t-2 border-gray-300 dark:border-gray-600 px-4 py-3 bg-gray-50 dark:bg-gray-900/50">
-                <button onclick="closeAdminGuideModal()" class="w-full px-5 py-3 bg-indigo-600 hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-600 text-white font-bold rounded-xl transition-all shadow-md hover:shadow-lg text-sm">
-                    Mengerti
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <script>
-    // Admin Tips Modal Functions
-    function toggleTips() {
-        openAdminTipsModal();
-    }
-    
-    function openAdminTipsModal() {
-        const modal = document.getElementById('adminTipsModal');
-        const content = document.getElementById('adminTipsModalContent');
-        if (modal && content) {
-            modal.classList.remove('hidden');
-            modal.classList.add('flex');
-            setTimeout(() => {
-                modal.classList.remove('opacity-0');
-                modal.classList.add('opacity-100');
-                content.classList.remove('scale-90', 'opacity-0');
-                content.classList.add('scale-100', 'opacity-100');
-            }, 50);
-        }
-    }
-    
-    function closeAdminTipsModal() {
-        const modal = document.getElementById('adminTipsModal');
-        const content = document.getElementById('adminTipsModalContent');
-        if (modal && content) {
-            modal.classList.remove('opacity-100');
-            modal.classList.add('opacity-0');
-            content.classList.remove('scale-100', 'opacity-100');
-            content.classList.add('scale-90', 'opacity-0');
-            setTimeout(() => {
-                modal.classList.remove('flex');
-                modal.classList.add('hidden');
-            }, 300);
-        }
-    }
-    
-    // Admin Guide Modal Functions
-    function openGuideModal() {
-        openAdminGuideModal();
-    }
-    
-    function openAdminGuideModal() {
-        const modal = document.getElementById('adminGuideModal');
-        const content = document.getElementById('adminGuideModalContent');
-        if (modal && content) {
-            modal.classList.remove('hidden');
-            modal.classList.add('flex');
-            setTimeout(() => {
-                modal.classList.remove('opacity-0');
-                modal.classList.add('opacity-100');
-                content.classList.remove('scale-90', 'opacity-0');
-                content.classList.add('scale-100', 'opacity-100');
-            }, 50);
-        }
-    }
-    
-    function closeAdminGuideModal() {
-        const modal = document.getElementById('adminGuideModal');
-        const content = document.getElementById('adminGuideModalContent');
-        if (modal && content) {
-            modal.classList.remove('opacity-100');
-            modal.classList.add('opacity-0');
-            content.classList.remove('scale-100', 'opacity-100');
-            content.classList.add('scale-90', 'opacity-0');
-            setTimeout(() => {
-                modal.classList.remove('flex');
-                modal.classList.add('hidden');
-            }, 300);
-        }
-    }
-    
-    // ESC key handler for admin modals
-    document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape') {
-            if (document.getElementById('adminTipsModal')?.classList.contains('flex')) {
-                closeAdminTipsModal();
-            }
-            if (document.getElementById('adminGuideModal')?.classList.contains('flex')) {
-                closeAdminGuideModal();
-            }
-        }
-    });
-    </script>
-    @endif
-    @endauth
-
-    <!-- TOAST CONTAINER -->
-    <div id="toast-container" class="fixed top-24 left-1/2 -translate-x-1/2 z-[60] flex flex-col gap-3 pointer-events-none w-full max-w-2xl px-4"></div>
+    <!-- TOAST/SUCCESS MODAL CONTAINER -->
+    <div id="toast-container" class="fixed inset-0 bg-black/30 backdrop-blur-sm z-[60] flex items-center justify-center p-4 hidden opacity-0 transition-all duration-300"></div>
 
     <!-- MODAL CONFIRMATION -->
-    <div id="modal-backdrop" class="hidden fixed inset-0 bg-black/50 backdrop-blur-sm z-[70] items-center justify-center p-4">
-        <div id="modal-content" class="bg-white dark:bg-gray-800 rounded-xl shadow-2xl max-w-md w-full transform transition-all duration-200 scale-95 opacity-0">
-            <!-- Header with Icon -->
-            <div class="flex items-start gap-4 p-6 pb-4">
-                <div id="modal-icon" class="flex-shrink-0 w-12 h-12 rounded-full flex items-center justify-center bg-amber-100 dark:bg-amber-900/30">
-                    <svg class="w-6 h-6 text-amber-600 dark:text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <div id="modal-backdrop" class="hidden fixed inset-0 bg-black/40 backdrop-blur-sm z-[70] items-center justify-center p-4">
+        <div id="modal-content" class="bg-white dark:bg-gray-800 rounded-3xl shadow-2xl max-w-sm w-full transform transition-all duration-300 scale-95 opacity-0">
+            <!-- Content -->
+            <div class="p-8 text-center">
+                <!-- Warning Icon - Large circle -->
+                <div id="modal-icon" class="w-20 h-20 rounded-full bg-amber-100 dark:bg-amber-900/30 flex items-center justify-center mx-auto mb-5">
+                    <svg class="w-10 h-10 text-amber-500 dark:text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
                     </svg>
                 </div>
-                <div class="flex-1 min-w-0">
-                    <h3 id="modal-title" class="text-lg font-bold text-gray-900 dark:text-white mb-1">
-                        Konfirmasi
-                    </h3>
-                    <p id="modal-message" class="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
-                        Apakah Anda yakin ingin melanjutkan?
-                    </p>
-                </div>
-            </div>
 
-            <!-- Buttons -->
-            <div class="flex gap-3 px-6 pb-6">
-                <button onclick="closeModal()" class="flex-1 px-4 py-2.5 bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-200 font-medium rounded-lg transition-colors">
-                    Batal
-                </button>
-                <button id="modal-confirm-btn" class="flex-1 px-4 py-2.5 bg-indigo-600 hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-600 text-white font-medium rounded-lg transition-colors">
-                    Ya, Lanjutkan
-                </button>
+                <!-- Title -->
+                <h3 id="modal-title" class="text-xl font-bold text-gray-900 dark:text-white mb-2">
+                    Konfirmasi
+                </h3>
+
+                <!-- Description -->
+                <p id="modal-message" class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed mb-6">
+                    Apakah Anda yakin ingin melanjutkan?
+                </p>
+
+                <!-- Buttons -->
+                <div class="flex flex-col gap-3">
+                    <button id="modal-confirm-btn" class="w-full px-6 py-3 bg-indigo-500 hover:bg-indigo-600 text-white font-semibold rounded-full transition-all duration-200 hover:shadow-lg">
+                        Ya, Lanjutkan
+                    </button>
+                    <button onclick="closeModal()" class="w-full text-sm text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 font-medium py-2 transition-colors">
+                        Batal
+                    </button>
+                </div>
             </div>
         </div>
     </div>
@@ -1318,19 +1257,19 @@
                 config.iconColor = 'text-blue-600 dark:text-blue-400';
             }
 
-            // Update icon styling
-            icon.className = `flex-shrink-0 w-12 h-12 rounded-full flex items-center justify-center ${config.iconBg}`;
+            // Update icon styling - keep large size (w-20 h-20)
+            icon.className = `w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-5 ${config.iconBg}`;
             const iconSvg = icon.querySelector('svg');
-            iconSvg.className = `w-6 h-6 ${config.iconColor}`;
+            iconSvg.className = `w-10 h-10 ${config.iconColor}`;
 
             // Update content
             titleEl.textContent = title;
             messageEl.textContent = message;
             modalCallback = onConfirm;
 
-            // Update confirm button
+            // Update confirm button - pill style
             confirmBtn.textContent = config.confirmText;
-            confirmBtn.className = `flex-1 px-4 py-2.5 ${config.confirmClass} text-white font-medium rounded-lg transition-colors`;
+            confirmBtn.className = `w-full px-6 py-3 ${config.confirmClass} text-white font-semibold rounded-full transition-all duration-200 hover:shadow-lg`;
 
             // Show modal
             backdrop.classList.remove('hidden');
@@ -1380,52 +1319,136 @@
             }
         });
 
-        // Toast Notification System
-        function showToast(message, type = 'success', duration = 4000) {
+        // Toast/Success Modal System - Centered modal popup
+        let toastTimer = null;
+        const TOAST_DURATION = 2500; // 2.5 seconds
+        
+        function showToast(message, type = 'success', duration = TOAST_DURATION) {
             const container = document.getElementById('toast-container');
-            const toast = document.createElement('div');
             
-            // Define colors based on type
-            const colors = {
-                success: 'bg-green-500 dark:bg-green-600',
-                error: 'bg-red-500 dark:bg-red-600',
-                warning: 'bg-amber-500 dark:bg-amber-600',
-                info: 'bg-blue-500 dark:bg-blue-600'
+            // Clear any existing timer and content
+            if (toastTimer) {
+                clearTimeout(toastTimer);
+                toastTimer = null;
+            }
+            container.innerHTML = '';
+            
+            // Define icon backgrounds based on type
+            const iconBgs = {
+                success: 'bg-emerald-100 dark:bg-emerald-900/30',
+                error: 'bg-red-100 dark:bg-red-900/30',
+                warning: 'bg-amber-100 dark:bg-amber-900/30',
+                info: 'bg-blue-100 dark:bg-blue-900/30'
+            };
+
+            // Define icon colors based on type
+            const iconColors = {
+                success: 'text-emerald-500 dark:text-emerald-400',
+                error: 'text-red-500 dark:text-red-400',
+                warning: 'text-amber-500 dark:text-amber-400',
+                info: 'text-blue-500 dark:text-blue-400'
             };
             
             // Define icons based on type
             const icons = {
-                success: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>',
-                error: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"></path>',
+                success: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path>',
+                error: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"></path>',
                 warning: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>',
                 info: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>'
             };
-            
-            toast.className = `${colors[type] || colors.success} text-white px-6 py-5 rounded-xl shadow-2xl flex items-center gap-4 w-full pointer-events-auto transform transition-all duration-500 -translate-y-32 opacity-0`;
-            toast.innerHTML = `
-                <svg class="w-7 h-7 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    ${icons[type] || icons.success}
-                </svg>
-                <p class="flex-1 text-base font-semibold leading-relaxed">${message}</p>
-                <button onclick="this.parentElement.remove()" class="text-white/80 hover:text-white transition-colors ml-2">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                    </svg>
-                </button>
+
+            // Define titles based on type
+            const titles = {
+                success: 'Berhasil!',
+                error: 'Terjadi Kesalahan',
+                warning: 'Peringatan!',
+                info: 'Informasi'
+            };
+
+            // Create modal content
+            const modal = document.createElement('div');
+            modal.className = 'bg-white dark:bg-gray-800 rounded-3xl shadow-2xl max-w-xs w-full transform transition-all duration-300 scale-90 opacity-0';
+            modal.innerHTML = `
+                <div class="p-6 text-center">
+                    <!-- Icon -->
+                    <div class="w-16 h-16 rounded-full ${iconBgs[type] || iconBgs.success} flex items-center justify-center mx-auto mb-4">
+                        <svg class="w-8 h-8 ${iconColors[type] || iconColors.success}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            ${icons[type] || icons.success}
+                        </svg>
+                    </div>
+                    
+                    <!-- Title -->
+                    <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-1">
+                        ${titles[type] || titles.success}
+                    </h3>
+                    
+                    <!-- Message -->
+                    <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed">
+                        ${message}
+                    </p>
+                    
+                    <!-- Progress bar -->
+                    <div class="mt-4 h-1 bg-gray-100 dark:bg-gray-700 rounded-full overflow-hidden">
+                        <div class="h-full ${type === 'error' ? 'bg-red-500' : type === 'warning' ? 'bg-amber-500' : 'bg-emerald-500'} rounded-full toast-progress" style="width: 100%;"></div>
+                    </div>
+                </div>
             `;
             
-            container.appendChild(toast);
+            container.appendChild(modal);
             
-            // Trigger animation - slide down from top
-            setTimeout(() => {
-                toast.classList.remove('-translate-y-32', 'opacity-0');
-            }, 10);
+            // Show backdrop and modal with animation
+            container.classList.remove('hidden');
+            requestAnimationFrame(() => {
+                container.classList.remove('opacity-0');
+                container.classList.add('opacity-100');
+                
+                requestAnimationFrame(() => {
+                    modal.classList.remove('scale-90', 'opacity-0');
+                    modal.classList.add('scale-100', 'opacity-100');
+                    
+                    // Start progress bar animation
+                    const progressBar = modal.querySelector('.toast-progress');
+                    if (progressBar) {
+                        progressBar.style.transition = `width ${duration}ms linear`;
+                        progressBar.style.width = '0%';
+                    }
+                });
+            });
             
-            // Auto remove with slide up animation
-            setTimeout(() => {
-                toast.classList.add('-translate-y-32', 'opacity-0');
-                setTimeout(() => toast.remove(), 500);
+            // Auto hide modal after duration
+            toastTimer = setTimeout(() => {
+                hideToast();
             }, duration);
+            
+            // Allow click on backdrop to dismiss
+            container.onclick = function(e) {
+                if (e.target === container) {
+                    hideToast();
+                }
+            };
+        }
+        
+        function hideToast() {
+            const container = document.getElementById('toast-container');
+            const modal = container.querySelector('div');
+            
+            if (toastTimer) {
+                clearTimeout(toastTimer);
+                toastTimer = null;
+            }
+            
+            if (modal) {
+                modal.classList.remove('scale-100', 'opacity-100');
+                modal.classList.add('scale-90', 'opacity-0');
+            }
+            
+            container.classList.remove('opacity-100');
+            container.classList.add('opacity-0');
+            
+            setTimeout(() => {
+                container.classList.add('hidden');
+                container.innerHTML = '';
+            }, 300);
         }
 
         // Show session flash messages as toast
@@ -1441,6 +1464,11 @@
         @if(session('info'))
             showToast('{{ session('info') }}', 'info');
         @endif
+
+        // Expose functions to global scope for use in child views
+        window.showConfirmModal = showConfirmModal;
+        window.closeModal = closeModal;
+        window.showToast = showToast;
 
         // Pull to Refresh Functionality (Mobile & Tablet only) - TEMPORARILY DISABLED FOR DEBUGGING
         if (false) { // DISABLED to fix hamburger menu and profile dropdown click issues
@@ -1664,14 +1692,53 @@ if (backToTopBtn) {
     // CONFIGURATION
     const INACTIVITY_TIMEOUT = 10 * 60 * 1000; // 10 menit
     const WARNING_SECONDS = 15; // Warning 15 detik sebelum logout
+    const STORAGE_KEY = 'lastActivityTime';
+    const LOGOUT_TIME_KEY = 'sessionLogoutTime';
     
     let logoutTimer = null;
     let countdownInterval = null;
     let warningModal = null;
     let isLoggingOut = false;
+    let warningStartTime = null;
     
     // Hitung kapan warning muncul
     const WARNING_TIME = INACTIVITY_TIMEOUT - (WARNING_SECONDS * 1000);
+    
+    // Simpan waktu aktivitas terakhir ke localStorage
+    function saveActivityTime() {
+        const now = Date.now();
+        localStorage.setItem(STORAGE_KEY, now.toString());
+        // Reset logout time saat ada aktivitas
+        localStorage.removeItem(LOGOUT_TIME_KEY);
+    }
+    
+    // Ambil waktu aktivitas terakhir
+    function getLastActivityTime() {
+        const stored = localStorage.getItem(STORAGE_KEY);
+        return stored ? parseInt(stored, 10) : Date.now();
+    }
+    
+    // Cek apakah session sudah expired
+    function isSessionExpired() {
+        const lastActivity = getLastActivityTime();
+        const elapsed = Date.now() - lastActivity;
+        return elapsed >= INACTIVITY_TIMEOUT;
+    }
+    
+    // Cek apakah sudah melewati warning time
+    function shouldShowWarning() {
+        const lastActivity = getLastActivityTime();
+        const elapsed = Date.now() - lastActivity;
+        return elapsed >= WARNING_TIME && elapsed < INACTIVITY_TIMEOUT;
+    }
+    
+    // Hitung sisa waktu countdown
+    function getRemainingSeconds() {
+        const lastActivity = getLastActivityTime();
+        const elapsed = Date.now() - lastActivity;
+        const remaining = INACTIVITY_TIMEOUT - elapsed;
+        return Math.max(0, Math.ceil(remaining / 1000));
+    }
     
     // Stop semua timer
     function stopAllTimers() {
@@ -1691,6 +1758,8 @@ if (backToTopBtn) {
         
         stopAllTimers();
         hideWarning();
+        saveActivityTime();
+        warningStartTime = null;
         
         // Set timer untuk menampilkan warning
         logoutTimer = setTimeout(showWarningAndStartCountdown, WARNING_TIME);
@@ -1700,7 +1769,20 @@ if (backToTopBtn) {
     function showWarningAndStartCountdown() {
         if (isLoggingOut) return;
         
-        let secondsRemaining = WARNING_SECONDS;
+        // Simpan waktu mulai warning jika belum ada
+        if (!warningStartTime) {
+            warningStartTime = Date.now();
+            // Simpan logout time ke localStorage
+            localStorage.setItem(LOGOUT_TIME_KEY, (Date.now() + (WARNING_SECONDS * 1000)).toString());
+        }
+        
+        let secondsRemaining = getRemainingSeconds();
+        
+        // Jika sudah 0 atau kurang, langsung logout
+        if (secondsRemaining <= 0) {
+            performLogout();
+            return;
+        }
         
         // Buat modal jika belum ada
         if (!warningModal) {
@@ -1737,9 +1819,9 @@ if (backToTopBtn) {
             resetTimer();
         });
         
-        // Countdown interval
+        // Countdown interval - cek setiap 500ms untuk responsif
         countdownInterval = setInterval(function() {
-            secondsRemaining--;
+            secondsRemaining = getRemainingSeconds();
             const countdownEl = document.getElementById('logout-countdown');
             if (countdownEl) {
                 countdownEl.textContent = secondsRemaining;
@@ -1750,7 +1832,7 @@ if (backToTopBtn) {
                 stopAllTimers();
                 performLogout();
             }
-        }, 1000);
+        }, 500);
     }
     
     // Sembunyikan warning modal
@@ -1768,6 +1850,10 @@ if (backToTopBtn) {
         stopAllTimers();
         hideWarning();
         
+        // Bersihkan localStorage
+        localStorage.removeItem(STORAGE_KEY);
+        localStorage.removeItem(LOGOUT_TIME_KEY);
+        
         // Submit logout form
         const form = document.createElement('form');
         form.method = 'POST';
@@ -1777,14 +1863,125 @@ if (backToTopBtn) {
         form.submit();
     }
     
-    // Track aktivitas user
-    const activityEvents = ['mousedown', 'mousemove', 'keypress', 'scroll', 'touchstart', 'click'];
+    // Cek status session saat visibility berubah (user kembali ke tab)
+    function checkSessionOnVisibilityChange() {
+        if (document.visibilityState === 'visible') {
+            // User kembali ke tab - cek apakah session expired
+            if (isSessionExpired()) {
+                // Session sudah expired, langsung logout
+                performLogout();
+                return;
+            }
+            
+            // Cek apakah harus tampilkan warning
+            if (shouldShowWarning()) {
+                // Masih dalam periode warning, tampilkan modal dengan sisa waktu
+                stopAllTimers();
+                showWarningAndStartCountdown();
+            } else {
+                // Session masih aktif, hitung ulang timer
+                const lastActivity = getLastActivityTime();
+                const elapsed = Date.now() - lastActivity;
+                const remainingToWarning = WARNING_TIME - elapsed;
+                
+                if (remainingToWarning > 0) {
+                    stopAllTimers();
+                    hideWarning();
+                    logoutTimer = setTimeout(showWarningAndStartCountdown, remainingToWarning);
+                }
+            }
+        }
+    }
+    
+    // Cek session saat focus (backup untuk visibilitychange)
+    function checkSessionOnFocus() {
+        if (isSessionExpired()) {
+            performLogout();
+            return;
+        }
+        
+        if (shouldShowWarning() && (!warningModal || warningModal.style.display === 'none')) {
+            stopAllTimers();
+            showWarningAndStartCountdown();
+        }
+    }
+    
+    // Track aktivitas user - dengan debounce untuk performa
+    let activityDebounce = null;
+    function handleActivity() {
+        if (activityDebounce) return;
+        activityDebounce = setTimeout(function() {
+            activityDebounce = null;
+        }, 1000);
+        
+        // Jangan reset jika warning modal sedang tampil dan user tidak klik tombol
+        if (warningModal && warningModal.style.display === 'block') {
+            return;
+        }
+        
+        resetTimer();
+    }
+    
+    const activityEvents = ['mousedown', 'keypress', 'scroll', 'touchstart', 'click'];
     activityEvents.forEach(function(eventName) {
-        document.addEventListener(eventName, resetTimer, { passive: true });
+        document.addEventListener(eventName, handleActivity, { passive: true });
     });
     
-    // Mulai timer saat load
-    resetTimer();
+    // Listen untuk visibility change (user pindah/kembali tab)
+    document.addEventListener('visibilitychange', checkSessionOnVisibilityChange);
+    
+    // Listen untuk focus (backup)
+    window.addEventListener('focus', checkSessionOnFocus);
+    
+    // Periodic check setiap 30 detik (backup jika timer throttled)
+    setInterval(function() {
+        if (document.visibilityState === 'visible' && !isLoggingOut) {
+            if (isSessionExpired()) {
+                performLogout();
+            } else if (shouldShowWarning() && (!warningModal || warningModal.style.display === 'none')) {
+                showWarningAndStartCountdown();
+            }
+        }
+    }, 30000);
+    
+    // Inisialisasi saat load
+    function init() {
+        // Cek apakah ada stored logout time yang sudah lewat
+        const storedLogoutTime = localStorage.getItem(LOGOUT_TIME_KEY);
+        if (storedLogoutTime && Date.now() >= parseInt(storedLogoutTime, 10)) {
+            // Waktu logout sudah lewat, langsung logout
+            performLogout();
+            return;
+        }
+        
+        // Cek session expired
+        if (isSessionExpired()) {
+            performLogout();
+            return;
+        }
+        
+        // Cek apakah perlu tampilkan warning
+        if (shouldShowWarning()) {
+            showWarningAndStartCountdown();
+            return;
+        }
+        
+        // Jika tidak ada stored activity time, set sekarang
+        if (!localStorage.getItem(STORAGE_KEY)) {
+            saveActivityTime();
+        }
+        
+        // Hitung sisa waktu ke warning
+        const lastActivity = getLastActivityTime();
+        const elapsed = Date.now() - lastActivity;
+        const remainingToWarning = Math.max(0, WARNING_TIME - elapsed);
+        
+        // Set timer
+        logoutTimer = setTimeout(showWarningAndStartCountdown, remainingToWarning);
+    }
+    
+    // Mulai
+    init();
     
     // Re-init saat Livewire navigate
     document.addEventListener('livewire:navigated', function() {
@@ -1793,227 +1990,898 @@ if (backToTopBtn) {
     });
     
     // Cleanup saat halaman unload
-    window.addEventListener('beforeunload', stopAllTimers);
+    window.addEventListener('beforeunload', function() {
+        stopAllTimers();
+    });
 })();
 </script>
 @endauth
 
-{{-- Guru Help Modals - Available on all pages --}}
+{{-- Global Help Modals - Available on all pages --}}
 @auth
-@if(Auth::user()->isGuru())
-<!-- Tips Modal (For Guru) -->
-<div id="tipsModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-[75] items-center justify-center p-4" style="display: none;" onclick="closeTipsModal()">
-    <div id="tipsModalContent" class="bg-white dark:bg-gray-800 rounded-xl shadow-2xl w-full max-w-md max-h-[85vh] overflow-hidden transform transition-all duration-300 scale-95 opacity-0" onclick="event.stopPropagation()">
-        <!-- Modal Header with Subtitle -->
-        <div class="px-4 py-3 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between bg-gradient-to-r from-blue-50 to-cyan-50 dark:from-gray-700 dark:to-gray-700">
+<!-- Tips Modal (Role-Aware) -->
+<div id="tipsModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-[75] flex items-end md:items-center justify-center p-0 md:p-4" style="display: none;" onclick="closeTipsModal()">
+    <div id="tipsModalContent" class="bg-white dark:bg-gray-800 w-full md:max-w-md max-h-[85vh] overflow-hidden transform transition-all duration-300 rounded-t-3xl md:rounded-2xl shadow-2xl flex flex-col" onclick="event.stopPropagation()">
+        
+        <!-- Mobile Drag Handle -->
+        <div class="md:hidden flex justify-center pt-3 pb-1">
+            <div class="w-12 h-1.5 bg-gray-300 dark:bg-gray-600 rounded-full"></div>
+        </div>
+
+        <!-- Modal Header -->
+        <div class="px-6 py-4 border-b border-gray-100 dark:border-gray-700 flex items-center justify-between bg-white dark:bg-gray-800 sticky top-0 z-10">
             <div class="flex items-center gap-3">
-                <div class="w-9 h-9 bg-gradient-to-r from-blue-600 to-cyan-600 rounded-lg flex items-center justify-center">
-                    <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                    </svg>
+                <div class="w-10 h-10 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-xl flex items-center justify-center shadow-lg shadow-blue-200 dark:shadow-none shrink-0">
+                    <span class="material-symbols-outlined text-white text-xl">lightbulb</span>
                 </div>
                 <div>
-                    <h3 class="text-sm font-bold text-gray-900 dark:text-white">Tips & Informasi</h3>
-                    <p class="text-xs text-gray-500 dark:text-gray-400">Panduan cepat supervisi</p>
+                    <h3 class="text-sm md:text-base font-bold text-gray-900 dark:text-white leading-tight">Tips & Informasi</h3>
+                    <p class="text-[10px] text-blue-600 dark:text-blue-400 font-medium uppercase tracking-wider">Panduan Cepat</p>
                 </div>
             </div>
-            <button onclick="closeTipsModal()" class="p-1.5 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg transition-colors">
-                <svg class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                </svg>
+            <button onclick="closeTipsModal()" class="w-8 h-8 flex items-center justify-center hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full transition-colors text-gray-400">
+                <span class="material-symbols-outlined text-xl">close</span>
             </button>
         </div>
-        <!-- Modal Content - Mobile Usage Tips -->
-        <div class="p-4 overflow-y-auto max-h-[calc(85vh-80px)]">
-            <div class="space-y-3">
-                <!-- Tip 1: Quick Navigation -->
-                <div class="bg-blue-50 dark:bg-blue-900/30 rounded-xl p-4 border-l-4 border-blue-500">
-                    <div class="flex items-start gap-3">
-                        <div class="w-10 h-10 bg-blue-600 dark:bg-blue-500 rounded-lg flex items-center justify-center shrink-0">
-                            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
-                            </svg>
-                        </div>
-                        <div>
-                            <p class="text-sm font-bold text-blue-900 dark:text-blue-300 mb-1">Lihat Panduan</p>
-                            <p class="text-xs text-gray-600 dark:text-gray-400">Tap menu <strong>"Bantuan"</strong> di bawah, lalu pilih <strong>"Panduan"</strong> untuk melihat langkah lengkap supervisi</p>
+
+        <!-- Modal Content -->
+        <div class="p-6 overflow-y-auto flex-1 custom-scrollbar">
+            <div class="space-y-4">
+                @if(auth()->user()->role === 'admin')
+                    <div class="bg-blue-50 dark:bg-blue-900/20 rounded-2xl p-4 border border-blue-100 dark:border-blue-800/50">
+                        <div class="flex gap-3">
+                            <span class="material-symbols-outlined text-blue-600">group</span>
+                            <div>
+                                <p class="text-sm font-bold text-gray-900 dark:text-white mb-1">Kelola User</p>
+                                <p class="text-xs text-gray-600 dark:text-gray-400 leading-relaxed">Gunakan menu <strong class="text-blue-600">"Users"</strong> untuk menambah, mengedit, atau menghapus akun pengguna.</p>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <!-- Tip 2: Lacak Status -->
-                <div class="bg-emerald-50 dark:bg-emerald-900/30 rounded-xl p-4 border-l-4 border-emerald-500">
-                    <div class="flex items-start gap-3">
-                        <div class="w-10 h-10 bg-emerald-600 dark:bg-emerald-500 rounded-lg flex items-center justify-center shrink-0">
-                            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path>
-                            </svg>
-                        </div>
-                        <div>
-                            <p class="text-sm font-bold text-emerald-900 dark:text-emerald-300 mb-1">Lacak Status</p>
-                            <p class="text-xs text-gray-600 dark:text-gray-400">Lihat badge status supervisi: Draft, Disubmit, Direview, atau Selesai</p>
+                    <div class="bg-emerald-50 dark:bg-emerald-900/20 rounded-2xl p-4 border border-emerald-100 dark:border-emerald-800/50">
+                        <div class="flex gap-3">
+                            <span class="material-symbols-outlined text-emerald-600">key</span>
+                            <div>
+                                <p class="text-sm font-bold text-gray-900 dark:text-white mb-1">Reset Password</p>
+                                <p class="text-xs text-gray-600 dark:text-gray-400 leading-relaxed">Anda dapat mereset password user yang lupa melalui tombol kunci di daftar user.</p>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <!-- Tip 3: Kolaborasi -->
-                <div class="bg-purple-50 dark:bg-purple-900/30 rounded-xl p-4 border-l-4 border-purple-500">
-                    <div class="flex items-start gap-3">
-                        <div class="w-10 h-10 bg-purple-600 dark:bg-purple-500 rounded-lg flex items-center justify-center shrink-0">
-                            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 14h4a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z"></path>
-                            </svg>
-                        </div>
-                        <div>
-                            <p class="text-sm font-bold text-purple-900 dark:text-purple-300 mb-1">Kolaborasi</p>
-                            <p class="text-xs text-gray-600 dark:text-gray-400">Tap accordion <strong>"Komentar"</strong> di kartu supervisi untuk melihat feedback dari Kepala Sekolah</p>
+                @elseif(auth()->user()->role === 'kepala_sekolah')
+                    <div class="bg-blue-50 dark:bg-blue-900/20 rounded-2xl p-4 border border-blue-100 dark:border-blue-800/50">
+                        <div class="flex gap-3">
+                            <span class="material-symbols-outlined text-blue-600">assignment_turned_in</span>
+                            <div>
+                                <p class="text-sm font-bold text-gray-900 dark:text-white mb-1">Tinjau Evaluasi</p>
+                                <p class="text-xs text-gray-600 dark:text-gray-400 leading-relaxed">Klik menu <strong class="text-blue-600">"Evaluasi"</strong> untuk melihat daftar guru yang perlu dinilai.</p>
+                            </div>
                         </div>
                     </div>
-                </div>
+                    <div class="bg-emerald-50 dark:bg-emerald-900/20 rounded-2xl p-4 border border-emerald-100 dark:border-emerald-800/50">
+                        <div class="flex gap-3">
+                            <span class="material-symbols-outlined text-emerald-600">chat</span>
+                            <div>
+                                <p class="text-sm font-bold text-gray-900 dark:text-white mb-1">Berikan Feedback</p>
+                                <p class="text-xs text-gray-600 dark:text-gray-400 leading-relaxed">Gunakan kolom komentar untuk memberikan masukan yang membangun kepada guru.</p>
+                            </div>
+                        </div>
+                    </div>
+                @else
+                    <div class="bg-blue-50 dark:bg-blue-900/20 rounded-2xl p-4 border border-blue-100 dark:border-blue-800/50">
+                        <div class="flex gap-3">
+                            <span class="material-symbols-outlined text-blue-600">help</span>
+                            <div>
+                                <p class="text-sm font-bold text-gray-900 dark:text-white mb-1">Lihat Panduan</p>
+                                <p class="text-xs text-gray-600 dark:text-gray-400 leading-relaxed">Tap menu <strong class="text-blue-600">"Bantuan"</strong> di bawah, lalu pilih <strong class="text-blue-600">"Panduan"</strong> untuk melihat langkah lengkap supervisi.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-emerald-50 dark:bg-emerald-900/20 rounded-2xl p-4 border border-emerald-100 dark:border-emerald-800/50">
+                        <div class="flex gap-3">
+                            <span class="material-symbols-outlined text-emerald-600">track_changes</span>
+                            <div>
+                                <p class="text-sm font-bold text-gray-900 dark:text-white mb-1">Lacak Status</p>
+                                <p class="text-xs text-gray-600 dark:text-gray-400 leading-relaxed">Lihat badge status supervisi: Draft, Disubmit, Direview, atau Selesai.</p>
+                            </div>
+                        </div>
+                    </div>
+                @endif
             </div>
-            <button onclick="closeTipsModal()" class="w-full mt-4 px-4 py-3 bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 font-semibold rounded-xl transition-colors">
+        </div>
+
+        <!-- Modal Footer -->
+        <div class="px-6 py-4 border-t border-gray-100 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50">
+            <button onclick="closeTipsModal()" class="w-full py-3 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-200 font-bold rounded-xl border border-gray-200 dark:border-gray-600 transition-all text-sm">
                 Tutup
             </button>
         </div>
     </div>
+</div>
 </div>
 
 
 <!-- Fitur Penting Modal (For Guru) -->
-<div id="fiturPentingModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-[75] items-center justify-center p-4" style="display: none;" onclick="closeFiturPentingModal()">
-    <div id="fiturPentingModalContent" class="bg-white dark:bg-gray-800 rounded-xl shadow-2xl w-full max-w-md max-h-[85vh] overflow-hidden transform transition-all duration-300 scale-95 opacity-0" onclick="event.stopPropagation()">
-        <div class="px-4 py-3 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between bg-gradient-to-r from-purple-50 to-indigo-50 dark:from-gray-700 dark:to-gray-700">
+<div id="fiturPentingModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-[75] flex items-end md:items-center justify-center p-0 md:p-4" style="display: none;" onclick="closeFiturPentingModal()">
+    <div id="fiturPentingModalContent" class="bg-white dark:bg-gray-800 w-full md:max-w-md max-h-[85vh] overflow-hidden transform transition-all duration-300 rounded-t-3xl md:rounded-2xl shadow-2xl flex flex-col" onclick="event.stopPropagation()">
+        
+        <!-- Mobile Drag Handle -->
+        <div class="md:hidden flex justify-center pt-3 pb-1">
+            <div class="w-12 h-1.5 bg-gray-300 dark:bg-gray-600 rounded-full"></div>
+        </div>
+
+        <!-- Modal Header -->
+        <div class="px-6 py-4 border-b border-gray-100 dark:border-gray-700 flex items-center justify-between bg-white dark:bg-gray-800 sticky top-0 z-10">
             <div class="flex items-center gap-3">
-                <div class="w-9 h-9 bg-gradient-to-r from-purple-600 to-indigo-600 rounded-lg flex items-center justify-center">
-                    <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path>
-                    </svg>
+                <div class="w-10 h-10 bg-gradient-to-br from-purple-500 to-indigo-600 rounded-xl flex items-center justify-center shadow-lg shadow-purple-200 dark:shadow-none shrink-0">
+                    <span class="material-symbols-outlined text-white text-xl">auto_awesome</span>
                 </div>
-                <h3 class="text-sm font-bold text-gray-900 dark:text-white">Fitur Penting</h3>
+                <div>
+                    <h3 class="text-sm md:text-base font-bold text-gray-900 dark:text-white leading-tight">Fitur Penting</h3>
+                    <p class="text-[10px] text-purple-600 dark:text-purple-400 font-medium uppercase tracking-wider">Optimalkan Penggunaan</p>
+                </div>
             </div>
-            <button onclick="closeFiturPentingModal()" class="p-1.5 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg transition-colors">
-                <svg class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                </svg>
+            <button onclick="closeFiturPentingModal()" class="w-8 h-8 flex items-center justify-center hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full transition-colors text-gray-400">
+                <span class="material-symbols-outlined text-xl">close</span>
             </button>
         </div>
-        <div class="p-3 overflow-y-auto max-h-[calc(85vh-60px)]">
-            <div class="space-y-2">
-                <div class="bg-amber-50 dark:bg-amber-900/20 rounded-lg p-3 border border-amber-200 dark:border-amber-800">
-                    <div class="flex items-center gap-2 mb-2">
-                        <div class="w-7 h-7 bg-amber-600 dark:bg-amber-500 rounded-lg flex items-center justify-center shrink-0">
-                            <svg class="w-3.5 h-3.5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-                            </svg>
+
+        <!-- Modal Content -->
+        <div class="p-6 overflow-y-auto flex-1 custom-scrollbar">
+            <div class="space-y-4">
+                <div class="bg-purple-50 dark:bg-purple-900/20 rounded-2xl p-4 border border-purple-100 dark:border-purple-800/50">
+                    <div class="flex gap-3">
+                        <span class="material-symbols-outlined text-purple-600">save</span>
+                        <div>
+                            <p class="text-sm font-bold text-gray-900 dark:text-white mb-1">Auto-Save</p>
+                            <p class="text-xs text-gray-600 dark:text-gray-400 leading-relaxed">Sistem menyimpan progres Anda secara otomatis setiap 30 detik. Jangan takut kehilangan data.</p>
                         </div>
-                        <h4 class="text-sm font-bold text-gray-900 dark:text-white">Kelola Draft & Revisi</h4>
                     </div>
-                    <ul class="text-xs text-gray-600 dark:text-gray-400 space-y-1 ml-1">
-                        <li>• <strong>Lanjutkan Draft:</strong> Klik tombol biru</li>
-                        <li>• <strong>Revisi:</strong> Klik tombol oranye</li>
-                        <li>• <strong>Auto-Save:</strong> Tersimpan tiap 30 detik</li>
-                    </ul>
                 </div>
-                <div class="bg-indigo-50 dark:bg-indigo-900/20 rounded-lg p-3 border border-indigo-200 dark:border-indigo-800">
-                    <div class="flex items-center gap-2 mb-2">
-                        <div class="w-7 h-7 bg-indigo-600 dark:bg-indigo-500 rounded-lg flex items-center justify-center shrink-0">
-                            <svg class="w-3.5 h-3.5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 14h4a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z"></path>
-                            </svg>
+                <div class="bg-indigo-50 dark:bg-indigo-900/20 rounded-2xl p-4 border border-indigo-100 dark:border-indigo-800/50">
+                    <div class="flex gap-3">
+                        <span class="material-symbols-outlined text-indigo-600">history</span>
+                        <div>
+                            <p class="text-sm font-bold text-gray-900 dark:text-white mb-1">Riwayat Revisi</p>
+                            <p class="text-xs text-gray-600 dark:text-gray-400 leading-relaxed">Anda dapat melihat catatan revisi sebelumnya dari Kepala Sekolah untuk perbaikan yang lebih baik.</p>
                         </div>
-                        <h4 class="text-sm font-bold text-gray-900 dark:text-white">Lihat & Beri Komentar</h4>
                     </div>
-                    <ul class="text-xs text-gray-600 dark:text-gray-400 space-y-1 ml-1">
-                        <li>• <strong>Komentar:</strong> Klik badge komentar</li>
-                        <li>• <strong>Feedback:</strong> Lihat catatan Kepala Sekolah</li>
-                        <li>• <strong>Diskusi:</strong> Balas komentar secara langsung</li>
-                    </ul>
                 </div>
-                <div class="bg-green-50 dark:bg-green-900/20 rounded-lg p-3 border border-green-200 dark:border-green-800">
-                    <div class="flex items-center gap-2 mb-2">
-                        <div class="w-7 h-7 bg-green-600 dark:bg-green-500 rounded-lg flex items-center justify-center shrink-0">
-                            <svg class="w-3.5 h-3.5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
-                            </svg>
+                <div class="bg-amber-50 dark:bg-amber-900/20 rounded-2xl p-4 border border-amber-100 dark:border-amber-800/50">
+                    <div class="flex gap-3">
+                        <span class="material-symbols-outlined text-amber-600">notifications_active</span>
+                        <div>
+                            <p class="text-sm font-bold text-gray-900 dark:text-white mb-1">Notifikasi Real-time</p>
+                            <p class="text-xs text-gray-600 dark:text-gray-400 leading-relaxed">Dapatkan pemberitahuan langsung saat status supervisi Anda berubah atau ada feedback baru.</p>
                         </div>
-                        <h4 class="text-sm font-bold text-gray-900 dark:text-white">Kolaborasi Guru</h4>
                     </div>
-                    <ul class="text-xs text-gray-600 dark:text-gray-400 space-y-1 ml-1">
-                        <li>• <strong>Lihat Supervisi:</strong> Klik tombol abu "Lihat"</li>
-                        <li>• <strong>Dokumen:</strong> Lihat 7 dokumen evaluasi</li>
-                        <li>• <strong>Video:</strong> Akses video pembelajaran</li>
-                    </ul>
                 </div>
             </div>
-            <button onclick="closeFiturPentingModal()" class="w-full mt-3 px-4 py-2.5 bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 font-semibold rounded-xl transition-colors text-sm">
+        </div>
+
+        <!-- Modal Footer -->
+        <div class="px-6 py-4 border-t border-gray-100 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50">
+            <button onclick="closeFiturPentingModal()" class="w-full py-3 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-200 font-bold rounded-xl border border-gray-200 dark:border-gray-600 transition-all text-sm">
                 Tutup
             </button>
         </div>
     </div>
 </div>
 
-<!-- Panduan Modal (For Guru) -->
-<div id="guideModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-[75] items-center justify-center p-4" style="display: none;" onclick="closeGuideModal()">
-    <div id="guideModalContent" class="bg-white dark:bg-gray-800 rounded-xl shadow-2xl w-full max-w-lg max-h-[80vh] overflow-hidden transform transition-all duration-300 scale-95 opacity-0" onclick="event.stopPropagation()">
-        <div class="px-4 py-3 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between bg-gradient-to-r from-amber-50 to-orange-50 dark:from-gray-700 dark:to-gray-700">
-            <div class="flex items-center gap-3">
-                <div class="w-9 h-9 bg-gradient-to-r from-amber-600 to-orange-600 rounded-lg flex items-center justify-center">
-                    <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
-                    </svg>
-                </div>
-                <h3 class="text-sm font-bold text-gray-900 dark:text-white">Panduan Supervisi</h3>
-            </div>
-            <button onclick="closeGuideModal()" class="p-1.5 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg transition-colors">
-                <svg class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                </svg>
-            </button>
+<!-- Guide Modal (Clean Professional Design) -->
+<div id="guideModal" class="fixed inset-0 bg-gray-900/40 backdrop-blur-sm z-[75] flex items-center justify-center p-4 md:p-6" style="display: none;" onclick="closeGuideModal()">
+    <div id="guideModalContent" class="bg-white dark:bg-gray-800 w-full max-w-[480px] overflow-hidden transform transition-all duration-500 rounded-[24px] shadow-2xl flex flex-col relative" onclick="event.stopPropagation()">
+        
+        <!-- Progress Bar (Top) -->
+        <div class="h-1 bg-gray-200 dark:bg-gray-700">
+            <div id="guideProgressBar" class="h-full transition-all duration-500 @if(auth()->user()->role === 'admin') bg-indigo-600 @elseif(auth()->user()->role === 'kepala_sekolah') bg-rose-500 @else bg-blue-600 @endif" style="width: 25%;"></div>
         </div>
-        <div class="p-3 overflow-y-auto max-h-[calc(80vh-60px)]">
-            <div class="space-y-2.5">
-                <!-- LANGKAH 1 -->
-                <div class="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-3 border-l-4 border-blue-500">
-                    <span class="inline-block px-2 py-0.5 bg-blue-600 text-white text-[10px] font-bold rounded-full mb-1">LANGKAH 1</span>
-                    <h4 class="text-sm font-bold text-gray-900 dark:text-white">Buat Supervisi Baru</h4>
-                    <p class="text-xs text-gray-600 dark:text-gray-400 mt-1">Tap menu <strong>"Home"</strong>, lalu tap tombol <strong>"Mulai Supervisi"</strong> dan isi tanggal.</p>
-                </div>
 
-                <!-- LANGKAH 2 -->
-                <div class="bg-purple-50 dark:bg-purple-900/20 rounded-lg p-3 border-l-4 border-purple-500">
-                    <div class="flex items-center gap-2 mb-1">
-                        <span class="inline-block px-2 py-0.5 bg-purple-600 text-white text-[10px] font-bold rounded-full">LANGKAH 2</span>
-                        <span class="px-1.5 py-0.5 bg-red-100 dark:bg-red-900/30 text-red-600 text-[10px] font-bold rounded">WAJIB</span>
-                    </div>
-                    <h4 class="text-sm font-bold text-gray-900 dark:text-white">Upload 7 Dokumen</h4>
-                    <p class="text-xs text-gray-600 dark:text-gray-400 mt-1">Tap <strong>"Lanjutkan"</strong> di kartu supervisi, lalu upload dokumen satu per satu.</p>
+        <!-- Header -->
+        <div class="px-6 pt-6 pb-4">
+            <div class="flex items-start justify-between gap-4 mb-2">
+                <div class="flex-1">
+                    <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-0.5">
+                        @if(auth()->user()->role === 'admin')
+                            Admin Guide
+                        @elseif(auth()->user()->role === 'kepala_sekolah')
+                            Kepala Sekolah Guide
+                        @else
+                            Guru Guide
+                        @endif
+                    </h2>
                 </div>
-
-                <!-- LANGKAH 3 -->
-                <div class="bg-green-50 dark:bg-green-900/20 rounded-lg p-3 border-l-4 border-green-500">
-                    <div class="flex items-center gap-2 mb-1">
-                        <span class="inline-block px-2 py-0.5 bg-green-600 text-white text-[10px] font-bold rounded-full">LANGKAH 3</span>
-                        <span class="px-1.5 py-0.5 bg-red-100 dark:bg-red-900/30 text-red-600 text-[10px] font-bold rounded">WAJIB</span>
-                    </div>
-                    <h4 class="text-sm font-bold text-gray-900 dark:text-white">Isi Proses Pembelajaran</h4>
-                    <p class="text-xs text-gray-600 dark:text-gray-400 mt-1">Tap tab <strong>"Proses"</strong>, masukkan link video dan jawab 5 refleksi.</p>
-                </div>
-
-                <!-- LANGKAH 4 -->
-                <div class="bg-amber-50 dark:bg-amber-900/20 rounded-lg p-3 border-l-4 border-amber-500">
-                    <span class="inline-block px-2 py-0.5 bg-amber-600 text-white text-[10px] font-bold rounded-full mb-1">LANGKAH 4</span>
-                    <h4 class="text-sm font-bold text-gray-900 dark:text-white">Submit Supervisi</h4>
-                    <p class="text-xs text-gray-600 dark:text-gray-400 mt-1">Tap tombol <strong>"Submit"</strong> untuk kirim ke Kepala Sekolah.</p>
-                </div>
-
-                <!-- LANGKAH 5 -->
-                <div class="bg-indigo-50 dark:bg-indigo-900/20 rounded-lg p-3 border-l-4 border-indigo-500">
-                    <span class="inline-block px-2 py-0.5 bg-indigo-600 text-white text-[10px] font-bold rounded-full mb-1">LANGKAH 5</span>
-                    <h4 class="text-sm font-bold text-gray-900 dark:text-white">Tunggu Review</h4>
-                    <p class="text-xs text-gray-600 dark:text-gray-400 mt-1">Cek status di kartu supervisi. Tap <strong>"Komentar"</strong> untuk melihat feedback.</p>
+                <div class="flex items-center gap-3">
+                    <span id="guideStepCounter" class="text-xs text-gray-500 dark:text-gray-400 font-medium">Step 1 of 4</span>
+                    <button onclick="closeGuideModal()" class="p-1.5 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors group">
+                        <span class="material-symbols-outlined text-gray-400 group-hover:text-gray-600 dark:group-hover:text-gray-300 text-xl">close</span>
+                    </button>
                 </div>
             </div>
-            <button onclick="closeGuideModal()" class="w-full mt-3 px-4 py-2.5 bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 font-semibold rounded-xl transition-colors text-sm">
-                Tutup
-            </button>
+        </div>
+
+        <!-- Main Content Area -->
+        <div class="px-6 pb-6 flex-1 overflow-y-auto custom-scrollbar overflow-x-hidden max-h-[65vh]">
+            <div id="journeyStepsContainer" class="relative">
+                @if(auth()->user()->role === 'admin')
+                    <!-- ADMIN STEPS -->
+                    <!-- Step 1: User Management -->
+                    <div class="step-content active" data-step="1">
+                        <div class="bg-indigo-50/50 dark:bg-indigo-900/10 rounded-2xl p-6 mb-5 guide-card">
+                            <div class="flex items-center justify-center mb-4">
+                                <div class="w-16 h-16 bg-indigo-600 rounded-2xl flex items-center justify-center shadow-lg">
+                                    <span class="material-symbols-outlined text-white text-4xl">manage_accounts</span>
+                                </div>
+                            </div>
+                            <h3 class="text-lg font-bold text-gray-900 dark:text-white text-center mb-2">Manajemen Pengguna</h3>
+                            <p class="text-sm text-gray-600 dark:text-gray-400 text-center leading-relaxed">
+                                Kelola seluruh akun guru dan kepala sekolah dalam sistem. Anda memiliki kontrol penuh untuk menambah, mengedit, atau menonaktifkan pengguna.
+                            </p>
+                        </div>
+                        
+                        <div class="space-y-3 guide-card">
+                            <div class="flex items-start gap-3 p-4 bg-white dark:bg-gray-700/30 rounded-xl border border-gray-200 dark:border-gray-600 hover:border-indigo-300 dark:hover:border-indigo-700 transition-colors">
+                                <div class="w-5 h-5 rounded-full bg-indigo-100 dark:bg-indigo-900/30 flex items-center justify-center flex-shrink-0 mt-0.5">
+                                    <span class="material-symbols-outlined text-indigo-600 dark:text-indigo-400 text-sm">check</span>
+                                </div>
+                                <div>
+                                    <p class="text-sm font-semibold text-gray-900 dark:text-white mb-1">Validasi NIK & Data Personal</p>
+                                    <p class="text-xs text-gray-600 dark:text-gray-400">NIK 16 digit wajib valid sesuai KTP. Lengkapi nama, email, dan nomor telepon aktif untuk notifikasi sistem.</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-3 p-4 bg-white dark:bg-gray-700/30 rounded-xl border border-gray-200 dark:border-gray-600 hover:border-indigo-300 dark:hover:border-indigo-700 transition-colors">
+                                <div class="w-5 h-5 rounded-full bg-indigo-100 dark:bg-indigo-900/30 flex items-center justify-center flex-shrink-0 mt-0.5">
+                                    <span class="material-symbols-outlined text-indigo-600 dark:text-indigo-400 text-sm">check</span>
+                                </div>
+                                <div>
+                                    <p class="text-sm font-semibold text-gray-900 dark:text-white mb-1">Atur Role & Hak Akses</p>
+                                    <p class="text-xs text-gray-600 dark:text-gray-400">Pilih role: Admin (full access), Kepala Sekolah (review & approve), atau Guru (submit & view).</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-3 p-4 bg-white dark:bg-gray-700/30 rounded-xl border border-gray-200 dark:border-gray-600 hover:border-indigo-300 dark:hover:border-indigo-700 transition-colors">
+                                <div class="w-5 h-5 rounded-full bg-indigo-100 dark:bg-indigo-900/30 flex items-center justify-center flex-shrink-0 mt-0.5">
+                                    <span class="material-symbols-outlined text-indigo-600 dark:text-indigo-400 text-sm">check</span>
+                                </div>
+                                <div>
+                                    <p class="text-sm font-semibold text-gray-900 dark:text-white mb-1">Reset Password & Recovery</p>
+                                    <p class="text-xs text-gray-600 dark:text-gray-400">Fitur reset password tersedia jika user lupa. Password default dikirim otomatis via email.</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-5 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-xl border border-blue-200 dark:border-blue-800 flex items-start gap-2 guide-card">
+                            <span class="material-symbols-outlined text-blue-600 dark:text-blue-400 text-lg flex-shrink-0">info</span>
+                            <p class="text-xs text-blue-800 dark:text-blue-300 leading-relaxed">
+                                <strong>Keamanan:</strong> Semua pengguna baru wajib mengganti password saat login pertama. Email verifikasi otomatis terkirim untuk aktivasi akun.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Step 2: Monitoring Dashboard -->
+                    <div class="step-content" data-step="2">
+                        <div class="bg-purple-50/50 dark:bg-purple-900/10 rounded-2xl p-6 mb-5 guide-card">
+                            <div class="flex items-center justify-center mb-4">
+                                <div class="w-16 h-16 bg-purple-600 rounded-2xl flex items-center justify-center shadow-lg">
+                                    <span class="material-symbols-outlined text-white text-4xl">monitoring</span>
+                                </div>
+                            </div>
+                            <h3 class="text-lg font-bold text-gray-900 dark:text-white text-center mb-2">Dashboard & Monitoring</h3>
+                            <p class="text-sm text-gray-600 dark:text-gray-400 text-center leading-relaxed">
+                                Pantau seluruh aktivitas supervisi dari satu layar. Lihat statistik real-time, status pengajuan, dan progres evaluasi semua guru.
+                            </p>
+                        </div>
+                        
+                        <div class="grid grid-cols-2 gap-3 mb-5 guide-card">
+                            <div class="p-4 bg-emerald-50 dark:bg-emerald-900/10 rounded-xl border border-emerald-200 dark:border-emerald-800">
+                                <div class="flex items-center justify-center w-10 h-10 rounded-full bg-emerald-500 text-white mx-auto mb-2">
+                                    <span class="material-symbols-outlined text-xl">task_alt</span>
+                                </div>
+                                <p class="text-xs font-bold text-gray-900 dark:text-white text-center">Total Supervisi</p>
+                                <p class="text-[10px] text-gray-600 dark:text-gray-400 text-center mt-1">Completed & In Progress</p>
+                            </div>
+                            <div class="p-4 bg-blue-50 dark:bg-blue-900/10 rounded-xl border border-blue-200 dark:border-blue-800">
+                                <div class="flex items-center justify-center w-10 h-10 rounded-full bg-blue-500 text-white mx-auto mb-2">
+                                    <span class="material-symbols-outlined text-xl">groups</span>
+                                </div>
+                                <p class="text-xs font-bold text-gray-900 dark:text-white text-center">Active Users</p>
+                                <p class="text-[10px] text-gray-600 dark:text-gray-400 text-center mt-1">Guru & Kepala Sekolah</p>
+                            </div>
+                        </div>
+                        
+                        <div class="space-y-2 guide-card">
+                            <div class="flex items-center justify-between p-3 bg-white dark:bg-gray-700/30 rounded-xl border border-gray-200 dark:border-gray-600 hover:border-purple-300 transition-colors">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-2 h-2 rounded-full bg-green-500"></div>
+                                    <span class="text-sm font-medium text-gray-900 dark:text-white">Completed</span>
+                                </div>
+                                <span class="text-xs text-gray-500">Supervisi selesai</span>
+                            </div>
+                            <div class="flex items-center justify-between p-3 bg-white dark:bg-gray-700/30 rounded-xl border border-gray-200 dark:border-gray-600 hover:border-purple-300 transition-colors">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-2 h-2 rounded-full bg-blue-500 animate-pulse"></div>
+                                    <span class="text-sm font-medium text-gray-900 dark:text-white">In Progress</span>
+                                </div>
+                                <span class="text-xs text-gray-500">Sedang direview</span>
+                            </div>
+                            <div class="flex items-center justify-between p-3 bg-white dark:bg-gray-700/30 rounded-xl border border-gray-200 dark:border-gray-600 hover:border-purple-300 transition-colors">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-2 h-2 rounded-full bg-amber-500"></div>
+                                    <span class="text-sm font-medium text-gray-900 dark:text-white">Revision</span>
+                                </div>
+                                <span class="text-xs text-gray-500">Perlu perbaikan</span>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-5 p-3 bg-purple-50 dark:bg-purple-900/20 rounded-xl border border-purple-200 dark:border-purple-800 flex items-start gap-2 guide-card">
+                            <span class="material-symbols-outlined text-purple-600 dark:text-purple-400 text-lg flex-shrink-0">insights</span>
+                            <p class="text-xs text-purple-800 dark:text-purple-300 leading-relaxed">
+                                <strong>Analytics:</strong> Grafik dan chart otomatis ter-generate untuk laporan bulanan dan tahunan kepada dinas pendidikan.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Step 3: Carousel & Content Management -->
+                    <div class="step-content" data-step="3">
+                        <div class="bg-teal-50/50 dark:bg-teal-900/10 rounded-2xl p-6 mb-5 guide-card">
+                            <div class="flex items-center justify-center mb-4">
+                                <div class="w-16 h-16 bg-teal-600 rounded-2xl flex items-center justify-center shadow-lg">
+                                    <span class="material-symbols-outlined text-white text-4xl">image</span>
+                                </div>
+                            </div>
+                            <h3 class="text-lg font-bold text-gray-900 dark:text-white text-center mb-2">Carousel & Konten</h3>
+                            <p class="text-sm text-gray-600 dark:text-gray-400 text-center leading-relaxed">
+                                Kelola banner dan slide carousel di halaman login. Tampilkan informasi penting, pencapaian sekolah, atau motivasi untuk guru.
+                            </p>
+                        </div>
+                        
+                        <div class="space-y-3 guide-card">
+                            <div class="flex items-start gap-3 p-4 bg-white dark:bg-gray-700/30 rounded-xl border border-gray-200 dark:border-gray-600 hover:border-teal-300 dark:hover:border-teal-700 transition-colors">
+                                <div class="w-5 h-5 rounded-full bg-teal-100 dark:bg-teal-900/30 flex items-center justify-center flex-shrink-0 mt-0.5">
+                                    <span class="material-symbols-outlined text-teal-600 dark:text-teal-400 text-sm">add_photo_alternate</span>
+                                </div>
+                                <div>
+                                    <p class="text-sm font-semibold text-gray-900 dark:text-white mb-1">Upload Gambar Banner</p>
+                                    <p class="text-xs text-gray-600 dark:text-gray-400">Format JPG/PNG, maksimal 2MB. Resolusi optimal 1920x1080px untuk tampilan terbaik.</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-3 p-4 bg-white dark:bg-gray-700/30 rounded-xl border border-gray-200 dark:border-gray-600 hover:border-teal-300 dark:hover:border-teal-700 transition-colors">
+                                <div class="w-5 h-5 rounded-full bg-teal-100 dark:bg-teal-900/30 flex items-center justify-center flex-shrink-0 mt-0.5">
+                                    <span class="material-symbols-outlined text-teal-600 dark:text-teal-400 text-sm">sort</span>
+                                </div>
+                                <div>
+                                    <p class="text-sm font-semibold text-gray-900 dark:text-white mb-1">Atur Urutan Slide</p>
+                                    <p class="text-xs text-gray-600 dark:text-gray-400">Drag & drop untuk mengubah urutan tampilan. Slide pertama akan menjadi highlight utama.</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-3 p-4 bg-white dark:bg-gray-700/30 rounded-xl border border-gray-200 dark:border-gray-600 hover:border-teal-300 dark:hover:border-teal-700 transition-colors">
+                                <div class="w-5 h-5 rounded-full bg-teal-100 dark:bg-teal-900/30 flex items-center justify-center flex-shrink-0 mt-0.5">
+                                    <span class="material-symbols-outlined text-teal-600 dark:text-teal-400 text-sm">toggle_on</span>
+                                </div>
+                                <div>
+                                    <p class="text-sm font-semibold text-gray-900 dark:text-white mb-1">Aktif/Nonaktifkan Slide</p>
+                                    <p class="text-xs text-gray-600 dark:text-gray-400">Toggle untuk menampilkan/menyembunyikan slide tertentu tanpa menghapus permanent.</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-5 p-3 bg-teal-50 dark:bg-teal-900/20 rounded-xl border border-teal-200 dark:border-teal-800 flex items-start gap-2 guide-card">
+                            <span class="material-symbols-outlined text-teal-600 dark:text-teal-400 text-lg flex-shrink-0">auto_awesome</span>
+                            <p class="text-xs text-teal-800 dark:text-teal-300 leading-relaxed">
+                                <strong>Tips:</strong> Gunakan gambar berkualitas tinggi dengan pesan motivasi atau pencapaian sekolah untuk meningkatkan engagement user.
+                            </p>
+                        </div>
+                    </div>
+                            <div class="guide-card bg-amber-50/50 dark:bg-amber-900/10 p-6 border-amber-100 dark:border-amber-900/30 text-center">
+                                <div class="w-20 h-20 bg-amber-500 rounded-[2rem] flex items-center justify-center shadow-xl shadow-amber-200 dark:shadow-none mx-auto mb-6">
+                                    <span class="material-symbols-outlined text-white text-4xl">monitoring</span>
+                                </div>
+                                <h4 class="text-2xl font-black text-gray-900 dark:text-white mb-3">Monitoring Real-time</h4>
+                                <p class="text-gray-600 dark:text-gray-400 leading-relaxed text-sm">
+                                    Pantau statistik pengajuan secara live. Lihat siapa yang perlu diingatkan atau diprioritaskan.
+                                </p>
+                            </div>
+                            <div class="p-4 rounded-2xl bg-gray-900 text-white flex items-center justify-between">
+                                <div class="flex items-center gap-3">
+                                    <span class="w-3 h-3 bg-red-500 rounded-full animate-ping"></span>
+                                    <span class="text-xs font-bold uppercase">Live Statistics</span>
+                                </div>
+                                <span class="material-symbols-outlined text-amber-500">troubleshoot</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step 4: Reports & Analytics -->
+                    <div class="step-content" data-step="4">
+                        <div class="bg-amber-50/50 dark:bg-amber-900/10 rounded-2xl p-6 mb-5 guide-card">
+                            <div class="flex items-center justify-center mb-4">
+                                <div class="w-16 h-16 bg-amber-600 rounded-2xl flex items-center justify-center shadow-lg">
+                                    <span class="material-symbols-outlined text-white text-4xl">analytics</span>
+                                </div>
+                            </div>
+                            <h3 class="text-lg font-bold text-gray-900 dark:text-white text-center mb-2">Laporan & Analitik</h3>
+                            <p class="text-sm text-gray-600 dark:text-gray-400 text-center leading-relaxed">
+                                Generate laporan komprehensif untuk keperluan administratif, monitoring kinerja, dan pelaporan ke dinas pendidikan.
+                            </p>
+                        </div>
+                        
+                        <div class="space-y-3 guide-card">
+                            <div class="flex items-start gap-3 p-4 bg-white dark:bg-gray-700/30 rounded-xl border border-gray-200 dark:border-gray-600 hover:border-amber-300 dark:hover:border-amber-700 transition-colors">
+                                <div class="w-5 h-5 rounded-full bg-amber-100 dark:bg-amber-900/30 flex items-center justify-center flex-shrink-0 mt-0.5">
+                                    <span class="material-symbols-outlined text-amber-600 dark:text-amber-400 text-sm">table_chart</span>
+                                </div>
+                                <div>
+                                    <p class="text-sm font-semibold text-gray-900 dark:text-white mb-1">Export Excel/CSV</p>
+                                    <p class="text-xs text-gray-600 dark:text-gray-400">Download data supervisi lengkap dalam format spreadsheet untuk analisis lanjutan atau arsip.</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-3 p-4 bg-white dark:bg-gray-700/30 rounded-xl border border-gray-200 dark:border-gray-600 hover:border-amber-300 dark:hover:border-amber-700 transition-colors">
+                                <div class="w-5 h-5 rounded-full bg-amber-100 dark:bg-amber-900/30 flex items-center justify-center flex-shrink-0 mt-0.5">
+                                    <span class="material-symbols-outlined text-amber-600 dark:text-amber-400 text-sm">picture_as_pdf</span>
+                                </div>
+                                <div>
+                                    <p class="text-sm font-semibold text-gray-900 dark:text-white mb-1">Cetak PDF Official</p>
+                                    <p class="text-xs text-gray-600 dark:text-gray-400">Laporan PDF dengan kop sekolah, tanda tangan digital, dan format resmi untuk dokumentasi.</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-3 p-4 bg-white dark:bg-gray-700/30 rounded-xl border border-gray-200 dark:border-gray-600 hover:border-amber-300 dark:hover:border-amber-700 transition-colors">
+                                <div class="w-5 h-5 rounded-full bg-amber-100 dark:bg-amber-900/30 flex items-center justify-center flex-shrink-0 mt-0.5">
+                                    <span class="material-symbols-outlined text-amber-600 dark:text-amber-400 text-sm">query_stats</span>
+                                </div>
+                                <div>
+                                    <p class="text-sm font-semibold text-gray-900 dark:text-white mb-1">Dashboard Analytics</p>
+                                    <p class="text-xs text-gray-600 dark:text-gray-400">Grafik performa guru, tren kualitas pembelajaran, dan statistik periode untuk evaluasi berkala.</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-5 p-3 bg-green-50 dark:bg-green-900/20 rounded-xl border border-green-200 dark:border-green-800 flex items-start gap-2 guide-card">
+                            <span class="material-symbols-outlined text-green-600 dark:text-green-400 text-lg flex-shrink-0">verified</span>
+                            <p class="text-xs text-green-800 dark:text-green-300 leading-relaxed">
+                                <strong>Otomatis:</strong> Sistem akan auto-generate grafik dan statistik setiap akhir bulan untuk memudahkan monitoring berkelanjutan.
+                            </p>
+                        </div>
+                    </div>
+
+                @elseif(auth()->user()->role === 'kepala_sekolah')
+                    <!-- KEPALA SEKOLAH STEPS -->
+                    <!-- Step 1: Review Schedule -->
+                    <div class="step-content active" data-step="1">
+                        <div class="bg-rose-50/50 dark:bg-rose-900/10 rounded-2xl p-6 mb-5 guide-card">
+                            <div class="flex items-center justify-center mb-4">
+                                <div class="w-16 h-16 bg-rose-600 rounded-2xl flex items-center justify-center shadow-lg">
+                                    <span class="material-symbols-outlined text-white text-4xl">event_note</span>
+                                </div>
+                            </div>
+                            <h3 class="text-lg font-bold text-gray-900 dark:text-white text-center mb-2">Review Jadwal Pengajuan</h3>
+                            <p class="text-sm text-gray-600 dark:text-gray-400 text-center leading-relaxed">
+                                Tinjau dan validasi jadwal supervisi yang diajukan guru. Pastikan tidak bentrok dengan agenda sekolah dan sesuai dengan kalender akademik.
+                            </p>
+                        </div>
+                        
+                        <div class="space-y-3 guide-card">
+                            <div class="flex items-start gap-3 p-4 bg-white dark:bg-gray-700/30 rounded-xl border border-gray-200 dark:border-gray-600 hover:border-rose-300 dark:hover:border-rose-700 transition-colors">
+                                <div class="w-5 h-5 rounded-full bg-rose-100 dark:bg-rose-900/30 flex items-center justify-center flex-shrink-0 mt-0.5">
+                                    <span class="material-symbols-outlined text-rose-600 dark:text-rose-400 text-sm">check_circle</span>
+                                </div>
+                                <div>
+                                    <p class="text-sm font-semibold text-gray-900 dark:text-white mb-1">Approve Jadwal</p>
+                                    <p class="text-xs text-gray-600 dark:text-gray-400">Setujui jadwal yang sesuai. Guru akan menerima notifikasi konfirmasi dan dapat melanjutkan persiapan.</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-3 p-4 bg-white dark:bg-gray-700/30 rounded-xl border border-gray-200 dark:border-gray-600 hover:border-rose-300 dark:hover:border-rose-700 transition-colors">
+                                <div class="w-5 h-5 rounded-full bg-rose-100 dark:bg-rose-900/30 flex items-center justify-center flex-shrink-0 mt-0.5">
+                                    <span class="material-symbols-outlined text-rose-600 dark:text-rose-400 text-sm">schedule</span>
+                                </div>
+                                <div>
+                                    <p class="text-sm font-semibold text-gray-900 dark:text-white mb-1">Reschedule</p>
+                                    <p class="text-xs text-gray-600 dark:text-gray-400">Ajukan waktu alternatif jika jadwal usulan bentrok dengan agenda penting sekolah.</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-3 p-4 bg-white dark:bg-gray-700/30 rounded-xl border border-gray-200 dark:border-gray-600 hover:border-rose-300 dark:hover:border-rose-700 transition-colors">
+                                <div class="w-5 h-5 rounded-full bg-rose-100 dark:bg-rose-900/30 flex items-center justify-center flex-shrink-0 mt-0.5">
+                                    <span class="material-symbols-outlined text-rose-600 dark:text-rose-400 text-sm">event_busy</span>
+                                </div>
+                                <div>
+                                    <p class="text-sm font-semibold text-gray-900 dark:text-white mb-1">Reject dengan Alasan</p>
+                                    <p class="text-xs text-gray-600 dark:text-gray-400">Berikan penjelasan jelas jika pengajuan ditolak, sertakan saran waktu yang lebih tepat.</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-5 p-3 bg-rose-50 dark:bg-rose-900/20 rounded-xl border border-rose-200 dark:border-rose-800 flex items-start gap-2 guide-card">
+                            <span class="material-symbols-outlined text-rose-600 dark:text-rose-400 text-lg flex-shrink-0">alarm</span>
+                            <p class="text-xs text-rose-800 dark:text-rose-300 leading-relaxed">
+                                <strong>Responsif:</strong> Usahakan merespons pengajuan dalam 1x24 jam agar guru punya waktu memadai untuk persiapan mengajar.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Step 2: Evaluasi Dokumen -->
+                    <div class="step-content" data-step="2">
+                        <div class="bg-orange-50/50 dark:bg-orange-900/10 rounded-2xl p-6 mb-5 guide-card">
+                            <div class="flex items-center justify-center mb-4">
+                                <div class="w-16 h-16 bg-orange-600 rounded-2xl flex items-center justify-center shadow-lg">
+                                    <span class="material-symbols-outlined text-white text-4xl">fact_check</span>
+                                </div>
+                            </div>
+                            <h3 class="text-lg font-bold text-gray-900 dark:text-white text-center mb-2">Review Perangkat Pembelajaran</h3>
+                            <p class="text-sm text-gray-600 dark:text-gray-400 text-center leading-relaxed">
+                                Periksa kelengkapan dan kualitas RPP, media pembelajaran, dan instrumen evaluasi yang diupload guru sebelum observasi kelas.
+                            </p>
+                        </div>
+                        
+                        <div class="space-y-3 guide-card">
+                            <div class="flex items-start gap-3 p-4 bg-white dark:bg-gray-700/30 rounded-xl border border-gray-200 dark:border-gray-600 hover:border-orange-300 dark:hover:border-orange-700 transition-colors">
+                                <div class="w-5 h-5 rounded-full bg-orange-100 dark:bg-orange-900/30 flex items-center justify-center flex-shrink-0 mt-0.5">
+                                    <span class="material-symbols-outlined text-orange-600 dark:text-orange-400 text-sm">description</span>
+                                </div>
+                                <div>
+                                    <p class="text-sm font-semibold text-gray-900 dark:text-white mb-1">Cek Kelengkapan RPP</p>
+                                    <p class="text-xs text-gray-600 dark:text-gray-400">Verifikasi komponen: KD, indikator, tujuan, materi, metode, langkah, dan penilaian sesuai standar.</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-3 p-4 bg-white dark:bg-gray-700/30 rounded-xl border border-gray-200 dark:border-gray-600 hover:border-orange-300 dark:hover:border-orange-700 transition-colors">
+                                <div class="w-5 h-5 rounded-full bg-orange-100 dark:bg-orange-900/30 flex items-center justify-center flex-shrink-0 mt-0.5">
+                                    <span class="material-symbols-outlined text-orange-600 dark:text-orange-400 text-sm">rate_review</span>
+                                </div>
+                                <div>
+                                    <p class="text-sm font-semibold text-gray-900 dark:text-white mb-1">Berikan Feedback Konstruktif</p>
+                                    <p class="text-xs text-gray-600 dark:text-gray-400">Saran perbaikan spesifik dan actionable jika ada komponen yang perlu ditingkatkan kualitasnya.</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-3 p-4 bg-white dark:bg-gray-700/30 rounded-xl border border-gray-200 dark:border-gray-600 hover:border-orange-300 dark:hover:border-orange-700 transition-colors">
+                                <div class="w-5 h-5 rounded-full bg-orange-100 dark:bg-orange-900/30 flex items-center justify-center flex-shrink-0 mt-0.5">
+                                    <span class="material-symbols-outlined text-orange-600 dark:text-orange-400 text-sm">task_alt</span>
+                                </div>
+                                <div>
+                                    <p class="text-sm font-semibold text-gray-900 dark:text-white mb-1">Approve atau Revise</p>
+                                    <p class="text-xs text-gray-600 dark:text-gray-400">Setujui jika sudah memenuhi standar, atau minta revisi dengan catatan detail untuk perbaikan.</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-5 p-3 bg-amber-50 dark:bg-amber-900/20 rounded-xl border border-amber-200 dark:border-amber-800 flex items-start gap-2 guide-card">
+                            <span class="material-symbols-outlined text-amber-600 dark:text-amber-400 text-lg flex-shrink-0">lightbulb</span>
+                            <p class="text-xs text-amber-800 dark:text-amber-300 leading-relaxed">
+                                <strong>Tips:</strong> Gunakan fitur komentar inline untuk feedback yang lebih spesifik pada bagian tertentu dari dokumen.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Step 3: Observasi Langsung -->
+                    <div class="step-content" data-step="3">
+                        <div class="bg-teal-50/50 dark:bg-teal-900/10 rounded-2xl p-6 mb-5 guide-card">
+                            <div class="flex items-center justify-center mb-4">
+                                <div class="w-16 h-16 bg-teal-600 rounded-2xl flex items-center justify-center shadow-lg">
+                                    <span class="material-symbols-outlined text-white text-4xl">visibility</span>
+                                </div>
+                            </div>
+                            <h3 class="text-lg font-bold text-gray-900 dark:text-white text-center mb-2">Observasi Pembelajaran</h3>
+                            <p class="text-sm text-gray-600 dark:text-gray-400 text-center leading-relaxed">
+                                Lakukan pengamatan langsung di kelas menggunakan instrumen supervisi digital. Fokus pada kualitas pembelajaran, interaksi, dan pengelolaan kelas.
+                            </p>
+                        </div>
+                        
+                        <div class="space-y-3 guide-card">
+                            <div class="flex items-start gap-3 p-4 bg-white dark:bg-gray-700/30 rounded-xl border border-gray-200 dark:border-gray-600 hover:border-teal-300 dark:hover:border-teal-700 transition-colors">
+                                <div class="w-5 h-5 rounded-full bg-teal-100 dark:bg-teal-900/30 flex items-center justify-center flex-shrink-0 mt-0.5">
+                                    <span class="material-symbols-outlined text-teal-600 dark:text-teal-400 text-sm">checklist</span>
+                                </div>
+                                <div>
+                                    <p class="text-sm font-semibold text-gray-900 dark:text-white mb-1">Isi Instrumen Digital</p>
+                                    <p class="text-xs text-gray-600 dark:text-gray-400">Gunakan rubrik yang tersedia: pembukaan, inti, penutup, pengelolaan waktu, dan interaksi siswa.</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-3 p-4 bg-white dark:bg-gray-700/30 rounded-xl border border-gray-200 dark:border-gray-600 hover:border-teal-300 dark:hover:border-teal-700 transition-colors">
+                                <div class="w-5 h-5 rounded-full bg-teal-100 dark:bg-teal-900/30 flex items-center justify-center flex-shrink-0 mt-0.5">
+                                    <span class="material-symbols-outlined text-teal-600 dark:text-teal-400 text-sm">photo_camera</span>
+                                </div>
+                                <div>
+                                    <p class="text-sm font-semibold text-gray-900 dark:text-white mb-1">Dokumentasi Visual</p>
+                                    <p class="text-xs text-gray-600 dark:text-gray-400">Upload foto suasana kelas, karya siswa, atau media yang digunakan sebagai bukti observasi.</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-3 p-4 bg-white dark:bg-gray-700/30 rounded-xl border border-gray-200 dark:border-gray-600 hover:border-teal-300 dark:hover:border-teal-700 transition-colors">
+                                <div class="w-5 h-5 rounded-full bg-teal-100 dark:bg-teal-900/30 flex items-center justify-center flex-shrink-0 mt-0.5">
+                                    <span class="material-symbols-outlined text-teal-600 dark:text-teal-400 text-sm">edit_note</span>
+                                </div>
+                                <div>
+                                    <p class="text-sm font-semibold text-gray-900 dark:text-white mb-1">Catatan Lapangan</p>
+                                    <p class="text-xs text-gray-600 dark:text-gray-400">Tulis observasi spesifik: momen menarik, kendala yang dihadapi guru, atau inovasi metode mengajar.</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-5 p-3 bg-teal-50 dark:bg-teal-900/20 rounded-xl border border-teal-200 dark:border-teal-800 flex items-start gap-2 guide-card">
+                            <span class="material-symbols-outlined text-teal-600 dark:text-teal-400 text-lg flex-shrink-0">timer</span>
+                            <p class="text-xs text-teal-800 dark:text-teal-300 leading-relaxed">
+                                <strong>Objektif:</strong> Observasi dilakukan minimal 1 jam pelajaran penuh untuk mendapat gambaran utuh proses pembelajaran.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Step 4: Rekap & Feedback -->
+                    <div class="step-content" data-step="4">
+                        <div class="bg-purple-50/50 dark:bg-purple-900/10 rounded-2xl p-6 mb-5 guide-card">
+                            <div class="flex items-center justify-center mb-4">
+                                <div class="w-16 h-16 bg-purple-600 rounded-2xl flex items-center justify-center shadow-lg">
+                                    <span class="material-symbols-outlined text-white text-4xl">rate_review</span>
+                                </div>
+                            </div>
+                            <h3 class="text-lg font-bold text-gray-900 dark:text-white text-center mb-2">Finalisasi & Tindak Lanjut</h3>
+                            <p class="text-sm text-gray-600 dark:text-gray-400 text-center leading-relaxed">
+                                Berikan penilaian akhir, feedback konstruktif, dan rekomendasi pengembangan profesional untuk peningkatan kualitas guru.
+                            </p>
+                        </div>
+                        
+                        <div class="space-y-3 guide-card">
+                            <div class="flex items-start gap-3 p-4 bg-white dark:bg-gray-700/30 rounded-xl border border-gray-200 dark:border-gray-600 hover:border-purple-300 dark:hover:border-purple-700 transition-colors">
+                                <div class="w-5 h-5 rounded-full bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center flex-shrink-0 mt-0.5">
+                                    <span class="material-symbols-outlined text-purple-600 dark:text-purple-400 text-sm">stars</span>
+                                </div>
+                                <div>
+                                    <p class="text-sm font-semibold text-gray-900 dark:text-white mb-1">Input Skor Final</p>
+                                    <p class="text-xs text-gray-600 dark:text-gray-400">Sistem auto-kalkulasi dari instrumen observasi. Review dan konfirmasi hasil penilaian total.</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-3 p-4 bg-white dark:bg-gray-700/30 rounded-xl border border-gray-200 dark:border-gray-600 hover:border-purple-300 dark:hover:border-purple-700 transition-colors">
+                                <div class="w-5 h-5 rounded-full bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center flex-shrink-0 mt-0.5">
+                                    <span class="material-symbols-outlined text-purple-600 dark:text-purple-400 text-sm">psychology</span>
+                                </div>
+                                <div>
+                                    <p class="text-sm font-semibold text-gray-900 dark:text-white mb-1">Feedback Pengembangan</p>
+                                    <p class="text-xs text-gray-600 dark:text-gray-400">Berikan saran konkret untuk peningkatan: metode, media, pengelolaan kelas, atau strategi asesmen.</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-3 p-4 bg-white dark:bg-gray-700/30 rounded-xl border border-gray-200 dark:border-gray-600 hover:border-purple-300 dark:hover:border-purple-700 transition-colors">
+                                <div class="w-5 h-5 rounded-full bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center flex-shrink-0 mt-0.5">
+                                    <span class="material-symbols-outlined text-purple-600 dark:text-purple-400 text-sm">rocket_launch</span>
+                                </div>
+                                <div>
+                                    <p class="text-sm font-semibold text-gray-900 dark:text-white mb-1">Rencana Tindak Lanjut</p>
+                                    <p class="text-xs text-gray-600 dark:text-gray-400">Rekomendasikan pelatihan, mentoring, atau workshop yang sesuai dengan kebutuhan pengembangan guru.</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-5 p-3 bg-gradient-to-r from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20 rounded-xl border border-purple-200 dark:border-purple-800 flex items-start gap-2 guide-card">
+                            <span class="material-symbols-outlined text-purple-600 dark:text-purple-400 text-lg flex-shrink-0">workspace_premium</span>
+                            <p class="text-xs text-purple-800 dark:text-purple-300 leading-relaxed">
+                                <strong>Apresiasi:</strong> Jangan lupa berikan apresiasi untuk aspek positif yang telah dilakukan guru dengan baik.
+                            </p>
+                        </div>
+                    </div>
+
+                @else
+                    <!-- GURU STEPS -->
+                    <!-- Step 1: Scheduling -->
+                    <div class="step-content active" data-step="1">
+                        <div class="bg-blue-50/50 dark:bg-blue-900/10 rounded-2xl p-6 mb-5 guide-card">
+                            <div class="flex items-center justify-center mb-4">
+                                <div class="w-16 h-16 bg-blue-600 rounded-2xl flex items-center justify-center shadow-lg">
+                                    <span class="material-symbols-outlined text-white text-4xl">edit_calendar</span>
+                                </div>
+                            </div>
+                            <h3 class="text-lg font-bold text-gray-900 dark:text-white text-center mb-2">Ajukan Jadwal Supervisi</h3>
+                            <p class="text-sm text-gray-600 dark:text-gray-400 text-center leading-relaxed">
+                                Tentukan tanggal dan waktu supervisi yang sesuai dengan jadwal mengajar Anda. Koordinasi dengan kepala sekolah untuk memastikan ketersediaan.
+                            </p>
+                        </div>
+                        
+                        <div class="space-y-3 guide-card">
+                            <div class="flex items-start gap-3 p-4 bg-white dark:bg-gray-700/30 rounded-xl border border-gray-200 dark:border-gray-600 hover:border-blue-300 dark:hover:border-blue-700 transition-colors">
+                                <div class="w-5 h-5 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center flex-shrink-0 mt-0.5">
+                                    <span class="material-symbols-outlined text-blue-600 dark:text-blue-400 text-sm">event</span>
+                                </div>
+                                <div>
+                                    <p class="text-sm font-semibold text-gray-900 dark:text-white mb-1">Pilih Tanggal & Waktu</p>
+                                    <p class="text-xs text-gray-600 dark:text-gray-400">Minimal H-3 sebelum pelaksanaan. Pilih slot waktu yang tidak bentrok dengan agenda sekolah lain.</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-3 p-4 bg-white dark:bg-gray-700/30 rounded-xl border border-gray-200 dark:border-gray-600 hover:border-blue-300 dark:hover:border-blue-700 transition-colors">
+                                <div class="w-5 h-5 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center flex-shrink-0 mt-0.5">
+                                    <span class="material-symbols-outlined text-blue-600 dark:text-blue-400 text-sm">description</span>
+                                </div>
+                                <div>
+                                    <p class="text-sm font-semibold text-gray-900 dark:text-white mb-1">Siapkan Dokumen Awal</p>
+                                    <p class="text-xs text-gray-600 dark:text-gray-400">Pastikan RPP/Modul Ajar sudah dalam bentuk draft final untuk direview kepala sekolah.</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-3 p-4 bg-white dark:bg-gray-700/30 rounded-xl border border-gray-200 dark:border-gray-600 hover:border-blue-300 dark:hover:border-blue-700 transition-colors">
+                                <div class="w-5 h-5 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center flex-shrink-0 mt-0.5">
+                                    <span class="material-symbols-outlined text-blue-600 dark:text-blue-400 text-sm">notes</span>
+                                </div>
+                                <div>
+                                    <p class="text-sm font-semibold text-gray-900 dark:text-white mb-1">Isi Catatan Tambahan</p>
+                                    <p class="text-xs text-gray-600 dark:text-gray-400">Jelaskan materi yang akan diajarkan dan target pembelajaran yang ingin dicapai.</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-5 p-3 bg-amber-50 dark:bg-amber-900/20 rounded-xl border border-amber-200 dark:border-amber-800 flex items-start gap-2 guide-card">
+                            <span class="material-symbols-outlined text-amber-600 dark:text-amber-400 text-lg flex-shrink-0">schedule</span>
+                            <p class="text-xs text-amber-800 dark:text-amber-300 leading-relaxed">
+                                <strong>Waktu Ideal:</strong> Ajukan supervisi minimal 3 hari kerja sebelumnya agar kepala sekolah memiliki waktu cukup untuk persiapan dan review dokumen.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Step 2: Upload Files -->
+                    <div class="step-content" data-step="2">
+                        <div class="bg-indigo-50/50 dark:bg-indigo-900/10 rounded-2xl p-6 mb-5 guide-card">
+                            <div class="flex items-center justify-center mb-4">
+                                <div class="w-16 h-16 bg-indigo-600 rounded-2xl flex items-center justify-center shadow-lg">
+                                    <span class="material-symbols-outlined text-white text-4xl">upload_file</span>
+                                </div>
+                            </div>
+                            <h3 class="text-lg font-bold text-gray-900 dark:text-white text-center mb-2">Lengkapi Dokumen</h3>
+                            <p class="text-sm text-gray-600 dark:text-gray-400 text-center leading-relaxed">
+                                Unggah perangkat pembelajaran sebagai bahan evaluasi. Dokumen lengkap mempercepat proses review dan approval dari kepala sekolah.
+                            </p>
+                        </div>
+                        
+                        <div class="space-y-3 guide-card">
+                            <div class="flex items-start gap-3 p-4 bg-white dark:bg-gray-700/30 rounded-xl border border-gray-200 dark:border-gray-600 hover:border-indigo-300 dark:hover:border-indigo-700 transition-colors">
+                                <div class="w-5 h-5 rounded-full bg-indigo-100 dark:bg-indigo-900/30 flex items-center justify-center flex-shrink-0 mt-0.5">
+                                    <span class="material-symbols-outlined text-indigo-600 dark:text-indigo-400 text-sm">description</span>
+                                </div>
+                                <div>
+                                    <p class="text-sm font-semibold text-gray-900 dark:text-white mb-1">RPP/Modul Ajar (Wajib)</p>
+                                    <p class="text-xs text-gray-600 dark:text-gray-400">Format PDF/DOCX max 10MB. Pastikan sesuai format K13 atau Kurikulum Merdeka yang berlaku.</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-3 p-4 bg-white dark:bg-gray-700/30 rounded-xl border border-gray-200 dark:border-gray-600 hover:border-indigo-300 dark:hover:border-indigo-700 transition-colors">
+                                <div class="w-5 h-5 rounded-full bg-indigo-100 dark:bg-indigo-900/30 flex items-center justify-center flex-shrink-0 mt-0.5">
+                                    <span class="material-symbols-outlined text-indigo-600 dark:text-indigo-400 text-sm">video_library</span>
+                                </div>
+                                <div>
+                                    <p class="text-sm font-semibold text-gray-900 dark:text-white mb-1">Media Pembelajaran (Opsional)</p>
+                                    <p class="text-xs text-gray-600 dark:text-gray-400">PPT, video, atau link Google Drive ke materi pendukung yang akan digunakan saat mengajar.</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-3 p-4 bg-white dark:bg-gray-700/30 rounded-xl border border-gray-200 dark:border-gray-600 hover:border-indigo-300 dark:hover:border-indigo-700 transition-colors">
+                                <div class="w-5 h-5 rounded-full bg-indigo-100 dark:bg-indigo-900/30 flex items-center justify-center flex-shrink-0 mt-0.5">
+                                    <span class="material-symbols-outlined text-indigo-600 dark:text-indigo-400 text-sm">assignment</span>
+                                </div>
+                                <div>
+                                    <p class="text-sm font-semibold text-gray-900 dark:text-white mb-1">Instrumen Penilaian</p>
+                                    <p class="text-xs text-gray-600 dark:text-gray-400">Rubrik penilaian, kisi-kisi soal, atau lembar observasi yang akan digunakan untuk evaluasi siswa.</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-5 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-xl border border-blue-200 dark:border-blue-800 flex items-start gap-2 guide-card">
+                            <span class="material-symbols-outlined text-blue-600 dark:text-blue-400 text-lg flex-shrink-0">cloud_upload</span>
+                            <p class="text-xs text-blue-800 dark:text-blue-300 leading-relaxed">
+                                <strong>Upload:</strong> Sistem mendukung drag & drop. File otomatis tersimpan dan bisa direvisi sebelum pengajuan final.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Step 3: Monitor Status -->
+                    <div class="step-content" data-step="3">
+                        <div class="bg-amber-50/50 dark:bg-amber-900/10 rounded-2xl p-6 mb-5 guide-card">
+                            <div class="flex items-center justify-center mb-4">
+                                <div class="w-16 h-16 bg-amber-500 rounded-2xl flex items-center justify-center shadow-lg">
+                                    <span class="material-symbols-outlined text-white text-4xl">notifications_active</span>
+                                </div>
+                            </div>
+                            <h3 class="text-lg font-bold text-gray-900 dark:text-white text-center mb-2">Pantau Status</h3>
+                            <p class="text-sm text-gray-600 dark:text-gray-400 text-center leading-relaxed">
+                                Cek berkala status pengajuan Anda. Sistem akan mengirim notifikasi otomatis setiap ada perubahan atau feedback dari kepala sekolah.
+                            </p>
+                        </div>
+                        
+                        <div class="space-y-3 guide-card">
+                            <div class="flex items-start gap-3 p-4 bg-white dark:bg-gray-700/30 rounded-xl border border-gray-200 dark:border-gray-600 hover:border-amber-300 dark:hover:border-amber-700 transition-colors">
+                                <div class="w-5 h-5 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center flex-shrink-0 mt-0.5">
+                                    <span class="material-symbols-outlined text-blue-600 dark:text-blue-400 text-sm">pending</span>
+                                </div>
+                                <div>
+                                    <p class="text-sm font-semibold text-gray-900 dark:text-white mb-1">Status: Submitted</p>
+                                    <p class="text-xs text-gray-600 dark:text-gray-400">Pengajuan terkirim dan menunggu review dari kepala sekolah. Biasanya 1-2 hari kerja.</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-3 p-4 bg-white dark:bg-gray-700/30 rounded-xl border border-gray-200 dark:border-gray-600 hover:border-amber-300 dark:hover:border-amber-700 transition-colors">
+                                <div class="w-5 h-5 rounded-full bg-amber-100 dark:bg-amber-900/30 flex items-center justify-center flex-shrink-0 mt-0.5">
+                                    <span class="material-symbols-outlined text-amber-600 dark:text-amber-400 text-sm">edit_note</span>
+                                </div>
+                                <div>
+                                    <p class="text-sm font-semibold text-gray-900 dark:text-white mb-1">Status: Revision Requested</p>
+                                    <p class="text-xs text-gray-600 dark:text-gray-400">Ada catatan perbaikan. Baca feedback di kolom komentar, update dokumen, lalu ajukan ulang.</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-3 p-4 bg-white dark:bg-gray-700/30 rounded-xl border border-gray-200 dark:border-gray-600 hover:border-amber-300 dark:hover:border-amber-700 transition-colors">
+                                <div class="w-5 h-5 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center flex-shrink-0 mt-0.5">
+                                    <span class="material-symbols-outlined text-green-600 dark:text-green-400 text-sm">check_circle</span>
+                                </div>
+                                <div>
+                                    <p class="text-sm font-semibold text-gray-900 dark:text-white mb-1">Status: Approved</p>
+                                    <p class="text-xs text-gray-600 dark:text-gray-400">Jadwal disetujui! Supervisi akan dilaksanakan sesuai waktu yang telah ditentukan.</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-5 p-3 bg-purple-50 dark:bg-purple-900/20 rounded-xl border border-purple-200 dark:border-purple-800 flex items-start gap-2 guide-card">
+                            <span class="material-symbols-outlined text-purple-600 dark:text-purple-400 text-lg flex-shrink-0">mark_email_read</span>
+                            <p class="text-xs text-purple-800 dark:text-purple-300 leading-relaxed">
+                                <strong>Notifikasi:</strong> Email dan notifikasi in-app akan otomatis terkirim setiap ada update status atau feedback baru.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Step 4: Final Feedback -->
+                    <div class="step-content" data-step="4">
+                        <div class="bg-emerald-50/50 dark:bg-emerald-900/10 rounded-2xl p-6 mb-5 guide-card">
+                            <div class="flex items-center justify-center mb-4">
+                                <div class="w-16 h-16 bg-emerald-600 rounded-2xl flex items-center justify-center shadow-lg">
+                                    <span class="material-symbols-outlined text-white text-4xl">assignment_turned_in</span>
+                                </div>
+                            </div>
+                            <h3 class="text-lg font-bold text-gray-900 dark:text-white text-center mb-2">Hasil & Evaluasi</h3>
+                            <p class="text-sm text-gray-600 dark:text-gray-400 text-center leading-relaxed">
+                                Akses hasil supervisi lengkap dengan skor, feedback konstruktif, dan saran pengembangan untuk meningkatkan kualitas pembelajaran.
+                            </p>
+                        </div>
+                        
+                        <div class="space-y-3 guide-card">
+                            <div class="flex items-start gap-3 p-4 bg-white dark:bg-gray-700/30 rounded-xl border border-gray-200 dark:border-gray-600 hover:border-emerald-300 dark:hover:border-emerald-700 transition-colors">
+                                <div class="w-5 h-5 rounded-full bg-emerald-100 dark:bg-emerald-900/30 flex items-center justify-center flex-shrink-0 mt-0.5">
+                                    <span class="material-symbols-outlined text-emerald-600 dark:text-emerald-400 text-sm">star</span>
+                                </div>
+                                <div>
+                                    <p class="text-sm font-semibold text-gray-900 dark:text-white mb-1">Skor Penilaian</p>
+                                    <p class="text-xs text-gray-600 dark:text-gray-400">Nilai berdasarkan instrumen supervisi: perencanaan, pelaksanaan, evaluasi, dan profesionalisme.</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-3 p-4 bg-white dark:bg-gray-700/30 rounded-xl border border-gray-200 dark:border-gray-600 hover:border-emerald-300 dark:hover:border-emerald-700 transition-colors">
+                                <div class="w-5 h-5 rounded-full bg-emerald-100 dark:bg-emerald-900/30 flex items-center justify-center flex-shrink-0 mt-0.5">
+                                    <span class="material-symbols-outlined text-emerald-600 dark:text-emerald-400 text-sm">comment</span>
+                                </div>
+                                <div>
+                                    <p class="text-sm font-semibold text-gray-900 dark:text-white mb-1">Feedback Kepala Sekolah</p>
+                                    <p class="text-xs text-gray-600 dark:text-gray-400">Saran perbaikan, kelebihan yang dipertahankan, dan area yang perlu dikembangkan.</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-3 p-4 bg-white dark:bg-gray-700/30 rounded-xl border border-gray-200 dark:border-gray-600 hover:border-emerald-300 dark:hover:border-emerald-700 transition-colors">
+                                <div class="w-5 h-5 rounded-full bg-emerald-100 dark:bg-emerald-900/30 flex items-center justify-center flex-shrink-0 mt-0.5">
+                                    <span class="material-symbols-outlined text-emerald-600 dark:text-emerald-400 text-sm">download</span>
+                                </div>
+                                <div>
+                                    <p class="text-sm font-semibold text-gray-900 dark:text-white mb-1">Download Laporan</p>
+                                    <p class="text-xs text-gray-600 dark:text-gray-400">Cetak laporan PDF dengan tanda tangan digital untuk portofolio atau keperluan sertifikasi.</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-5 p-3 bg-gradient-to-r from-emerald-50 to-teal-50 dark:from-emerald-900/20 dark:to-teal-900/20 rounded-xl border border-emerald-200 dark:border-emerald-800 flex items-start gap-2 guide-card">
+                            <span class="material-symbols-outlined text-emerald-600 dark:text-emerald-400 text-lg flex-shrink-0">workspace_premium</span>
+                            <p class="text-xs text-emerald-800 dark:text-emerald-300 leading-relaxed">
+                                <strong>Sertifikat:</strong> Guru dengan performa konsisten akan mendapat sertifikat digital apresiasi di akhir semester.
+                            </p>
+                        </div>
+                    </div>
+                @endif
+            </div>
+        </div>
+
+        <!-- Modal Footer -->
+        <div class="px-6 py-5 border-t border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800">
+            <div class="flex items-center justify-between gap-3">
+                <button id="prevStepBtn" onclick="prevStep()" class="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 transition-all disabled:opacity-0 disabled:invisible">
+                    <span class="material-symbols-outlined text-lg">arrow_back</span>
+                    <span>Back</span>
+                </button>
+                
+                <button id="nextStepBtn" onclick="nextStep()" class="flex items-center gap-2 px-6 py-2.5 rounded-xl text-sm font-semibold text-white @if(auth()->user()->role === 'admin') bg-indigo-600 hover:bg-indigo-700 @elseif(auth()->user()->role === 'kepala_sekolah') bg-rose-500 hover:bg-rose-600 @else bg-blue-600 hover:bg-blue-700 @endif transition-all shadow-sm">
+                    <span id="nextStepText">Continue</span>
+                    <span class="material-symbols-outlined text-lg" id="nextStepIcon">arrow_forward</span>
+                </button>
+            </div>
+            
+            <div class="text-center mt-4">
+                <button onclick="closeGuideModal()" class="text-xs font-medium text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors uppercase tracking-wider">
+                    Lewati Panduan
+                </button>
+            </div>
         </div>
     </div>
 </div>
@@ -2079,30 +2947,242 @@ function closeFiturPentingModal() {
 function openGuideModal() {
     const modal = document.getElementById('guideModal');
     const content = document.getElementById('guideModalContent');
+    
     if (modal && content) {
         modal.style.display = 'flex';
         document.body.style.overflow = 'hidden';
+        
+        // Reset initial state
+        content.style.opacity = '0';
+        if (window.innerWidth < 768) {
+            content.style.transform = 'translateY(100%)';
+        } else {
+            content.style.transform = 'translateY(1rem) scale(0.95)';
+        }
+        
+        // Animate in
         setTimeout(() => {
-            content.classList.remove('scale-95', 'opacity-0');
-            content.classList.add('scale-100', 'opacity-100');
-        }, 10);
+            content.style.opacity = '1';
+            if (window.innerWidth < 768) {
+                content.style.transform = 'translateY(0)';
+            } else {
+                content.style.transform = 'translateY(0) scale(1)';
+            }
+            // Initialize step display
+            if (typeof updateStepDisplay === 'function') {
+                updateStepDisplay();
+            }
+        }, 50);
     }
 }
 
 function closeGuideModal() {
     const modal = document.getElementById('guideModal');
     const content = document.getElementById('guideModalContent');
+    
     if (modal && content) {
-        content.classList.remove('scale-100', 'opacity-100');
-        content.classList.add('scale-95', 'opacity-0');
+        // Animate out
+        content.style.opacity = '0';
+        if (window.innerWidth < 768) {
+            content.style.transform = 'translateY(100%)';
+        } else {
+            content.style.transform = 'translateY(1rem) scale(0.95)';
+        }
+        
         setTimeout(() => {
             modal.style.display = 'none';
             document.body.style.overflow = '';
+            // Reset to step 1 for next open
+            currentStep = 1;
+            if (typeof updateStepDisplay === 'function') {
+                updateStepDisplay();
+            }
         }, 300);
     }
 }
+
+// Handle resize for guide modal
+window.addEventListener('resize', () => {
+    const modal = document.getElementById('guideModal');
+    if (modal && modal.style.display === 'flex') {
+        updateStepDisplay();
+    }
+});
+
+// Step Navigation (Desktop Only)
+let currentStep = 1;
+
+function getTotalSteps() {
+    const items = document.querySelectorAll('.step-content');
+    return items.length;
+}
+
+function goToStep(step) {
+    const totalSteps = getTotalSteps();
+    if (step >= 1 && step <= totalSteps) {
+        currentStep = step;
+        updateStepDisplay();
+    }
+}
+
+function nextStep() {
+    const totalSteps = getTotalSteps();
+    if (currentStep < totalSteps) {
+        currentStep++;
+        updateStepDisplay();
+    }
+}
+
+function prevStep() {
+    if (currentStep > 1) {
+        currentStep--;
+        updateStepDisplay();
+    }
+}
+
+function updateStepDisplay() {
+    const totalSteps = getTotalSteps();
+    
+    // Update Progress Bar & Counter
+    const progressBar = document.getElementById('guideProgressBar');
+    const stepCounter = document.getElementById('guideStepCounter');
+    if (progressBar) {
+        progressBar.style.width = ((currentStep / totalSteps) * 100) + '%';
+    }
+    if (stepCounter) {
+        stepCounter.textContent = `Step ${currentStep} of ${totalSteps}`;
+    }
+    
+    // Handle step visibility with seamless single card transition
+    document.querySelectorAll('.step-content').forEach(content => {
+        const step = parseInt(content.dataset.step);
+        if (step === currentStep) {
+            content.classList.add('active');
+        } else {
+            content.classList.remove('active');
+        }
+    });
+    
+    // Update buttons
+    const prevBtn = document.getElementById('prevStepBtn');
+    const nextBtn = document.getElementById('nextStepBtn');
+    const nextText = document.getElementById('nextStepText');
+    const nextIcon = document.getElementById('nextStepIcon');
+    
+    if (prevBtn) {
+        prevBtn.disabled = currentStep === 1;
+        prevBtn.style.opacity = currentStep === 1 ? '0' : '1';
+    }
+    
+    if (nextBtn && nextText) {
+        if (currentStep === totalSteps) {
+            nextText.textContent = 'Finish';
+            if (nextIcon) nextIcon.textContent = 'check_circle';
+            nextBtn.onclick = closeGuideModal;
+        } else {
+            nextText.textContent = 'Continue';
+            if (nextIcon) nextIcon.textContent = 'arrow_forward';
+            nextBtn.onclick = nextStep;
+        }
+    }
+}
+
+// Global Custom Dropdown Logic
+document.addEventListener('DOMContentLoaded', function() {
+    initCustomDropdowns();
+});
+
+// Re-init on Livewire navigate or load
+document.addEventListener('livewire:navigated', () => {
+    initCustomDropdowns();
+});
+
+function initCustomDropdowns() {
+    const dropdownContainers = document.querySelectorAll('.custom-dropdown-container');
+    
+    dropdownContainers.forEach(container => {
+        // Skip if already initialized
+        if (container.dataset.initialized) return;
+        container.dataset.initialized = 'true';
+
+        const btn = container.querySelector('.dropdown-button');
+        const menu = container.querySelector('.dropdown-menu-custom');
+        const label = container.querySelector('.dropdown-label');
+        const arrow = container.querySelector('.dropdown-arrow');
+        const input = container.querySelector('input[type="hidden"]');
+        const items = container.querySelectorAll('.dropdown-item');
+
+        if (!btn || !menu) return;
+
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const isShowing = menu.classList.contains('show');
+            
+            // Close all other dropdowns
+            document.querySelectorAll('.dropdown-menu-custom').forEach(m => {
+                if (m !== menu) {
+                    m.classList.remove('show');
+                    const otherArrow = m.closest('.custom-dropdown-container')?.querySelector('.dropdown-arrow');
+                    if (otherArrow) otherArrow.style.transform = 'rotate(0deg)';
+                }
+            });
+
+            menu.classList.toggle('show');
+            if (arrow) arrow.style.transform = isShowing ? 'rotate(0deg)' : 'rotate(180deg)';
+        });
+
+        items.forEach(item => {
+            item.addEventListener('click', () => {
+                const value = item.getAttribute('data-value');
+                const content = item.innerHTML;
+                
+                if (input) {
+                    input.value = value;
+                    // Trigger change event for any listeners
+                    input.dispatchEvent(new Event('change', { bubbles: true }));
+                    // For Livewire
+                    if (input.hasAttribute('wire:model')) {
+                        const model = input.getAttribute('wire:model');
+                        if (window.Livewire) {
+                            const component = window.Livewire.find(input.closest('[wire\\:id]').getAttribute('wire:id'));
+                            if (component) component.set(model, value);
+                        }
+                    }
+                }
+
+                if (label) {
+                    // Extract text only, excluding material icons to avoid "person Guru" issue
+                    const tempDiv = document.createElement('div');
+                    tempDiv.innerHTML = content;
+                    const icons = tempDiv.querySelectorAll('.material-symbols-outlined');
+                    icons.forEach(icon => icon.remove());
+                    
+                    label.innerHTML = tempDiv.textContent.trim();
+                    label.classList.remove('text-gray-400', 'dark:text-gray-500');
+                }
+                
+                // Update active state
+                items.forEach(i => i.classList.remove('active'));
+                item.classList.add('active');
+                
+                menu.classList.remove('show');
+                if (arrow) arrow.style.transform = 'rotate(0deg)';
+            });
+        });
+    });
+
+    // Close dropdowns when clicking outside
+    document.addEventListener('click', (e) => {
+        if (!e.target.closest('.custom-dropdown-container')) {
+            document.querySelectorAll('.dropdown-menu-custom').forEach(m => {
+                m.classList.remove('show');
+                const arrow = m.closest('.custom-dropdown-container')?.querySelector('.dropdown-arrow');
+                if (arrow) arrow.style.transform = 'rotate(0deg)';
+            });
+        }
+    });
+}
 </script>
-@endif
 @endauth
 
 @livewireScripts

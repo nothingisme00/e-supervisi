@@ -3,14 +3,6 @@
 @section('page-title', $title . ' - Review Supervisi')
 
 @section('content')
-<!-- Breadcrumb -->
-<div class="mb-4">
-    <x-breadcrumb :items="[
-        ['label' => 'Dashboard', 'url' => route('admin.dashboard')],
-        ['label' => 'Review Supervisi', 'icon' => true]
-    ]" />
-</div>
-
 <!-- Header Section -->
 <div class="mb-8">
     <div class="flex items-start justify-between">

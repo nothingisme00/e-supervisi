@@ -37,7 +37,7 @@ class CustomLoginController extends Controller
             'role' => $request->role
         ];
 
-        if (Auth::attempt($credentials, $request->remember)) {
+        if (Auth::attempt($credentials, $request->boolean('remember'))) {
             $user = Auth::user();
 
             // Cek apakah user aktif
@@ -49,6 +49,9 @@ class CustomLoginController extends Controller
             }
 
             $request->session()->regenerate();
+            
+            // Set session flag untuk menampilkan welcome modal
+            session(['just_logged_in' => true]);
 
             // Cek apakah user harus mengganti password
             if ($user->must_change_password) {
@@ -56,13 +59,13 @@ class CustomLoginController extends Controller
                     ->with('info', 'Anda harus mengganti password default untuk keamanan akun Anda.');
             }
 
-            // Redirect berdasarkan role dengan pesan sukses
+            // Redirect berdasarkan role
             if ($user->isAdmin()) {
-                return redirect()->route('admin.dashboard')->with('success', 'Selamat datang, ' . $user->name . '!');
+                return redirect()->route('admin.dashboard');
             } elseif ($user->isGuru()) {
-                return redirect()->route('guru.home')->with('success', 'Selamat datang kembali, ' . $user->name . '!');
+                return redirect()->route('guru.home');
             } elseif ($user->isKepalaSekolah()) {
-                return redirect()->route('kepala.dashboard')->with('success', 'Selamat datang, ' . $user->name . '!');
+                return redirect()->route('kepala.dashboard');
             }
         }
 

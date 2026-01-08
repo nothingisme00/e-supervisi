@@ -5,26 +5,45 @@ namespace App\Http\Controllers\Guru;
 use App\Http\Controllers\Controller;
 use App\Models\Supervisi;
 use App\Models\Feedback;
+use App\Models\CarouselSlide;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
     public function index(Request $request)
     {
-        // Get all supervisi (timeline) excluding drafts - only show submitted/reviewed supervisi
-        $supervisiList = Supervisi::with(['user', 'dokumenEvaluasi', 'prosesPembelajaran', 'feedback.user', 'feedback.replies.user'])
-            ->whereNotIn('status', ['draft'])
+        // Get supervisi timeline with pagination - optimized eager loading
+        $supervisiList = Supervisi::with([
+                'user:id,name,role',
+                'dokumenEvaluasi:id,supervisi_id,jenis_dokumen,nama_file,path_file',
+                'prosesPembelajaran:id,supervisi_id,link_video,link_meeting',
+                'feedback' => function ($query) {
+                    // Only load top-level feedback with limited fields
+                    $query->whereNull('parent_id')
+                        ->with('user:id,name,role')
+                        ->latest()
+                        ->take(5);
+                }
+            ])
+            ->excludeDrafts()
             ->orderBy('created_at', 'desc')
+            ->paginate(15);
+
+        // Get active carousel slides (limited fields)
+        $carouselSlides = CarouselSlide::active()
+            ->ordered()
+            ->select('id', 'image_path', 'title', 'is_active', 'order')
             ->get();
 
-        return view('guru.home', compact('supervisiList'));
+        return view('guru.home', compact('supervisiList', 'carouselSlides'));
     }
 
     public function mySupervisi()
     {
         // Get only current user's draft supervisi
         $mySupervisi = Supervisi::with(['dokumenEvaluasi', 'prosesPembelajaran'])
-            ->where('user_id', auth()->id())
+            ->where('user_id', Auth::id())
             ->orderBy('created_at', 'desc')
             ->get();
 
@@ -35,7 +54,7 @@ class HomeController extends Controller
     {
         $supervisi = Supervisi::with(['dokumenEvaluasi', 'prosesPembelajaran', 'feedback.user', 'feedback.replies.user'])
             ->where('id', $id)
-            ->where('user_id', auth()->id())
+            ->where('user_id', Auth::id())
             ->firstOrFail();
 
         return view('guru.supervisi.detail', compact('supervisi'));
@@ -46,7 +65,7 @@ class HomeController extends Controller
         // Get supervisi from other teacher (not own supervisi)
         $supervisi = Supervisi::with(['user', 'dokumenEvaluasi', 'prosesPembelajaran', 'feedback.user', 'feedback.replies.user'])
             ->where('id', $id)
-            ->where('user_id', '!=', auth()->id())
+            ->where('user_id', '!=', Auth::id())
             ->firstOrFail();
 
         return view('guru.supervisi.view', compact('supervisi'));
@@ -64,13 +83,13 @@ class HomeController extends Controller
 
         // Allow comments from supervisi owner or others
         // But only if supervisi is not in draft status
-        if ($supervisi->status === 'draft') {
+        if ($supervisi->status === Supervisi::STATUS_DRAFT) {
             return redirect()->back()->with('error', 'Tidak dapat menambahkan komentar pada supervisi yang masih draft.');
         }
 
         Feedback::create([
             'supervisi_id' => $id,
-            'user_id' => auth()->id(),
+            'user_id' => Auth::id(),
             'parent_id' => $request->parent_id,
             'komentar' => $request->komentar,
             'is_revision_request' => false, // Comments from peers/owners are not revision requests
