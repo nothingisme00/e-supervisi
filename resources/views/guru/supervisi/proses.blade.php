@@ -696,6 +696,10 @@ setInterval(async () => {
     try {
         await fetch(`/guru/supervisi/${supervisiId}/proses/save`, {
             method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value,
+                'Accept': 'application/json'
+            },
             body: formData
         });
         console.log('Auto-saved at ' + new Date().toLocaleTimeString());

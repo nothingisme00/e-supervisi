@@ -1,6 +1,6 @@
 <div>
     <!-- Unified Header + Filter Card -->
-    <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm mb-5 overflow-hidden">
+    <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm mb-5 overflow-visible">
         <!-- Header Section -->
         <div class="p-4 sm:p-5 border-b border-gray-200 dark:border-gray-700">
             <div class="flex items-center justify-between gap-3">
@@ -58,96 +58,72 @@
             <!-- Desktop Filters (Hidden on mobile, inline on md+) -->
             <div class="hidden md:flex items-center gap-2">
                 <!-- Role Filter -->
-                <div class="relative custom-dropdown-container" id="role-filter-container">
-                    <input type="hidden" wire:model.live="role" id="role-filter">
-                    <button type="button" class="dropdown-button w-full min-w-[160px] px-4 py-2.5 text-left border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all flex items-center justify-between">
-                        <span class="dropdown-label flex items-center gap-2 {{ $role ? '' : 'text-gray-400 dark:text-gray-500' }}">
-                            @if($role == 'admin')
-                                Admin
-                            @elseif($role == 'guru')
-                                Guru
-                            @elseif($role == 'kepala_sekolah')
-                                Kepala Sekolah
-                            @else
-                                Semua Role
+                <div x-data="{ open: false }" @click.away="open = false" class="relative">
+                    <button @click="open = !open" type="button"
+                            class="min-w-[155px] px-4 py-2.5 text-left border bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all flex items-center justify-between gap-2
+                            {{ $role ? 'border-indigo-500 dark:border-indigo-400' : 'border-gray-300 dark:border-gray-600' }}">
+                        <span class="{{ $role ? '' : 'text-gray-400 dark:text-gray-500' }}">
+                            @if($role == 'admin') Admin
+                            @elseif($role == 'guru') Guru
+                            @elseif($role == 'kepala_sekolah') Kepala Sekolah
+                            @else Semua Role
                             @endif
                         </span>
-                        <span class="material-symbols-outlined text-gray-400 transition-transform duration-200 dropdown-arrow">expand_more</span>
+                        <svg :class="open ? 'rotate-180' : ''" class="w-4 h-4 text-gray-400 transition-transform duration-200 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
                     </button>
-                    <div class="dropdown-menu-custom absolute top-full mt-1 left-0 w-full bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-xl z-50 hidden opacity-0 transform scale-95 transition-all duration-200 origin-top">
-                        <div class="p-1.5 space-y-1">
-                            <div class="dropdown-item px-4 py-2 rounded-md text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-indigo-50 dark:hover:bg-indigo-900/30 hover:text-indigo-600 dark:hover:text-indigo-400 cursor-pointer transition-colors flex items-center gap-3 {{ !$role ? 'active' : '' }}" data-value="">
-                                <span class="material-symbols-outlined text-lg">filter_list</span> Semua Role
-                            </div>
-                            <div class="dropdown-item px-4 py-2 rounded-md text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-indigo-50 dark:hover:bg-indigo-900/30 hover:text-indigo-600 dark:hover:text-indigo-400 cursor-pointer transition-colors flex items-center gap-3 {{ $role == 'admin' ? 'active' : '' }}" data-value="admin">
-                                <span class="material-symbols-outlined text-lg">shield_person</span> Admin
-                            </div>
-                            <div class="dropdown-item px-4 py-2 rounded-md text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-indigo-50 dark:hover:bg-indigo-900/30 hover:text-indigo-600 dark:hover:text-indigo-400 cursor-pointer transition-colors flex items-center gap-3 {{ $role == 'guru' ? 'active' : '' }}" data-value="guru">
-                                <span class="material-symbols-outlined text-lg">person</span> Guru
-                            </div>
-                            <div class="dropdown-item px-4 py-2 rounded-md text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-indigo-50 dark:hover:bg-indigo-900/30 hover:text-indigo-600 dark:hover:text-indigo-400 cursor-pointer transition-colors flex items-center gap-3 {{ $role == 'kepala_sekolah' ? 'active' : '' }}" data-value="kepala_sekolah">
-                                <span class="material-symbols-outlined text-lg">account_balance</span> Kepala Sekolah
-                            </div>
+                    <div x-show="open" x-transition:enter="transition ease-out duration-150" x-transition:enter-start="opacity-0 scale-95 -translate-y-1" x-transition:enter-end="opacity-100 scale-100 translate-y-0" x-transition:leave="transition ease-in duration-100" x-transition:leave-start="opacity-100 scale-100" x-transition:leave-end="opacity-0 scale-95"
+                         class="absolute top-full mt-1 left-0 min-w-full w-max bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-xl z-[9990] origin-top">
+                        <div class="p-1.5 space-y-0.5">
+                            <div @click="$wire.set('role', ''); open = false" class="px-4 py-2 rounded-md text-sm font-medium cursor-pointer transition-colors flex items-center gap-2 {{ !$role ? 'bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700' }}">Semua Role</div>
+                            <div @click="$wire.set('role', 'admin'); open = false" class="px-4 py-2 rounded-md text-sm font-medium cursor-pointer transition-colors flex items-center gap-2 {{ $role == 'admin' ? 'bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700' }}">Admin</div>
+                            <div @click="$wire.set('role', 'guru'); open = false" class="px-4 py-2 rounded-md text-sm font-medium cursor-pointer transition-colors flex items-center gap-2 {{ $role == 'guru' ? 'bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700' }}">Guru</div>
+                            <div @click="$wire.set('role', 'kepala_sekolah'); open = false" class="px-4 py-2 rounded-md text-sm font-medium cursor-pointer transition-colors flex items-center gap-2 {{ $role == 'kepala_sekolah' ? 'bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700' }}">Kepala Sekolah</div>
                         </div>
                     </div>
                 </div>
 
                 <!-- Tingkat Filter -->
-                <div class="relative custom-dropdown-container" id="tingkat-filter-container">
-                    <input type="hidden" wire:model.live="tingkat" id="tingkat-filter">
-                    <button type="button" class="dropdown-button w-full min-w-[160px] px-4 py-2.5 text-left border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all flex items-center justify-between">
-                        <span class="dropdown-label flex items-center gap-2 {{ $tingkat ? '' : 'text-gray-400 dark:text-gray-500' }}">
-                            @if($tingkat == 'SD')
-                                SD
-                            @elseif($tingkat == 'SMP')
-                                SMP
-                            @else
-                                Semua Tingkat
+                <div x-data="{ open: false }" @click.away="open = false" class="relative">
+                    <button @click="open = !open" type="button"
+                            class="min-w-[155px] px-4 py-2.5 text-left border bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all flex items-center justify-between gap-2
+                            {{ $tingkat ? 'border-indigo-500 dark:border-indigo-400' : 'border-gray-300 dark:border-gray-600' }}">
+                        <span class="{{ $tingkat ? '' : 'text-gray-400 dark:text-gray-500' }}">
+                            @if($tingkat == 'SD') SD
+                            @elseif($tingkat == 'SMP') SMP
+                            @else Semua Tingkat
                             @endif
                         </span>
-                        <span class="material-symbols-outlined text-gray-400 transition-transform duration-200 dropdown-arrow">expand_more</span>
+                        <svg :class="open ? 'rotate-180' : ''" class="w-4 h-4 text-gray-400 transition-transform duration-200 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
                     </button>
-                    <div class="dropdown-menu-custom absolute top-full mt-1 left-0 w-full bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-xl z-50 hidden opacity-0 transform scale-95 transition-all duration-200 origin-top">
-                        <div class="p-1.5 space-y-1">
-                            <div class="dropdown-item px-4 py-2 rounded-md text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-indigo-50 dark:hover:bg-indigo-900/30 hover:text-indigo-600 dark:hover:text-indigo-400 cursor-pointer transition-colors flex items-center gap-3 {{ !$tingkat ? 'active' : '' }}" data-value="">
-                                <span class="material-symbols-outlined text-lg">filter_list</span> Semua Tingkat
-                            </div>
-                            <div class="dropdown-item px-4 py-2 rounded-md text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-indigo-50 dark:hover:bg-indigo-900/30 hover:text-indigo-600 dark:hover:text-indigo-400 cursor-pointer transition-colors flex items-center gap-3 {{ $tingkat == 'SD' ? 'active' : '' }}" data-value="SD">
-                                <span class="material-symbols-outlined text-lg">school</span> SD
-                            </div>
-                            <div class="dropdown-item px-4 py-2 rounded-md text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-indigo-50 dark:hover:bg-indigo-900/30 hover:text-indigo-600 dark:hover:text-indigo-400 cursor-pointer transition-colors flex items-center gap-3 {{ $tingkat == 'SMP' ? 'active' : '' }}" data-value="SMP">
-                                <span class="material-symbols-outlined text-lg">corporate_fare</span> SMP
-                            </div>
+                    <div x-show="open" x-transition:enter="transition ease-out duration-150" x-transition:enter-start="opacity-0 scale-95 -translate-y-1" x-transition:enter-end="opacity-100 scale-100 translate-y-0" x-transition:leave="transition ease-in duration-100" x-transition:leave-start="opacity-100 scale-100" x-transition:leave-end="opacity-0 scale-95"
+                         class="absolute top-full mt-1 left-0 min-w-full w-max bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-xl z-[9990] origin-top">
+                        <div class="p-1.5 space-y-0.5">
+                            <div @click="$wire.set('tingkat', ''); open = false" class="px-4 py-2 rounded-md text-sm font-medium cursor-pointer transition-colors {{ !$tingkat ? 'bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700' }}">Semua Tingkat</div>
+                            <div @click="$wire.set('tingkat', 'SD'); open = false" class="px-4 py-2 rounded-md text-sm font-medium cursor-pointer transition-colors {{ $tingkat == 'SD' ? 'bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700' }}">SD</div>
+                            <div @click="$wire.set('tingkat', 'SMP'); open = false" class="px-4 py-2 rounded-md text-sm font-medium cursor-pointer transition-colors {{ $tingkat == 'SMP' ? 'bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700' }}">SMP</div>
                         </div>
                     </div>
                 </div>
 
                 <!-- Status Filter -->
-                <div class="relative custom-dropdown-container" id="status-filter-container">
-                    <input type="hidden" wire:model.live="status" id="status-filter">
-                    <button type="button" class="dropdown-button w-full min-w-[150px] px-4 py-2.5 text-left border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all flex items-center justify-between">
-                        <span class="dropdown-label flex items-center gap-2 {{ $status ? '' : 'text-gray-400 dark:text-gray-500' }}">
-                            @if($status == 'active')
-                                Aktif
-                            @elseif($status == 'inactive')
-                                Nonaktif
-                            @else
-                                Semua Status
+                <div x-data="{ open: false }" @click.away="open = false" class="relative">
+                    <button @click="open = !open" type="button"
+                            class="min-w-[140px] px-4 py-2.5 text-left border bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all flex items-center justify-between gap-2
+                            {{ $status ? 'border-indigo-500 dark:border-indigo-400' : 'border-gray-300 dark:border-gray-600' }}">
+                        <span class="{{ $status ? '' : 'text-gray-400 dark:text-gray-500' }}">
+                            @if($status == 'active') Aktif
+                            @elseif($status == 'inactive') Nonaktif
+                            @else Semua Status
                             @endif
                         </span>
-                        <span class="material-symbols-outlined text-gray-400 transition-transform duration-200 dropdown-arrow">expand_more</span>
+                        <svg :class="open ? 'rotate-180' : ''" class="w-4 h-4 text-gray-400 transition-transform duration-200 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
                     </button>
-                    <div class="dropdown-menu-custom absolute top-full mt-1 left-0 w-full bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-xl z-50 hidden opacity-0 transform scale-95 transition-all duration-200 origin-top">
-                        <div class="p-1.5 space-y-1">
-                            <div class="dropdown-item px-4 py-2 rounded-md text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-indigo-50 dark:hover:bg-indigo-900/30 hover:text-indigo-600 dark:hover:text-indigo-400 cursor-pointer transition-colors flex items-center gap-3 {{ !$status ? 'active' : '' }}" data-value="">
-                                <span class="material-symbols-outlined text-lg">filter_list</span> Semua Status
-                            </div>
-                            <div class="dropdown-item px-4 py-2 rounded-md text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-indigo-50 dark:hover:bg-indigo-900/30 hover:text-indigo-600 dark:hover:text-indigo-400 cursor-pointer transition-colors flex items-center gap-3 {{ $status == 'active' ? 'active' : '' }}" data-value="active">
-                                <span class="material-symbols-outlined text-lg">check_circle</span> Aktif
-                            </div>
-                            <div class="dropdown-item px-4 py-2 rounded-md text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-indigo-50 dark:hover:bg-indigo-900/30 hover:text-indigo-600 dark:hover:text-indigo-400 cursor-pointer transition-colors flex items-center gap-3 {{ $status == 'inactive' ? 'active' : '' }}" data-value="inactive">
-                                <span class="material-symbols-outlined text-lg">cancel</span> Nonaktif
-                            </div>
+                    <div x-show="open" x-transition:enter="transition ease-out duration-150" x-transition:enter-start="opacity-0 scale-95 -translate-y-1" x-transition:enter-end="opacity-100 scale-100 translate-y-0" x-transition:leave="transition ease-in duration-100" x-transition:leave-start="opacity-100 scale-100" x-transition:leave-end="opacity-0 scale-95"
+                         class="absolute top-full mt-1 left-0 min-w-full w-max bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-xl z-[9990] origin-top">
+                        <div class="p-1.5 space-y-0.5">
+                            <div @click="$wire.set('status', ''); open = false" class="px-4 py-2 rounded-md text-sm font-medium cursor-pointer transition-colors {{ !$status ? 'bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700' }}">Semua Status</div>
+                            <div @click="$wire.set('status', 'active'); open = false" class="px-4 py-2 rounded-md text-sm font-medium cursor-pointer transition-colors {{ $status == 'active' ? 'bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700' }}">Aktif</div>
+                            <div @click="$wire.set('status', 'inactive'); open = false" class="px-4 py-2 rounded-md text-sm font-medium cursor-pointer transition-colors {{ $status == 'inactive' ? 'bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700' }}">Nonaktif</div>
                         </div>
                     </div>
                 </div>
@@ -161,6 +137,7 @@
                 </button>
                 @endif
             </div>
+
         </div>
 
         <!-- Mobile Filter Dropdowns (Collapsible) -->
@@ -171,104 +148,77 @@
              class="md:hidden mt-4">
             <div class="grid grid-cols-1 gap-3">
                 <!-- Role Filter -->
-                <div class="relative">
+                <div>
                     <label class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1.5">Role</label>
-                    <div class="relative custom-dropdown-container" id="role-filter-mobile-container">
-                        <input type="hidden" wire:model.live="role" id="role-filter-mobile">
-                        <button type="button" class="dropdown-button w-full px-4 py-2.5 text-left border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all flex items-center justify-between">
-                            <span class="dropdown-label flex items-center gap-2 {{ $role ? '' : 'text-gray-400 dark:text-gray-500' }}">
-                                @if($role == 'admin')
-                                    Admin
-                                @elseif($role == 'guru')
-                                    Guru
-                                @elseif($role == 'kepala_sekolah')
-                                    Kepala Sekolah
-                                @else
-                                    Semua Role
+                    <div x-data="{ open: false }" @click.away="open = false" class="relative">
+                        <button @click="open = !open" type="button"
+                                class="w-full px-4 py-2.5 text-left border bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all flex items-center justify-between gap-2
+                                {{ $role ? 'border-indigo-500 dark:border-indigo-400' : 'border-gray-300 dark:border-gray-600' }}">
+                            <span class="{{ $role ? '' : 'text-gray-400 dark:text-gray-500' }}">
+                                @if($role == 'admin') Admin
+                                @elseif($role == 'guru') Guru
+                                @elseif($role == 'kepala_sekolah') Kepala Sekolah
+                                @else Semua Role
                                 @endif
                             </span>
-                            <span class="material-symbols-outlined text-gray-400 transition-transform duration-200 dropdown-arrow">expand_more</span>
+                            <svg :class="open ? 'rotate-180' : ''" class="w-4 h-4 text-gray-400 transition-transform duration-200 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
                         </button>
-                        <div class="dropdown-menu-custom absolute top-full mt-1 left-0 w-full bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-xl z-50 hidden opacity-0 transform scale-95 transition-all duration-200 origin-top">
-                            <div class="p-1.5 space-y-1">
-                                <div class="dropdown-item px-4 py-2 rounded-md text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-indigo-50 dark:hover:bg-indigo-900/30 hover:text-indigo-600 dark:hover:text-indigo-400 cursor-pointer transition-colors flex items-center gap-3 {{ !$role ? 'active' : '' }}" data-value="">
-                                    <span class="material-symbols-outlined text-lg">filter_list</span> Semua Role
-                                </div>
-                                <div class="dropdown-item px-4 py-2 rounded-md text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-indigo-50 dark:hover:bg-indigo-900/30 hover:text-indigo-600 dark:hover:text-indigo-400 cursor-pointer transition-colors flex items-center gap-3 {{ $role == 'admin' ? 'active' : '' }}" data-value="admin">
-                                    <span class="material-symbols-outlined text-lg">shield_person</span> Admin
-                                </div>
-                                <div class="dropdown-item px-4 py-2 rounded-md text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-indigo-50 dark:hover:bg-indigo-900/30 hover:text-indigo-600 dark:hover:text-indigo-400 cursor-pointer transition-colors flex items-center gap-3 {{ $role == 'guru' ? 'active' : '' }}" data-value="guru">
-                                    <span class="material-symbols-outlined text-lg">person</span> Guru
-                                </div>
-                                <div class="dropdown-item px-4 py-2 rounded-md text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-indigo-50 dark:hover:bg-indigo-900/30 hover:text-indigo-600 dark:hover:text-indigo-400 cursor-pointer transition-colors flex items-center gap-3 {{ $role == 'kepala_sekolah' ? 'active' : '' }}" data-value="kepala_sekolah">
-                                    <span class="material-symbols-outlined text-lg">account_balance</span> Kepala Sekolah
-                                </div>
+                        <div x-show="open" x-transition class="absolute top-full mt-1 left-0 w-full bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-xl z-[9990]">
+                            <div class="p-1.5 space-y-0.5">
+                                <div @click="$wire.set('role', ''); open = false" class="px-4 py-2 rounded-md text-sm font-medium cursor-pointer transition-colors {{ !$role ? 'bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700' }}">Semua Role</div>
+                                <div @click="$wire.set('role', 'admin'); open = false" class="px-4 py-2 rounded-md text-sm font-medium cursor-pointer transition-colors {{ $role == 'admin' ? 'bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700' }}">Admin</div>
+                                <div @click="$wire.set('role', 'guru'); open = false" class="px-4 py-2 rounded-md text-sm font-medium cursor-pointer transition-colors {{ $role == 'guru' ? 'bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700' }}">Guru</div>
+                                <div @click="$wire.set('role', 'kepala_sekolah'); open = false" class="px-4 py-2 rounded-md text-sm font-medium cursor-pointer transition-colors {{ $role == 'kepala_sekolah' ? 'bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700' }}">Kepala Sekolah</div>
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <!-- Tingkat Filter -->
-                <div class="relative">
+                <div>
                     <label class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1.5">Tingkat</label>
-                    <div class="relative custom-dropdown-container" id="tingkat-filter-mobile-container">
-                        <input type="hidden" wire:model.live="tingkat" id="tingkat-filter-mobile">
-                        <button type="button" class="dropdown-button w-full px-4 py-2.5 text-left border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all flex items-center justify-between">
-                            <span class="dropdown-label flex items-center gap-2 {{ $tingkat ? '' : 'text-gray-400 dark:text-gray-500' }}">
-                                @if($tingkat == 'SD')
-                                    SD
-                                @elseif($tingkat == 'SMP')
-                                    SMP
-                                @else
-                                    Semua Tingkat
+                    <div x-data="{ open: false }" @click.away="open = false" class="relative">
+                        <button @click="open = !open" type="button"
+                                class="w-full px-4 py-2.5 text-left border bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all flex items-center justify-between gap-2
+                                {{ $tingkat ? 'border-indigo-500 dark:border-indigo-400' : 'border-gray-300 dark:border-gray-600' }}">
+                            <span class="{{ $tingkat ? '' : 'text-gray-400 dark:text-gray-500' }}">
+                                @if($tingkat == 'SD') SD
+                                @elseif($tingkat == 'SMP') SMP
+                                @else Semua Tingkat
                                 @endif
                             </span>
-                            <span class="material-symbols-outlined text-gray-400 transition-transform duration-200 dropdown-arrow">expand_more</span>
+                            <svg :class="open ? 'rotate-180' : ''" class="w-4 h-4 text-gray-400 transition-transform duration-200 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
                         </button>
-                        <div class="dropdown-menu-custom absolute top-full mt-1 left-0 w-full bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-xl z-50 hidden opacity-0 transform scale-95 transition-all duration-200 origin-top">
-                            <div class="p-1.5 space-y-1">
-                                <div class="dropdown-item px-4 py-2 rounded-md text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-indigo-50 dark:hover:bg-indigo-900/30 hover:text-indigo-600 dark:hover:text-indigo-400 cursor-pointer transition-colors flex items-center gap-3 {{ !$tingkat ? 'active' : '' }}" data-value="">
-                                    <span class="material-symbols-outlined text-lg">filter_list</span> Semua Tingkat
-                                </div>
-                                <div class="dropdown-item px-4 py-2 rounded-md text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-indigo-50 dark:hover:bg-indigo-900/30 hover:text-indigo-600 dark:hover:text-indigo-400 cursor-pointer transition-colors flex items-center gap-3 {{ $tingkat == 'SD' ? 'active' : '' }}" data-value="SD">
-                                    <span class="material-symbols-outlined text-lg">school</span> SD
-                                </div>
-                                <div class="dropdown-item px-4 py-2 rounded-md text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-indigo-50 dark:hover:bg-indigo-900/30 hover:text-indigo-600 dark:hover:text-indigo-400 cursor-pointer transition-colors flex items-center gap-3 {{ $tingkat == 'SMP' ? 'active' : '' }}" data-value="SMP">
-                                    <span class="material-symbols-outlined text-lg">corporate_fare</span> SMP
-                                </div>
+                        <div x-show="open" x-transition class="absolute top-full mt-1 left-0 w-full bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-xl z-[9990]">
+                            <div class="p-1.5 space-y-0.5">
+                                <div @click="$wire.set('tingkat', ''); open = false" class="px-4 py-2 rounded-md text-sm font-medium cursor-pointer transition-colors {{ !$tingkat ? 'bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700' }}">Semua Tingkat</div>
+                                <div @click="$wire.set('tingkat', 'SD'); open = false" class="px-4 py-2 rounded-md text-sm font-medium cursor-pointer transition-colors {{ $tingkat == 'SD' ? 'bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700' }}">SD</div>
+                                <div @click="$wire.set('tingkat', 'SMP'); open = false" class="px-4 py-2 rounded-md text-sm font-medium cursor-pointer transition-colors {{ $tingkat == 'SMP' ? 'bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700' }}">SMP</div>
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <!-- Status Filter -->
-                <div class="relative">
+                <div>
                     <label class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1.5">Status</label>
-                    <div class="relative custom-dropdown-container" id="status-filter-mobile-container">
-                        <input type="hidden" wire:model.live="status" id="status-filter-mobile">
-                        <button type="button" class="dropdown-button w-full px-4 py-2.5 text-left border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all flex items-center justify-between">
-                            <span class="dropdown-label flex items-center gap-2 {{ $status ? '' : 'text-gray-400 dark:text-gray-500' }}">
-                                @if($status == 'active')
-                                    Aktif
-                                @elseif($status == 'inactive')
-                                    Nonaktif
-                                @else
-                                    Semua Status
+                    <div x-data="{ open: false }" @click.away="open = false" class="relative">
+                        <button @click="open = !open" type="button"
+                                class="w-full px-4 py-2.5 text-left border bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all flex items-center justify-between gap-2
+                                {{ $status ? 'border-indigo-500 dark:border-indigo-400' : 'border-gray-300 dark:border-gray-600' }}">
+                            <span class="{{ $status ? '' : 'text-gray-400 dark:text-gray-500' }}">
+                                @if($status == 'active') Aktif
+                                @elseif($status == 'inactive') Nonaktif
+                                @else Semua Status
                                 @endif
                             </span>
-                            <span class="material-symbols-outlined text-gray-400 transition-transform duration-200 dropdown-arrow">expand_more</span>
+                            <svg :class="open ? 'rotate-180' : ''" class="w-4 h-4 text-gray-400 transition-transform duration-200 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
                         </button>
-                        <div class="dropdown-menu-custom absolute top-full mt-1 left-0 w-full bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-xl z-50 hidden opacity-0 transform scale-95 transition-all duration-200 origin-top">
-                            <div class="p-1.5 space-y-1">
-                                <div class="dropdown-item px-4 py-2 rounded-md text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-indigo-50 dark:hover:bg-indigo-900/30 hover:text-indigo-600 dark:hover:text-indigo-400 cursor-pointer transition-colors flex items-center gap-3 {{ !$status ? 'active' : '' }}" data-value="">
-                                    <span class="material-symbols-outlined text-lg">filter_list</span> Semua Status
-                                </div>
-                                <div class="dropdown-item px-4 py-2 rounded-md text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-indigo-50 dark:hover:bg-indigo-900/30 hover:text-indigo-600 dark:hover:text-indigo-400 cursor-pointer transition-colors flex items-center gap-3 {{ $status == 'active' ? 'active' : '' }}" data-value="active">
-                                    <span class="material-symbols-outlined text-lg">check_circle</span> Aktif
-                                </div>
-                                <div class="dropdown-item px-4 py-2 rounded-md text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-indigo-50 dark:hover:bg-indigo-900/30 hover:text-indigo-600 dark:hover:text-indigo-400 cursor-pointer transition-colors flex items-center gap-3 {{ $status == 'inactive' ? 'active' : '' }}" data-value="inactive">
-                                    <span class="material-symbols-outlined text-lg">cancel</span> Nonaktif
-                                </div>
+                        <div x-show="open" x-transition class="absolute top-full mt-1 left-0 w-full bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-xl z-[9990]">
+                            <div class="p-1.5 space-y-0.5">
+                                <div @click="$wire.set('status', ''); open = false" class="px-4 py-2 rounded-md text-sm font-medium cursor-pointer transition-colors {{ !$status ? 'bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700' }}">Semua Status</div>
+                                <div @click="$wire.set('status', 'active'); open = false" class="px-4 py-2 rounded-md text-sm font-medium cursor-pointer transition-colors {{ $status == 'active' ? 'bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700' }}">Aktif</div>
+                                <div @click="$wire.set('status', 'inactive'); open = false" class="px-4 py-2 rounded-md text-sm font-medium cursor-pointer transition-colors {{ $status == 'inactive' ? 'bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700' }}">Nonaktif</div>
                             </div>
                         </div>
                     </div>
@@ -284,8 +234,10 @@
                 @endif
             </div>
         </div>
-        </div>
     </div>
+
+
+
     <!-- Loading indicator -->
     <div wire:loading class="fixed inset-0 bg-gray-900/20 dark:bg-gray-900/40 z-50 flex items-center justify-center">
         <div class="bg-white dark:bg-gray-800 rounded-xl px-6 py-4 shadow-2xl flex items-center gap-3 border border-gray-200 dark:border-gray-700">

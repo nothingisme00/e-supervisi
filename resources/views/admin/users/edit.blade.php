@@ -5,9 +5,9 @@
 @section('content')
 <style>
     .dropdown-menu-custom.show {
-        display: block;
-        opacity: 1;
-        transform: scale(1);
+        display: block !important;
+        opacity: 1 !important;
+        transform: scale(1) !important;
     }
     .dropdown-item.active {
         background-color: rgb(238 242 255);
@@ -261,18 +261,23 @@
 
             btn.addEventListener('click', (e) => {
                 e.stopPropagation();
-                const isShowing = menu.classList.contains('show');
+                const isShowing = !menu.classList.contains('hidden');
                 
-                // Close all other dropdowns
-                document.querySelectorAll('.dropdown-menu-custom').forEach(m => {
-                    if (m !== menu) {
-                        m.classList.remove('show');
-                        m.closest('.custom-dropdown-container').querySelector('.dropdown-arrow').style.transform = 'rotate(0deg)';
+                // Close all other dropdowns first
+                document.querySelectorAll('.custom-dropdown-container').forEach(otherContainer => {
+                    if (otherContainer !== container) {
+                        otherContainer.querySelector('.dropdown-menu-custom').classList.add('hidden');
+                        otherContainer.querySelector('.dropdown-arrow').style.transform = 'rotate(0deg)';
                     }
                 });
 
-                menu.classList.toggle('show');
-                arrow.style.transform = isShowing ? 'rotate(0deg)' : 'rotate(180deg)';
+                if (isShowing) {
+                    menu.classList.add('hidden');
+                    arrow.style.transform = 'rotate(0deg)';
+                } else {
+                    menu.classList.remove('hidden');
+                    arrow.style.transform = 'rotate(180deg)';
+                }
             });
 
             items.forEach(item => {
@@ -288,7 +293,7 @@
                     items.forEach(i => i.classList.remove('active'));
                     item.classList.add('active');
                     
-                    menu.classList.remove('show');
+                    menu.classList.add('hidden');
                     arrow.style.transform = 'rotate(0deg)';
 
                     // Trigger change event for role/tingkat logic
@@ -298,10 +303,14 @@
         });
 
         // Close dropdowns when clicking outside
-        document.addEventListener('click', () => {
-            document.querySelectorAll('.dropdown-menu-custom').forEach(m => {
-                m.classList.remove('show');
-                m.closest('.custom-dropdown-container').querySelector('.dropdown-arrow').style.transform = 'rotate(0deg)';
+        document.addEventListener('click', (e) => {
+            document.querySelectorAll('.custom-dropdown-container').forEach(container => {
+                const menu = container.querySelector('.dropdown-menu-custom');
+                const arrow = container.querySelector('.dropdown-arrow');
+                if (!container.contains(e.target)) {
+                    menu.classList.add('hidden');
+                    arrow.style.transform = 'rotate(0deg)';
+                }
             });
         });
 

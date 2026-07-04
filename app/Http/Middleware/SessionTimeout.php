@@ -24,6 +24,12 @@ class SessionTimeout
      */
     public function handle(Request $request, Closure $next): Response
     {
+        // Only check session timeout when using database session driver
+        // (skip for array/file drivers used in testing)
+        if (config('session.driver') !== 'database') {
+            return $next($request);
+        }
+
         if (Auth::check()) {
             $session = DB::table('sessions')
                 ->where('user_id', Auth::id())

@@ -1,6 +1,6 @@
-@extends('layouts.app')
+@extends('layouts.modern')
 
-@section('title', 'Detail Supervisi - ' . $supervisi->user->name)
+@section('page-title', 'Detail Supervisi - ' . $supervisi->user->name)
 
 @section('content')
 <div class="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 py-8">
@@ -63,7 +63,7 @@
                         @forelse($supervisi->dokumenEvaluasi as $index => $dokumen)
                             <div class="flex items-center justify-between p-3 bg-slate-50 rounded-lg hover:bg-slate-100 transition-colors duration-200">
                                 <div class="flex items-center space-x-3">
-                                    @if(str_ends_with($dokumen->file_path, '.pdf'))
+                                    @if(str_ends_with($dokumen->path_file, '.pdf'))
                                         <svg class="w-8 h-8 text-red-500" fill="currentColor" viewBox="0 0 20 20">
                                             <path d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z"/>
                                         </svg>
@@ -106,18 +106,18 @@
                     </div>
                     <div class="max-h-96 overflow-y-auto space-y-3">
                         @if($supervisi->prosesPembelajaran)
-                            @if($supervisi->prosesPembelajaran->video_link)
+                            @if($supervisi->prosesPembelajaran->link_video)
                                 <div class="p-4 bg-gradient-to-r from-red-50 to-pink-50 rounded-lg border border-red-100">
                                     <div class="flex items-start justify-between">
                                         <div>
                                             <p class="text-sm font-semibold text-slate-700 mb-1">Link Video Pembelajaran</p>
-                                            <a href="{{ $supervisi->prosesPembelajaran->video_link }}" 
+                                            <a href="{{ $supervisi->prosesPembelajaran->link_video }}" 
                                                target="_blank"
                                                class="text-sm text-blue-600 hover:text-blue-700 underline break-all">
-                                                {{ Str::limit($supervisi->prosesPembelajaran->video_link, 50) }}
+                                                {{ Str::limit($supervisi->prosesPembelajaran->link_video, 50) }}
                                             </a>
                                         </div>
-                                        <a href="{{ $supervisi->prosesPembelajaran->video_link }}" 
+                                        <a href="{{ $supervisi->prosesPembelajaran->link_video }}" 
                                            target="_blank"
                                            class="ml-2 text-red-600 hover:text-red-700">
                                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -128,18 +128,18 @@
                                 </div>
                             @endif
 
-                            @if($supervisi->prosesPembelajaran->meeting_link)
+                            @if($supervisi->prosesPembelajaran->link_meeting)
                                 <div class="p-4 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg border border-blue-100">
                                     <div class="flex items-start justify-between">
                                         <div>
                                             <p class="text-sm font-semibold text-slate-700 mb-1">Link Meeting/Zoom</p>
-                                            <a href="{{ $supervisi->prosesPembelajaran->meeting_link }}" 
+                                            <a href="{{ $supervisi->prosesPembelajaran->link_meeting }}" 
                                                target="_blank"
                                                class="text-sm text-blue-600 hover:text-blue-700 underline break-all">
-                                                {{ Str::limit($supervisi->prosesPembelajaran->meeting_link, 50) }}
+                                                {{ Str::limit($supervisi->prosesPembelajaran->link_meeting, 50) }}
                                             </a>
                                         </div>
-                                        <a href="{{ $supervisi->prosesPembelajaran->meeting_link }}" 
+                                        <a href="{{ $supervisi->prosesPembelajaran->link_meeting }}" 
                                            target="_blank"
                                            class="ml-2 text-blue-600 hover:text-blue-700">
                                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -150,7 +150,7 @@
                                 </div>
                             @endif
 
-                            @if(!$supervisi->prosesPembelajaran->video_link && !$supervisi->prosesPembelajaran->meeting_link)
+                            @if(!$supervisi->prosesPembelajaran->link_video && !$supervisi->prosesPembelajaran->link_meeting)
                                 <p class="text-slate-500 text-sm text-center py-4">Tidak ada link pembelajaran</p>
                             @endif
                         @else

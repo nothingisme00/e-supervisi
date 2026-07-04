@@ -213,7 +213,6 @@ class SupervisiController extends Controller
         // If proses exists and has all required fields, go to proses page
         if ($proses &&
             $proses->link_video &&
-            $proses->link_meeting &&
             $proses->refleksi_1 &&
             $proses->refleksi_2 &&
             $proses->refleksi_3 &&

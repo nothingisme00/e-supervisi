@@ -98,7 +98,6 @@ class EvaluasiController extends Controller
         if ($isRevisionRequest) {
             $supervisi->update([
                 'status' => 'revision',
-                'revision_count' => ($supervisi->revision_count ?? 0) + 1,
                 'revision_notes' => $request->komentar
             ]);
 
@@ -157,7 +156,6 @@ class EvaluasiController extends Controller
         // Update status to revision
         $supervisi->update([
             'status' => 'revision',
-            'revision_count' => $supervisi->revision_count + 1,
             'revision_notes' => $request->revision_notes
         ]);
 

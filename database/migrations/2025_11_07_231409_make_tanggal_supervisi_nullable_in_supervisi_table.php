@@ -11,6 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
+        // Skip on SQLite - it doesn't support column modification
+        if (Schema::getConnection()->getDriverName() === 'sqlite') {
+            return;
+        }
+
         Schema::table('supervisi', function (Blueprint $table) {
             $table->date('tanggal_supervisi')->nullable()->change();
         });

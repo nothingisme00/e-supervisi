@@ -63,7 +63,7 @@ class SupervisiController extends Controller
         if ($supervisi->status === Supervisi::STATUS_SUBMITTED) {
             $supervisi->update([
                 'status' => Supervisi::STATUS_UNDER_REVIEW,
-                'reviewer_id' => Auth::id()
+                'reviewed_by' => Auth::id()
             ]);
         }
 
@@ -76,8 +76,8 @@ class SupervisiController extends Controller
     public function storeFeedback(Request $request, $id)
     {
         $request->validate([
-            'feedback' => 'required|string|min:10',
-            'mark_as_completed' => 'nullable|boolean'
+            'komentar' => 'required|string|min:10',
+            'mark_completed' => 'nullable'
         ]);
 
         $supervisi = Supervisi::findOrFail($id);
@@ -85,16 +85,16 @@ class SupervisiController extends Controller
         // Create feedback
         Feedback::create([
             'supervisi_id' => $supervisi->id,
-            'admin_id' => Auth::id(),
-            'feedback' => $request->feedback
+            'user_id' => Auth::id(),
+            'komentar' => $request->komentar
         ]);
 
         // Update status if mark as completed
-        if ($request->mark_as_completed) {
+        if ($request->mark_completed) {
             $supervisi->update([
                 'status' => Supervisi::STATUS_COMPLETED,
                 'reviewed_at' => now(),
-                'reviewer_id' => Auth::id()
+                'reviewed_by' => Auth::id()
             ]);
 
             return redirect()->route('admin.supervisi.show', $supervisi->id)
@@ -119,15 +119,15 @@ class SupervisiController extends Controller
         $supervisi->update([
             'status' => 'revision',
             'revision_notes' => $request->revision_notes,
-            'revision_count' => ($supervisi->revision_count ?? 0) + 1,
-            'reviewer_id' => Auth::id()
+            'reviewed_by' => Auth::id()
         ]);
 
         // Create feedback about revision
         Feedback::create([
             'supervisi_id' => $supervisi->id,
-            'admin_id' => Auth::id(),
-            'feedback' => "📝 Revisi diperlukan:\n\n" . $request->revision_notes
+            'user_id' => Auth::id(),
+            'komentar' => "📝 Revisi diperlukan:\n\n" . $request->revision_notes,
+            'is_revision_request' => true
         ]);
 
         return redirect()->route('admin.supervisi.show', $supervisi->id)

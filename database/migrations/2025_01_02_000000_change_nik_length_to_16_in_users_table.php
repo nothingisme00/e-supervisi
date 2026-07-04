@@ -9,6 +9,11 @@ return new class extends Migration
 {
     public function up(): void
     {
+        // Skip on SQLite (testing) - base migration already creates nik as string(16)
+        if (DB::connection()->getDriverName() === 'sqlite') {
+            return;
+        }
+
         // Langkah 1: Hapus unique constraint sementara untuk menghindari konflik
         Schema::table('users', function (Blueprint $table) {
             $table->dropUnique(['nik']);

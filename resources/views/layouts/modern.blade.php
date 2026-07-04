@@ -23,6 +23,16 @@
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
     
     <style>
+        /* Sticky Footer: pastikan footer selalu di bawah */
+        #main-content {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        #main-content > footer {
+            margin-top: auto;
+        }
+
         /* Global button cursor pointer */
         button, 
         input[type="button"], 
@@ -101,13 +111,25 @@
         .dropdown-menu-custom {
             display: none;
             opacity: 0;
-            transform: scale(0.95);
-            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            transform: scale(0.95) translateY(-4px);
+            transition: opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+                        transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
         }
         .dropdown-menu-custom.show {
-            display: block;
-            opacity: 1;
-            transform: scale(1);
+            display: block !important;
+            opacity: 1 !important;
+            transform: scale(1) translateY(0) !important;
+            /* Pastikan dropdown selalu di atas semua konten */
+            z-index: 9990 !important;
+            position: absolute !important;
+        }
+        /* Parent dropdown container harus bisa overflow saat dropdown terbuka */
+        .dropdown-wrapper {
+            position: relative;
+        }
+        /* Hapus overflow:hidden dari parent card yang membungkus dropdown */
+        .dropdown-wrapper:has(.dropdown-menu-custom.show) {
+            overflow: visible !important;
         }
         .dropdown-item.active {
             background-color: rgb(238 242 255);
@@ -195,7 +217,7 @@
     
     @livewireStyles
 </head>
-<body class="bg-gray-300 text-gray-900 dark:bg-gray-950 dark:text-gray-100 transition-colors duration-300" @auth data-role="{{ auth()->user()->role }}" @endauth>
+<body class="bg-gray-300 text-gray-900 dark:bg-gray-950 dark:text-gray-100 transition-colors duration-300 min-h-screen flex flex-col" @auth data-role="{{ auth()->user()->role }}" @endauth>
 
 @auth
     <!-- Welcome Modal (shown only on first login) -->
@@ -584,13 +606,13 @@
         </aside>
 
         <!-- MAIN CONTENT -->
-        <main id="main-content" class="min-h-screen pt-[72px] sm:pt-[88px] md:pt-[72px] lg:pt-[84px] pb-20 sm:pb-20 md:pb-0 transition-all duration-300 flex flex-col bg-gray-50 dark:bg-gray-900">
-        <div class="p-2.5 sm:p-4 lg:p-8 bg-gray-50 dark:bg-gray-900 flex-1">
+        <main id="main-content" style="min-height:100vh;display:flex;flex-direction:column;" class="flex-1 min-h-screen pt-[72px] sm:pt-[88px] md:pt-[72px] lg:pt-[84px] pb-20 sm:pb-20 md:pb-0 transition-all duration-300 flex flex-col bg-gray-50 dark:bg-gray-900">
+        <div style="flex:1 1 auto;" class="p-2.5 sm:p-4 lg:p-8 bg-gray-50 dark:bg-gray-900 flex-1">
             @yield('content')
         </div>
         
         <!-- FOOTER -->
-        <footer class="hidden md:block py-6 border-t border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800">
+        <footer style="margin-top:auto;" class="hidden md:block mt-auto py-6 border-t border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800">
             <div class="max-w-7xl mx-auto px-4">
                 <div class="flex flex-col md:flex-row items-center justify-between gap-4">
                     <!-- Left: Brand -->
@@ -3129,6 +3151,32 @@ function initCustomDropdowns() {
 
             menu.classList.toggle('show');
             if (arrow) arrow.style.transform = isShowing ? 'rotate(0deg)' : 'rotate(180deg)';
+
+            // Paksa semua ancestor yang punya overflow:hidden menjadi overflow:visible
+            // saat dropdown terbuka, dan kembalikan saat tertutup
+            if (!isShowing) {
+                // Dropdown dibuka - simpan dan ubah overflow ancestor
+                let el = container.parentElement;
+                const savedOverflows = [];
+                while (el && el !== document.body) {
+                    const style = window.getComputedStyle(el);
+                    if (style.overflow === 'hidden' || style.overflowY === 'hidden' || style.overflowX === 'hidden') {
+                        savedOverflows.push({ el, overflow: el.style.overflow, overflowY: el.style.overflowY });
+                        el.style.setProperty('overflow', 'visible', 'important');
+                    }
+                    el = el.parentElement;
+                }
+                menu._savedOverflows = savedOverflows;
+            } else {
+                // Dropdown ditutup - kembalikan overflow semua ancestor
+                if (menu._savedOverflows) {
+                    menu._savedOverflows.forEach(({ el, overflow, overflowY }) => {
+                        el.style.overflow = overflow;
+                        el.style.overflowY = overflowY;
+                    });
+                    menu._savedOverflows = null;
+                }
+            }
         });
 
         items.forEach(item => {
@@ -3167,6 +3215,15 @@ function initCustomDropdowns() {
                 
                 menu.classList.remove('show');
                 if (arrow) arrow.style.transform = 'rotate(0deg)';
+
+                // Kembalikan overflow ancestor saat item dipilih
+                if (menu._savedOverflows) {
+                    menu._savedOverflows.forEach(({ el, overflow, overflowY }) => {
+                        el.style.overflow = overflow;
+                        el.style.overflowY = overflowY;
+                    });
+                    menu._savedOverflows = null;
+                }
             });
         });
     });
@@ -3178,6 +3235,14 @@ function initCustomDropdowns() {
                 m.classList.remove('show');
                 const arrow = m.closest('.custom-dropdown-container')?.querySelector('.dropdown-arrow');
                 if (arrow) arrow.style.transform = 'rotate(0deg)';
+                // Kembalikan overflow ancestor
+                if (m._savedOverflows) {
+                    m._savedOverflows.forEach(({ el, overflow, overflowY }) => {
+                        el.style.overflow = overflow;
+                        el.style.overflowY = overflowY;
+                    });
+                    m._savedOverflows = null;
+                }
             });
         }
     });
