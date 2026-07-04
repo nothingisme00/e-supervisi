@@ -93,8 +93,8 @@ class SupervisiController extends Controller
 
             if ($existingDoc) {
                 // Delete old file
-                if (Storage::disk('public')->exists($existingDoc->path_file)) {
-                    Storage::disk('public')->delete($existingDoc->path_file);
+                if (Storage::disk('local')->exists($existingDoc->path_file)) {
+                    Storage::disk('local')->delete($existingDoc->path_file);
                 }
                 $existingDoc->delete();
             }
@@ -114,12 +114,12 @@ class SupervisiController extends Controller
                     ], 500);
                 }
                 // Get file size after optimization
-                $fileSize = Storage::disk('public')->size($path);
+                $fileSize = Storage::disk('local')->size($path);
             } else {
                 // PDF - store without compression
                 $jenisDoc = preg_replace('/[^a-zA-Z0-9_-]/', '', $request->jenis_dokumen);
                 $filename = time() . '_' . $jenisDoc . '.' . $extension;
-                $path = $file->storeAs('supervisi/' . $id, $filename, 'public');
+                $path = $file->storeAs('supervisi/' . $id, $filename, 'local');
                 $fileSize = $file->getSize();
             }
 
@@ -167,8 +167,8 @@ class SupervisiController extends Controller
                 ->firstOrFail();
 
             // Delete file from storage
-            if (Storage::disk('public')->exists($document->path_file)) {
-                Storage::disk('public')->delete($document->path_file);
+            if (Storage::disk('local')->exists($document->path_file)) {
+                Storage::disk('local')->delete($document->path_file);
             }
 
             $document->delete();
@@ -177,6 +177,25 @@ class SupervisiController extends Controller
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
         }
+    }
+
+    public function previewDocument($id)
+    {
+        $dokumen = DokumenEvaluasi::findOrFail($id);
+        $supervisi = $dokumen->supervisi;
+
+        // Pemilik selalu boleh; guru lain hanya untuk supervisi non-draft (fitur lihat rekan)
+        if ($supervisi->user_id !== auth()->id() && $supervisi->status === 'draft') {
+            abort(403, 'Anda tidak memiliki akses ke dokumen ini');
+        }
+
+        $filePath = Storage::disk('local')->path($dokumen->path_file);
+
+        if (!file_exists($filePath)) {
+            abort(404, 'File tidak ditemukan');
+        }
+
+        return response()->file($filePath);
     }
 
     public function checkDocuments($id)
@@ -235,8 +254,8 @@ class SupervisiController extends Controller
 
             // Delete all related documents from storage
             foreach ($supervisi->dokumenEvaluasi as $dokumen) {
-                if (Storage::disk('public')->exists($dokumen->path_file)) {
-                    Storage::disk('public')->delete($dokumen->path_file);
+                if (Storage::disk('local')->exists($dokumen->path_file)) {
+                    Storage::disk('local')->delete($dokumen->path_file);
                 }
             }
 

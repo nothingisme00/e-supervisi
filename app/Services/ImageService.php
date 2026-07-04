@@ -56,15 +56,15 @@ class ImageService
      * @param string $path
      * @return string|false
      */
-    protected function simpleUpload(UploadedFile $file, string $path = 'images')
+    protected function simpleUpload(UploadedFile $file, string $path = 'images', string $disk = 'public')
     {
         try {
             $extension = $file->getClientOriginalExtension() ?: 'jpg';
             $filename = uniqid() . '_' . time() . '.' . $extension;
             $fullPath = $path . '/' . $filename;
-            
+
             // Store file directly without optimization
-            Storage::disk('public')->put($fullPath, file_get_contents($file));
+            Storage::disk($disk)->put($fullPath, file_get_contents($file));
             
             return $fullPath;
         } catch (\Exception $e) {
@@ -84,11 +84,11 @@ class ImageService
      * @param bool $useWebP Whether to convert to WebP format
      * @return string|false
      */
-    public function uploadAndOptimize(UploadedFile $file, string $path = 'images', int $maxWidth = 1200, int $quality = 80, bool $useWebP = true)
+    public function uploadAndOptimize(UploadedFile $file, string $path = 'images', int $maxWidth = 1200, int $quality = 80, bool $useWebP = true, string $disk = 'public')
     {
         // Fallback to simple upload if GD not available
         if (!$this->isGdAvailable()) {
-            return $this->simpleUpload($file, $path);
+            return $this->simpleUpload($file, $path, $disk);
         }
 
         try {
@@ -121,13 +121,13 @@ class ImageService
             }
 
             // Store optimized image
-            Storage::disk('public')->put($fullPath, $encodedImage);
+            Storage::disk($disk)->put($fullPath, $encodedImage);
 
             return $fullPath;
         } catch (\Exception $e) {
             \Log::error('Image upload failed: ' . $e->getMessage());
             // Fallback to simple upload on error
-            return $this->simpleUpload($file, $path);
+            return $this->simpleUpload($file, $path, $disk);
         }
     }
 
@@ -186,7 +186,8 @@ class ImageService
     {
         $storagePath = $path ?? 'documents';
         // Documents: max 1600px (enough for most screens), quality 82 for good text readability
-        return $this->uploadAndOptimize($file, $storagePath, 1600, 82, true);
+        // Dokumen supervisi disimpan di disk privat — disajikan via route ber-auth, bukan URL publik
+        return $this->uploadAndOptimize($file, $storagePath, 1600, 82, true, 'local');
     }
 
     /**

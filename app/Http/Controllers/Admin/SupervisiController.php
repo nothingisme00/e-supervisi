@@ -168,7 +168,7 @@ class SupervisiController extends Controller
             abort(403, 'Anda tidak memiliki akses ke dokumen ini');
         }
 
-        $filePath = storage_path('app/public/' . $dokumen->path_file);
+        $filePath = Storage::disk('local')->path($dokumen->path_file);
 
         if (!file_exists($filePath)) {
             abort(404, 'File tidak ditemukan');

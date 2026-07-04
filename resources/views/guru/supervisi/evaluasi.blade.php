@@ -120,7 +120,7 @@
                         @if($isUploaded && $dokumen)
                             <!-- Preview Button -->
                             <a
-                                href="{{ asset('storage/' . $dokumen->path_file) }}"
+                                href="{{ route('guru.supervisi.preview', $dokumen->id) }}"
                                 target="_blank"
                                 class="flex-1 inline-flex items-center justify-center gap-2 px-4 py-3 bg-indigo-600 text-white text-sm font-semibold rounded-lg hover:bg-indigo-700 transition-colors"
                             >
@@ -229,7 +229,7 @@
                                 <div class="flex items-center justify-center gap-2">
                                     @if($isUploaded && $dokumen)
                                         <a
-                                            href="{{ asset('storage/' . $dokumen->path_file) }}"
+                                            href="{{ route('guru.supervisi.preview', $dokumen->id) }}"
                                             target="_blank"
                                             class="inline-flex items-center justify-center gap-1.5 px-3 py-2 bg-indigo-600 text-white text-xs font-semibold rounded-lg hover:bg-indigo-700 transition-colors"
                                             title="Preview dokumen"

@@ -115,7 +115,7 @@
                                 <p class="text-xs sm:text-sm font-medium text-gray-900 dark:text-white truncate">{{ $dokumen->nama_file }}</p>
                                 <p class="text-[10px] sm:text-xs text-gray-500 dark:text-gray-400">{{ strtoupper($dokumen->tipe_file) }} • {{ number_format($dokumen->ukuran_file / 1024, 2) }} KB</p>
                             </div>
-                            <a href="{{ asset('storage/' . $dokumen->path_file) }}" 
+                            <a href="{{ route('guru.supervisi.preview', $dokumen->id) }}"
                                target="_blank"
                                class="inline-flex items-center gap-1 px-2 py-1 sm:px-3 sm:py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-medium rounded-md transition-colors flex-shrink-0">
                                 <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

@@ -229,7 +229,7 @@ class EvaluasiController extends Controller
             return redirect()->back()->with('error', 'File tidak ditemukan');
         }
 
-        $filePath = storage_path('app/public/' . ltrim($relativePath, '/'));
+        $filePath = \Illuminate\Support\Facades\Storage::disk('local')->path(ltrim($relativePath, '/'));
 
         if (!file_exists($filePath)) {
             return redirect()->back()->with('error', 'File tidak ditemukan');
@@ -263,15 +263,11 @@ class EvaluasiController extends Controller
             abort(404, 'File tidak ditemukan');
         }
 
-        $filePath = storage_path('app/public/' . ltrim($relativePath, '/'));
+        $filePath = \Illuminate\Support\Facades\Storage::disk('local')->path(ltrim($relativePath, '/'));
 
         if (!file_exists($filePath)) {
             abort(404, 'File tidak ditemukan');
         }
-
-        // Get file info
-        $fileName = $dokumen->nama_file ?? basename($relativePath);
-        $mimeType = $dokumen->tipe_file ?? mime_content_type($filePath);
 
         // Return file for inline viewing
         return response()->file($filePath);

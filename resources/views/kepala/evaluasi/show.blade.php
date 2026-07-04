@@ -151,12 +151,8 @@
                                     </div>
                                 </div>
                                 <div class="flex items-center gap-2">
-                                    @php
-                                        $previewPath = $dokumen->path_file ?? $dokumen->file_path ?? null;
-                                    @endphp
-
-                                    @if($previewPath)
-                                    <a href="{{ asset('storage/' . $previewPath) }}"
+                                    @if($dokumen->path_file)
+                                    <a href="{{ route('kepala.evaluasi.preview', $dokumen->id) }}"
                                        target="_blank"
                                        rel="noopener noreferrer"
                                        class="inline-flex items-center px-3 py-1.5 text-xs font-medium text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-600 border border-gray-300 dark:border-gray-500 rounded hover:bg-gray-50 dark:hover:bg-gray-500 transition-colors">

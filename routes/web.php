@@ -43,13 +43,17 @@ Route::middleware(['auth', 'prevent.back', 'throttle:10,1'])->group(function () 
     Route::post('/change-password', [ChangePasswordController::class, 'updatePassword'])->name('change-password.update');
 });
 
-// File Download Routes (without prevent.back middleware to avoid header conflicts)
-// Note: Preview uses direct storage link, only download needs route
+// File Download & Preview Routes (without prevent.back middleware to avoid header conflicts)
+// Dokumen supervisi ada di disk privat — hanya bisa diakses lewat route ber-auth ini
 Route::middleware(['auth', 'must.change.password'])->group(function () {
     Route::prefix('kepala')->name('kepala.')->middleware('can:isKepalaSekolah')->group(function () {
         Route::prefix('evaluasi')->name('evaluasi.')->group(function () {
             Route::get('/download/{id}', [EvaluasiController::class, 'downloadDocument'])->name('download');
+            Route::get('/preview/{id}', [EvaluasiController::class, 'previewDocument'])->name('preview');
         });
+    });
+    Route::prefix('guru')->name('guru.')->middleware('can:isGuru')->group(function () {
+        Route::get('/supervisi/preview/{id}', [SupervisiController::class, 'previewDocument'])->name('supervisi.preview');
     });
 });
 

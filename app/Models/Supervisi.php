@@ -68,7 +68,7 @@ class Supervisi extends Model
             // Delete related files before records
             foreach ($supervisi->dokumenEvaluasi as $dokumen) {
                 if ($dokumen->path_file) {
-                    \Illuminate\Support\Facades\Storage::disk('public')->delete($dokumen->path_file);
+                    \Illuminate\Support\Facades\Storage::disk('local')->delete($dokumen->path_file);
                 }
             }
             
