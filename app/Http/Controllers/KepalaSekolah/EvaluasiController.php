@@ -48,6 +48,14 @@ class EvaluasiController extends Controller
             'feedback.replies.user'
         ])->findOrFail($id);
 
+        if ($supervisi->user->tingkat !== auth()->user()->tingkat) {
+            abort(403, 'Anda tidak memiliki akses ke supervisi ini');
+        }
+
+        if (!in_array($supervisi->status, ['submitted', 'under_review', 'revision', 'completed'])) {
+            abort(403, 'Anda tidak memiliki akses ke supervisi ini');
+        }
+
         // Don't auto mark - let kepala sekolah explicitly start review
 
         return view('kepala.evaluasi.show', compact('supervisi'));
@@ -56,6 +64,10 @@ class EvaluasiController extends Controller
     public function startReview($id)
     {
         $supervisi = Supervisi::findOrFail($id);
+
+        if ($supervisi->user->tingkat !== auth()->user()->tingkat) {
+            abort(403, 'Anda tidak memiliki akses ke supervisi ini');
+        }
 
         // Only allow starting review if status is submitted
         if ($supervisi->status !== 'submitted') {
@@ -80,6 +92,14 @@ class EvaluasiController extends Controller
         ]);
 
         $supervisi = Supervisi::findOrFail($id);
+
+        if ($supervisi->user->tingkat !== auth()->user()->tingkat) {
+            abort(403, 'Anda tidak memiliki akses ke supervisi ini');
+        }
+
+        if (!in_array($supervisi->status, ['submitted', 'under_review', 'revision'])) {
+            abort(403, 'Supervisi tidak dapat diberi feedback dari status ini');
+        }
 
         // Check if this is a revision request using boolean() helper
         // This handles '1', 'on', 'yes', true, etc.
@@ -114,13 +134,6 @@ class EvaluasiController extends Controller
             ]);
         }
 
-        // Optionally mark as completed
-        if ($request->has('mark_completed') && $request->mark_completed == '1') {
-            $supervisi->update([
-                'status' => 'completed'
-            ]);
-        }
-
         return redirect()->route('kepala.evaluasi.show', $id)
             ->with('success', 'Feedback berhasil diberikan');
     }
@@ -128,9 +141,19 @@ class EvaluasiController extends Controller
     public function complete($id)
     {
         $supervisi = Supervisi::findOrFail($id);
-        
+
+        if ($supervisi->user->tingkat !== auth()->user()->tingkat) {
+            abort(403, 'Anda tidak memiliki akses ke supervisi ini');
+        }
+
+        if ($supervisi->status !== 'under_review') {
+            abort(403, 'Supervisi tidak dapat diselesaikan dari status ini');
+        }
+
         $supervisi->update([
-            'status' => 'completed'
+            'status' => 'completed',
+            'reviewed_by' => auth()->id(),
+            'reviewed_at' => now()
         ]);
 
         return redirect()->route('kepala.evaluasi.index')
@@ -144,6 +167,14 @@ class EvaluasiController extends Controller
         ]);
 
         $supervisi = Supervisi::findOrFail($id);
+
+        if ($supervisi->user->tingkat !== auth()->user()->tingkat) {
+            abort(403, 'Anda tidak memiliki akses ke supervisi ini');
+        }
+
+        if (!in_array($supervisi->status, ['submitted', 'under_review', 'revision'])) {
+            abort(403, 'Supervisi tidak dapat direvisi dari status ini');
+        }
 
         // Create feedback with revision request
         Feedback::create([
