@@ -48,6 +48,7 @@ Audit dilakukan pada kondisi kerja saat ini: branch `develop` termasuk perubahan
 - Umpan balik setelah aksi (redirect + notifikasi sukses/gagal).
 - Empty state pada daftar kosong.
 - Navigasi antar-halaman dan konsistensi tombol/aksi.
+- Redesign visual diperbolehkan bila temuan UX memerlukannya (persetujuan pengguna: 2026-07-04).
 
 ## Bentuk Keluaran
 
@@ -61,6 +62,5 @@ Satu laporan temuan di percakapan, dikelompokkan **Kritis / Tinggi / Sedang / Re
 
 ## Di Luar Lingkup
 
-- Redesign visual besar-besaran.
 - Fitur baru.
 - Upgrade dependensi besar — kecuali tambalan keamanan kritis dari hasil `composer audit`.
