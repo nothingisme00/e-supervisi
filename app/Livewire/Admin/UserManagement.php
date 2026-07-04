@@ -75,9 +75,16 @@ class UserManagement extends Component
     // Toggle user status
     public function toggleStatus($userId)
     {
+        if ((int) $userId === (int) auth()->id()) {
+            $this->dispatch('status-updated', [
+                'message' => 'Anda tidak dapat menonaktifkan akun Anda sendiri'
+            ]);
+            return;
+        }
+
         $user = User::findOrFail($userId);
         $user->update(['is_active' => !$user->is_active]);
-        
+
         $this->dispatch('status-updated', [
             'message' => $user->is_active ? 'User diaktifkan' : 'User dinonaktifkan'
         ]);

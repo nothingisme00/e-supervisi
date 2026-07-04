@@ -38,6 +38,34 @@ class SupervisiFlowTest extends TestCase
         $response->assertStatus(200);
     }
 
+    public function test_store_rejects_second_active_supervisi(): void
+    {
+        $guru = $this->createGuru();
+        $existing = Supervisi::factory()->draft()->create(['user_id' => $guru->id]);
+
+        $response = $this->actingAs($guru)->post(route('guru.supervisi.store'));
+
+        $response->assertRedirect(route('guru.supervisi.continue', $existing->id));
+        $this->assertEquals(1, Supervisi::where('user_id', $guru->id)->count());
+    }
+
+    public function test_guru_cannot_delete_revision_supervisi(): void
+    {
+        $guru = $this->createGuru();
+        $supervisi = Supervisi::factory()->revision()->create(['user_id' => $guru->id]);
+        $feedback = \App\Models\Feedback::create([
+            'supervisi_id' => $supervisi->id,
+            'user_id' => User::factory()->kepalaSekolah()->create()->id,
+            'komentar' => 'Mohon perbaiki bagian refleksi.',
+            'is_revision_request' => true,
+        ]);
+
+        $response = $this->actingAs($guru)->delete(route('guru.supervisi.delete', $supervisi->id));
+
+        $this->assertDatabaseHas('supervisi', ['id' => $supervisi->id]);
+        $this->assertDatabaseHas('feedback', ['id' => $feedback->id]);
+    }
+
     public function test_guru_with_active_supervisi_redirected_to_continue(): void
     {
         $guru = $this->createGuru();

@@ -318,14 +318,18 @@
                     <label for="revision_notes" class="block text-sm font-medium text-slate-700 mb-2">
                         Catatan Revisi <span class="text-red-500">*</span>
                     </label>
-                    <textarea 
-                        name="revision_notes" 
-                        id="revision_notes" 
-                        rows="5" 
+                    <textarea
+                        name="revision_notes"
+                        id="revision_notes"
+                        rows="5"
                         required
+                        minlength="10"
                         class="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-rose-500 focus:border-transparent resize-none"
                         placeholder="Jelaskan apa yang perlu direvisi..."
-                    ></textarea>
+                    >{{ old('revision_notes') }}</textarea>
+                    @error('revision_notes')
+                        <p class="mt-1.5 text-sm text-red-600">{{ $message }}</p>
+                    @enderror
                 </div>
 
                 <div class="flex justify-end space-x-3">
@@ -345,6 +349,15 @@
         </div>
     </div>
 </div>
+
+@if($errors->has('revision_notes'))
+<script>
+    // Buka kembali modal bila validasi revision_notes gagal (agar error terlihat)
+    document.addEventListener('DOMContentLoaded', function () {
+        document.getElementById('revisionModal').classList.remove('hidden');
+    });
+</script>
+@endif
 
 @if(session('success'))
 <script>

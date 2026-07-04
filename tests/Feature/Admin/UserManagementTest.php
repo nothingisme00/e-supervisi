@@ -254,6 +254,47 @@ class UserManagementTest extends TestCase
         $response->assertJson(['success' => true, 'is_active' => false]);
     }
 
+    public function test_admin_cannot_toggle_own_status(): void
+    {
+        $admin = $this->createAdmin();
+
+        $response = $this->actingAs($admin)->patch(route('admin.users.toggle-status', $admin->id));
+
+        $response->assertStatus(403);
+        $admin->refresh();
+        $this->assertTrue((bool) $admin->is_active);
+    }
+
+    public function test_admin_cannot_change_own_role(): void
+    {
+        $admin = $this->createAdmin();
+
+        $response = $this->actingAs($admin)->put(route('admin.users.update', $admin->id), [
+            'nik' => $admin->nik,
+            'name' => $admin->name,
+            'email' => $admin->email,
+            'role' => User::ROLE_GURU,
+            'tingkat' => 'SD',
+            'mata_pelajaran' => 'Matematika',
+        ]);
+
+        $response->assertSessionHas('error');
+        $admin->refresh();
+        $this->assertEquals(User::ROLE_ADMIN, $admin->role);
+    }
+
+    public function test_livewire_toggle_status_blocks_self(): void
+    {
+        $admin = $this->createAdmin();
+
+        \Livewire\Livewire::actingAs($admin)
+            ->test(\App\Livewire\Admin\UserManagement::class)
+            ->call('toggleStatus', $admin->id);
+
+        $admin->refresh();
+        $this->assertTrue((bool) $admin->is_active);
+    }
+
     // ============================
     // DELETE
     // ============================

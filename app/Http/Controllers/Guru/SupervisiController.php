@@ -39,6 +39,15 @@ class SupervisiController extends Controller
 
     public function store(Request $request)
     {
+        // Tegakkan aturan satu supervisi aktif (cek yang sama dengan create())
+        $activeSupervisi = auth()->user()->supervisi()
+            ->whereIn('status', ['draft', 'revision'])
+            ->first();
+
+        if ($activeSupervisi) {
+            return redirect()->route('guru.supervisi.continue', $activeSupervisi->id);
+        }
+
         // Create new supervision (tanggal will be set when submitted)
         $supervisi = Supervisi::create([
             'user_id' => auth()->id(),
@@ -247,9 +256,11 @@ class SupervisiController extends Controller
     public function destroy($id)
     {
         try {
+            // Hanya draft yang boleh dihapus — supervisi `revision` memuat
+            // riwayat review kepala sekolah yang ikut terhapus cascade
             $supervisi = Supervisi::where('id', $id)
                 ->where('user_id', auth()->id())
-                ->whereIn('status', ['draft', 'revision'])
+                ->where('status', 'draft')
                 ->firstOrFail();
 
             // Delete all related documents from storage

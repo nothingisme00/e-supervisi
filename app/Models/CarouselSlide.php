@@ -11,6 +11,7 @@ class CarouselSlide extends Model
 
     protected $fillable = [
         'title',
+        'subtitle',
         'description',
         'image_path',
         'order',

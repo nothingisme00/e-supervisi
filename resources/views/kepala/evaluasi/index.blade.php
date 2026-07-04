@@ -45,6 +45,8 @@
                             Perlu Review
                         @elseif(request('status') == 'under_review')
                             Sedang Ditinjau
+                        @elseif(request('status') == 'revision')
+                            Perlu Revisi
                         @elseif(request('status') == 'completed')
                             Telah Ditinjau
                         @else
@@ -66,6 +68,10 @@
                         <div class="dropdown-item px-4 py-2.5 rounded-md text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-indigo-50 dark:hover:bg-indigo-900/30 hover:text-indigo-600 dark:hover:text-indigo-400 cursor-pointer transition-colors flex items-center gap-3 {{ request('status') == 'under_review' ? 'active' : '' }}" data-value="under_review">
                             <span class="material-symbols-outlined text-lg">visibility</span>
                             Sedang Ditinjau
+                        </div>
+                        <div class="dropdown-item px-4 py-2.5 rounded-md text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-indigo-50 dark:hover:bg-indigo-900/30 hover:text-indigo-600 dark:hover:text-indigo-400 cursor-pointer transition-colors flex items-center gap-3 {{ request('status') == 'revision' ? 'active' : '' }}" data-value="revision">
+                            <span class="material-symbols-outlined text-lg">edit_note</span>
+                            Perlu Revisi
                         </div>
                         <div class="dropdown-item px-4 py-2.5 rounded-md text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-indigo-50 dark:hover:bg-indigo-900/30 hover:text-indigo-600 dark:hover:text-indigo-400 cursor-pointer transition-colors flex items-center gap-3 {{ request('status') == 'completed' ? 'active' : '' }}" data-value="completed">
                             <span class="material-symbols-outlined text-lg">check_circle</span>
@@ -118,7 +124,7 @@
             @foreach($supervisiList as $supervisi)
             <div class="relative p-3 sm:p-4 bg-white dark:bg-gray-700 rounded-lg sm:rounded-xl hover:bg-indigo-50/50 dark:hover:bg-gray-600 transition-all border border-slate-200 dark:border-gray-600 hover:border-indigo-300 dark:hover:border-indigo-600 shadow-sm hover:shadow-md group">
                 <!-- Left accent line with dynamic color -->
-                <div class="absolute left-0 top-2 sm:top-3 bottom-2 sm:bottom-3 w-1 @if($supervisi->status == 'submitted') bg-gradient-to-b from-amber-400 to-orange-400 @elseif($supervisi->status == 'under_review') bg-gradient-to-b from-indigo-400 to-purple-400 @else bg-gradient-to-b from-emerald-400 to-green-400 @endif rounded-r-full"></div>
+                <div class="absolute left-0 top-2 sm:top-3 bottom-2 sm:bottom-3 w-1 @if($supervisi->status == 'submitted') bg-gradient-to-b from-amber-400 to-orange-400 @elseif($supervisi->status == 'under_review') bg-gradient-to-b from-indigo-400 to-purple-400 @elseif($supervisi->status == 'revision') bg-gradient-to-b from-rose-400 to-red-400 @else bg-gradient-to-b from-emerald-400 to-green-400 @endif rounded-r-full"></div>
                 
                 <div class="flex items-start justify-between gap-2 sm:gap-4 ml-2 sm:ml-3">
                     <div class="flex-1 min-w-0">
@@ -128,6 +134,8 @@
                             <span class="px-1.5 py-0.5 sm:px-2 sm:py-0.5 text-[8px] sm:text-[10px] font-semibold bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300 rounded">REVIEW</span>
                             @elseif($supervisi->status == 'under_review')
                             <span class="px-1.5 py-0.5 sm:px-2 sm:py-0.5 text-[8px] sm:text-[10px] font-semibold bg-indigo-100 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-300 rounded">DITINJAU</span>
+                            @elseif($supervisi->status == 'revision')
+                            <span class="px-1.5 py-0.5 sm:px-2 sm:py-0.5 text-[8px] sm:text-[10px] font-semibold bg-rose-100 dark:bg-rose-900/30 text-rose-700 dark:text-rose-300 rounded">PERLU REVISI</span>
                             @elseif($supervisi->status == 'completed')
                             <span class="px-1.5 py-0.5 sm:px-2 sm:py-0.5 text-[8px] sm:text-[10px] font-semibold bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300 rounded">SELESAI</span>
                             @endif

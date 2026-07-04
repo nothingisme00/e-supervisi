@@ -18,6 +18,19 @@ class CarouselSlideModelTest extends TestCase
         $this->assertCount(3, CarouselSlide::active()->get());
     }
 
+    public function test_subtitle_is_mass_assignable(): void
+    {
+        // Seperti seeder: create() langsung, bukan factory (factory melewati $fillable)
+        $slide = CarouselSlide::create([
+            'title' => 'Judul',
+            'subtitle' => 'Pendidikan Digital',
+            'description' => 'Deskripsi',
+            'order' => 1,
+            'is_active' => true,
+        ]);
+        $this->assertEquals('Pendidikan Digital', $slide->fresh()->subtitle);
+    }
+
     public function test_scope_ordered(): void
     {
         CarouselSlide::factory()->create(['order' => 3]);

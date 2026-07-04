@@ -435,28 +435,9 @@ function updateCharCount(field) {
 // Last action for retry functionality
 let lastAction = null;
 
-function showToast(message, isError = false) {
-    if (isError) {
-        // Show error modal instead of toast
-        showErrorModal(message);
-    } else {
-        // Show success toast
-        const toast = document.getElementById('successToast');
-        toast.classList.remove('hidden');
-        
-        setTimeout(() => {
-            toast.classList.remove('-translate-y-20', 'opacity-0');
-            toast.classList.add('translate-y-0', 'opacity-100');
-        }, 10);
-
-        setTimeout(() => {
-            toast.classList.remove('translate-y-0', 'opacity-100');
-            toast.classList.add('-translate-y-20', 'opacity-0');
-            setTimeout(() => toast.classList.add('hidden'), 300);
-        }, 3000);
-    }
-}
-
+// Catatan: jangan deklarasikan `showToast` lokal di sini — layout modern.blade
+// mendeklarasikan global dengan nama sama SETELAH skrip halaman dan menimpanya,
+// sehingga pesan error tampil bergaya sukses. Error memakai showErrorModal langsung.
 function showErrorModal(message) {
     const modal = document.getElementById('errorModal');
     const content = document.getElementById('errorModalContent');
@@ -532,12 +513,12 @@ document.getElementById('saveButton').addEventListener('click', async () => {
             showSaveOptionsModal();
             console.log('Save successful');
         } else {
-            showToast(result.message || 'Gagal menyimpan data', true);
+            showErrorModal(result.message || 'Gagal menyimpan data');
             console.error('Save failed:', result.message);
         }
     } catch (error) {
         console.error('Save error:', error);
-        showToast('Error: ' + error.message, true);
+        showErrorModal('Error: ' + error.message);
     } finally {
         // Re-enable button
         saveButton.disabled = false;
@@ -668,21 +649,21 @@ async function proceedSubmit() {
                 }, 10);
             } else {
                 console.error('Submit failed:', submitResult.message);
-                showToast(submitResult.message || 'Gagal submit supervisi', true);
+                showErrorModal(submitResult.message || 'Gagal submit supervisi');
                 // Re-enable button
                 submitButton.disabled = false;
                 validateForm(); // Reset button state
             }
         } else {
             console.error('Save failed:', saveResult.message);
-            showToast(saveResult.message || 'Gagal menyimpan data', true);
+            showErrorModal(saveResult.message || 'Gagal menyimpan data');
             // Re-enable button
             submitButton.disabled = false;
             validateForm(); // Reset button state
         }
     } catch (error) {
         console.error('Submit error:', error);
-        showToast('Error: ' + error.message, true);
+        showErrorModal('Error: ' + error.message);
         // Re-enable button
         submitButton.disabled = false;
         validateForm(); // Reset button state

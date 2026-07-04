@@ -11,9 +11,12 @@ use Symfony\Component\HttpFoundation\Response;
 class SessionTimeout
 {
     /**
-     * Waktu timeout dalam detik (10 menit)
+     * Waktu timeout dalam detik — satu sumber: config session.lifetime (menit)
      */
-    protected int $timeout = 10 * 60;
+    protected function timeout(): int
+    {
+        return (int) config('session.lifetime') * 60;
+    }
 
     /**
      * Handle an incoming request.
@@ -41,7 +44,7 @@ class SessionTimeout
                 $currentTime = time();
                 
                 // Jika session sudah expired (lebih dari timeout)
-                if (($currentTime - $lastActivity) > $this->timeout) {
+                if (($currentTime - $lastActivity) > $this->timeout()) {
                     // Hapus semua session user ini dari database
                     DB::table('sessions')
                         ->where('user_id', Auth::id())

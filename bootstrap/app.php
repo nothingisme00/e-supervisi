@@ -11,9 +11,10 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
-        // Append session timeout middleware to web group
+        // Append session timeout & security headers middleware to web group
         $middleware->web(append: [
             \App\Http\Middleware\SessionTimeout::class,
+            \App\Http\Middleware\SecurityHeaders::class,
         ]);
 
         $middleware->alias([

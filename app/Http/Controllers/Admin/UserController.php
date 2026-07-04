@@ -128,6 +128,11 @@ class UserController extends Controller
         $user = User::findOrFail($id);
         $isEditingSelf = Auth::id() == $user->id;
 
+        if ($isEditingSelf && $request->role !== $user->role) {
+            return redirect()->back()
+                ->with('error', 'Anda tidak dapat mengubah role akun Anda sendiri');
+        }
+
         // Validation rules
         $rules = [
             'nik' => 'required|string|size:16|regex:/^[0-9]{16}$/|unique:users,nik,' . $id,
@@ -223,6 +228,10 @@ class UserController extends Controller
 
     public function toggleStatus($id)
     {
+        if ((int) $id === (int) Auth::id()) {
+            abort(403, 'Anda tidak dapat menonaktifkan akun Anda sendiri');
+        }
+
         $user = User::findOrFail($id);
         $user->update(['is_active' => !$user->is_active]);
 
