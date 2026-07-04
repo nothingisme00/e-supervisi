@@ -11,19 +11,20 @@ class CarouselSlideSeeder extends Seeder
 {
     /**
      * Run the database seeds.
-     * 
+     *
      * Catatan:
      * - Gambar sample (jika ada) harus disimpan di: public/images/carousel/samples/
      * - Akan di-copy otomatis ke: storage/app/public/carousel/
      * - Jika tidak ada gambar sample, slide tetap dibuat (tanpa gambar)
+     * - Idempoten: seed ulang memperbarui slide berdasarkan `order`, tidak menduplikasi
      */
     public function run(): void
     {
-        // Path ke gambar sample di public/images (opsional)
+        // Nama file sesuai aset nyata di public/images/carousel/samples/
         $sampleImages = [
-            'images/carousel/samples/education-1.jpg',
-            'images/carousel/samples/education-2.jpg',
-            'images/carousel/samples/education-3.jpg',
+            'images/carousel/samples/brooke-cagle-g1Kr4Ozfoac-unsplash.jpg',
+            'images/carousel/samples/edwin-andrade-4V1dC_eoCwg-unsplash.jpg',
+            'images/carousel/samples/kenny-eliason-1-aA2Fadydc-unsplash.jpg',
         ];
 
         $slides = [
@@ -54,22 +55,20 @@ class CarouselSlideSeeder extends Seeder
         ];
 
         foreach ($slides as $index => $slide) {
-            // Jika ada gambar sample, copy ke storage
+            // Jika ada gambar sample, copy ke storage (nama deterministik agar idempoten)
             if (isset($sampleImages[$index])) {
                 $sourcePath = public_path($sampleImages[$index]);
-                
+
                 if (File::exists($sourcePath)) {
                     $extension = File::extension($sourcePath);
-                    $filename = 'sample_' . ($index + 1) . '_' . time() . '.' . $extension;
-                    $destinationPath = 'carousel/' . $filename;
-                    
-                    // Copy ke storage/app/public/carousel/
+                    $destinationPath = 'carousel/sample_' . ($index + 1) . '.' . $extension;
+
                     try {
                         Storage::disk('public')->put(
                             $destinationPath,
                             File::get($sourcePath)
                         );
-                        
+
                         $slide['image_path'] = $destinationPath;
                         $this->command->info("✓ Copied {$sampleImages[$index]} → storage/{$destinationPath}");
                     } catch (\Exception $e) {
@@ -79,15 +78,11 @@ class CarouselSlideSeeder extends Seeder
                     $this->command->warn("⚠ Sample image not found: {$sampleImages[$index]}");
                 }
             }
-            
-            CarouselSlide::create($slide);
+
+            CarouselSlide::updateOrCreate(['order' => $slide['order']], $slide);
             $this->command->info("✓ Created slide: {$slide['title']}");
         }
-        
+
         $this->command->info("\n✓ Carousel slides seeded successfully!");
-        $this->command->warn("\nCatatan:");
-        $this->command->line("  - Jika tidak ada gambar, slide tetap dibuat (upload manual via admin)");
-        $this->command->line("  - Simpan gambar sample di: public/images/carousel/samples/");
-        $this->command->line("  - Nama file: education-1.jpg, education-2.jpg, education-3.jpg");
     }
 }

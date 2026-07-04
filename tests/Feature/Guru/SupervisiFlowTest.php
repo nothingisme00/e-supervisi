@@ -176,6 +176,16 @@ class SupervisiFlowTest extends TestCase
         $response->assertJson(['complete' => false, 'count' => 0, 'required' => 7]);
     }
 
+    public function test_guru_cannot_check_documents_of_other_guru(): void
+    {
+        $guru = $this->createGuru();
+        $otherGuru = $this->createGuru();
+        $supervisi = Supervisi::factory()->draft()->create(['user_id' => $otherGuru->id]);
+
+        $response = $this->actingAs($guru)->get(route('guru.supervisi.check-documents', $supervisi->id));
+        $response->assertStatus(404);
+    }
+
     public function test_admin_cannot_access_guru_routes(): void
     {
         $admin = User::factory()->admin()->create(['must_change_password' => false]);

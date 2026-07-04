@@ -76,12 +76,12 @@ Route::middleware(['auth', 'prevent.back', 'must.change.password'])->group(funct
             Route::post('/store', [SupervisiController::class, 'store'])->name('store');
             Route::get('/{id}/continue', [SupervisiController::class, 'continue'])->name('continue');
             Route::get('/{id}/evaluasi', [SupervisiController::class, 'showEvaluasi'])->name('evaluasi');
-            Route::post('/{id}/upload', [SupervisiController::class, 'uploadDocument'])->name('upload');
+            Route::post('/{id}/upload', [SupervisiController::class, 'uploadDocument'])->name('upload')->middleware('throttle:30,1');
             Route::delete('/{id}/delete-document', [SupervisiController::class, 'deleteDocument'])->name('delete-document');
             Route::get('/{id}/check-documents', [SupervisiController::class, 'checkDocuments'])->name('check-documents');
             Route::get('/{id}/detail', [GuruHomeController::class, 'detail'])->name('detail');
             Route::get('/{id}/view', [GuruHomeController::class, 'viewOther'])->name('view');
-            Route::post('/{id}/comment', [GuruHomeController::class, 'storeComment'])->name('comment');
+            Route::post('/{id}/comment', [GuruHomeController::class, 'storeComment'])->name('comment')->middleware('throttle:30,1');
             Route::delete('/{id}', [SupervisiController::class, 'destroy'])->name('delete');
 
             // Proses Routes
@@ -104,8 +104,8 @@ Route::middleware(['auth', 'prevent.back', 'must.change.password'])->group(funct
         Route::prefix('supervisi')->name('supervisi.')->group(function () {
             Route::get('/', [AdminSupervisiController::class, 'index'])->name('index');
             Route::get('/{id}', [AdminSupervisiController::class, 'show'])->name('show');
-            Route::post('/{id}/feedback', [AdminSupervisiController::class, 'storeFeedback'])->name('feedback');
-            Route::post('/{id}/revision', [AdminSupervisiController::class, 'requestRevision'])->name('revision');
+            Route::post('/{id}/feedback', [AdminSupervisiController::class, 'storeFeedback'])->name('feedback')->middleware('throttle:30,1');
+            Route::post('/{id}/revision', [AdminSupervisiController::class, 'requestRevision'])->name('revision')->middleware('throttle:30,1');
             Route::get('/download/{id}', [AdminSupervisiController::class, 'downloadDocument'])->name('download');
         });
 
@@ -129,8 +129,8 @@ Route::middleware(['auth', 'prevent.back', 'must.change.password'])->group(funct
             Route::get('/', [EvaluasiController::class, 'index'])->name('index');
             Route::get('/{id}', [EvaluasiController::class, 'show'])->name('show');
             Route::post('/{id}/start-review', [EvaluasiController::class, 'startReview'])->name('startReview');
-            Route::post('/{id}/feedback', [EvaluasiController::class, 'giveFeedback'])->name('feedback');
-            Route::post('/{id}/revision', [EvaluasiController::class, 'requestRevision'])->name('revision');
+            Route::post('/{id}/feedback', [EvaluasiController::class, 'giveFeedback'])->name('feedback')->middleware('throttle:30,1');
+            Route::post('/{id}/revision', [EvaluasiController::class, 'requestRevision'])->name('revision')->middleware('throttle:30,1');
             Route::post('/{id}/complete', [EvaluasiController::class, 'complete'])->name('complete');
             // Note: preview and download routes moved outside prevent.back middleware (see above)
         });

@@ -58,7 +58,6 @@ class SupervisiFactory extends Factory
             'status' => Supervisi::STATUS_REVISION,
             'tanggal_supervisi' => now(),
             'revision_notes' => fake()->sentence(),
-            'needs_revision' => true,
         ]);
     }
 }

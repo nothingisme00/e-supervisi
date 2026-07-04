@@ -149,6 +149,24 @@ class LoginTest extends TestCase
         $response->assertRedirect(route('change-password'));
     }
 
+    public function test_change_password_info_flash_is_visible(): void
+    {
+        User::factory()->guru()->create([
+            'nik' => '1234567890123456',
+            'password' => bcrypt('password123'),
+            'is_active' => true,
+            'must_change_password' => true,
+        ]);
+
+        $response = $this->followingRedirects()->post('/login', [
+            'nik' => '1234567890123456',
+            'password' => 'password123',
+            'role' => 'guru',
+        ]);
+
+        $response->assertSee('mengganti password default');
+    }
+
     public function test_login_validation_requires_nik(): void
     {
         $response = $this->post('/login', [
@@ -180,6 +198,15 @@ class LoginTest extends TestCase
         $response->assertSessionHasErrors('role');
     }
 
+    public function test_logout_flash_message_is_visible_on_login_page(): void
+    {
+        $user = User::factory()->guru()->create(['must_change_password' => false]);
+
+        $response = $this->actingAs($user)->followingRedirects()->post('/logout');
+
+        $response->assertSee('berhasil logout');
+    }
+
     public function test_authenticated_user_can_logout(): void
     {
         $user = User::factory()->guru()->create();
@@ -188,7 +215,7 @@ class LoginTest extends TestCase
 
         $response = $this->post('/logout');
 
-        $response->assertRedirect('/');
+        $response->assertRedirect(route('login'));
         $this->assertGuest();
     }
 

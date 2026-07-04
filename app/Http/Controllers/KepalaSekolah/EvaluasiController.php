@@ -222,8 +222,7 @@ class EvaluasiController extends Controller
             abort(403, 'Anda tidak memiliki akses ke dokumen ini');
         }
 
-        // Prefer the normalized column `path_file` but fall back to older names
-        $relativePath = $dokumen->path_file ?? $dokumen->file_path ?? null;
+        $relativePath = $dokumen->path_file;
 
         if (!$relativePath) {
             return redirect()->back()->with('error', 'File tidak ditemukan');
@@ -256,8 +255,7 @@ class EvaluasiController extends Controller
             abort(403, 'Anda tidak memiliki akses ke dokumen ini');
         }
 
-        // Prefer the normalized column `path_file` but fall back to older names
-        $relativePath = $dokumen->path_file ?? $dokumen->file_path ?? null;
+        $relativePath = $dokumen->path_file;
 
         if (!$relativePath) {
             abort(404, 'File tidak ditemukan');

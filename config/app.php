@@ -80,6 +80,9 @@ return [
 
     'locale' => env('APP_LOCALE', 'en'),
 
+    // Password awal akun baru & hasil reset oleh admin
+    'default_user_password' => env('DEFAULT_USER_PASSWORD', 'pass123456'),
+
     'fallback_locale' => env('APP_FALLBACK_LOCALE', 'en'),
 
     'faker_locale' => env('APP_FAKER_LOCALE', 'en_US'),

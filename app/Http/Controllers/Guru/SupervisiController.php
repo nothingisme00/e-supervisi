@@ -209,6 +209,10 @@ class SupervisiController extends Controller
 
     public function checkDocuments($id)
     {
+        Supervisi::where('id', $id)
+            ->where('user_id', auth()->id())
+            ->firstOrFail();
+
         $count = DokumenEvaluasi::where('supervisi_id', $id)->count();
 
         return response()->json([

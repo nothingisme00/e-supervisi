@@ -305,8 +305,9 @@
                             @endif
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap">
-                            <button wire:click="toggleStatus({{ $user->id }})" 
-                                    class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold transition-all {{ $user->is_active ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300 hover:bg-emerald-200' : 'bg-red-100 text-red-700 dark:bg-red-900/40 dark:text-red-300 hover:bg-red-200' }}" 
+                            <button wire:click="toggleStatus({{ $user->id }})"
+                                    wire:confirm="{{ $user->is_active ? 'Nonaktifkan akun ' . $user->name . '? User tidak akan bisa login.' : 'Aktifkan kembali akun ' . $user->name . '?' }}"
+                                    class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold transition-all {{ $user->is_active ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300 hover:bg-emerald-200' : 'bg-red-100 text-red-700 dark:bg-red-900/40 dark:text-red-300 hover:bg-red-200' }}"
                                     title="Klik untuk ubah status">
                                 <span class="w-2 h-2 {{ $user->is_active ? 'bg-emerald-500' : 'bg-red-500' }} rounded-full mr-1.5"></span>
                                 {{ $user->is_active ? 'Aktif' : 'Nonaktif' }}
@@ -466,7 +467,8 @@
                             </td>
                             <!-- Status -->
                             <td class="px-3 py-3">
-                                <button wire:click="toggleStatus({{ $user->id }})" 
+                                <button wire:click="toggleStatus({{ $user->id }})"
+                                        wire:confirm="{{ $user->is_active ? 'Nonaktifkan akun ' . $user->name . '? User tidak akan bisa login.' : 'Aktifkan kembali akun ' . $user->name . '?' }}"
                                         class="inline-flex items-center px-2 py-1 rounded-md text-[11px] font-semibold transition-all {{ $user->is_active ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300' : 'bg-red-100 text-red-700 dark:bg-red-900/40 dark:text-red-300' }}">
                                     <span class="w-1.5 h-1.5 {{ $user->is_active ? 'bg-emerald-500' : 'bg-red-500' }} rounded-full mr-1"></span>
                                     {{ $user->is_active ? 'Aktif' : 'Off' }}

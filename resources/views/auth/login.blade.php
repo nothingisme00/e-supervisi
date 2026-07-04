@@ -473,6 +473,14 @@
             </p>
         </div>
 
+        <!-- Success Alert (mis. setelah logout) -->
+        @if(session('success'))
+        <div class="mb-3 lg:mb-4 bg-green-50 dark:bg-green-900/20 text-green-600 dark:text-green-400 p-2.5 lg:p-3 rounded-lg text-xs lg:text-sm border border-green-100 dark:border-green-800/50 flex items-center gap-2 animate-[slideUp_0.4s_ease-out]">
+            <span class="material-symbols-outlined text-base lg:text-lg">check_circle</span>
+            <span>{{ session('success') }}</span>
+        </div>
+        @endif
+
         <!-- Error Alert -->
         @if($errors->any())
         <div class="mb-3 lg:mb-4 bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 p-2.5 lg:p-3 rounded-lg text-xs lg:text-sm border border-red-100 dark:border-red-800/50 flex items-center gap-2 animate-[slideUp_0.4s_ease-out]">

@@ -240,6 +240,17 @@ class UserManagementTest extends TestCase
         ]);
     }
 
+    public function test_reset_password_uses_configured_default(): void
+    {
+        config(['app.default_user_password' => 'rahasia-sekolah']);
+        $admin = $this->createAdmin();
+        $user = User::factory()->guru()->create();
+
+        $this->actingAs($admin)->post(route('admin.users.reset-password', $user->id));
+
+        $this->assertTrue(\Illuminate\Support\Facades\Hash::check('rahasia-sekolah', $user->fresh()->password));
+    }
+
     // ============================
     // TOGGLE STATUS
     // ============================

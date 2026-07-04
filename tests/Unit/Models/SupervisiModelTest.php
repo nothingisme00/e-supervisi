@@ -122,10 +122,11 @@ class SupervisiModelTest extends TestCase
         $this->assertInstanceOf(\Illuminate\Support\Carbon::class, $supervisi->tanggal_supervisi);
     }
 
-    public function test_needs_revision_is_cast_to_boolean(): void
+    public function test_needs_revision_column_is_removed(): void
     {
-        $supervisi = Supervisi::factory()->create(['needs_revision' => 1]);
-        $this->assertIsBool($supervisi->needs_revision);
+        // R3: kolom mati — tidak pernah ditulis aplikasi, sumber data salah
+        $this->assertFalse(\Illuminate\Support\Facades\Schema::hasColumn('supervisi', 'needs_revision'));
+        $this->assertNotContains('needs_revision', (new Supervisi())->getFillable());
     }
 
     public function test_cascade_delete_related_records(): void

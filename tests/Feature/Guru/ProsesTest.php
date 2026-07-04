@@ -79,6 +79,32 @@ class ProsesTest extends TestCase
         $this->assertNotNull($supervisi->tanggal_supervisi);
     }
 
+    public function test_resubmit_clears_stale_review_data_and_keeps_first_date(): void
+    {
+        $guru = $this->createGuru();
+        $kepala = User::factory()->kepalaSekolah()->create();
+        $firstDate = now()->subDays(3)->startOfDay();
+        $supervisi = $this->createSupervisiWithAllDocs($guru);
+        $supervisi->update([
+            'status' => Supervisi::STATUS_REVISION,
+            'tanggal_supervisi' => $firstDate,
+            'revision_notes' => 'Perbaiki refleksi',
+            'reviewed_by' => $kepala->id,
+            'reviewed_at' => now()->subDay(),
+        ]);
+        ProsesPembelajaran::factory()->create(['supervisi_id' => $supervisi->id]);
+
+        $response = $this->actingAs($guru)->postJson(route('guru.supervisi.submit', $supervisi->id));
+
+        $response->assertJson(['success' => true]);
+        $supervisi->refresh();
+        $this->assertEquals(Supervisi::STATUS_SUBMITTED, $supervisi->status);
+        $this->assertNull($supervisi->revision_notes);
+        $this->assertNull($supervisi->reviewed_by);
+        $this->assertNull($supervisi->reviewed_at);
+        $this->assertTrue($supervisi->tanggal_supervisi->equalTo($firstDate));
+    }
+
     public function test_submit_fails_without_complete_proses(): void
     {
         $guru = $this->createGuru();

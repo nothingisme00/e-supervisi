@@ -359,10 +359,6 @@
 </script>
 @endif
 
-@if(session('success'))
-<script>
-    alert("{{ session('success') }}");
-</script>
-@endif
+{{-- Notifikasi sukses ditangani toast global di layouts.modern --}}
 
 @endsection

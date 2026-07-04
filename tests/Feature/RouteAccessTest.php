@@ -14,6 +14,15 @@ class RouteAccessTest extends TestCase
     // Root Route Redirects
     // ============================
 
+    public function test_write_heavy_routes_have_rate_limit(): void
+    {
+        $routes = app('router')->getRoutes();
+        foreach (['guru.supervisi.upload', 'guru.supervisi.comment', 'admin.supervisi.feedback', 'kepala.evaluasi.feedback'] as $name) {
+            $middleware = $routes->getByName($name)->gatherMiddleware();
+            $this->assertContains('throttle:30,1', $middleware, "Route {$name} tanpa rate limit");
+        }
+    }
+
     public function test_root_redirects_to_login_for_guests(): void
     {
         $response = $this->get('/');

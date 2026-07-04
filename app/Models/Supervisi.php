@@ -25,14 +25,12 @@ class Supervisi extends Model
         'catatan',
         'reviewed_by',
         'reviewed_at',
-        'needs_revision',
         'revision_notes'
     ];
 
     protected $casts = [
         'tanggal_supervisi' => 'date',
-        'reviewed_at' => 'datetime',
-        'needs_revision' => 'boolean'
+        'reviewed_at' => 'datetime'
     ];
 
     // Helper method untuk list semua status

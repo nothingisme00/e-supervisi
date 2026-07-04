@@ -29,6 +29,8 @@ class SessionTimeout
     {
         // Only check session timeout when using database session driver
         // (skip for array/file drivers used in testing)
+        // PERHATIAN: produksi harus SESSION_DRIVER=database — driver lain
+        // menonaktifkan enforcement idle-timeout ini (lihat .env.example)
         if (config('session.driver') !== 'database') {
             return $next($request);
         }

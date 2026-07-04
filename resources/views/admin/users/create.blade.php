@@ -190,7 +190,7 @@
                     </svg>
                     <div>
                         <p class="text-xs sm:text-sm font-medium text-blue-800 dark:text-blue-300">Password Default</p>
-                        <p class="text-[10px] sm:text-xs text-blue-700 dark:text-blue-400 mt-0.5 sm:mt-1">Password default: <strong>pass123456</strong></p>
+                        <p class="text-[10px] sm:text-xs text-blue-700 dark:text-blue-400 mt-0.5 sm:mt-1">Password default: <strong>{{ config('app.default_user_password') }}</strong></p>
                         <p class="text-[10px] sm:text-xs text-blue-700 dark:text-blue-400 mt-0.5 sm:mt-1">Pengguna diminta mengganti password saat login pertama.</p>
                     </div>
                 </div>
