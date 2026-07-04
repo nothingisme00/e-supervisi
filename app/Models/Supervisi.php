@@ -108,6 +108,15 @@ class Supervisi extends Model
         return $query->whereNotIn('status', [self::STATUS_DRAFT]);
     }
 
+    // Review sedang diklaim reviewer lain? (klaim hanya berlaku selama under_review;
+    // setelah resubmit status kembali submitted dan siapa pun boleh mengklaim lagi)
+    public function lockedByOther(): bool
+    {
+        return $this->status === self::STATUS_UNDER_REVIEW
+            && $this->reviewed_by !== null
+            && $this->reviewed_by !== auth()->id();
+    }
+
     // Relationships
     public function user()
     {

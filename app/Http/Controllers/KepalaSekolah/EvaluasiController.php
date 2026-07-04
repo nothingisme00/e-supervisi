@@ -105,6 +105,10 @@ class EvaluasiController extends Controller
         // This handles '1', 'on', 'yes', true, etc.
         $isRevisionRequest = $request->boolean('is_revision_request');
 
+        if ($isRevisionRequest && $supervisi->lockedByOther()) {
+            abort(403, 'Supervisi sedang direview oleh reviewer lain');
+        }
+
         // Create feedback with or without revision request flag
         Feedback::create([
             'supervisi_id' => $id,
@@ -150,6 +154,10 @@ class EvaluasiController extends Controller
             abort(403, 'Supervisi tidak dapat diselesaikan dari status ini');
         }
 
+        if ($supervisi->lockedByOther()) {
+            abort(403, 'Supervisi sedang direview oleh reviewer lain');
+        }
+
         $supervisi->update([
             'status' => 'completed',
             'reviewed_by' => auth()->id(),
@@ -174,6 +182,10 @@ class EvaluasiController extends Controller
 
         if (!in_array($supervisi->status, ['submitted', 'under_review', 'revision'])) {
             abort(403, 'Supervisi tidak dapat direvisi dari status ini');
+        }
+
+        if ($supervisi->lockedByOther()) {
+            abort(403, 'Supervisi sedang direview oleh reviewer lain');
         }
 
         // Create feedback with revision request

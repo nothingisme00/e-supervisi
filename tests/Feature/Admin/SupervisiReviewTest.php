@@ -43,14 +43,14 @@ class SupervisiReviewTest extends TestCase
         $response->assertStatus(200);
     }
 
-    public function test_viewing_submitted_auto_marks_under_review(): void
+    public function test_viewing_submitted_does_not_change_status(): void
     {
         $admin = $this->createAdmin();
         $supervisi = Supervisi::factory()->submitted()->create();
         $this->actingAs($admin)->get(route('admin.supervisi.show', $supervisi->id));
         $supervisi->refresh();
-        $this->assertEquals(Supervisi::STATUS_UNDER_REVIEW, $supervisi->status);
-        $this->assertEquals($admin->id, $supervisi->reviewed_by);
+        $this->assertEquals(Supervisi::STATUS_SUBMITTED, $supervisi->status);
+        $this->assertNull($supervisi->reviewed_by);
     }
 
     public function test_admin_can_give_feedback(): void
@@ -67,7 +67,7 @@ class SupervisiReviewTest extends TestCase
     public function test_admin_can_mark_completed(): void
     {
         $admin = $this->createAdmin();
-        $supervisi = Supervisi::factory()->underReview()->create();
+        $supervisi = Supervisi::factory()->underReview()->create(['reviewed_by' => $admin->id]);
         $this->actingAs($admin)->post(route('admin.supervisi.feedback', $supervisi->id), [
             'komentar' => 'Supervisi sudah bagus, selesai ditinjau lengkap.',
             'mark_completed' => '1',
@@ -89,7 +89,7 @@ class SupervisiReviewTest extends TestCase
     public function test_admin_can_request_revision(): void
     {
         $admin = $this->createAdmin();
-        $supervisi = Supervisi::factory()->underReview()->create();
+        $supervisi = Supervisi::factory()->underReview()->create(['reviewed_by' => $admin->id]);
         $response = $this->actingAs($admin)->post(route('admin.supervisi.revision', $supervisi->id), [
             'revision_notes' => 'Perbaiki bagian refleksi dan tambahkan dokumen yang kurang.',
         ]);
@@ -140,6 +140,41 @@ class SupervisiReviewTest extends TestCase
             $supervisi->refresh();
             $this->assertEquals($status, $supervisi->status);
         }
+    }
+
+    public function test_admin_feedback_promotes_submitted_to_under_review(): void
+    {
+        $admin = $this->createAdmin();
+        $supervisi = Supervisi::factory()->submitted()->create();
+
+        $this->actingAs($admin)->post(route('admin.supervisi.feedback', $supervisi->id), [
+            'komentar' => 'Feedback yang cukup panjang untuk validasi minimum.',
+        ]);
+        $supervisi->refresh();
+        $this->assertEquals(Supervisi::STATUS_UNDER_REVIEW, $supervisi->status);
+        $this->assertEquals($admin->id, $supervisi->reviewed_by);
+        $this->assertNotNull($supervisi->reviewed_at);
+    }
+
+    public function test_admin_cannot_change_status_of_review_claimed_by_other(): void
+    {
+        $admin = $this->createAdmin();
+        $kepala = User::factory()->kepalaSekolah()->create(['must_change_password' => false]);
+        $supervisi = Supervisi::factory()->underReview()->create(['reviewed_by' => $kepala->id]);
+
+        $response = $this->actingAs($admin)->post(route('admin.supervisi.feedback', $supervisi->id), [
+            'komentar' => 'Supervisi sudah bagus, selesai ditinjau lengkap.',
+            'mark_completed' => '1',
+        ]);
+        $response->assertStatus(403);
+
+        $response = $this->actingAs($admin)->post(route('admin.supervisi.revision', $supervisi->id), [
+            'revision_notes' => 'Perbaiki bagian refleksi dan tambahkan dokumen yang kurang.',
+        ]);
+        $response->assertStatus(403);
+
+        $supervisi->refresh();
+        $this->assertEquals(Supervisi::STATUS_UNDER_REVIEW, $supervisi->status);
     }
 
     public function test_guru_cannot_access_admin_supervisi(): void

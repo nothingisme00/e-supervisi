@@ -69,7 +69,7 @@ class EvaluasiTest extends TestCase
     {
         $kepala = $this->createKepala();
         $guru = User::factory()->guru()->create(['tingkat' => 'SD']);
-        $supervisi = Supervisi::factory()->underReview()->create(['user_id' => $guru->id]);
+        $supervisi = Supervisi::factory()->underReview()->create(['user_id' => $guru->id, 'reviewed_by' => $kepala->id]);
         $response = $this->actingAs($kepala)->post(route('kepala.evaluasi.startReview', $supervisi->id));
         $response->assertRedirect();
         $response->assertSessionHas('error');
@@ -79,7 +79,7 @@ class EvaluasiTest extends TestCase
     {
         $kepala = $this->createKepala();
         $guru = User::factory()->guru()->create(['tingkat' => 'SD']);
-        $supervisi = Supervisi::factory()->underReview()->create(['user_id' => $guru->id]);
+        $supervisi = Supervisi::factory()->underReview()->create(['user_id' => $guru->id, 'reviewed_by' => $kepala->id]);
         $response = $this->actingAs($kepala)->post(route('kepala.evaluasi.feedback', $supervisi->id), [
             'komentar' => 'Feedback yang sangat baik dari kepala sekolah.',
         ]);
@@ -91,7 +91,7 @@ class EvaluasiTest extends TestCase
     {
         $kepala = $this->createKepala();
         $guru = User::factory()->guru()->create(['tingkat' => 'SD']);
-        $supervisi = Supervisi::factory()->underReview()->create(['user_id' => $guru->id]);
+        $supervisi = Supervisi::factory()->underReview()->create(['user_id' => $guru->id, 'reviewed_by' => $kepala->id]);
         $response = $this->actingAs($kepala)->post(route('kepala.evaluasi.feedback', $supervisi->id), [
             'komentar' => 'Perlu diperbaiki bagian refleksi secara keseluruhan.',
             'is_revision_request' => '1',
@@ -105,7 +105,7 @@ class EvaluasiTest extends TestCase
     {
         $kepala = $this->createKepala();
         $guru = User::factory()->guru()->create(['tingkat' => 'SD']);
-        $supervisi = Supervisi::factory()->underReview()->create(['user_id' => $guru->id]);
+        $supervisi = Supervisi::factory()->underReview()->create(['user_id' => $guru->id, 'reviewed_by' => $kepala->id]);
         $response = $this->actingAs($kepala)->post(route('kepala.evaluasi.revision', $supervisi->id), [
             'revision_notes' => 'Mohon perbaiki bagian dokumen yang kurang lengkap.',
         ]);
@@ -118,7 +118,7 @@ class EvaluasiTest extends TestCase
     {
         $kepala = $this->createKepala();
         $guru = User::factory()->guru()->create(['tingkat' => 'SD']);
-        $supervisi = Supervisi::factory()->underReview()->create(['user_id' => $guru->id]);
+        $supervisi = Supervisi::factory()->underReview()->create(['user_id' => $guru->id, 'reviewed_by' => $kepala->id]);
         $response = $this->actingAs($kepala)->post(route('kepala.evaluasi.complete', $supervisi->id));
         $response->assertRedirect(route('kepala.evaluasi.index'));
         $supervisi->refresh();
@@ -179,7 +179,7 @@ class EvaluasiTest extends TestCase
     {
         $kepala = $this->createKepala();
         $guru = User::factory()->guru()->create(['tingkat' => 'SMP']);
-        $supervisi = Supervisi::factory()->underReview()->create(['user_id' => $guru->id]);
+        $supervisi = Supervisi::factory()->underReview()->create(['user_id' => $guru->id, 'reviewed_by' => $kepala->id]);
 
         $response = $this->actingAs($kepala)->post(route('kepala.evaluasi.feedback', $supervisi->id), [
             'komentar' => 'Feedback yang sangat baik dari kepala sekolah.',
@@ -192,7 +192,7 @@ class EvaluasiTest extends TestCase
     {
         $kepala = $this->createKepala();
         $guru = User::factory()->guru()->create(['tingkat' => 'SMP']);
-        $supervisi = Supervisi::factory()->underReview()->create(['user_id' => $guru->id]);
+        $supervisi = Supervisi::factory()->underReview()->create(['user_id' => $guru->id, 'reviewed_by' => $kepala->id]);
 
         $response = $this->actingAs($kepala)->post(route('kepala.evaluasi.complete', $supervisi->id));
         $response->assertStatus(403);
@@ -204,7 +204,7 @@ class EvaluasiTest extends TestCase
     {
         $kepala = $this->createKepala();
         $guru = User::factory()->guru()->create(['tingkat' => 'SMP']);
-        $supervisi = Supervisi::factory()->underReview()->create(['user_id' => $guru->id]);
+        $supervisi = Supervisi::factory()->underReview()->create(['user_id' => $guru->id, 'reviewed_by' => $kepala->id]);
 
         $response = $this->actingAs($kepala)->post(route('kepala.evaluasi.revision', $supervisi->id), [
             'revision_notes' => 'Mohon perbaiki bagian dokumen yang kurang lengkap.',
@@ -230,7 +230,7 @@ class EvaluasiTest extends TestCase
     {
         $kepala = $this->createKepala();
         $guru = User::factory()->guru()->create(['tingkat' => 'SD']);
-        $supervisi = Supervisi::factory()->underReview()->create(['user_id' => $guru->id]);
+        $supervisi = Supervisi::factory()->underReview()->create(['user_id' => $guru->id, 'reviewed_by' => $kepala->id]);
 
         $response = $this->actingAs($kepala)->post(route('kepala.evaluasi.complete', $supervisi->id));
         $response->assertRedirect(route('kepala.evaluasi.index'));
@@ -278,5 +278,33 @@ class EvaluasiTest extends TestCase
         $response->assertStatus(403);
         $supervisi->refresh();
         $this->assertEquals('completed', $supervisi->status);
+    }
+
+    public function test_kepala_cannot_change_status_of_review_claimed_by_other(): void
+    {
+        $kepala = $this->createKepala();
+        $otherReviewer = User::factory()->admin()->create();
+        $guru = User::factory()->guru()->create(['tingkat' => 'SD']);
+        $supervisi = Supervisi::factory()->underReview()->create([
+            'user_id' => $guru->id,
+            'reviewed_by' => $otherReviewer->id,
+        ]);
+
+        $response = $this->actingAs($kepala)->post(route('kepala.evaluasi.complete', $supervisi->id));
+        $response->assertStatus(403);
+
+        $response = $this->actingAs($kepala)->post(route('kepala.evaluasi.revision', $supervisi->id), [
+            'revision_notes' => 'Mohon perbaiki bagian dokumen yang kurang lengkap.',
+        ]);
+        $response->assertStatus(403);
+
+        $response = $this->actingAs($kepala)->post(route('kepala.evaluasi.feedback', $supervisi->id), [
+            'komentar' => 'Perlu diperbaiki bagian refleksi secara keseluruhan.',
+            'is_revision_request' => '1',
+        ]);
+        $response->assertStatus(403);
+
+        $supervisi->refresh();
+        $this->assertEquals('under_review', $supervisi->status);
     }
 }

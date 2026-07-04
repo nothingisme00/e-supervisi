@@ -59,14 +59,6 @@ class SupervisiController extends Controller
             'feedback.replies.user:id,name,role'
         ])->findOrFail($id);
 
-        // Auto-mark as under_review if submitted
-        if ($supervisi->status === Supervisi::STATUS_SUBMITTED) {
-            $supervisi->update([
-                'status' => Supervisi::STATUS_UNDER_REVIEW,
-                'reviewed_by' => Auth::id()
-            ]);
-        }
-
         return view('admin.supervisi.detail', compact('supervisi'));
     }
 
@@ -90,6 +82,10 @@ class SupervisiController extends Controller
             abort(403, 'Supervisi tidak dapat diselesaikan dari status ini');
         }
 
+        if ($request->mark_completed && $supervisi->lockedByOther()) {
+            abort(403, 'Supervisi sedang direview oleh reviewer lain');
+        }
+
         // Create feedback
         Feedback::create([
             'supervisi_id' => $supervisi->id,
@@ -109,6 +105,15 @@ class SupervisiController extends Controller
                 ->with('success', 'Feedback berhasil diberikan dan supervisi telah selesai ditinjau!');
         }
 
+        // Explicit promotion (replaces old auto-mark on GET show)
+        if ($supervisi->status === Supervisi::STATUS_SUBMITTED) {
+            $supervisi->update([
+                'status' => Supervisi::STATUS_UNDER_REVIEW,
+                'reviewed_by' => Auth::id(),
+                'reviewed_at' => now()
+            ]);
+        }
+
         return redirect()->route('admin.supervisi.show', $supervisi->id)
             ->with('success', 'Feedback berhasil diberikan!');
     }
@@ -126,6 +131,10 @@ class SupervisiController extends Controller
 
         if (!in_array($supervisi->status, ['submitted', 'under_review', 'revision'])) {
             abort(403, 'Supervisi tidak dapat direvisi dari status ini');
+        }
+
+        if ($supervisi->lockedByOther()) {
+            abort(403, 'Supervisi sedang direview oleh reviewer lain');
         }
 
         $supervisi->update([
