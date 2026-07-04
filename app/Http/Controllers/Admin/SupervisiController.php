@@ -82,6 +82,14 @@ class SupervisiController extends Controller
 
         $supervisi = Supervisi::findOrFail($id);
 
+        if (!in_array($supervisi->status, ['submitted', 'under_review', 'revision'])) {
+            abort(403, 'Supervisi tidak dapat diberi feedback dari status ini');
+        }
+
+        if ($request->mark_completed && !in_array($supervisi->status, ['submitted', 'under_review'])) {
+            abort(403, 'Supervisi tidak dapat diselesaikan dari status ini');
+        }
+
         // Create feedback
         Feedback::create([
             'supervisi_id' => $supervisi->id,
@@ -115,6 +123,10 @@ class SupervisiController extends Controller
         ]);
 
         $supervisi = Supervisi::findOrFail($id);
+
+        if (!in_array($supervisi->status, ['submitted', 'under_review', 'revision'])) {
+            abort(403, 'Supervisi tidak dapat direvisi dari status ini');
+        }
 
         $supervisi->update([
             'status' => 'revision',

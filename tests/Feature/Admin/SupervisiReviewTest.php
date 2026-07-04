@@ -99,6 +99,49 @@ class SupervisiReviewTest extends TestCase
         $this->assertDatabaseHas('feedback', ['supervisi_id' => $supervisi->id, 'is_revision_request' => true]);
     }
 
+    public function test_admin_store_feedback_fails_if_draft_or_completed(): void
+    {
+        $admin = $this->createAdmin();
+
+        foreach (['draft', 'completed'] as $status) {
+            $supervisi = Supervisi::factory()->create(['status' => $status]);
+            $response = $this->actingAs($admin)->post(route('admin.supervisi.feedback', $supervisi->id), [
+                'komentar' => 'Feedback yang cukup panjang untuk validasi minimum.',
+            ]);
+            $response->assertStatus(403);
+            $this->assertDatabaseMissing('feedback', ['supervisi_id' => $supervisi->id]);
+        }
+    }
+
+    public function test_admin_mark_completed_fails_if_revision(): void
+    {
+        $admin = $this->createAdmin();
+        $supervisi = Supervisi::factory()->create(['status' => 'revision']);
+
+        $response = $this->actingAs($admin)->post(route('admin.supervisi.feedback', $supervisi->id), [
+            'komentar' => 'Supervisi sudah bagus, selesai ditinjau lengkap.',
+            'mark_completed' => '1',
+        ]);
+        $response->assertStatus(403);
+        $supervisi->refresh();
+        $this->assertEquals('revision', $supervisi->status);
+    }
+
+    public function test_admin_request_revision_fails_if_draft_or_completed(): void
+    {
+        $admin = $this->createAdmin();
+
+        foreach (['draft', 'completed'] as $status) {
+            $supervisi = Supervisi::factory()->create(['status' => $status]);
+            $response = $this->actingAs($admin)->post(route('admin.supervisi.revision', $supervisi->id), [
+                'revision_notes' => 'Perbaiki bagian refleksi dan tambahkan dokumen yang kurang.',
+            ]);
+            $response->assertStatus(403);
+            $supervisi->refresh();
+            $this->assertEquals($status, $supervisi->status);
+        }
+    }
+
     public function test_guru_cannot_access_admin_supervisi(): void
     {
         $guru = User::factory()->guru()->create(['must_change_password' => false]);
