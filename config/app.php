@@ -78,7 +78,7 @@ return [
     |
     */
 
-    'locale' => env('APP_LOCALE', 'en'),
+    'locale' => env('APP_LOCALE', 'id'),
 
     // Password awal akun baru & hasil reset oleh admin
     'default_user_password' => env('DEFAULT_USER_PASSWORD', 'pass123456'),
