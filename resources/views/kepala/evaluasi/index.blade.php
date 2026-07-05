@@ -30,7 +30,7 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
                     </svg>
                 </div>
-                <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari nama guru..." class="w-full pl-8 sm:pl-10 pr-3 sm:pr-4 py-2 sm:py-2.5 text-xs sm:text-sm border border-gray-300 dark:border-gray-600 rounded-md sm:rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all">
+                <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari nama guru..." class="w-full pl-8 sm:pl-10 pr-3 sm:pr-4 py-2 sm:py-2.5 text-xs sm:text-sm border border-gray-300 dark:border-gray-600 rounded-md sm:rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all">
             </div>
         </div>
 
@@ -39,7 +39,7 @@
             <div class="relative custom-dropdown-container" id="status-dropdown-container">
                 <input type="hidden" name="status" id="status" value="{{ request('status') }}">
                 <button type="button" 
-                        class="dropdown-button w-full px-3 sm:px-4 py-2 sm:py-2.5 text-left border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-md sm:rounded-lg text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all flex items-center justify-between">
+                        class="dropdown-button w-full px-3 sm:px-4 py-2 sm:py-2.5 text-left border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-md sm:rounded-lg text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 transition-all flex items-center justify-between">
                     <span class="dropdown-label flex items-center gap-2 {{ request('status') ? '' : 'text-gray-400 dark:text-gray-500' }}">
                         @if(request('status') == 'submitted')
                             Perlu Review
@@ -57,23 +57,23 @@
                 </button>
                 <div class="dropdown-menu-custom absolute top-full mt-1 left-0 w-full bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-xl z-50 hidden opacity-0 transform scale-95 transition-all duration-200 origin-top">
                     <div class="p-1.5 space-y-1">
-                        <div class="dropdown-item px-4 py-2.5 rounded-md text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-indigo-50 dark:hover:bg-indigo-900/30 hover:text-indigo-600 dark:hover:text-indigo-400 cursor-pointer transition-colors flex items-center gap-3 {{ !request('status') ? 'active' : '' }}" data-value="">
+                        <div class="dropdown-item px-4 py-2.5 rounded-md text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-primary-50 dark:hover:bg-primary-900/30 hover:text-primary-600 dark:hover:text-primary-400 cursor-pointer transition-colors flex items-center gap-3 {{ !request('status') ? 'active' : '' }}" data-value="">
                             <span class="material-symbols-outlined text-lg">filter_list</span>
                             Semua Status
                         </div>
-                        <div class="dropdown-item px-4 py-2.5 rounded-md text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-indigo-50 dark:hover:bg-indigo-900/30 hover:text-indigo-600 dark:hover:text-indigo-400 cursor-pointer transition-colors flex items-center gap-3 {{ request('status') == 'submitted' ? 'active' : '' }}" data-value="submitted">
+                        <div class="dropdown-item px-4 py-2.5 rounded-md text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-primary-50 dark:hover:bg-primary-900/30 hover:text-primary-600 dark:hover:text-primary-400 cursor-pointer transition-colors flex items-center gap-3 {{ request('status') == 'submitted' ? 'active' : '' }}" data-value="submitted">
                             <span class="material-symbols-outlined text-lg">send</span>
                             Perlu Review
                         </div>
-                        <div class="dropdown-item px-4 py-2.5 rounded-md text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-indigo-50 dark:hover:bg-indigo-900/30 hover:text-indigo-600 dark:hover:text-indigo-400 cursor-pointer transition-colors flex items-center gap-3 {{ request('status') == 'under_review' ? 'active' : '' }}" data-value="under_review">
+                        <div class="dropdown-item px-4 py-2.5 rounded-md text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-primary-50 dark:hover:bg-primary-900/30 hover:text-primary-600 dark:hover:text-primary-400 cursor-pointer transition-colors flex items-center gap-3 {{ request('status') == 'under_review' ? 'active' : '' }}" data-value="under_review">
                             <span class="material-symbols-outlined text-lg">visibility</span>
                             Sedang Ditinjau
                         </div>
-                        <div class="dropdown-item px-4 py-2.5 rounded-md text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-indigo-50 dark:hover:bg-indigo-900/30 hover:text-indigo-600 dark:hover:text-indigo-400 cursor-pointer transition-colors flex items-center gap-3 {{ request('status') == 'revision' ? 'active' : '' }}" data-value="revision">
+                        <div class="dropdown-item px-4 py-2.5 rounded-md text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-primary-50 dark:hover:bg-primary-900/30 hover:text-primary-600 dark:hover:text-primary-400 cursor-pointer transition-colors flex items-center gap-3 {{ request('status') == 'revision' ? 'active' : '' }}" data-value="revision">
                             <span class="material-symbols-outlined text-lg">edit_note</span>
                             Perlu Revisi
                         </div>
-                        <div class="dropdown-item px-4 py-2.5 rounded-md text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-indigo-50 dark:hover:bg-indigo-900/30 hover:text-indigo-600 dark:hover:text-indigo-400 cursor-pointer transition-colors flex items-center gap-3 {{ request('status') == 'completed' ? 'active' : '' }}" data-value="completed">
+                        <div class="dropdown-item px-4 py-2.5 rounded-md text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-primary-50 dark:hover:bg-primary-900/30 hover:text-primary-600 dark:hover:text-primary-400 cursor-pointer transition-colors flex items-center gap-3 {{ request('status') == 'completed' ? 'active' : '' }}" data-value="completed">
                             <span class="material-symbols-outlined text-lg">check_circle</span>
                             Selesai
                         </div>
@@ -83,7 +83,7 @@
         </div>
 
         <!-- Filter Button -->
-        <button type="submit" class="px-4 sm:px-6 py-2 sm:py-2.5 bg-indigo-600 hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-600 text-white text-xs sm:text-sm font-medium rounded-md sm:rounded-lg transition-colors shadow-sm hover:shadow">
+        <button type="submit" class="px-4 sm:px-6 py-2 sm:py-2.5 bg-primary-600 hover:bg-primary-700 dark:bg-primary-500 dark:hover:bg-primary-600 text-white text-xs sm:text-sm font-medium rounded-md sm:rounded-lg transition-colors shadow-sm hover:shadow">
             <svg class="w-4 h-4 sm:w-5 sm:h-5 inline-block mr-0.5 sm:mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"></path>
             </svg>
@@ -101,8 +101,8 @@
 <!-- Supervisi List -->
 <div class="bg-white dark:bg-gray-800 rounded-lg sm:rounded-2xl border border-slate-200 dark:border-gray-700 overflow-hidden shadow-sm">
     <!-- Header -->
-    <div class="relative bg-gradient-to-r from-indigo-500/90 to-purple-500/90 px-3 py-3 sm:px-6 sm:py-5">
-        <div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-indigo-400 to-purple-400"></div>
+    <div class="relative bg-gradient-to-r from-primary-500/90 to-primary-500/90 px-3 py-3 sm:px-6 sm:py-5">
+        <div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary-400 to-primary-400"></div>
         <div class="flex items-center justify-between">
             <div>
                 <h2 class="text-sm sm:text-lg font-bold text-white flex items-center gap-1.5 sm:gap-2">
@@ -111,20 +111,20 @@
                     </svg>
                     Daftar Supervisi
                 </h2>
-                <p class="text-[10px] sm:text-xs text-indigo-100 mt-0.5 sm:mt-1">Total {{ $supervisiList->total() }} supervisi ditemukan</p>
+                <p class="text-[10px] sm:text-xs text-primary-100 mt-0.5 sm:mt-1">Total {{ $supervisiList->total() }} supervisi ditemukan</p>
             </div>
         </div>
         <div class="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
     </div>
 
     <!-- Body -->
-    <div class="p-3 sm:p-6 bg-gradient-to-b from-indigo-50/30 to-white dark:from-gray-800 dark:to-gray-800">
+    <div class="p-3 sm:p-6 bg-gradient-to-b from-primary-50/30 to-white dark:from-gray-800 dark:to-gray-800">
         @if($supervisiList->count() > 0)
         <div class="space-y-2 sm:space-y-3">
             @foreach($supervisiList as $supervisi)
-            <div class="relative p-3 sm:p-4 bg-white dark:bg-gray-700 rounded-lg sm:rounded-xl hover:bg-indigo-50/50 dark:hover:bg-gray-600 transition-all border border-slate-200 dark:border-gray-600 hover:border-indigo-300 dark:hover:border-indigo-600 shadow-sm hover:shadow-md group">
+            <div class="relative p-3 sm:p-4 bg-white dark:bg-gray-700 rounded-lg sm:rounded-xl hover:bg-primary-50/50 dark:hover:bg-gray-600 transition-all border border-slate-200 dark:border-gray-600 hover:border-primary-300 dark:hover:border-primary-600 shadow-sm hover:shadow-md group">
                 <!-- Left accent line with dynamic color -->
-                <div class="absolute left-0 top-2 sm:top-3 bottom-2 sm:bottom-3 w-1 @if($supervisi->status == 'submitted') bg-gradient-to-b from-amber-400 to-orange-400 @elseif($supervisi->status == 'under_review') bg-gradient-to-b from-indigo-400 to-purple-400 @elseif($supervisi->status == 'revision') bg-gradient-to-b from-rose-400 to-red-400 @else bg-gradient-to-b from-emerald-400 to-green-400 @endif rounded-r-full"></div>
+                <div class="absolute left-0 top-2 sm:top-3 bottom-2 sm:bottom-3 w-1 @if($supervisi->status == 'submitted') bg-gradient-to-b from-amber-400 to-orange-400 @elseif($supervisi->status == 'under_review') bg-gradient-to-b from-primary-400 to-primary-400 @elseif($supervisi->status == 'revision') bg-gradient-to-b from-rose-400 to-red-400 @else bg-gradient-to-b from-emerald-400 to-green-400 @endif rounded-r-full"></div>
                 
                 <div class="flex items-start justify-between gap-2 sm:gap-4 ml-2 sm:ml-3">
                     <div class="flex-1 min-w-0">
@@ -133,7 +133,7 @@
                             @if($supervisi->status == 'submitted')
                             <span class="px-1.5 py-0.5 sm:px-2 sm:py-0.5 text-[8px] sm:text-[10px] font-semibold bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300 rounded">REVIEW</span>
                             @elseif($supervisi->status == 'under_review')
-                            <span class="px-1.5 py-0.5 sm:px-2 sm:py-0.5 text-[8px] sm:text-[10px] font-semibold bg-indigo-100 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-300 rounded">DITINJAU</span>
+                            <span class="px-1.5 py-0.5 sm:px-2 sm:py-0.5 text-[8px] sm:text-[10px] font-semibold bg-primary-100 dark:bg-primary-900/30 text-primary-700 dark:text-primary-300 rounded">DITINJAU</span>
                             @elseif($supervisi->status == 'revision')
                             <span class="px-1.5 py-0.5 sm:px-2 sm:py-0.5 text-[8px] sm:text-[10px] font-semibold bg-rose-100 dark:bg-rose-900/30 text-rose-700 dark:text-rose-300 rounded">PERLU REVISI</span>
                             @elseif($supervisi->status == 'completed')
@@ -167,7 +167,7 @@
                         </div>
 
                         @if($supervisi->reviewed_at)
-                        <div class="flex items-center text-[10px] sm:text-xs text-indigo-600 dark:text-indigo-400 mt-1.5 sm:mt-2 pt-1.5 sm:pt-2 border-t border-gray-100 dark:border-gray-600">
+                        <div class="flex items-center text-[10px] sm:text-xs text-primary-600 dark:text-primary-400 mt-1.5 sm:mt-2 pt-1.5 sm:pt-2 border-t border-gray-100 dark:border-gray-600">
                             <svg class="w-3 h-3 sm:w-3.5 sm:h-3.5 mr-0.5 sm:mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                             </svg>
@@ -176,7 +176,7 @@
                         @endif
                     </div>
 
-                    <a href="{{ route('kepala.evaluasi.show', $supervisi->id) }}" class="shrink-0 px-2.5 py-1.5 sm:px-4 sm:py-2 bg-indigo-600 hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-600 text-white text-[10px] sm:text-xs font-medium rounded-md sm:rounded-lg transition-colors shadow-sm hover:shadow">
+                    <a href="{{ route('kepala.evaluasi.show', $supervisi->id) }}" class="shrink-0 px-2.5 py-1.5 sm:px-4 sm:py-2 bg-primary-600 hover:bg-primary-700 dark:bg-primary-500 dark:hover:bg-primary-600 text-white text-[10px] sm:text-xs font-medium rounded-md sm:rounded-lg transition-colors shadow-sm hover:shadow">
                         Detail
                     </a>
                 </div>
@@ -198,7 +198,7 @@
             </svg>
             <p class="text-sm sm:text-base text-gray-500 dark:text-gray-400">Tidak ada supervisi yang ditemukan</p>
             @if(request('search') || request('status'))
-            <a href="{{ route('kepala.evaluasi.index') }}" class="inline-block mt-3 sm:mt-4 px-3 py-1.5 sm:px-4 sm:py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-xs sm:text-sm font-medium rounded-md sm:rounded-lg transition-colors">
+            <a href="{{ route('kepala.evaluasi.index') }}" class="inline-block mt-3 sm:mt-4 px-3 py-1.5 sm:px-4 sm:py-2 bg-primary-600 hover:bg-primary-700 text-white text-xs sm:text-sm font-medium rounded-md sm:rounded-lg transition-colors">
                 Lihat Semua Supervisi
             </a>
             @endif

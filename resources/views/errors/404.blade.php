@@ -21,7 +21,7 @@
             <button onclick="window.history.back()" class="px-6 py-3 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-white rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600">
                 Kembali
             </button>
-            <a href="{{ auth()->check() ? (auth()->user()->role === 'admin' ? route('admin.dashboard') : (auth()->user()->role === 'guru' ? route('guru.home') : route('kepala.dashboard'))) : route('login') }}" class="px-6 py-3 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700">
+            <a href="{{ auth()->check() ? (auth()->user()->role === 'admin' ? route('admin.dashboard') : (auth()->user()->role === 'guru' ? route('guru.home') : route('kepala.dashboard'))) : route('login') }}" class="px-6 py-3 bg-primary-600 text-white rounded-lg hover:bg-primary-700">
                 Ke Beranda
             </a>
         </div>

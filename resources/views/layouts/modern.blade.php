@@ -41,7 +41,7 @@
             transform: translateX(-50%) translateY(-100%);
             z-index: 60; /* Below header z-50, changed from 9999 */
             transition: transform 0.3s ease;
-            background: rgba(99, 102, 241, 0.95);
+            background: rgba(15, 118, 110, 0.95);
             color: white;
             padding: 12px 24px;
             border-radius: 0 0 12px 12px;
@@ -80,7 +80,7 @@
             top: 0;
             left: 0;
             height: 3px;
-            background: linear-gradient(90deg, #6366f1, #a855f7, #6366f1);
+            background: linear-gradient(90deg, #0d9488, #2dd4bf, #0d9488);
             background-size: 200% 100%;
             animation: loading-shimmer 1.5s ease-in-out infinite;
             z-index: 9999;
@@ -260,7 +260,7 @@
                 <h2 class="text-lg font-bold text-gray-900 dark:text-white mb-0.5">
                     {{ auth()->user()->name }}
                 </h2>
-                <p class="text-sm text-indigo-500 dark:text-indigo-400 font-medium mb-4">{{ $role }}</p>
+                <p class="text-sm text-primary-500 dark:text-primary-400 font-medium mb-4">{{ $role }}</p>
                 
                 <!-- Message -->
                 <p class="text-gray-500 dark:text-gray-400 text-sm">
@@ -270,7 +270,7 @@
             
             <!-- Progress Bar -->
             <div class="h-1 bg-gray-100 dark:bg-gray-800">
-                <div class="welcome-progress h-full bg-gradient-to-r from-indigo-500 to-purple-500 rounded-r-full"></div>
+                <div class="welcome-progress h-full bg-gradient-to-r from-primary-500 to-primary-500 rounded-r-full"></div>
             </div>
         </div>
     </div>
@@ -332,14 +332,14 @@
                     
                     <!-- Logo & Brand - Clickable (Full reload to avoid SPA issues) -->
                     <a href="{{ Auth::user()->isAdmin() ? route('admin.dashboard') : (Auth::user()->isGuru() ? route('guru.home') : (Auth::user()->isKepalaSekolah() ? route('kepala.dashboard') : url('/'))) }}" class="flex items-center gap-1.5 sm:gap-2 md:gap-2 lg:gap-2.5 hover:opacity-80 transition-opacity cursor-pointer group">
-                        <div class="w-8 h-8 sm:w-9 sm:h-9 md:w-8 md:h-8 lg:w-9 lg:h-9 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-lg flex items-center justify-center shadow-md group-hover:shadow-lg transition-shadow">
+                        <div class="w-8 h-8 sm:w-9 sm:h-9 md:w-8 md:h-8 lg:w-9 lg:h-9 bg-gradient-to-br from-primary-500 to-primary-600 rounded-lg flex items-center justify-center shadow-md group-hover:shadow-lg transition-shadow">
                             <svg class="w-4.5 h-4.5 sm:w-5 sm:h-5 md:w-5 md:h-5 lg:w-5 lg:h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
                             </svg>
                         </div>
                         <!-- Always show brand text, just adjust size -->
                         <div>
-                            <h3 class="text-[13px] sm:text-sm md:text-sm lg:text-base font-bold text-gray-900 dark:text-gray-100 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">E-Supervisi</h3>
+                            <h3 class="text-[13px] sm:text-sm md:text-sm lg:text-base font-bold text-gray-900 dark:text-gray-100 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">E-Supervisi</h3>
                             <p class="text-[9px] sm:text-[10px] md:text-xs lg:text-sm text-gray-500 dark:text-gray-400 hidden sm:block">Sistem Supervisi Pembelajaran</p>
                         </div>
                     </a>
@@ -349,8 +349,8 @@
                 <div class="hidden md:flex items-center gap-2.5 lg:gap-3">
                     <!-- Profile Dropdown -->
                     <div class="relative">
-                        <button id="profile-dropdown-btn" class="flex items-center gap-1 sm:gap-1.5 md:gap-1.5 lg:gap-2 px-1.5 sm:px-2.5 md:px-2 lg:px-2.5 py-1.5 sm:py-2 md:py-1.5 lg:py-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-all focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
-                            <div class="w-8 h-8 sm:w-9 sm:h-9 md:w-8 md:h-8 lg:w-9 lg:h-9 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white font-semibold text-[13px] sm:text-sm md:text-sm lg:text-base shadow-md">
+                        <button id="profile-dropdown-btn" class="flex items-center gap-1 sm:gap-1.5 md:gap-1.5 lg:gap-2 px-1.5 sm:px-2.5 md:px-2 lg:px-2.5 py-1.5 sm:py-2 md:py-1.5 lg:py-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-all focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2">
+                            <div class="w-8 h-8 sm:w-9 sm:h-9 md:w-8 md:h-8 lg:w-9 lg:h-9 rounded-full bg-gradient-to-br from-primary-500 to-primary-600 flex items-center justify-center text-white font-semibold text-[13px] sm:text-sm md:text-sm lg:text-base shadow-md">
                                 {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
                             </div>
                             <div class="hidden md:block text-left">
@@ -365,9 +365,9 @@
                         <!-- Dropdown Menu -->
                         <div id="profile-dropdown-menu" class="hidden absolute right-0 mt-2 w-64 bg-white dark:bg-gray-800 rounded-xl shadow-xl border border-gray-200 dark:border-gray-700 overflow-hidden z-50 origin-top-right transform transition-all duration-200 ease-out scale-95 opacity-0">
                             <!-- User Info -->
-                            <div class="px-4 py-3 bg-gradient-to-r from-indigo-50 to-purple-50 dark:from-gray-700 dark:to-gray-700 border-b border-gray-200 dark:border-gray-600">
+                            <div class="px-4 py-3 bg-gradient-to-r from-primary-50 to-primary-50 dark:from-gray-700 dark:to-gray-700 border-b border-gray-200 dark:border-gray-600">
                                 <div class="flex items-center gap-3">
-                                    <div class="w-12 h-12 bg-gradient-to-br from-indigo-600 to-purple-600 rounded-full flex items-center justify-center text-white font-bold shadow-md">
+                                    <div class="w-12 h-12 bg-gradient-to-br from-primary-600 to-primary-600 rounded-full flex items-center justify-center text-white font-bold shadow-md">
                                         <span class="text-lg">{{ substr(Auth::user()->name, 0, 1) }}</span>
                                     </div>
                                     <div class="flex-1 min-w-0">
@@ -451,7 +451,7 @@
 
                     <!-- User Profile Info -->
                     <div class="flex items-center gap-1.5 md:gap-2 lg:gap-2.5 flex-1 min-w-0">
-                        <div class="w-7 h-7 md:w-8 md:h-8 lg:w-9 lg:h-9 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-lg flex items-center justify-center shadow-md">
+                        <div class="w-7 h-7 md:w-8 md:h-8 lg:w-9 lg:h-9 bg-gradient-to-br from-primary-500 to-primary-600 rounded-lg flex items-center justify-center shadow-md">
                             <span class="text-xs md:text-sm lg:text-base text-white font-bold">{{ substr(Auth::user()->name, 0, 1) }}</span>
                         </div>
                         <div>
@@ -477,41 +477,41 @@
             <!-- NAVIGATION -->
             <nav class="flex-1 px-3 py-4 overflow-y-auto">
             @if(Auth::user()->isAdmin())
-                <a href="{{ route('admin.dashboard') }}" wire:navigate class="group flex items-center gap-3 px-3 py-2.5 mb-1 rounded-lg text-sm font-medium transition-all duration-200 {{ request()->routeIs('admin.dashboard') ? 'bg-indigo-50 dark:bg-indigo-900/20 text-indigo-600 dark:text-indigo-400' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700/50' }}">
+                <a href="{{ route('admin.dashboard') }}" wire:navigate class="group flex items-center gap-3 px-3 py-2.5 mb-1 rounded-lg text-sm font-medium transition-all duration-200 {{ request()->routeIs('admin.dashboard') ? 'bg-primary-50 dark:bg-primary-900/20 text-primary-600 dark:text-primary-400' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700/50' }}">
                     <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
                     </svg>
                     <span class="flex-1">Dashboard</span>
                     @if(request()->routeIs('admin.dashboard'))
-                        <div class="w-1.5 h-1.5 bg-indigo-600 dark:bg-indigo-400 rounded-full"></div>
+                        <div class="w-1.5 h-1.5 bg-primary-600 dark:bg-primary-400 rounded-full"></div>
                     @endif
                 </a>
-                <a href="{{ route('admin.users.index') }}" wire:navigate class="group flex items-center gap-3 px-3 py-2.5 mb-1 rounded-lg text-sm font-medium transition-all duration-200 {{ request()->routeIs('admin.users.*') ? 'bg-indigo-50 dark:bg-indigo-900/20 text-indigo-600 dark:text-indigo-400' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700/50' }}">
+                <a href="{{ route('admin.users.index') }}" wire:navigate class="group flex items-center gap-3 px-3 py-2.5 mb-1 rounded-lg text-sm font-medium transition-all duration-200 {{ request()->routeIs('admin.users.*') ? 'bg-primary-50 dark:bg-primary-900/20 text-primary-600 dark:text-primary-400' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700/50' }}">
                     <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
                     </svg>
                     <span class="flex-1">Kelola Pengguna</span>
                     @if(request()->routeIs('admin.users.*'))
-                        <div class="w-1.5 h-1.5 bg-indigo-600 dark:bg-indigo-400 rounded-full"></div>
+                        <div class="w-1.5 h-1.5 bg-primary-600 dark:bg-primary-400 rounded-full"></div>
                     @endif
                 </a>
-                <a href="{{ route('admin.carousel.index') }}" wire:navigate class="group flex items-center gap-3 px-3 py-2.5 mb-1 rounded-lg text-sm font-medium transition-all duration-200 {{ request()->routeIs('admin.carousel.*') ? 'bg-indigo-50 dark:bg-indigo-900/20 text-indigo-600 dark:text-indigo-400' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700/50' }}">
+                <a href="{{ route('admin.carousel.index') }}" wire:navigate class="group flex items-center gap-3 px-3 py-2.5 mb-1 rounded-lg text-sm font-medium transition-all duration-200 {{ request()->routeIs('admin.carousel.*') ? 'bg-primary-50 dark:bg-primary-900/20 text-primary-600 dark:text-primary-400' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700/50' }}">
                     <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
                     </svg>
                     <span class="flex-1">Carousel Login</span>
                     @if(request()->routeIs('admin.carousel.*'))
-                        <div class="w-1.5 h-1.5 bg-indigo-600 dark:bg-indigo-400 rounded-full"></div>
+                        <div class="w-1.5 h-1.5 bg-primary-600 dark:bg-primary-400 rounded-full"></div>
                     @endif
                 </a>
             @elseif(Auth::user()->isGuru())
-                <a href="{{ route('guru.home') }}" wire:navigate class="group flex items-center gap-3 px-3 py-2.5 mb-1 rounded-lg text-sm font-medium transition-all duration-200 {{ request()->routeIs('guru.home') ? 'bg-indigo-50 dark:bg-indigo-900/20 text-indigo-600 dark:text-indigo-400' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700/50' }}">
+                <a href="{{ route('guru.home') }}" wire:navigate class="group flex items-center gap-3 px-3 py-2.5 mb-1 rounded-lg text-sm font-medium transition-all duration-200 {{ request()->routeIs('guru.home') ? 'bg-primary-50 dark:bg-primary-900/20 text-primary-600 dark:text-primary-400' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700/50' }}">
                     <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
                     </svg>
                     <span class="flex-1">Beranda</span>
                     @if(request()->routeIs('guru.home'))
-                        <div class="w-1.5 h-1.5 bg-indigo-600 dark:bg-indigo-400 rounded-full"></div>
+                        <div class="w-1.5 h-1.5 bg-primary-600 dark:bg-primary-400 rounded-full"></div>
                     @endif
                 </a>
                 <a href="{{ route('guru.my-supervisi') }}" wire:navigate class="group flex items-center gap-3 px-3 py-2.5 mb-1 rounded-lg text-sm font-medium transition-all duration-200 {{ request()->routeIs('guru.my-supervisi') ? 'bg-emerald-50 dark:bg-emerald-900/20 text-emerald-600 dark:text-emerald-400' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700/50' }}">
@@ -524,22 +524,22 @@
                     @endif
                 </a>
             @elseif(Auth::user()->isKepalaSekolah())
-                <a href="{{ route('kepala.dashboard') }}" wire:navigate class="group flex items-center gap-3 px-3 py-2.5 mb-1 rounded-lg text-sm font-medium transition-all duration-200 {{ request()->routeIs('kepala.dashboard') ? 'bg-indigo-50 dark:bg-indigo-900/20 text-indigo-600 dark:text-indigo-400' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700/50' }}">
+                <a href="{{ route('kepala.dashboard') }}" wire:navigate class="group flex items-center gap-3 px-3 py-2.5 mb-1 rounded-lg text-sm font-medium transition-all duration-200 {{ request()->routeIs('kepala.dashboard') ? 'bg-primary-50 dark:bg-primary-900/20 text-primary-600 dark:text-primary-400' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700/50' }}">
                     <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
                     </svg>
                     <span class="flex-1">Dashboard</span>
                     @if(request()->routeIs('kepala.dashboard'))
-                        <div class="w-1.5 h-1.5 bg-indigo-600 dark:bg-indigo-400 rounded-full"></div>
+                        <div class="w-1.5 h-1.5 bg-primary-600 dark:bg-primary-400 rounded-full"></div>
                     @endif
                 </a>
-                <a href="{{ route('kepala.evaluasi.index') }}" wire:navigate class="group flex items-center gap-3 px-3 py-2.5 mb-1 rounded-lg text-sm font-medium transition-all duration-200 {{ request()->routeIs('kepala.evaluasi.*') ? 'bg-indigo-50 dark:bg-indigo-900/20 text-indigo-600 dark:text-indigo-400' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700/50' }}">
+                <a href="{{ route('kepala.evaluasi.index') }}" wire:navigate class="group flex items-center gap-3 px-3 py-2.5 mb-1 rounded-lg text-sm font-medium transition-all duration-200 {{ request()->routeIs('kepala.evaluasi.*') ? 'bg-primary-50 dark:bg-primary-900/20 text-primary-600 dark:text-primary-400' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700/50' }}">
                     <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path>
                     </svg>
                     <span class="flex-1">Evaluasi Supervisi</span>
                     @if(request()->routeIs('kepala.evaluasi.*'))
-                        <div class="w-1.5 h-1.5 bg-indigo-600 dark:bg-indigo-400 rounded-full"></div>
+                        <div class="w-1.5 h-1.5 bg-primary-600 dark:bg-primary-400 rounded-full"></div>
                     @endif
                 </a>
             @endif
@@ -559,7 +559,7 @@
                 </button>
 
                 <!-- Settings Link -->
-                <a href="{{ route('settings.index') }}" wire:navigate class="group flex items-center gap-3 px-3 py-2.5 mb-1 rounded-lg text-sm font-medium transition-all duration-200 {{ request()->routeIs('settings.*') ? 'bg-indigo-50 dark:bg-indigo-900/20 text-indigo-600 dark:text-indigo-400' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700/50' }}">
+                <a href="{{ route('settings.index') }}" wire:navigate class="group flex items-center gap-3 px-3 py-2.5 mb-1 rounded-lg text-sm font-medium transition-all duration-200 {{ request()->routeIs('settings.*') ? 'bg-primary-50 dark:bg-primary-900/20 text-primary-600 dark:text-primary-400' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700/50' }}">
                     <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
@@ -567,7 +567,7 @@
                     </svg>
                     <span class="flex-1">Pengaturan</span>
                     @if(request()->routeIs('settings.*'))
-                        <div class="w-1.5 h-1.5 bg-indigo-600 dark:bg-indigo-400 rounded-full"></div>
+                        <div class="w-1.5 h-1.5 bg-primary-600 dark:bg-primary-400 rounded-full"></div>
                     @endif
                 </a>
 
@@ -608,13 +608,13 @@
                     <!-- Left: Brand -->
                     <a href="{{ Auth::user()->isAdmin() ? route('admin.dashboard') : (Auth::user()->isGuru() ? route('guru.home') : (Auth::user()->isKepalaSekolah() ? route('kepala.dashboard') : url('/'))) }}" 
                        wire:navigate class="flex items-center gap-3 hover:opacity-80 transition-opacity group">
-                        <div class="w-8 h-8 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-lg flex items-center justify-center shadow-sm group-hover:shadow-md transition-shadow">
+                        <div class="w-8 h-8 bg-gradient-to-br from-primary-500 to-primary-600 rounded-lg flex items-center justify-center shadow-sm group-hover:shadow-md transition-shadow">
                             <svg class="w-4.5 h-4.5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
                             </svg>
                         </div>
                         <div class="flex items-baseline gap-2">
-                            <span class="font-bold text-sm text-gray-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">E-Supervisi</span>
+                            <span class="font-bold text-sm text-gray-900 dark:text-white group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">E-Supervisi</span>
                             <span class="text-gray-400 dark:text-gray-500">•</span>
                             <span class="text-xs text-gray-600 dark:text-gray-400">
                                 @if(Auth::user()->isAdmin())
@@ -642,14 +642,14 @@
             <div class="flex items-center justify-center gap-4 sm:gap-8 px-3 sm:px-4 py-2 sm:py-3">
             @if(Auth::user()->isAdmin())
                 <!-- Admin: Dashboard -->
-                <a href="{{ route('admin.dashboard') }}" wire:navigate class="flex flex-col items-center justify-center gap-1 px-4 sm:px-6 py-2 sm:py-3 rounded-xl transition-all duration-300 ease-in-out {{ request()->routeIs('admin.dashboard') ? 'text-indigo-600 dark:text-indigo-400 bg-indigo-100 dark:bg-indigo-900/40 scale-105 shadow-md' : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700/50' }}">
+                <a href="{{ route('admin.dashboard') }}" wire:navigate class="flex flex-col items-center justify-center gap-1 px-4 sm:px-6 py-2 sm:py-3 rounded-xl transition-all duration-300 ease-in-out {{ request()->routeIs('admin.dashboard') ? 'text-primary-600 dark:text-primary-400 bg-primary-100 dark:bg-primary-900/40 scale-105 shadow-md' : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700/50' }}">
                     <svg class="w-6 h-6 sm:w-7 sm:h-7 transition-transform duration-300 {{ request()->routeIs('admin.dashboard') ? 'scale-110' : '' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
                     </svg>
                     <span class="text-xs sm:text-sm font-semibold">Dashboard</span>
                 </a>
                 <!-- Admin: Users -->
-                <a href="{{ route('admin.users.index') }}" wire:navigate class="flex flex-col items-center justify-center gap-1 px-4 sm:px-6 py-2 sm:py-3 rounded-xl transition-all duration-300 ease-in-out {{ request()->routeIs('admin.users.*') ? 'text-indigo-600 dark:text-indigo-400 bg-indigo-100 dark:bg-indigo-900/40 scale-105 shadow-md' : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700/50' }}">
+                <a href="{{ route('admin.users.index') }}" wire:navigate class="flex flex-col items-center justify-center gap-1 px-4 sm:px-6 py-2 sm:py-3 rounded-xl transition-all duration-300 ease-in-out {{ request()->routeIs('admin.users.*') ? 'text-primary-600 dark:text-primary-400 bg-primary-100 dark:bg-primary-900/40 scale-105 shadow-md' : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700/50' }}">
                     <svg class="w-6 h-6 sm:w-7 sm:h-7 transition-transform duration-300 {{ request()->routeIs('admin.users.*') ? 'scale-110' : '' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
                     </svg>
@@ -705,7 +705,7 @@
                     <!-- Profile Popup Menu -->
                     <div x-show="open" x-cloak @click.away="open = false" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 transform scale-95 translate-y-2" x-transition:enter-end="opacity-100 transform scale-100 translate-y-0" x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100 transform scale-100 translate-y-0" x-transition:leave-end="opacity-0 transform scale-95 translate-y-2" class="absolute bottom-full right-0 mb-2 w-56 bg-white dark:bg-gray-800 rounded-xl shadow-xl border border-gray-200 dark:border-gray-700 overflow-hidden z-50">
                         <!-- User Info -->
-                        <div class="px-4 py-3 bg-gradient-to-r from-indigo-50 to-purple-50 dark:from-gray-700 dark:to-gray-700 border-b border-gray-200 dark:border-gray-600">
+                        <div class="px-4 py-3 bg-gradient-to-r from-primary-50 to-primary-50 dark:from-gray-700 dark:to-gray-700 border-b border-gray-200 dark:border-gray-600">
                             <p class="text-sm font-bold text-gray-900 dark:text-white truncate">{{ Auth::user()->name }}</p>
                             <p class="text-xs text-gray-600 dark:text-gray-400">Administrator</p>
                         </div>
@@ -745,14 +745,14 @@
                 </div>
             @elseif(Auth::user()->isGuru())
                 <!-- Guru: Beranda (Left) -->
-                <a href="{{ route('guru.home') }}" wire:navigate class="flex flex-col items-center justify-center gap-1 px-4 sm:px-6 py-2 sm:py-3 rounded-xl transition-all duration-300 ease-in-out {{ request()->routeIs('guru.home') ? 'text-indigo-600 dark:text-indigo-400 bg-indigo-100 dark:bg-indigo-900/40 scale-105 shadow-md' : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700/50' }}">
+                <a href="{{ route('guru.home') }}" wire:navigate class="flex flex-col items-center justify-center gap-1 px-4 sm:px-6 py-2 sm:py-3 rounded-xl transition-all duration-300 ease-in-out {{ request()->routeIs('guru.home') ? 'text-primary-600 dark:text-primary-400 bg-primary-100 dark:bg-primary-900/40 scale-105 shadow-md' : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700/50' }}">
                     <svg class="w-6 h-6 sm:w-7 sm:h-7 transition-transform duration-300 {{ request()->routeIs('guru.home') ? 'scale-110' : '' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
                     </svg>
                     <span class="text-xs sm:text-sm font-semibold">Beranda</span>
                 </a>
                 <!-- Guru: Supervisi Saya (Center) -->
-                <a href="{{ route('guru.my-supervisi') }}" wire:navigate class="flex flex-col items-center justify-center gap-1 px-3 sm:px-4 py-2 sm:py-3 rounded-xl transition-all duration-300 ease-in-out {{ request()->routeIs('guru.my-supervisi') ? 'text-indigo-600 dark:text-indigo-400 bg-indigo-100 dark:bg-indigo-900/40 scale-105 shadow-md' : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700/50' }}">
+                <a href="{{ route('guru.my-supervisi') }}" wire:navigate class="flex flex-col items-center justify-center gap-1 px-3 sm:px-4 py-2 sm:py-3 rounded-xl transition-all duration-300 ease-in-out {{ request()->routeIs('guru.my-supervisi') ? 'text-primary-600 dark:text-primary-400 bg-primary-100 dark:bg-primary-900/40 scale-105 shadow-md' : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700/50' }}">
                     <svg class="w-6 h-6 sm:w-7 sm:h-7 transition-transform duration-300 {{ request()->routeIs('guru.my-supervisi') ? 'scale-110' : '' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
                     </svg>
@@ -795,8 +795,8 @@
                             </button>
                             <!-- Fitur Penting -->
                             <button @click="open = false; openFiturPentingModal();" class="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">
-                                <div class="w-8 h-8 rounded-lg bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center">
-                                    <svg class="w-4 h-4 text-purple-600 dark:text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <div class="w-8 h-8 rounded-lg bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center">
+                                    <svg class="w-4 h-4 text-primary-600 dark:text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path>
                                     </svg>
                                 </div>
@@ -817,7 +817,7 @@
                     <!-- Profile Popup Menu -->
                     <div x-show="open" x-cloak @click.away="open = false" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 transform scale-95 translate-y-2" x-transition:enter-end="opacity-100 transform scale-100 translate-y-0" x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100 transform scale-100 translate-y-0" x-transition:leave-end="opacity-0 transform scale-95 translate-y-2" class="absolute bottom-full right-0 mb-2 w-56 bg-white dark:bg-gray-800 rounded-xl shadow-xl border border-gray-200 dark:border-gray-700 overflow-hidden z-50">
                         <!-- User Info -->
-                        <div class="px-4 py-3 bg-gradient-to-r from-indigo-50 to-purple-50 dark:from-gray-700 dark:to-gray-700 border-b border-gray-200 dark:border-gray-600">
+                        <div class="px-4 py-3 bg-gradient-to-r from-primary-50 to-primary-50 dark:from-gray-700 dark:to-gray-700 border-b border-gray-200 dark:border-gray-600">
                             <p class="text-sm font-bold text-gray-900 dark:text-white truncate">{{ Auth::user()->name }}</p>
                             <p class="text-xs text-gray-600 dark:text-gray-400">Guru</p>
                         </div>
@@ -857,14 +857,14 @@
                 </div>
             @elseif(Auth::user()->isKepalaSekolah())
                 <!-- Kepala: Dashboard -->
-                <a href="{{ route('kepala.dashboard') }}" wire:navigate class="flex flex-col items-center justify-center gap-1 px-4 sm:px-6 py-2 sm:py-3 rounded-xl transition-all {{ request()->routeIs('kepala.dashboard') ? 'text-indigo-600 dark:text-indigo-400 bg-indigo-100 dark:bg-indigo-900/40 scale-105 shadow-md' : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700/50' }}">
+                <a href="{{ route('kepala.dashboard') }}" wire:navigate class="flex flex-col items-center justify-center gap-1 px-4 sm:px-6 py-2 sm:py-3 rounded-xl transition-all {{ request()->routeIs('kepala.dashboard') ? 'text-primary-600 dark:text-primary-400 bg-primary-100 dark:bg-primary-900/40 scale-105 shadow-md' : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700/50' }}">
                     <svg class="w-6 h-6 sm:w-7 sm:h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
                     </svg>
                     <span class="text-xs sm:text-sm font-semibold">Dashboard</span>
                 </a>
                 <!-- Kepala: Evaluasi -->
-                <a href="{{ route('kepala.evaluasi.index') }}" wire:navigate class="flex flex-col items-center justify-center gap-1 px-4 sm:px-6 py-2 sm:py-3 rounded-xl transition-all {{ request()->routeIs('kepala.evaluasi.*') ? 'text-indigo-600 dark:text-indigo-400 bg-indigo-100 dark:bg-indigo-900/40 scale-105 shadow-md' : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700/50' }}">
+                <a href="{{ route('kepala.evaluasi.index') }}" wire:navigate class="flex flex-col items-center justify-center gap-1 px-4 sm:px-6 py-2 sm:py-3 rounded-xl transition-all {{ request()->routeIs('kepala.evaluasi.*') ? 'text-primary-600 dark:text-primary-400 bg-primary-100 dark:bg-primary-900/40 scale-105 shadow-md' : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700/50' }}">
                     <svg class="w-6 h-6 sm:w-7 sm:h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path>
                     </svg>
@@ -882,7 +882,7 @@
                     <!-- Profile Popup Menu -->
                     <div x-show="open" @click.away="open = false" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 transform scale-95 translate-y-2" x-transition:enter-end="opacity-100 transform scale-100 translate-y-0" x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100 transform scale-100 translate-y-0" x-transition:leave-end="opacity-0 transform scale-95 translate-y-2" class="absolute bottom-full right-0 mb-2 w-56 bg-white dark:bg-gray-800 rounded-xl shadow-xl border border-gray-200 dark:border-gray-700 overflow-hidden z-50">
                         <!-- User Info -->
-                        <div class="px-4 py-3 bg-gradient-to-r from-indigo-50 to-purple-50 dark:from-gray-700 dark:to-gray-700 border-b border-gray-200 dark:border-gray-600">
+                        <div class="px-4 py-3 bg-gradient-to-r from-primary-50 to-primary-50 dark:from-gray-700 dark:to-gray-700 border-b border-gray-200 dark:border-gray-600">
                             <p class="text-sm font-bold text-gray-900 dark:text-white truncate">{{ Auth::user()->name }}</p>
                             <p class="text-xs text-gray-600 dark:text-gray-400">Kepala Sekolah</p>
                         </div>
@@ -954,7 +954,7 @@
 
                 <!-- Buttons -->
                 <div class="flex flex-col gap-3">
-                    <button id="modal-confirm-btn" class="w-full px-6 py-3 bg-indigo-500 hover:bg-indigo-600 text-white font-semibold rounded-full transition-all duration-200 hover:shadow-lg">
+                    <button id="modal-confirm-btn" class="w-full px-6 py-3 bg-primary-500 hover:bg-primary-600 text-white font-semibold rounded-full transition-all duration-200 hover:shadow-lg">
                         Ya, Lanjutkan
                     </button>
                     <button onclick="closeModal()" class="w-full text-sm text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 font-medium py-2 transition-colors">
@@ -1250,7 +1250,7 @@
             const config = {
                 type: 'warning', // warning, danger, info
                 confirmText: 'Ya, Lanjutkan',
-                confirmClass: 'bg-indigo-600 hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-600',
+                confirmClass: 'bg-primary-600 hover:bg-primary-700 dark:bg-primary-500 dark:hover:bg-primary-600',
                 iconBg: 'bg-amber-100 dark:bg-amber-900/30',
                 iconColor: 'text-amber-600 dark:text-amber-400',
                 ...options
@@ -1816,7 +1816,7 @@ if (backToTopBtn) {
                     <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">
                         Anda akan dikeluarkan dalam <span id="logout-countdown" class="font-bold text-amber-600 dark:text-amber-400">${secondsRemaining}</span> detik.
                     </p>
-                    <button id="stay-logged-in-btn" class="w-full px-4 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-lg transition-colors">
+                    <button id="stay-logged-in-btn" class="w-full px-4 py-3 bg-primary-600 hover:bg-primary-700 text-white font-semibold rounded-lg transition-colors">
                         Tetap Login
                     </button>
                 </div>
@@ -2023,7 +2023,7 @@ if (backToTopBtn) {
         <!-- Modal Header -->
         <div class="px-6 py-4 border-b border-gray-100 dark:border-gray-700 flex items-center justify-between bg-white dark:bg-gray-800 sticky top-0 z-10">
             <div class="flex items-center gap-3">
-                <div class="w-10 h-10 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-xl flex items-center justify-center shadow-lg shadow-blue-200 dark:shadow-none shrink-0">
+                <div class="w-10 h-10 bg-gradient-to-br from-primary-500 to-primary-700 rounded-xl flex items-center justify-center shadow-lg shadow-blue-200 dark:shadow-none shrink-0">
                     <span class="material-symbols-outlined text-white text-xl">lightbulb</span>
                 </div>
                 <div>
@@ -2123,12 +2123,12 @@ if (backToTopBtn) {
         <!-- Modal Header -->
         <div class="px-6 py-4 border-b border-gray-100 dark:border-gray-700 flex items-center justify-between bg-white dark:bg-gray-800 sticky top-0 z-10">
             <div class="flex items-center gap-3">
-                <div class="w-10 h-10 bg-gradient-to-br from-purple-500 to-indigo-600 rounded-xl flex items-center justify-center shadow-lg shadow-purple-200 dark:shadow-none shrink-0">
+                <div class="w-10 h-10 bg-gradient-to-br from-primary-500 to-primary-600 rounded-xl flex items-center justify-center shadow-lg shadow-primary-200 dark:shadow-none shrink-0">
                     <span class="material-symbols-outlined text-white text-xl">auto_awesome</span>
                 </div>
                 <div>
                     <h3 class="text-sm md:text-base font-bold text-gray-900 dark:text-white leading-tight">Fitur Penting</h3>
-                    <p class="text-[10px] text-purple-600 dark:text-purple-400 font-medium uppercase tracking-wider">Optimalkan Penggunaan</p>
+                    <p class="text-[10px] text-primary-600 dark:text-primary-400 font-medium uppercase tracking-wider">Optimalkan Penggunaan</p>
                 </div>
             </div>
             <button onclick="closeFiturPentingModal()" class="w-8 h-8 flex items-center justify-center hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full transition-colors text-gray-400">
@@ -2139,18 +2139,18 @@ if (backToTopBtn) {
         <!-- Modal Content -->
         <div class="p-6 overflow-y-auto flex-1 custom-scrollbar">
             <div class="space-y-4">
-                <div class="bg-purple-50 dark:bg-purple-900/20 rounded-2xl p-4 border border-purple-100 dark:border-purple-800/50">
+                <div class="bg-primary-50 dark:bg-primary-900/20 rounded-2xl p-4 border border-primary-100 dark:border-primary-800/50">
                     <div class="flex gap-3">
-                        <span class="material-symbols-outlined text-purple-600">save</span>
+                        <span class="material-symbols-outlined text-primary-600">save</span>
                         <div>
                             <p class="text-sm font-bold text-gray-900 dark:text-white mb-1">Auto-Save</p>
                             <p class="text-xs text-gray-600 dark:text-gray-400 leading-relaxed">Sistem menyimpan progres Anda secara otomatis setiap 30 detik. Jangan takut kehilangan data.</p>
                         </div>
                     </div>
                 </div>
-                <div class="bg-indigo-50 dark:bg-indigo-900/20 rounded-2xl p-4 border border-indigo-100 dark:border-indigo-800/50">
+                <div class="bg-primary-50 dark:bg-primary-900/20 rounded-2xl p-4 border border-primary-100 dark:border-primary-800/50">
                     <div class="flex gap-3">
-                        <span class="material-symbols-outlined text-indigo-600">history</span>
+                        <span class="material-symbols-outlined text-primary-600">history</span>
                         <div>
                             <p class="text-sm font-bold text-gray-900 dark:text-white mb-1">Riwayat Revisi</p>
                             <p class="text-xs text-gray-600 dark:text-gray-400 leading-relaxed">Anda dapat melihat catatan revisi sebelumnya dari Kepala Sekolah untuk perbaikan yang lebih baik.</p>
@@ -2184,7 +2184,7 @@ if (backToTopBtn) {
         
         <!-- Progress Bar (Top) -->
         <div class="h-1 bg-gray-200 dark:bg-gray-700">
-            <div id="guideProgressBar" class="h-full transition-all duration-500 @if(auth()->user()->role === 'admin') bg-indigo-600 @elseif(auth()->user()->role === 'kepala_sekolah') bg-rose-500 @else bg-blue-600 @endif" style="width: 25%;"></div>
+            <div id="guideProgressBar" class="h-full transition-all duration-500 @if(auth()->user()->role === 'admin') bg-primary-600 @elseif(auth()->user()->role === 'kepala_sekolah') bg-rose-500 @else bg-blue-600 @endif" style="width: 25%;"></div>
         </div>
 
         <!-- Header -->
@@ -2217,9 +2217,9 @@ if (backToTopBtn) {
                     <!-- ADMIN STEPS -->
                     <!-- Step 1: User Management -->
                     <div class="step-content active" data-step="1">
-                        <div class="bg-indigo-50/50 dark:bg-indigo-900/10 rounded-2xl p-6 mb-5 guide-card">
+                        <div class="bg-primary-50/50 dark:bg-primary-900/10 rounded-2xl p-6 mb-5 guide-card">
                             <div class="flex items-center justify-center mb-4">
-                                <div class="w-16 h-16 bg-indigo-600 rounded-2xl flex items-center justify-center shadow-lg">
+                                <div class="w-16 h-16 bg-primary-600 rounded-2xl flex items-center justify-center shadow-lg">
                                     <span class="material-symbols-outlined text-white text-4xl">manage_accounts</span>
                                 </div>
                             </div>
@@ -2230,27 +2230,27 @@ if (backToTopBtn) {
                         </div>
                         
                         <div class="space-y-3 guide-card">
-                            <div class="flex items-start gap-3 p-4 bg-white dark:bg-gray-700/30 rounded-xl border border-gray-200 dark:border-gray-600 hover:border-indigo-300 dark:hover:border-indigo-700 transition-colors">
-                                <div class="w-5 h-5 rounded-full bg-indigo-100 dark:bg-indigo-900/30 flex items-center justify-center flex-shrink-0 mt-0.5">
-                                    <span class="material-symbols-outlined text-indigo-600 dark:text-indigo-400 text-sm">check</span>
+                            <div class="flex items-start gap-3 p-4 bg-white dark:bg-gray-700/30 rounded-xl border border-gray-200 dark:border-gray-600 hover:border-primary-300 dark:hover:border-primary-700 transition-colors">
+                                <div class="w-5 h-5 rounded-full bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center flex-shrink-0 mt-0.5">
+                                    <span class="material-symbols-outlined text-primary-600 dark:text-primary-400 text-sm">check</span>
                                 </div>
                                 <div>
                                     <p class="text-sm font-semibold text-gray-900 dark:text-white mb-1">Validasi NIK & Data Personal</p>
                                     <p class="text-xs text-gray-600 dark:text-gray-400">NIK 16 digit wajib valid sesuai KTP. Lengkapi nama, email, dan nomor telepon aktif untuk notifikasi sistem.</p>
                                 </div>
                             </div>
-                            <div class="flex items-start gap-3 p-4 bg-white dark:bg-gray-700/30 rounded-xl border border-gray-200 dark:border-gray-600 hover:border-indigo-300 dark:hover:border-indigo-700 transition-colors">
-                                <div class="w-5 h-5 rounded-full bg-indigo-100 dark:bg-indigo-900/30 flex items-center justify-center flex-shrink-0 mt-0.5">
-                                    <span class="material-symbols-outlined text-indigo-600 dark:text-indigo-400 text-sm">check</span>
+                            <div class="flex items-start gap-3 p-4 bg-white dark:bg-gray-700/30 rounded-xl border border-gray-200 dark:border-gray-600 hover:border-primary-300 dark:hover:border-primary-700 transition-colors">
+                                <div class="w-5 h-5 rounded-full bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center flex-shrink-0 mt-0.5">
+                                    <span class="material-symbols-outlined text-primary-600 dark:text-primary-400 text-sm">check</span>
                                 </div>
                                 <div>
                                     <p class="text-sm font-semibold text-gray-900 dark:text-white mb-1">Atur Role & Hak Akses</p>
                                     <p class="text-xs text-gray-600 dark:text-gray-400">Pilih role: Admin (full access), Kepala Sekolah (review & approve), atau Guru (submit & view).</p>
                                 </div>
                             </div>
-                            <div class="flex items-start gap-3 p-4 bg-white dark:bg-gray-700/30 rounded-xl border border-gray-200 dark:border-gray-600 hover:border-indigo-300 dark:hover:border-indigo-700 transition-colors">
-                                <div class="w-5 h-5 rounded-full bg-indigo-100 dark:bg-indigo-900/30 flex items-center justify-center flex-shrink-0 mt-0.5">
-                                    <span class="material-symbols-outlined text-indigo-600 dark:text-indigo-400 text-sm">check</span>
+                            <div class="flex items-start gap-3 p-4 bg-white dark:bg-gray-700/30 rounded-xl border border-gray-200 dark:border-gray-600 hover:border-primary-300 dark:hover:border-primary-700 transition-colors">
+                                <div class="w-5 h-5 rounded-full bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center flex-shrink-0 mt-0.5">
+                                    <span class="material-symbols-outlined text-primary-600 dark:text-primary-400 text-sm">check</span>
                                 </div>
                                 <div>
                                     <p class="text-sm font-semibold text-gray-900 dark:text-white mb-1">Reset Password & Recovery</p>
@@ -2269,9 +2269,9 @@ if (backToTopBtn) {
 
                     <!-- Step 2: Monitoring Dashboard -->
                     <div class="step-content" data-step="2">
-                        <div class="bg-purple-50/50 dark:bg-purple-900/10 rounded-2xl p-6 mb-5 guide-card">
+                        <div class="bg-primary-50/50 dark:bg-primary-900/10 rounded-2xl p-6 mb-5 guide-card">
                             <div class="flex items-center justify-center mb-4">
-                                <div class="w-16 h-16 bg-purple-600 rounded-2xl flex items-center justify-center shadow-lg">
+                                <div class="w-16 h-16 bg-primary-600 rounded-2xl flex items-center justify-center shadow-lg">
                                     <span class="material-symbols-outlined text-white text-4xl">monitoring</span>
                                 </div>
                             </div>
@@ -2299,21 +2299,21 @@ if (backToTopBtn) {
                         </div>
                         
                         <div class="space-y-2 guide-card">
-                            <div class="flex items-center justify-between p-3 bg-white dark:bg-gray-700/30 rounded-xl border border-gray-200 dark:border-gray-600 hover:border-purple-300 transition-colors">
+                            <div class="flex items-center justify-between p-3 bg-white dark:bg-gray-700/30 rounded-xl border border-gray-200 dark:border-gray-600 hover:border-primary-300 transition-colors">
                                 <div class="flex items-center gap-3">
                                     <div class="w-2 h-2 rounded-full bg-green-500"></div>
                                     <span class="text-sm font-medium text-gray-900 dark:text-white">Selesai</span>
                                 </div>
                                 <span class="text-xs text-gray-500">Supervisi selesai</span>
                             </div>
-                            <div class="flex items-center justify-between p-3 bg-white dark:bg-gray-700/30 rounded-xl border border-gray-200 dark:border-gray-600 hover:border-purple-300 transition-colors">
+                            <div class="flex items-center justify-between p-3 bg-white dark:bg-gray-700/30 rounded-xl border border-gray-200 dark:border-gray-600 hover:border-primary-300 transition-colors">
                                 <div class="flex items-center gap-3">
                                     <div class="w-2 h-2 rounded-full bg-blue-500 animate-pulse"></div>
                                     <span class="text-sm font-medium text-gray-900 dark:text-white">Ditinjau</span>
                                 </div>
                                 <span class="text-xs text-gray-500">Sedang ditinjau</span>
                             </div>
-                            <div class="flex items-center justify-between p-3 bg-white dark:bg-gray-700/30 rounded-xl border border-gray-200 dark:border-gray-600 hover:border-purple-300 transition-colors">
+                            <div class="flex items-center justify-between p-3 bg-white dark:bg-gray-700/30 rounded-xl border border-gray-200 dark:border-gray-600 hover:border-primary-300 transition-colors">
                                 <div class="flex items-center gap-3">
                                     <div class="w-2 h-2 rounded-full bg-amber-500"></div>
                                     <span class="text-sm font-medium text-gray-900 dark:text-white">Revision</span>
@@ -2322,9 +2322,9 @@ if (backToTopBtn) {
                             </div>
                         </div>
                         
-                        <div class="mt-5 p-3 bg-purple-50 dark:bg-purple-900/20 rounded-xl border border-purple-200 dark:border-purple-800 flex items-start gap-2 guide-card">
-                            <span class="material-symbols-outlined text-purple-600 dark:text-purple-400 text-lg flex-shrink-0">insights</span>
-                            <p class="text-xs text-purple-800 dark:text-purple-300 leading-relaxed">
+                        <div class="mt-5 p-3 bg-primary-50 dark:bg-primary-900/20 rounded-xl border border-primary-200 dark:border-primary-800 flex items-start gap-2 guide-card">
+                            <span class="material-symbols-outlined text-primary-600 dark:text-primary-400 text-lg flex-shrink-0">insights</span>
+                            <p class="text-xs text-primary-800 dark:text-primary-300 leading-relaxed">
                                 <strong>Analytics:</strong> Grafik dan chart otomatis ter-generate untuk laporan bulanan dan tahunan kepada dinas pendidikan.
                             </p>
                         </div>
@@ -2612,9 +2612,9 @@ if (backToTopBtn) {
 
                     <!-- Step 4: Rekap & Feedback -->
                     <div class="step-content" data-step="4">
-                        <div class="bg-purple-50/50 dark:bg-purple-900/10 rounded-2xl p-6 mb-5 guide-card">
+                        <div class="bg-primary-50/50 dark:bg-primary-900/10 rounded-2xl p-6 mb-5 guide-card">
                             <div class="flex items-center justify-center mb-4">
-                                <div class="w-16 h-16 bg-purple-600 rounded-2xl flex items-center justify-center shadow-lg">
+                                <div class="w-16 h-16 bg-primary-600 rounded-2xl flex items-center justify-center shadow-lg">
                                     <span class="material-symbols-outlined text-white text-4xl">rate_review</span>
                                 </div>
                             </div>
@@ -2625,27 +2625,27 @@ if (backToTopBtn) {
                         </div>
                         
                         <div class="space-y-3 guide-card">
-                            <div class="flex items-start gap-3 p-4 bg-white dark:bg-gray-700/30 rounded-xl border border-gray-200 dark:border-gray-600 hover:border-purple-300 dark:hover:border-purple-700 transition-colors">
-                                <div class="w-5 h-5 rounded-full bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center flex-shrink-0 mt-0.5">
-                                    <span class="material-symbols-outlined text-purple-600 dark:text-purple-400 text-sm">stars</span>
+                            <div class="flex items-start gap-3 p-4 bg-white dark:bg-gray-700/30 rounded-xl border border-gray-200 dark:border-gray-600 hover:border-primary-300 dark:hover:border-primary-700 transition-colors">
+                                <div class="w-5 h-5 rounded-full bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center flex-shrink-0 mt-0.5">
+                                    <span class="material-symbols-outlined text-primary-600 dark:text-primary-400 text-sm">stars</span>
                                 </div>
                                 <div>
                                     <p class="text-sm font-semibold text-gray-900 dark:text-white mb-1">Input Skor Final</p>
                                     <p class="text-xs text-gray-600 dark:text-gray-400">Sistem auto-kalkulasi dari instrumen observasi. Review dan konfirmasi hasil penilaian total.</p>
                                 </div>
                             </div>
-                            <div class="flex items-start gap-3 p-4 bg-white dark:bg-gray-700/30 rounded-xl border border-gray-200 dark:border-gray-600 hover:border-purple-300 dark:hover:border-purple-700 transition-colors">
-                                <div class="w-5 h-5 rounded-full bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center flex-shrink-0 mt-0.5">
-                                    <span class="material-symbols-outlined text-purple-600 dark:text-purple-400 text-sm">psychology</span>
+                            <div class="flex items-start gap-3 p-4 bg-white dark:bg-gray-700/30 rounded-xl border border-gray-200 dark:border-gray-600 hover:border-primary-300 dark:hover:border-primary-700 transition-colors">
+                                <div class="w-5 h-5 rounded-full bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center flex-shrink-0 mt-0.5">
+                                    <span class="material-symbols-outlined text-primary-600 dark:text-primary-400 text-sm">psychology</span>
                                 </div>
                                 <div>
                                     <p class="text-sm font-semibold text-gray-900 dark:text-white mb-1">Feedback Pengembangan</p>
                                     <p class="text-xs text-gray-600 dark:text-gray-400">Berikan saran konkret untuk peningkatan: metode, media, pengelolaan kelas, atau strategi asesmen.</p>
                                 </div>
                             </div>
-                            <div class="flex items-start gap-3 p-4 bg-white dark:bg-gray-700/30 rounded-xl border border-gray-200 dark:border-gray-600 hover:border-purple-300 dark:hover:border-purple-700 transition-colors">
-                                <div class="w-5 h-5 rounded-full bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center flex-shrink-0 mt-0.5">
-                                    <span class="material-symbols-outlined text-purple-600 dark:text-purple-400 text-sm">rocket_launch</span>
+                            <div class="flex items-start gap-3 p-4 bg-white dark:bg-gray-700/30 rounded-xl border border-gray-200 dark:border-gray-600 hover:border-primary-300 dark:hover:border-primary-700 transition-colors">
+                                <div class="w-5 h-5 rounded-full bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center flex-shrink-0 mt-0.5">
+                                    <span class="material-symbols-outlined text-primary-600 dark:text-primary-400 text-sm">rocket_launch</span>
                                 </div>
                                 <div>
                                     <p class="text-sm font-semibold text-gray-900 dark:text-white mb-1">Rencana Tindak Lanjut</p>
@@ -2654,9 +2654,9 @@ if (backToTopBtn) {
                             </div>
                         </div>
                         
-                        <div class="mt-5 p-3 bg-gradient-to-r from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20 rounded-xl border border-purple-200 dark:border-purple-800 flex items-start gap-2 guide-card">
-                            <span class="material-symbols-outlined text-purple-600 dark:text-purple-400 text-lg flex-shrink-0">workspace_premium</span>
-                            <p class="text-xs text-purple-800 dark:text-purple-300 leading-relaxed">
+                        <div class="mt-5 p-3 bg-gradient-to-r from-primary-50 to-pink-50 dark:from-primary-900/20 dark:to-pink-900/20 rounded-xl border border-primary-200 dark:border-primary-800 flex items-start gap-2 guide-card">
+                            <span class="material-symbols-outlined text-primary-600 dark:text-primary-400 text-lg flex-shrink-0">workspace_premium</span>
+                            <p class="text-xs text-primary-800 dark:text-primary-300 leading-relaxed">
                                 <strong>Apresiasi:</strong> Jangan lupa berikan apresiasi untuk aspek positif yang telah dilakukan guru dengan baik.
                             </p>
                         </div>
@@ -2718,9 +2718,9 @@ if (backToTopBtn) {
 
                     <!-- Step 2: Upload Files -->
                     <div class="step-content" data-step="2">
-                        <div class="bg-indigo-50/50 dark:bg-indigo-900/10 rounded-2xl p-6 mb-5 guide-card">
+                        <div class="bg-primary-50/50 dark:bg-primary-900/10 rounded-2xl p-6 mb-5 guide-card">
                             <div class="flex items-center justify-center mb-4">
-                                <div class="w-16 h-16 bg-indigo-600 rounded-2xl flex items-center justify-center shadow-lg">
+                                <div class="w-16 h-16 bg-primary-600 rounded-2xl flex items-center justify-center shadow-lg">
                                     <span class="material-symbols-outlined text-white text-4xl">upload_file</span>
                                 </div>
                             </div>
@@ -2731,27 +2731,27 @@ if (backToTopBtn) {
                         </div>
                         
                         <div class="space-y-3 guide-card">
-                            <div class="flex items-start gap-3 p-4 bg-white dark:bg-gray-700/30 rounded-xl border border-gray-200 dark:border-gray-600 hover:border-indigo-300 dark:hover:border-indigo-700 transition-colors">
-                                <div class="w-5 h-5 rounded-full bg-indigo-100 dark:bg-indigo-900/30 flex items-center justify-center flex-shrink-0 mt-0.5">
-                                    <span class="material-symbols-outlined text-indigo-600 dark:text-indigo-400 text-sm">description</span>
+                            <div class="flex items-start gap-3 p-4 bg-white dark:bg-gray-700/30 rounded-xl border border-gray-200 dark:border-gray-600 hover:border-primary-300 dark:hover:border-primary-700 transition-colors">
+                                <div class="w-5 h-5 rounded-full bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center flex-shrink-0 mt-0.5">
+                                    <span class="material-symbols-outlined text-primary-600 dark:text-primary-400 text-sm">description</span>
                                 </div>
                                 <div>
                                     <p class="text-sm font-semibold text-gray-900 dark:text-white mb-1">RPP/Modul Ajar (Wajib)</p>
                                     <p class="text-xs text-gray-600 dark:text-gray-400">Format PDF/DOCX max 10MB. Pastikan sesuai format K13 atau Kurikulum Merdeka yang berlaku.</p>
                                 </div>
                             </div>
-                            <div class="flex items-start gap-3 p-4 bg-white dark:bg-gray-700/30 rounded-xl border border-gray-200 dark:border-gray-600 hover:border-indigo-300 dark:hover:border-indigo-700 transition-colors">
-                                <div class="w-5 h-5 rounded-full bg-indigo-100 dark:bg-indigo-900/30 flex items-center justify-center flex-shrink-0 mt-0.5">
-                                    <span class="material-symbols-outlined text-indigo-600 dark:text-indigo-400 text-sm">video_library</span>
+                            <div class="flex items-start gap-3 p-4 bg-white dark:bg-gray-700/30 rounded-xl border border-gray-200 dark:border-gray-600 hover:border-primary-300 dark:hover:border-primary-700 transition-colors">
+                                <div class="w-5 h-5 rounded-full bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center flex-shrink-0 mt-0.5">
+                                    <span class="material-symbols-outlined text-primary-600 dark:text-primary-400 text-sm">video_library</span>
                                 </div>
                                 <div>
                                     <p class="text-sm font-semibold text-gray-900 dark:text-white mb-1">Media Pembelajaran (Opsional)</p>
                                     <p class="text-xs text-gray-600 dark:text-gray-400">PPT, video, atau link Google Drive ke materi pendukung yang akan digunakan saat mengajar.</p>
                                 </div>
                             </div>
-                            <div class="flex items-start gap-3 p-4 bg-white dark:bg-gray-700/30 rounded-xl border border-gray-200 dark:border-gray-600 hover:border-indigo-300 dark:hover:border-indigo-700 transition-colors">
-                                <div class="w-5 h-5 rounded-full bg-indigo-100 dark:bg-indigo-900/30 flex items-center justify-center flex-shrink-0 mt-0.5">
-                                    <span class="material-symbols-outlined text-indigo-600 dark:text-indigo-400 text-sm">assignment</span>
+                            <div class="flex items-start gap-3 p-4 bg-white dark:bg-gray-700/30 rounded-xl border border-gray-200 dark:border-gray-600 hover:border-primary-300 dark:hover:border-primary-700 transition-colors">
+                                <div class="w-5 h-5 rounded-full bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center flex-shrink-0 mt-0.5">
+                                    <span class="material-symbols-outlined text-primary-600 dark:text-primary-400 text-sm">assignment</span>
                                 </div>
                                 <div>
                                     <p class="text-sm font-semibold text-gray-900 dark:text-white mb-1">Instrumen Penilaian</p>
@@ -2812,9 +2812,9 @@ if (backToTopBtn) {
                             </div>
                         </div>
                         
-                        <div class="mt-5 p-3 bg-purple-50 dark:bg-purple-900/20 rounded-xl border border-purple-200 dark:border-purple-800 flex items-start gap-2 guide-card">
-                            <span class="material-symbols-outlined text-purple-600 dark:text-purple-400 text-lg flex-shrink-0">mark_email_read</span>
-                            <p class="text-xs text-purple-800 dark:text-purple-300 leading-relaxed">
+                        <div class="mt-5 p-3 bg-primary-50 dark:bg-primary-900/20 rounded-xl border border-primary-200 dark:border-primary-800 flex items-start gap-2 guide-card">
+                            <span class="material-symbols-outlined text-primary-600 dark:text-primary-400 text-lg flex-shrink-0">mark_email_read</span>
+                            <p class="text-xs text-primary-800 dark:text-primary-300 leading-relaxed">
                                 <strong>Notifikasi:</strong> Email dan notifikasi in-app akan otomatis terkirim setiap ada update status atau feedback baru.
                             </p>
                         </div>
@@ -2883,7 +2883,7 @@ if (backToTopBtn) {
                     <span>Kembali</span>
                 </button>
                 
-                <button id="nextStepBtn" onclick="nextStep()" class="flex items-center gap-2 px-6 py-2.5 rounded-xl text-sm font-semibold text-white @if(auth()->user()->role === 'admin') bg-indigo-600 hover:bg-indigo-700 @elseif(auth()->user()->role === 'kepala_sekolah') bg-rose-500 hover:bg-rose-600 @else bg-blue-600 hover:bg-blue-700 @endif transition-all shadow-sm">
+                <button id="nextStepBtn" onclick="nextStep()" class="flex items-center gap-2 px-6 py-2.5 rounded-xl text-sm font-semibold text-white @if(auth()->user()->role === 'admin') bg-primary-600 hover:bg-primary-700 @elseif(auth()->user()->role === 'kepala_sekolah') bg-rose-500 hover:bg-rose-600 @else bg-blue-600 hover:bg-blue-700 @endif transition-all shadow-sm">
                     <span id="nextStepText">Lanjut</span>
                     <span class="material-symbols-outlined text-lg" id="nextStepIcon">arrow_forward</span>
                 </button>

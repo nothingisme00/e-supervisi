@@ -13,12 +13,12 @@
                 <h1 class="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">Kelola Carousel</h1>
                 <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">
                     Atur gambar dan teks yang tampil di halaman login & dashboard guru
-                    <span class="inline-flex items-center gap-1 ml-2 text-xs font-medium text-indigo-600 dark:text-indigo-400">
+                    <span class="inline-flex items-center gap-1 ml-2 text-xs font-medium text-primary-600 dark:text-primary-400">
                         ({{ $totalSlides }} slide, {{ $activeSlides }} aktif)
                     </span>
                 </p>
             </div>
-            <button onclick="openAddModal()" class="inline-flex items-center gap-2 px-4 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-xl transition-colors shadow-md">
+            <button onclick="openAddModal()" class="inline-flex items-center gap-2 px-4 py-2.5 bg-primary-600 hover:bg-primary-700 text-white font-semibold rounded-xl transition-colors shadow-md">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
                 </svg>
@@ -97,7 +97,7 @@
             </div>
             <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">Belum ada slide</h3>
             <p class="text-gray-600 dark:text-gray-400 mb-4">Tambahkan slide untuk ditampilkan di halaman login</p>
-            <button onclick="openAddModal()" class="inline-flex items-center gap-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-lg transition-colors">
+            <button onclick="openAddModal()" class="inline-flex items-center gap-2 px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white font-medium rounded-lg transition-colors">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
                 </svg>
@@ -152,7 +152,7 @@
                 <div>
                     <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Judul</label>
                     <input type="text" name="title" id="slideTitle" 
-                        class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all" 
+                        class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all" 
                         placeholder="Contoh: Meningkatkan Kualitas Pendidikan">
                 </div>
                 
@@ -160,18 +160,18 @@
                 <div>
                     <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Deskripsi</label>
                     <textarea name="description" id="slideDescription" rows="4" 
-                        class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all resize-none" 
+                        class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all resize-none" 
                         placeholder="Deskripsi singkat untuk slide ini..."></textarea>
                 </div>
                 
                 <!-- Image Upload -->
                 <div>
                     <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Gambar</label>
-                    <div class="relative border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-xl p-6 text-center hover:border-indigo-400 transition-colors bg-gray-50 dark:bg-gray-700/50">
+                    <div class="relative border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-xl p-6 text-center hover:border-primary-400 transition-colors bg-gray-50 dark:bg-gray-700/50">
                         <input type="file" name="image" id="slideImage" accept="image/*" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" onchange="previewImage(this)">
                         
                         <div id="imagePlaceholder" class="flex flex-col items-center">
-                            <div class="w-12 h-12 bg-indigo-50 dark:bg-indigo-900/30 text-indigo-500 rounded-full flex items-center justify-center mb-3">
+                            <div class="w-12 h-12 bg-primary-50 dark:bg-primary-900/30 text-primary-500 rounded-full flex items-center justify-center mb-3">
                                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
                                 </svg>
@@ -194,8 +194,8 @@
                 <!-- Active Toggle -->
                 <div class="flex items-center gap-3 pt-2">
                     <div class="relative inline-block w-9 h-4">
-                        <input checked id="slideActive" name="is_active" value="1" type="checkbox" class="peer appearance-none w-9 h-4 bg-gray-300 dark:bg-gray-600 rounded-full checked:bg-indigo-500 cursor-pointer transition-colors duration-200" />
-                        <label for="slideActive" class="absolute top-0 left-0 w-4 h-4 bg-white rounded-full border border-gray-200 dark:border-gray-500 shadow-sm transition-transform duration-200 peer-checked:translate-x-5 peer-checked:border-indigo-400 cursor-pointer"></label>
+                        <input checked id="slideActive" name="is_active" value="1" type="checkbox" class="peer appearance-none w-9 h-4 bg-gray-300 dark:bg-gray-600 rounded-full checked:bg-primary-500 cursor-pointer transition-colors duration-200" />
+                        <label for="slideActive" class="absolute top-0 left-0 w-4 h-4 bg-white rounded-full border border-gray-200 dark:border-gray-500 shadow-sm transition-transform duration-200 peer-checked:translate-x-5 peer-checked:border-primary-400 cursor-pointer"></label>
                     </div>
                     <span class="text-xs text-gray-500 dark:text-gray-400">Aktifkan slide</span>
                 </div>
@@ -204,7 +204,7 @@
             <!-- Footer -->
             <div class="px-6 py-4 border-t border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 flex-shrink-0 flex gap-3">
                 <span id="modalCancelBtn" onclick="window.carouselCloseModal()" class="flex-1 px-4 py-2.5 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-200 font-medium rounded-xl transition-all shadow-sm text-center cursor-pointer select-none">Batal</span>
-                <button type="submit" class="flex-1 px-4 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-xl transition-all shadow-md shadow-indigo-500/20">Simpan</button>
+                <button type="submit" class="flex-1 px-4 py-2.5 bg-primary-600 hover:bg-primary-700 text-white font-medium rounded-xl transition-all shadow-md shadow-primary-500/20">Simpan</button>
             </div>
         </form>
     </div>

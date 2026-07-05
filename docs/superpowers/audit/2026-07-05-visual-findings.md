@@ -45,7 +45,7 @@ Total: **1 Tinggi, 4 Sedang, 3 Rendah** (7 temuan baru). Dead code layout Breeze
 - **Effort:** M
 - **Dampak:** Screenshot `04-guru-supervisi-detail.png` dan `07-kepala-evaluasi-show.png` menunjukkan pola identik: 3 section berwarna acak tanpa pola yang bisa dijelaskan (bukan status, bukan prioritas) — ini yang paling terasa seperti "template generator" karena warnanya tidak menyampaikan informasi apa pun, cuma dekorasi berulang.
 - **Usulan perbaikan:** Ganti jadi header netral (satu warna/border-left tipis dengan ikon) atau, jika warna dipertahankan untuk pembeda kategori, gunakan token semantik konsisten (bukan biru/ungu/hijau acak) dan terapkan sekali di partial yang dipakai ulang, bukan disalin 6x.
-- **Status:** ditemukan
+- **Status:** diperbaiki — komponen `x-card-header` (netral, aksen kiri `primary`) menggantikan 15 blok header berwarna di guru/supervisi/{view,detail} & kepala/evaluasi/show; strip gradient pink→ungu→biru jadi solid `primary`; strip `h-1` acak di admin/supervisi/detail diseragamkan; refleksi 5-warna acak jadi satu gaya `primary`
 
 ## [Sedang] Skala besar pemakaian gradient/warna hardcode vs token semantik yang sudah ada
 - **Kategori:** Warna-Gradient
@@ -53,7 +53,7 @@ Total: **1 Tinggi, 4 Sedang, 3 Rendah** (7 temuan baru). Dead code layout Breeze
 - **Effort:** L
 - **Dampak:** Setiap halaman terlihat sedikit berbeda karena gradient indigo/purple/violet dipasang manual per file, bukan dari satu sumber kebenaran — konsistensi visual bergantung pada disiplin copy-paste, bukan sistem.
 - **Usulan perbaikan:** Perluas token di `@theme` (`app.css`) dan migrasi bertahap per grup file (layout → komponen reusable → per halaman), tanpa mengubah struktur Tailwind v4 CSS-first yang sudah ada.
-- **Status:** ditemukan
+- **Status:** diperbaiki — palet "Teal Pendidikan" (pilihan user): skala `--color-primary-50..950` (= teal) di `@theme`; seluruh kelas `indigo-*`/`purple-*`/`violet-*` dimigrasi ke `primary-*` (halaman auth CDN pakai `teal-*` + config inline diperbarui); hex indigo/purple sisa (loading bar, pull-to-refresh, dropdown aktif, input-focus) diganti teal; regresi dijaga `ColorTokenMigrationTest` (scan file view + app.css); `docs/` dikecualikan dari auto-scan Tailwind
 
 ## [Sedang] Label role "Kepala_sekolah" tampil mentah (raw enum) di header
 - **Kategori:** Copy
@@ -77,7 +77,7 @@ Total: **1 Tinggi, 4 Sedang, 3 Rendah** (7 temuan baru). Dead code layout Breeze
 - **Effort:** S
 - **Dampak:** Komponen reusable ini menjadi salah satu sumber gradient generik yang otomatis terwarisi ke semua pemanggilnya tanpa perlu override eksplisit.
 - **Usulan perbaikan:** Ganti default ke token semantik baru begitu fondasi warna (temuan V2) diperluas — satu titik ubah, otomatis konsisten di semua pemanggil.
-- **Status:** ditemukan
+- **Status:** diperbaiki — default jadi `from-primary-600 via-primary-700 to-primary-900` (monokrom teal dari token)
 
 ## [Rendah] Duplikasi definisi sticky-footer 3x untuk hal yang identik
 - **Kategori:** Footer-Layout

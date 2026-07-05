@@ -9,7 +9,7 @@
 <!-- Main Card -->
 <div class="bg-white dark:bg-gray-800 rounded-xl sm:rounded-2xl border border-gray-200 dark:border-gray-700 shadow-lg">
     <!-- Header -->
-    <div class="border-b border-gray-200 dark:border-gray-700 px-4 py-4 sm:px-6 sm:py-5 bg-gradient-to-r from-indigo-50/30 to-blue-50/30 dark:from-indigo-900/10 dark:to-blue-900/10">
+    <div class="border-b border-gray-200 dark:border-gray-700 px-4 py-4 sm:px-6 sm:py-5 bg-gradient-to-r from-primary-50/30 to-blue-50/30 dark:from-primary-900/10 dark:to-blue-900/10">
         <div class="flex items-center justify-between gap-4">
             <div class="min-w-0 flex-1">
                 <h2 class="text-lg sm:text-xl font-bold text-gray-800 dark:text-gray-100">Upload Dokumen Evaluasi</h2>
@@ -17,12 +17,12 @@
             </div>
             <!-- Progress Badge -->
             <div class="flex items-center gap-2.5 bg-white dark:bg-gray-800 px-4 py-2.5 sm:px-5 sm:py-3 rounded-xl border border-gray-200 dark:border-gray-600 shadow-sm shrink-0">
-                <svg class="w-6 h-6 sm:w-7 sm:h-7 text-indigo-600 dark:text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg class="w-6 h-6 sm:w-7 sm:h-7 text-primary-600 dark:text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
                 </svg>
                 <div>
                     <span class="text-xs text-gray-500 dark:text-gray-400 block">Progres</span>
-                    <span id="documentBadge" class="text-base sm:text-lg font-bold text-indigo-600 dark:text-indigo-400">0/7 Dokumen</span>
+                    <span id="documentBadge" class="text-base sm:text-lg font-bold text-primary-600 dark:text-primary-400">0/7 Dokumen</span>
                 </div>
             </div>
         </div>
@@ -73,7 +73,7 @@
                     <div class="flex items-start justify-between gap-3 mb-3">
                         <div class="flex items-start gap-3 flex-1 min-w-0">
                             <!-- Number Badge -->
-                            <span class="inline-flex items-center justify-center w-8 h-8 bg-indigo-100 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-300 text-sm font-bold rounded-lg shrink-0">
+                            <span class="inline-flex items-center justify-center w-8 h-8 bg-primary-100 dark:bg-primary-900/30 text-primary-700 dark:text-primary-300 text-sm font-bold rounded-lg shrink-0">
                                 {{ $loop->iteration }}
                             </span>
                             <!-- Document Name -->
@@ -105,11 +105,11 @@
                     
                     <!-- Row 2: File Name (if uploaded) -->
                     @if($isUploaded && $dokumen)
-                        <div class="flex items-center gap-2 mb-3 px-3 py-2.5 bg-indigo-50 dark:bg-indigo-900/40 border border-indigo-200 dark:border-indigo-700 rounded-lg">
-                            <svg class="w-4 h-4 text-indigo-500 dark:text-indigo-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <div class="flex items-center gap-2 mb-3 px-3 py-2.5 bg-primary-50 dark:bg-primary-900/40 border border-primary-200 dark:border-primary-700 rounded-lg">
+                            <svg class="w-4 h-4 text-primary-500 dark:text-primary-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
                             </svg>
-                            <span class="text-sm font-medium text-indigo-700 dark:text-indigo-200 truncate" title="{{ $dokumen->nama_file }}">
+                            <span class="text-sm font-medium text-primary-700 dark:text-primary-200 truncate" title="{{ $dokumen->nama_file }}">
                                 {{ $dokumen->nama_file }}
                             </span>
                         </div>
@@ -122,7 +122,7 @@
                             <a
                                 href="{{ route('guru.supervisi.preview', $dokumen->id) }}"
                                 target="_blank"
-                                class="flex-1 inline-flex items-center justify-center gap-2 px-4 py-3 bg-indigo-600 text-white text-sm font-semibold rounded-lg hover:bg-indigo-700 transition-colors"
+                                class="flex-1 inline-flex items-center justify-center gap-2 px-4 py-3 bg-primary-600 text-white text-sm font-semibold rounded-lg hover:bg-primary-700 transition-colors"
                             >
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
@@ -231,7 +231,7 @@
                                         <a
                                             href="{{ route('guru.supervisi.preview', $dokumen->id) }}"
                                             target="_blank"
-                                            class="inline-flex items-center justify-center gap-1.5 px-3 py-2 bg-indigo-600 text-white text-xs font-semibold rounded-lg hover:bg-indigo-700 transition-colors"
+                                            class="inline-flex items-center justify-center gap-1.5 px-3 py-2 bg-primary-600 text-white text-xs font-semibold rounded-lg hover:bg-primary-700 transition-colors"
                                             title="Preview dokumen"
                                         >
                                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -754,10 +754,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 setTimeout(() => {
                     elem.scrollIntoView({ behavior: 'smooth', block: 'center' });
                     // Add highlight effect
-                    elem.classList.add('ring-2', 'ring-indigo-500', 'ring-offset-2');
+                    elem.classList.add('ring-2', 'ring-primary-500', 'ring-offset-2');
                     elem.style.transition = 'all 0.3s ease';
                     setTimeout(() => {
-                        elem.classList.remove('ring-2', 'ring-indigo-500', 'ring-offset-2');
+                        elem.classList.remove('ring-2', 'ring-primary-500', 'ring-offset-2');
                     }, 2500);
                 }, 800);
                 break;
