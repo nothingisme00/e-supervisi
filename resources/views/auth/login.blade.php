@@ -604,9 +604,7 @@
                 <span class="material-symbols-outlined text-sm transition-transform duration-300 group-hover:rotate-180" id="theme-icon">light_mode</span>
                 <span id="theme-text">Light Mode</span>
             </button>
-            <p class="text-[10px] lg:text-xs font-medium text-gray-500 dark:text-gray-500">
-                © {{ date('Y') }} E-Supervisi
-            </p>
+            @include('auth.partials.footer')
         </div>
     </div>
 </aside>

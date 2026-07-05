@@ -474,6 +474,10 @@
                 </p>
             </div>
         </form>
+
+        <div class="mt-8 text-center">
+            @include('auth.partials.footer')
+        </div>
     </div>
 </aside>
 

@@ -93,7 +93,7 @@ Total: **1 Tinggi, 4 Sedang, 3 Rendah** (7 temuan baru). Dead code layout Breeze
 - **Effort:** M
 - **Dampak:** Ini akar masalah asli yang memicu keluhan "footer beda-beda antar halaman" di awal. Screenshot `01-login.png` mengonfirmasi: halaman login punya desain sendiri (ilustrasi + gradient teal kiri, form kanan) tanpa footer co-brand, kontras dengan seluruh halaman lain (guru/kepala/admin) yang selalu berfooter lewat `modern.blade.php`.
 - **Usulan perbaikan:** Tambah footer partial kecil (co-brand minimal, bukan `@extends('layouts.modern')` penuh — itu akan membawa sidebar/nav yang tidak relevan untuk halaman auth) dipakai di kedua file.
-- **Status:** ditemukan
+- **Status:** diperbaiki — partial `auth/partials/footer.blade.php` ("© {tahun} E-Supervisi · Sistem Supervisi Pembelajaran") dipakai di login (menggantikan copyright inline lama) & change-password; ter-cover `AuthPageFooterTest`
 
 ---
 
