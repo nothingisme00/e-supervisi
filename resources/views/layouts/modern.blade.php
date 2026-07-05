@@ -365,7 +365,7 @@
                             </div>
                             <div class="hidden md:block text-left">
                                 <p class="text-xs lg:text-sm font-semibold text-gray-900 dark:text-gray-100">{{ Auth::user()->name }}</p>
-                                <p class="text-[10px] lg:text-xs text-gray-500 dark:text-gray-400">{{ ucfirst(Auth::user()->role) }}</p>
+                                <p class="text-[10px] lg:text-xs text-gray-500 dark:text-gray-400">{{ ucwords(str_replace('_', ' ', Auth::user()->role)) }}</p>
                             </div>
                             <svg id="profile-arrow-icon" class="w-5 h-5 md:w-4 md:h-4 lg:w-5 lg:h-5 text-gray-500 dark:text-gray-400 hidden md:block transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
@@ -2890,11 +2890,11 @@ if (backToTopBtn) {
             <div class="flex items-center justify-between gap-3">
                 <button id="prevStepBtn" onclick="prevStep()" class="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 transition-all disabled:opacity-0 disabled:invisible">
                     <span class="material-symbols-outlined text-lg">arrow_back</span>
-                    <span>Back</span>
+                    <span>Kembali</span>
                 </button>
                 
                 <button id="nextStepBtn" onclick="nextStep()" class="flex items-center gap-2 px-6 py-2.5 rounded-xl text-sm font-semibold text-white @if(auth()->user()->role === 'admin') bg-indigo-600 hover:bg-indigo-700 @elseif(auth()->user()->role === 'kepala_sekolah') bg-rose-500 hover:bg-rose-600 @else bg-blue-600 hover:bg-blue-700 @endif transition-all shadow-sm">
-                    <span id="nextStepText">Continue</span>
+                    <span id="nextStepText">Lanjut</span>
                     <span class="material-symbols-outlined text-lg" id="nextStepIcon">arrow_forward</span>
                 </button>
             </div>
@@ -3098,11 +3098,11 @@ function updateStepDisplay() {
     
     if (nextBtn && nextText) {
         if (currentStep === totalSteps) {
-            nextText.textContent = 'Finish';
+            nextText.textContent = 'Selesai';
             if (nextIcon) nextIcon.textContent = 'check_circle';
             nextBtn.onclick = closeGuideModal;
         } else {
-            nextText.textContent = 'Continue';
+            nextText.textContent = 'Lanjut';
             if (nextIcon) nextIcon.textContent = 'arrow_forward';
             nextBtn.onclick = nextStep;
         }

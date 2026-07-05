@@ -30,4 +30,17 @@ class IndonesianUiTextTest extends TestCase
             ->assertDontSee('Revision Requested')
             ->assertDontSee('Status: Approved');
     }
+
+    /**
+     * V3+V4: label role tidak boleh tampil sebagai enum mentah ("Kepala_sekolah"),
+     * dan tombol modal panduan (Back/Continue/Finish) harus bahasa Indonesia.
+     */
+    public function test_role_label_and_guide_modal_buttons_are_indonesian(): void
+    {
+        $kepala = User::factory()->kepalaSekolah()->create(['must_change_password' => false, 'tingkat' => 'SD']);
+        $this->actingAs($kepala)->get(route('kepala.dashboard'))
+            ->assertDontSee('Kepala_sekolah')
+            ->assertDontSee('Continue')
+            ->assertDontSee("'Finish'", false);
+    }
 }
