@@ -46,14 +46,14 @@
                         <h4 class="text-sm sm:text-base md:text-lg font-bold text-gray-900 dark:text-white">Tips & Informasi</h4>
                     </div>
                     <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                        <!-- Tip 1: Quick Navigation -->
+                        <!-- Tip 1: Navigasi Cepat -->
                         <div class="bg-gray-50 dark:bg-gray-900/30 rounded-lg p-3 border border-blue-100 dark:border-blue-900/30">
                             <div class="flex items-start gap-2">
                                 <svg class="w-5 h-5 text-blue-600 dark:text-blue-400 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
                                 </svg>
                                 <div>
-                                    <p class="text-sm font-semibold text-blue-900 dark:text-blue-300 mb-1">Quick Navigation</p>
+                                    <p class="text-sm font-semibold text-blue-900 dark:text-blue-300 mb-1">Navigasi Cepat</p>
                                     <p class="text-xs text-gray-600 dark:text-gray-400">Gunakan tombol "Panduan" untuk melihat langkah lengkap supervisi</p>
                                 </div>
                             </div>

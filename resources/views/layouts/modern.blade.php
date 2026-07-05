@@ -2297,13 +2297,13 @@ if (backToTopBtn) {
                                     <span class="material-symbols-outlined text-xl">task_alt</span>
                                 </div>
                                 <p class="text-xs font-bold text-gray-900 dark:text-white text-center">Total Supervisi</p>
-                                <p class="text-[10px] text-gray-600 dark:text-gray-400 text-center mt-1">Completed & In Progress</p>
+                                <p class="text-[10px] text-gray-600 dark:text-gray-400 text-center mt-1">Selesai & Dalam Proses</p>
                             </div>
                             <div class="p-4 bg-blue-50 dark:bg-blue-900/10 rounded-xl border border-blue-200 dark:border-blue-800">
                                 <div class="flex items-center justify-center w-10 h-10 rounded-full bg-blue-500 text-white mx-auto mb-2">
                                     <span class="material-symbols-outlined text-xl">groups</span>
                                 </div>
-                                <p class="text-xs font-bold text-gray-900 dark:text-white text-center">Active Users</p>
+                                <p class="text-xs font-bold text-gray-900 dark:text-white text-center">Pengguna Aktif</p>
                                 <p class="text-[10px] text-gray-600 dark:text-gray-400 text-center mt-1">Guru & Kepala Sekolah</p>
                             </div>
                         </div>
@@ -2312,16 +2312,16 @@ if (backToTopBtn) {
                             <div class="flex items-center justify-between p-3 bg-white dark:bg-gray-700/30 rounded-xl border border-gray-200 dark:border-gray-600 hover:border-purple-300 transition-colors">
                                 <div class="flex items-center gap-3">
                                     <div class="w-2 h-2 rounded-full bg-green-500"></div>
-                                    <span class="text-sm font-medium text-gray-900 dark:text-white">Completed</span>
+                                    <span class="text-sm font-medium text-gray-900 dark:text-white">Selesai</span>
                                 </div>
                                 <span class="text-xs text-gray-500">Supervisi selesai</span>
                             </div>
                             <div class="flex items-center justify-between p-3 bg-white dark:bg-gray-700/30 rounded-xl border border-gray-200 dark:border-gray-600 hover:border-purple-300 transition-colors">
                                 <div class="flex items-center gap-3">
                                     <div class="w-2 h-2 rounded-full bg-blue-500 animate-pulse"></div>
-                                    <span class="text-sm font-medium text-gray-900 dark:text-white">In Progress</span>
+                                    <span class="text-sm font-medium text-gray-900 dark:text-white">Ditinjau</span>
                                 </div>
-                                <span class="text-xs text-gray-500">Sedang direview</span>
+                                <span class="text-xs text-gray-500">Sedang ditinjau</span>
                             </div>
                             <div class="flex items-center justify-between p-3 bg-white dark:bg-gray-700/30 rounded-xl border border-gray-200 dark:border-gray-600 hover:border-purple-300 transition-colors">
                                 <div class="flex items-center gap-3">
@@ -2798,7 +2798,7 @@ if (backToTopBtn) {
                                     <span class="material-symbols-outlined text-blue-600 dark:text-blue-400 text-sm">pending</span>
                                 </div>
                                 <div>
-                                    <p class="text-sm font-semibold text-gray-900 dark:text-white mb-1">Status: Submitted</p>
+                                    <p class="text-sm font-semibold text-gray-900 dark:text-white mb-1">Status: Disubmit</p>
                                     <p class="text-xs text-gray-600 dark:text-gray-400">Pengajuan terkirim dan menunggu review dari kepala sekolah. Biasanya 1-2 hari kerja.</p>
                                 </div>
                             </div>
@@ -2807,7 +2807,7 @@ if (backToTopBtn) {
                                     <span class="material-symbols-outlined text-amber-600 dark:text-amber-400 text-sm">edit_note</span>
                                 </div>
                                 <div>
-                                    <p class="text-sm font-semibold text-gray-900 dark:text-white mb-1">Status: Revision Requested</p>
+                                    <p class="text-sm font-semibold text-gray-900 dark:text-white mb-1">Status: Revisi</p>
                                     <p class="text-xs text-gray-600 dark:text-gray-400">Ada catatan perbaikan. Baca feedback di kolom komentar, update dokumen, lalu ajukan ulang.</p>
                                 </div>
                             </div>
@@ -2816,7 +2816,7 @@ if (backToTopBtn) {
                                     <span class="material-symbols-outlined text-green-600 dark:text-green-400 text-sm">check_circle</span>
                                 </div>
                                 <div>
-                                    <p class="text-sm font-semibold text-gray-900 dark:text-white mb-1">Status: Approved</p>
+                                    <p class="text-sm font-semibold text-gray-900 dark:text-white mb-1">Status: Selesai</p>
                                     <p class="text-xs text-gray-600 dark:text-gray-400">Jadwal disetujui! Supervisi akan dilaksanakan sesuai waktu yang telah ditentukan.</p>
                                 </div>
                             </div>

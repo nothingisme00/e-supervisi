@@ -161,9 +161,9 @@
                         <div class="text-[10px] sm:text-xs text-gray-500 dark:text-gray-400 truncate">{{ $supervisi->user->nik }}</div>
                         <div class="flex items-center gap-2 mt-1">
                             @if($supervisi->status === 'submitted')
-                            <span class="px-1.5 py-0.5 sm:px-2 sm:py-0.5 bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300 rounded text-[8px] sm:text-[10px] font-medium">Submitted</span>
+                            <span class="px-1.5 py-0.5 sm:px-2 sm:py-0.5 bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300 rounded text-[8px] sm:text-[10px] font-medium">Disubmit</span>
                             @else
-                            <span class="px-1.5 py-0.5 sm:px-2 sm:py-0.5 bg-indigo-100 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-300 rounded text-[8px] sm:text-[10px] font-medium">Review</span>
+                            <span class="px-1.5 py-0.5 sm:px-2 sm:py-0.5 bg-indigo-100 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-300 rounded text-[8px] sm:text-[10px] font-medium">Ditinjau</span>
                             @endif
                         </div>
                     </div>
@@ -214,7 +214,7 @@
                         <div class="font-semibold text-xs sm:text-sm text-gray-900 dark:text-white truncate">{{ $supervisi->user->name }}</div>
                         <div class="text-[10px] sm:text-xs text-gray-500 dark:text-gray-400 truncate">{{ $supervisi->user->nik }}</div>
                         <div class="flex items-center gap-2 mt-1">
-                            <span class="px-1.5 py-0.5 sm:px-2 sm:py-0.5 bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300 rounded text-[8px] sm:text-[10px] font-medium">Completed</span>
+                            <span class="px-1.5 py-0.5 sm:px-2 sm:py-0.5 bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300 rounded text-[8px] sm:text-[10px] font-medium">Selesai</span>
                         </div>
                     </div>
                     <div class="text-[10px] sm:text-xs text-gray-400 dark:text-gray-500 shrink-0">
