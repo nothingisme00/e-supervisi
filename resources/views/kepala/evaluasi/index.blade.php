@@ -48,7 +48,7 @@
                         @elseif(request('status') == 'revision')
                             Perlu Revisi
                         @elseif(request('status') == 'completed')
-                            Telah Ditinjau
+                            Selesai
                         @else
                             Semua Status
                         @endif
@@ -75,7 +75,7 @@
                         </div>
                         <div class="dropdown-item px-4 py-2.5 rounded-md text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-indigo-50 dark:hover:bg-indigo-900/30 hover:text-indigo-600 dark:hover:text-indigo-400 cursor-pointer transition-colors flex items-center gap-3 {{ request('status') == 'completed' ? 'active' : '' }}" data-value="completed">
                             <span class="material-symbols-outlined text-lg">check_circle</span>
-                            Telah Ditinjau
+                            Selesai
                         </div>
                     </div>
                 </div>
@@ -171,7 +171,7 @@
                             <svg class="w-3 h-3 sm:w-3.5 sm:h-3.5 mr-0.5 sm:mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                             </svg>
-                            <span>Direview {{ $supervisi->reviewed_at->diffForHumans() }}</span>
+                            <span>Ditinjau {{ $supervisi->reviewed_at->diffForHumans() }}</span>
                         </div>
                         @endif
                     </div>

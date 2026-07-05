@@ -20,27 +20,7 @@
                     </div>
                 </div>
                 <div class="text-right">
-                    @if($supervisi->status === 'submitted')
-                        <span class="inline-flex items-center px-4 py-2 rounded-full text-sm font-semibold bg-amber-100 text-amber-800">
-                            <span class="w-2 h-2 bg-amber-500 rounded-full mr-2"></span>
-                            Menunggu Peninjauan
-                        </span>
-                    @elseif($supervisi->status === 'under_review')
-                        <span class="inline-flex items-center px-4 py-2 rounded-full text-sm font-semibold bg-indigo-100 text-indigo-800">
-                            <span class="w-2 h-2 bg-indigo-500 rounded-full mr-2"></span>
-                            Sedang Ditinjau
-                        </span>
-                    @elseif($supervisi->status === 'completed')
-                        <span class="inline-flex items-center px-4 py-2 rounded-full text-sm font-semibold bg-emerald-100 text-emerald-800">
-                            <span class="w-2 h-2 bg-emerald-500 rounded-full mr-2"></span>
-                            Telah Ditinjau
-                        </span>
-                    @elseif($supervisi->status === 'revision')
-                        <span class="inline-flex items-center px-4 py-2 rounded-full text-sm font-semibold bg-rose-100 text-rose-800">
-                            <span class="w-2 h-2 bg-rose-500 rounded-full mr-2"></span>
-                            Perlu Revisi
-                        </span>
-                    @endif
+                    <x-status-badge :status="$supervisi->status" />
                     <p class="text-xs text-slate-500 mt-2">Disubmit: {{ $supervisi->updated_at->format('d M Y, H:i') }}</p>
                 </div>
             </div>
@@ -266,7 +246,7 @@
                         class="w-4 h-4 text-indigo-600 bg-gray-100 border-gray-300 rounded focus:ring-indigo-500 focus:ring-2"
                     >
                     <label for="mark_completed" class="ml-2 text-sm font-medium text-slate-700">
-                        Tandai sebagai "Telah Ditinjau" setelah memberikan feedback
+                        Tandai sebagai "Selesai" setelah memberikan feedback
                     </label>
                 </div>
 

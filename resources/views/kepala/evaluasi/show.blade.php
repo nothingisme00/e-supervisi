@@ -43,11 +43,8 @@
                 </div>
                 <!-- Status Badge -->
                 <div class="self-start sm:self-auto mt-1 sm:mt-0">
+                    <x-status-badge :status="$supervisi->status" />
                     @if($supervisi->status === 'submitted')
-                        <span class="inline-flex items-center px-2.5 py-1.5 sm:px-4 sm:py-2 rounded-lg text-xs sm:text-sm font-semibold bg-amber-100 text-amber-700 border border-amber-200 shadow-sm mb-2">
-                            <span class="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-amber-500 rounded-full mr-1.5 sm:mr-2 animate-pulse"></span>
-                            Menunggu Peninjauan
-                        </span>
                         <form action="{{ route('kepala.evaluasi.startReview', $supervisi->id) }}" method="POST" class="mt-2">
                             @csrf
                             <button type="submit" class="w-full inline-flex items-center justify-center px-3 py-2 sm:px-5 sm:py-2.5 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white text-xs sm:text-sm font-bold rounded-lg shadow-md hover:shadow-lg transition-all duration-200 active:scale-95">
@@ -58,25 +55,6 @@
                                 Mulai Review
                             </button>
                         </form>
-                    @elseif($supervisi->status === 'under_review')
-                        <span class="inline-flex items-center px-2.5 py-1.5 sm:px-4 sm:py-2 rounded-lg text-xs sm:text-sm font-semibold bg-indigo-100 text-indigo-700 border border-indigo-200 shadow-sm">
-                            <span class="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-indigo-600 rounded-full mr-1.5 sm:mr-2 animate-pulse"></span>
-                            Sedang Ditinjau
-                        </span>
-                    @elseif($supervisi->status === 'completed')
-                        <span class="inline-flex items-center px-2.5 py-1.5 sm:px-4 sm:py-2 rounded-lg text-xs sm:text-sm font-semibold bg-emerald-100 text-emerald-700 border border-emerald-200 shadow-sm">
-                            <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4 mr-1 sm:mr-2 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                            </svg>
-                            Telah Ditinjau
-                        </span>
-                    @elseif($supervisi->status === 'revision')
-                        <span class="inline-flex items-center px-2.5 py-1.5 sm:px-4 sm:py-2 rounded-lg text-xs sm:text-sm font-semibold bg-rose-100 text-rose-700 border border-rose-200 shadow-sm">
-                            <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4 mr-1 sm:mr-2 text-rose-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
-                            </svg>
-                            Perlu Revisi
-                        </span>
                     @endif
                     <p class="text-[10px] sm:text-xs text-gray-500 dark:text-gray-400 mt-2 flex items-center justify-end">
                         <svg class="w-3 h-3 sm:w-3.5 sm:h-3.5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">

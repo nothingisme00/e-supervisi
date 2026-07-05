@@ -2102,7 +2102,7 @@ if (backToTopBtn) {
                             <span class="material-symbols-outlined text-emerald-600">track_changes</span>
                             <div>
                                 <p class="text-sm font-bold text-gray-900 dark:text-white mb-1">Lacak Status</p>
-                                <p class="text-xs text-gray-600 dark:text-gray-400 leading-relaxed">Lihat badge status supervisi: Draft, Disubmit, Direview, atau Selesai.</p>
+                                <p class="text-xs text-gray-600 dark:text-gray-400 leading-relaxed">Lihat badge status supervisi: Draft, Disubmit, Ditinjau, Revisi, atau Selesai.</p>
                             </div>
                         </div>
                     </div>
