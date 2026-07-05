@@ -111,15 +111,23 @@ Total: **1 Tinggi, 4 Sedang, 3 Rendah** (7 temuan baru). Dead code layout Breeze
 - **Usulan perbaikan:** Samakan dengan partial auth: `{{ date('Y') }}`.
 - **Status:** diperbaiki — ter-cover `LayoutStickyFooterTest::test_footer_copyright_year_is_dynamic`; verifikasi browser: "© 2026"
 
+## [Tinggi] Halaman detail supervisi admin tanpa dukungan dark mode
+- **Kategori:** Warna-Gradient
+- **Lokasi:** `resources/views/admin/supervisi/detail.blade.php` — satu-satunya view ber-`bg-white` tanpa satu pun kelas `dark:` (dikonfirmasi scan seluruh `resources/views`).
+- **Effort:** M
+- **Dampak:** Pada tema gelap seluruh konten halaman tetap terang (kartu putih, latar gradient terang) di dalam kerangka gelap; badge "Disubmit" nyaris tak terbaca. Ditemukan saat QA screenshot halaman detail 2026-07-06 — lolos QA putaran pertama karena halaman detail butuh data supervisi.
+- **Usulan perbaikan:** Tambah varian `dark:` mengikuti idiom halaman kembarannya (`guru/supervisi/detail.blade.php`): kartu `dark:bg-gray-800`, kotak info `dark:from-*-900/20`, teks `dark:text-gray-*`.
+- **Status:** diperbaiki — varian `dark:` ditambahkan menyeluruh (kartu, teks, kotak info, form, modal revisi); regresi dijaga `DarkModeCoverageTest` (scan view ber-`bg-white` tanpa `dark:`); verifikasi browser dark mode OK
+
 ---
 
 ## QA Visual Pasca-Redesign (2026-07-06)
 
-Screenshot ulang 11 halaman × 2 tema (terang/gelap) lintas 3 role via Playwright (guest login; guru: home, my-supervisi, create; kepala: dashboard, evaluasi, settings; admin: dashboard, users, supervisi, carousel):
+Screenshot ulang 11 halaman × 2 tema (terang/gelap) lintas 3 role via Playwright (guest login; guru: home, my-supervisi, create; kepala: dashboard, evaluasi, settings; admin: dashboard, users, supervisi, carousel), lalu putaran kedua untuk 5 halaman detail berdata (guru detail/proses/view-other, kepala evaluasi show, admin supervisi detail) memakai data dummy factory:
 
 - **Lulus:** palet "Teal Pendidikan" konsisten di semua halaman & tema; tidak ditemukan masalah kontras dark-mode dari migrasi mekanis `primary-*` (kekhawatiran utama pasca V1/V2/V5); aksen amber tampil benar sebagai warna aksi sekunder; footer co-brand auth (V7), toggle tema Indonesia (V4), label role (V3) semuanya terkonfirmasi di browser.
-- **Temuan baru:** V8 (bulan Inggris) & V9 (tahun footer) di atas — keduanya langsung diperbaiki.
-- **Observasi (bukan defect):** biru dipertahankan sebagai warna semantik "info" (kotak "Alur Proses", tombol "Tips & Info", kotak "Informasi" admin) — konsisten dipakai, tidak ikut migrasi karena bukan indigo/purple/violet.
+- **Temuan baru:** V8 (bulan Inggris), V9 (tahun footer), V10 (dark mode detail admin) di atas — semuanya langsung diperbaiki.
+- **Observasi (bukan defect):** biru dipertahankan sebagai warna semantik "info"/aksi sekunder (kotak "Alur Proses", tombol "Tips & Info", "Download"/"Preview"/"Simpan", kotak "Informasi" admin) — konsisten dipakai, tidak ikut migrasi karena bukan indigo/purple/violet. Merah pada kartu "Link Video Pembelajaran" dibaca sebagai semantik video/play. Warna selang-seling item refleksi di guru detail (hijau/biru/teal) sedikit ramai tapi lembut — biarkan kecuali user keberatan.
 
 ---
 
