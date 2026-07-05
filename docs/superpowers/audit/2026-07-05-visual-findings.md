@@ -69,7 +69,7 @@ Total: **1 Tinggi, 4 Sedang, 3 Rendah** (7 temuan baru). Dead code layout Breeze
 - **Effort:** S
 - **Dampak:** Konfirmasi visual di `08-admin-dashboard.png` dan `09-admin-users.png` — modal tur muncul otomatis di kunjungan pertama tiap role, tombol navigasinya bahasa Inggris di tengah UI yang seluruhnya Indonesia. Lolos dari audit R11 sebelumnya karena test `IndonesianUiTextTest` tidak memicu render modal ini (butuh trigger JS `just_logged_in` session, tidak tercakup assertion HTTP biasa).
 - **Usulan perbaikan:** Ganti ke "Kembali"/"Lanjut" (atau "Selesai" di step terakhir, sesuai `nextStepIcon` yang sudah berubah jadi check di step akhir).
-- **Status:** diperbaiki — "Kembali"/"Lanjut"/"Selesai" (markup + JS `updateStepDisplay`), ter-cover test baru di `IndonesianUiTextTest`
+- **Status:** diperbaiki — "Kembali"/"Lanjut"/"Selesai" (markup + JS `updateStepDisplay`), ter-cover test baru di `IndonesianUiTextTest`. Lanjutan: toggle tema di login ("Light Mode"/"Dark Mode") juga diganti "Mode Terang"/"Mode Gelap".
 
 ## [Sedang] `lazy-image` fallback gradient default masih hardcode indigo→purple→indigo
 - **Kategori:** Komponen

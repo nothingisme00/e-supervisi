@@ -182,12 +182,12 @@
             if (html.classList.contains('dark')) {
                 html.classList.remove('dark');
                 localStorage.setItem('theme', 'light');
-                if(themeText) themeText.textContent = 'Light Mode';
+                if(themeText) themeText.textContent = 'Mode Terang';
                 if(themeIcon) themeIcon.textContent = 'light_mode';
             } else {
                 html.classList.add('dark');
                 localStorage.setItem('theme', 'dark');
-                if(themeText) themeText.textContent = 'Dark Mode';
+                if(themeText) themeText.textContent = 'Mode Gelap';
                 if(themeIcon) themeIcon.textContent = 'dark_mode';
             }
         }
@@ -199,11 +199,11 @@
             
             if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
                 document.documentElement.classList.add('dark');
-                if(themeText) themeText.textContent = 'Dark Mode';
+                if(themeText) themeText.textContent = 'Mode Gelap';
                 if(themeIcon) themeIcon.textContent = 'dark_mode';
             } else {
                 document.documentElement.classList.remove('dark');
-                if(themeText) themeText.textContent = 'Light Mode';
+                if(themeText) themeText.textContent = 'Mode Terang';
                 if(themeIcon) themeIcon.textContent = 'light_mode';
             }
 
@@ -602,7 +602,7 @@
         <div class="mt-4 lg:mt-5 pt-3 lg:pt-4 border-t border-gray-200 dark:border-slate-700 flex items-center justify-between animate-[fadeIn_0.6s_ease-out_0.2s_both]">
             <button class="group flex items-center space-x-1.5 px-2.5 py-1.5 rounded-lg text-[10px] lg:text-xs font-semibold text-gray-600 dark:text-gray-400 bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 hover:border-indigo-300 dark:hover:border-indigo-600 hover:text-indigo-600 dark:hover:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-indigo-950/30 transition-all duration-200 shadow-sm" onclick="toggleTheme()">
                 <span class="material-symbols-outlined text-sm transition-transform duration-300 group-hover:rotate-180" id="theme-icon">light_mode</span>
-                <span id="theme-text">Light Mode</span>
+                <span id="theme-text">Mode Terang</span>
             </button>
             @include('auth.partials.footer')
         </div>

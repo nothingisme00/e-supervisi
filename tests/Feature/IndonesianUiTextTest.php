@@ -43,4 +43,15 @@ class IndonesianUiTextTest extends TestCase
             ->assertDontSee('Continue')
             ->assertDontSee("'Finish'", false);
     }
+
+    /**
+     * Lanjutan V4: toggle tema di halaman login tidak boleh berbahasa Inggris
+     * (label statis + string JS "Light Mode"/"Dark Mode").
+     */
+    public function test_login_theme_toggle_is_indonesian(): void
+    {
+        $this->get(route('login'))
+            ->assertDontSee('Light Mode')
+            ->assertDontSee('Dark Mode');
+    }
 }
