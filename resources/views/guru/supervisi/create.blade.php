@@ -17,7 +17,7 @@
             </div>
             <h2 class="text-base sm:text-2xl font-bold text-white mb-1 sm:mb-2">Mulai Supervisi Baru?</h2>
             <p class="text-primary-100 dark:text-primary-200 text-xs sm:text-sm">
-                Tanggal: <strong>{{ date('d F Y') }}</strong>
+                Tanggal: <strong>{{ now()->translatedFormat('d F Y') }}</strong>
             </p>
         </div>
 

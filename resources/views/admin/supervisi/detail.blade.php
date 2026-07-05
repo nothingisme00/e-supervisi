@@ -21,7 +21,7 @@
                 </div>
                 <div class="text-right">
                     <x-status-badge :status="$supervisi->status" />
-                    <p class="text-xs text-slate-500 mt-2">Disubmit: {{ $supervisi->updated_at->format('d M Y, H:i') }}</p>
+                    <p class="text-xs text-slate-500 mt-2">Disubmit: {{ $supervisi->updated_at->translatedFormat('d M Y, H:i') }}</p>
                 </div>
             </div>
         </div>
@@ -195,7 +195,7 @@
                         @forelse($supervisi->feedback as $fb)
                             <div class="p-4 bg-gradient-to-r from-amber-50 to-orange-50 rounded-lg border border-amber-100">
                                 <div class="flex items-start justify-between mb-2">
-                                    <p class="text-xs font-semibold text-slate-600">{{ $fb->created_at->format('d M Y, H:i') }}</p>
+                                    <p class="text-xs font-semibold text-slate-600">{{ $fb->created_at->translatedFormat('d M Y, H:i') }}</p>
                                     @if($fb->is_revision_request)
                                         <span class="text-xs px-2 py-1 bg-rose-100 text-rose-700 rounded-full font-medium">
                                             Revisi Diminta

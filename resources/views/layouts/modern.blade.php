@@ -630,7 +630,7 @@
                     
                     <!-- Right: Copyright -->
                     <div class="text-xs text-gray-500 dark:text-gray-400">
-                        <span>© 2025 Sistem Supervisi Pembelajaran</span>
+                        <span>© {{ date('Y') }} Sistem Supervisi Pembelajaran</span>
                     </div>
                 </div>
             </div>

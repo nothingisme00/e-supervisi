@@ -88,7 +88,7 @@
                                 <svg class="w-3 h-3 sm:w-4 sm:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
                                 </svg>
-                                {{ $supervisi->updated_at->format('d M Y, H:i') }}
+                                {{ $supervisi->updated_at->translatedFormat('d M Y, H:i') }}
                             </span>
                         </div>
                         <a href="{{ route('kepala.evaluasi.show', $supervisi->id) }}" class="flex items-center justify-center gap-1.5 sm:gap-2 w-full px-3 py-2 sm:px-4 sm:py-2.5 bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700 text-white text-xs sm:text-sm font-semibold rounded-md sm:rounded-lg transition-all shadow-sm hover:shadow-md">
@@ -156,7 +156,7 @@
                                 <svg class="w-3 h-3 sm:w-4 sm:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
                                 </svg>
-                                {{ $supervisi->reviewed_at ? $supervisi->reviewed_at->format('d M Y, H:i') : $supervisi->updated_at->format('d M Y, H:i') }}
+                                {{ $supervisi->reviewed_at ? $supervisi->reviewed_at->translatedFormat('d M Y, H:i') : $supervisi->updated_at->translatedFormat('d M Y, H:i') }}
                             </span>
                         </div>
                         <a href="{{ route('kepala.evaluasi.show', $supervisi->id) }}" class="flex items-center justify-center gap-1.5 sm:gap-2 w-full px-3 py-2 sm:px-4 sm:py-2.5 bg-gradient-to-r from-primary-600 to-primary-600 hover:from-primary-700 hover:to-primary-700 text-white text-xs sm:text-sm font-semibold rounded-md sm:rounded-lg transition-all shadow-sm hover:shadow-md">
@@ -223,7 +223,7 @@
                                 <svg class="w-3 h-3 sm:w-4 sm:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
                                 </svg>
-                                {{ $supervisi->reviewed_at ? $supervisi->reviewed_at->format('d M Y, H:i') : $supervisi->updated_at->format('d M Y, H:i') }}
+                                {{ $supervisi->reviewed_at ? $supervisi->reviewed_at->translatedFormat('d M Y, H:i') : $supervisi->updated_at->translatedFormat('d M Y, H:i') }}
                             </span>
                         </div>
                         <a href="{{ route('kepala.evaluasi.show', $supervisi->id) }}" class="flex items-center justify-center gap-1.5 sm:gap-2 w-full px-3 py-2 sm:px-4 sm:py-2.5 bg-gradient-to-r from-emerald-600 to-green-600 hover:from-emerald-700 hover:to-green-700 text-white text-xs sm:text-sm font-semibold rounded-md sm:rounded-lg transition-all shadow-sm hover:shadow-md">

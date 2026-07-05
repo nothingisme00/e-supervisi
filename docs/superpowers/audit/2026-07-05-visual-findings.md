@@ -95,6 +95,32 @@ Total: **1 Tinggi, 4 Sedang, 3 Rendah** (7 temuan baru). Dead code layout Breeze
 - **Usulan perbaikan:** Tambah footer partial kecil (co-brand minimal, bukan `@extends('layouts.modern')` penuh — itu akan membawa sidebar/nav yang tidak relevan untuk halaman auth) dipakai di kedua file.
 - **Status:** diperbaiki — partial `auth/partials/footer.blade.php` ("© {tahun} E-Supervisi · Sistem Supervisi Pembelajaran") dipakai di login (menggantikan copyright inline lama) & change-password; ter-cover `AuthPageFooterTest`
 
+## [Sedang] Nama bulan Inggris di tanggal ("05 July 2026") lintas 9 view
+- **Kategori:** Copy
+- **Lokasi:** `date('d F Y')` di `guru/supervisi/create.blade.php`; `->format('d F Y')` / `->format('d M Y')` / `->format('d M Y, H:i')` di `guru/supervisi/{detail,view}.blade.php`, `guru/home.blade.php`, `guru/my-supervisi.blade.php`, `kepala/dashboard.blade.php`, `kepala/evaluasi/{index,show}.blade.php`, `admin/supervisi/detail.blade.php` (13 pemakaian).
+- **Effort:** S
+- **Dampak:** Tanggal tampil berbahasa Inggris ("July", "Jul") di UI yang seluruhnya Indonesia — lolos dari R10/R11 karena bukan teks statis melainkan output `format()` yang mengabaikan `APP_LOCALE=id`. Ditemukan saat QA screenshot 2026-07-06.
+- **Usulan perbaikan:** Ganti semua `format()` bernama-bulan jadi `translatedFormat()` (Carbon mengikuti locale id), `date()` jadi `now()->translatedFormat()`.
+- **Status:** diperbaiki — 13 pemakaian dimigrasi ke `translatedFormat()`; regresi dijaga `IndonesianDateFormatTest` (scan view untuk `format()` berpola bulan F/M); verifikasi browser: "Tanggal: 05 Juli 2026"
+
+## [Rendah] Tahun copyright footer layout hardcode "© 2025"
+- **Kategori:** Copy
+- **Lokasi:** `resources/views/layouts/modern.blade.php` footer (`<span>© 2025 Sistem Supervisi Pembelajaran</span>`) — kontras dengan footer auth (V7) yang sudah dinamis `{{ date('Y') }}`.
+- **Effort:** S
+- **Dampak:** Semua halaman dalam-app menampilkan "© 2025" pada 2026; halaman login menampilkan "© 2026" — inkonsisten antar halaman (jenis keluhan yang sama dengan pemicu audit ini). Ditemukan saat QA screenshot 2026-07-06.
+- **Usulan perbaikan:** Samakan dengan partial auth: `{{ date('Y') }}`.
+- **Status:** diperbaiki — ter-cover `LayoutStickyFooterTest::test_footer_copyright_year_is_dynamic`; verifikasi browser: "© 2026"
+
+---
+
+## QA Visual Pasca-Redesign (2026-07-06)
+
+Screenshot ulang 11 halaman × 2 tema (terang/gelap) lintas 3 role via Playwright (guest login; guru: home, my-supervisi, create; kepala: dashboard, evaluasi, settings; admin: dashboard, users, supervisi, carousel):
+
+- **Lulus:** palet "Teal Pendidikan" konsisten di semua halaman & tema; tidak ditemukan masalah kontras dark-mode dari migrasi mekanis `primary-*` (kekhawatiran utama pasca V1/V2/V5); aksen amber tampil benar sebagai warna aksi sekunder; footer co-brand auth (V7), toggle tema Indonesia (V4), label role (V3) semuanya terkonfirmasi di browser.
+- **Temuan baru:** V8 (bulan Inggris) & V9 (tahun footer) di atas — keduanya langsung diperbaiki.
+- **Observasi (bukan defect):** biru dipertahankan sebagai warna semantik "info" (kotak "Alur Proses", tombol "Tips & Info", kotak "Informasi" admin) — konsisten dipakai, tidak ikut migrasi karena bukan indigo/purple/violet.
+
 ---
 
 ## Observasi Aman (OK) — jangan disentuh

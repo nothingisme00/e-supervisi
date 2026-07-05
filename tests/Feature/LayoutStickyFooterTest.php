@@ -23,4 +23,15 @@ class LayoutStickyFooterTest extends TestCase
             ->assertDontSee('style="flex:1 1 auto', false)
             ->assertDontSee('#main-content > footer', false);
     }
+
+    /**
+     * V9: tahun copyright footer layout mengikuti tahun berjalan,
+     * tidak hardcode (login sudah dinamis, footer dalam-app tertinggal "2025").
+     */
+    public function test_footer_copyright_year_is_dynamic(): void
+    {
+        $guru = User::factory()->guru()->create(['must_change_password' => false, 'tingkat' => 'SD']);
+        $this->actingAs($guru)->get(route('guru.home'))
+            ->assertSee('© '.date('Y').' Sistem Supervisi Pembelajaran');
+    }
 }

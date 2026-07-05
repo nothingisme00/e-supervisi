@@ -60,7 +60,7 @@
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
                                         </svg>
                                         <span class="text-xs sm:text-sm font-semibold text-gray-700 dark:text-gray-300">
-                                            {{ $item->tanggal_supervisi ? \Carbon\Carbon::parse($item->tanggal_supervisi)->format('d M Y') : 'Belum disubmit' }}
+                                            {{ $item->tanggal_supervisi ? \Carbon\Carbon::parse($item->tanggal_supervisi)->translatedFormat('d M Y') : 'Belum disubmit' }}
                                         </span>
                                     </div>
                                     <div class="flex items-center gap-1.5 sm:gap-2 text-[10px] sm:text-xs text-gray-500 dark:text-gray-400">
