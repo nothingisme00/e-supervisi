@@ -23,16 +23,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
     
     <style>
-        /* Sticky Footer: pastikan footer selalu di bawah */
-        #main-content {
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
-        #main-content > footer {
-            margin-top: auto;
-        }
-
         /* Global button cursor pointer */
         button, 
         input[type="button"], 
@@ -606,13 +596,13 @@
         </aside>
 
         <!-- MAIN CONTENT -->
-        <main id="main-content" style="min-height:100vh;display:flex;flex-direction:column;" class="flex-1 min-h-screen pt-[72px] sm:pt-[88px] md:pt-[72px] lg:pt-[84px] pb-20 sm:pb-20 md:pb-0 transition-all duration-300 flex flex-col bg-gray-50 dark:bg-gray-900">
-        <div style="flex:1 1 auto;" class="p-2.5 sm:p-4 lg:p-8 bg-gray-50 dark:bg-gray-900 flex-1">
+        <main id="main-content" class="flex-1 min-h-screen pt-[72px] sm:pt-[88px] md:pt-[72px] lg:pt-[84px] pb-20 sm:pb-20 md:pb-0 transition-all duration-300 flex flex-col bg-gray-50 dark:bg-gray-900">
+        <div class="p-2.5 sm:p-4 lg:p-8 bg-gray-50 dark:bg-gray-900 flex-1">
             @yield('content')
         </div>
         
         <!-- FOOTER -->
-        <footer style="margin-top:auto;" class="hidden md:block mt-auto py-6 border-t border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800">
+        <footer class="hidden md:block mt-auto py-6 border-t border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800">
             <div class="max-w-7xl mx-auto px-4">
                 <div class="flex flex-col md:flex-row items-center justify-between gap-4">
                     <!-- Left: Brand -->

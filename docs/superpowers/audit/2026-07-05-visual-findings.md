@@ -85,7 +85,7 @@ Total: **1 Tinggi, 4 Sedang, 3 Rendah** (7 temuan baru). Dead code layout Breeze
 - **Effort:** S
 - **Dampak:** Tidak ada dampak visual saat ini (ketiganya konsisten), tapi risiko drift kalau salah satu diedit tanpa yang lain — tiga sumber kebenaran untuk satu perilaku.
 - **Usulan perbaikan:** Sisakan satu definisi (kelas Tailwind `flex flex-col`/`mt-auto` yang sudah ada di `class`, hapus `style` inline yang redundan dan blok `<style>` custom).
-- **Status:** ditemukan
+- **Status:** diperbaiki — blok `<style>` sticky-footer + 3 inline style dihapus, kelas Tailwind jadi satu-satunya definisi; ter-cover `LayoutStickyFooterTest`
 
 ## [Rendah] Halaman auth (login, change-password) tidak mewarisi footer app
 - **Kategori:** Footer-Layout
