@@ -11,6 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
+        // Skip on SQLite - it doesn't support column modification
+        if (Schema::getConnection()->getDriverName() === 'sqlite') {
+            return;
+        }
+
         Schema::table('carousel_slides', function (Blueprint $table) {
             $table->string('title')->nullable()->change();
         });

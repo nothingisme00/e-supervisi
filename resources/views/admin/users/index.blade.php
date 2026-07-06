@@ -42,7 +42,7 @@
     // Reset password
     function resetPassword(userId, userName) {
         showConfirmModal(
-            `Apakah Anda yakin ingin mereset password untuk user "${userName}"? Password akan direset ke: pass123456`,
+            `Apakah Anda yakin ingin mereset password untuk user "${userName}"? Password akan direset ke: {{ config('app.default_user_password') }}`,
             'Konfirmasi Reset Password',
             function() {
                 const url = `{{ url('admin/users') }}/${userId}/reset-password`;

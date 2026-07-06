@@ -11,6 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
+        // Skip on SQLite - uses MySQL-specific information_schema queries
+        if (Schema::getConnection()->getDriverName() === 'sqlite') {
+            return;
+        }
+
         Schema::table('users', function (Blueprint $table) {
             // Add index on name for faster search queries (skip if exists)
             if (!$this->indexExists('users', 'users_name_index')) {

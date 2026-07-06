@@ -48,6 +48,14 @@ class EvaluasiController extends Controller
             'feedback.replies.user'
         ])->findOrFail($id);
 
+        if ($supervisi->user->tingkat !== auth()->user()->tingkat) {
+            abort(403, 'Anda tidak memiliki akses ke supervisi ini');
+        }
+
+        if (!in_array($supervisi->status, ['submitted', 'under_review', 'revision', 'completed'])) {
+            abort(403, 'Anda tidak memiliki akses ke supervisi ini');
+        }
+
         // Don't auto mark - let kepala sekolah explicitly start review
 
         return view('kepala.evaluasi.show', compact('supervisi'));
@@ -56,6 +64,10 @@ class EvaluasiController extends Controller
     public function startReview($id)
     {
         $supervisi = Supervisi::findOrFail($id);
+
+        if ($supervisi->user->tingkat !== auth()->user()->tingkat) {
+            abort(403, 'Anda tidak memiliki akses ke supervisi ini');
+        }
 
         // Only allow starting review if status is submitted
         if ($supervisi->status !== 'submitted') {
@@ -81,9 +93,21 @@ class EvaluasiController extends Controller
 
         $supervisi = Supervisi::findOrFail($id);
 
+        if ($supervisi->user->tingkat !== auth()->user()->tingkat) {
+            abort(403, 'Anda tidak memiliki akses ke supervisi ini');
+        }
+
+        if (!in_array($supervisi->status, ['submitted', 'under_review', 'revision'])) {
+            abort(403, 'Supervisi tidak dapat diberi feedback dari status ini');
+        }
+
         // Check if this is a revision request using boolean() helper
         // This handles '1', 'on', 'yes', true, etc.
         $isRevisionRequest = $request->boolean('is_revision_request');
+
+        if ($isRevisionRequest && $supervisi->lockedByOther()) {
+            abort(403, 'Supervisi sedang direview oleh reviewer lain');
+        }
 
         // Create feedback with or without revision request flag
         Feedback::create([
@@ -98,7 +122,6 @@ class EvaluasiController extends Controller
         if ($isRevisionRequest) {
             $supervisi->update([
                 'status' => 'revision',
-                'revision_count' => ($supervisi->revision_count ?? 0) + 1,
                 'revision_notes' => $request->komentar
             ]);
 
@@ -115,13 +138,6 @@ class EvaluasiController extends Controller
             ]);
         }
 
-        // Optionally mark as completed
-        if ($request->has('mark_completed') && $request->mark_completed == '1') {
-            $supervisi->update([
-                'status' => 'completed'
-            ]);
-        }
-
         return redirect()->route('kepala.evaluasi.show', $id)
             ->with('success', 'Feedback berhasil diberikan');
     }
@@ -129,9 +145,23 @@ class EvaluasiController extends Controller
     public function complete($id)
     {
         $supervisi = Supervisi::findOrFail($id);
-        
+
+        if ($supervisi->user->tingkat !== auth()->user()->tingkat) {
+            abort(403, 'Anda tidak memiliki akses ke supervisi ini');
+        }
+
+        if ($supervisi->status !== 'under_review') {
+            abort(403, 'Supervisi tidak dapat diselesaikan dari status ini');
+        }
+
+        if ($supervisi->lockedByOther()) {
+            abort(403, 'Supervisi sedang direview oleh reviewer lain');
+        }
+
         $supervisi->update([
-            'status' => 'completed'
+            'status' => 'completed',
+            'reviewed_by' => auth()->id(),
+            'reviewed_at' => now()
         ]);
 
         return redirect()->route('kepala.evaluasi.index')
@@ -146,6 +176,18 @@ class EvaluasiController extends Controller
 
         $supervisi = Supervisi::findOrFail($id);
 
+        if ($supervisi->user->tingkat !== auth()->user()->tingkat) {
+            abort(403, 'Anda tidak memiliki akses ke supervisi ini');
+        }
+
+        if (!in_array($supervisi->status, ['submitted', 'under_review', 'revision'])) {
+            abort(403, 'Supervisi tidak dapat direvisi dari status ini');
+        }
+
+        if ($supervisi->lockedByOther()) {
+            abort(403, 'Supervisi sedang direview oleh reviewer lain');
+        }
+
         // Create feedback with revision request
         Feedback::create([
             'supervisi_id' => $id,
@@ -157,7 +199,6 @@ class EvaluasiController extends Controller
         // Update status to revision
         $supervisi->update([
             'status' => 'revision',
-            'revision_count' => $supervisi->revision_count + 1,
             'revision_notes' => $request->revision_notes
         ]);
 
@@ -181,14 +222,13 @@ class EvaluasiController extends Controller
             abort(403, 'Anda tidak memiliki akses ke dokumen ini');
         }
 
-        // Prefer the normalized column `path_file` but fall back to older names
-        $relativePath = $dokumen->path_file ?? $dokumen->file_path ?? null;
+        $relativePath = $dokumen->path_file;
 
         if (!$relativePath) {
             return redirect()->back()->with('error', 'File tidak ditemukan');
         }
 
-        $filePath = storage_path('app/public/' . ltrim($relativePath, '/'));
+        $filePath = \Illuminate\Support\Facades\Storage::disk('local')->path(ltrim($relativePath, '/'));
 
         if (!file_exists($filePath)) {
             return redirect()->back()->with('error', 'File tidak ditemukan');
@@ -215,22 +255,17 @@ class EvaluasiController extends Controller
             abort(403, 'Anda tidak memiliki akses ke dokumen ini');
         }
 
-        // Prefer the normalized column `path_file` but fall back to older names
-        $relativePath = $dokumen->path_file ?? $dokumen->file_path ?? null;
+        $relativePath = $dokumen->path_file;
 
         if (!$relativePath) {
             abort(404, 'File tidak ditemukan');
         }
 
-        $filePath = storage_path('app/public/' . ltrim($relativePath, '/'));
+        $filePath = \Illuminate\Support\Facades\Storage::disk('local')->path(ltrim($relativePath, '/'));
 
         if (!file_exists($filePath)) {
             abort(404, 'File tidak ditemukan');
         }
-
-        // Get file info
-        $fileName = $dokumen->nama_file ?? basename($relativePath);
-        $mimeType = $dokumen->tipe_file ?? mime_content_type($filePath);
 
         // Return file for inline viewing
         return response()->file($filePath);

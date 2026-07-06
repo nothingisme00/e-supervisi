@@ -15,7 +15,7 @@
                     @if($slide->image_path)
                         <img src="{{ $slide->image_url }}" alt="{{ $slide->title }}" class="w-full h-full object-cover" loading="lazy" decoding="async">
                     @else
-                        <div class="w-full h-full bg-gradient-to-br from-indigo-600 via-purple-600 to-indigo-800 flex items-center justify-center">
+                        <div class="w-full h-full bg-gradient-to-br from-primary-600 via-primary-600 to-primary-800 flex items-center justify-center">
                             <svg class="w-12 h-12 sm:w-16 sm:h-16 text-white/30" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
                             </svg>
@@ -46,14 +46,14 @@
                         <h4 class="text-sm sm:text-base md:text-lg font-bold text-gray-900 dark:text-white">Tips & Informasi</h4>
                     </div>
                     <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                        <!-- Tip 1: Quick Navigation -->
+                        <!-- Tip 1: Navigasi Cepat -->
                         <div class="bg-gray-50 dark:bg-gray-900/30 rounded-lg p-3 border border-blue-100 dark:border-blue-900/30">
                             <div class="flex items-start gap-2">
                                 <svg class="w-5 h-5 text-blue-600 dark:text-blue-400 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
                                 </svg>
                                 <div>
-                                    <p class="text-sm font-semibold text-blue-900 dark:text-blue-300 mb-1">Quick Navigation</p>
+                                    <p class="text-sm font-semibold text-blue-900 dark:text-blue-300 mb-1">Navigasi Cepat</p>
                                     <p class="text-xs text-gray-600 dark:text-gray-400">Gunakan tombol "Panduan" untuk melihat langkah lengkap supervisi</p>
                                 </div>
                             </div>
@@ -67,19 +67,19 @@
                                 </svg>
                                 <div>
                                     <p class="text-sm font-semibold text-emerald-900 dark:text-emerald-300 mb-1">Lacak Status</p>
-                                    <p class="text-xs text-gray-600 dark:text-gray-400">Lihat badge status supervisi: Draft, Disubmit, Direview, atau Selesai</p>
+                                    <p class="text-xs text-gray-600 dark:text-gray-400">Lihat badge status supervisi: Draft, Disubmit, Ditinjau, Revisi, atau Selesai</p>
                                 </div>
                             </div>
                         </div>
 
                         <!-- Tip 3: Collaboration -->
-                        <div class="bg-gray-50 dark:bg-gray-900/30 rounded-lg p-3 border border-purple-100 dark:border-purple-900/30">
+                        <div class="bg-gray-50 dark:bg-gray-900/30 rounded-lg p-3 border border-primary-100 dark:border-primary-900/30">
                             <div class="flex items-start gap-2">
-                                <svg class="w-5 h-5 text-purple-600 dark:text-purple-400 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <svg class="w-5 h-5 text-primary-600 dark:text-primary-400 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 14h4a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z"></path>
                                 </svg>
                                 <div>
-                                    <p class="text-sm font-semibold text-purple-900 dark:text-purple-300 mb-1">Kolaborasi</p>
+                                    <p class="text-sm font-semibold text-primary-900 dark:text-primary-300 mb-1">Kolaborasi</p>
                                     <p class="text-xs text-gray-600 dark:text-gray-400">Klik "Komentar" untuk melihat feedback dari Kepala Sekolah</p>
                                 </div>
                             </div>
@@ -95,13 +95,13 @@
                     <div class="px-2 py-2 sm:px-3 sm:py-2.5 md:px-5 md:py-4 lg:px-6 lg:py-5">
                         <div class="space-y-2 sm:space-y-3 md:space-y-4">
                 @foreach($supervisiList as $item)
-                <div class="bg-gray-50 dark:bg-gray-900/30 rounded-xl md:rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md hover:border-indigo-300 dark:hover:border-indigo-700 transition-all duration-200 overflow-hidden">
+                <div class="bg-gray-50 dark:bg-gray-900/30 rounded-xl md:rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md hover:border-primary-300 dark:hover:border-primary-700 transition-all duration-200 overflow-hidden">
                     <!-- Header Card -->
-                    <div class="p-3 sm:p-3 md:p-4 bg-gradient-to-r from-indigo-50/80 to-purple-50/80 dark:from-indigo-900/20 dark:to-purple-900/20">
+                    <div class="p-3 sm:p-3 md:p-4 bg-gradient-to-r from-primary-50/80 to-primary-50/80 dark:from-primary-900/20 dark:to-primary-900/20">
                         <div class="flex items-start justify-between gap-3 sm:gap-2.5 md:gap-3">
                             <div class="flex items-center gap-3 sm:gap-2.5 md:gap-3 flex-1 min-w-0">
                                 <div class="shrink-0">
-                                    <div class="w-11 h-11 sm:w-10 sm:h-10 md:w-12 md:h-12 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white font-bold text-base sm:text-base md:text-lg shadow-md ring-2 ring-white dark:ring-gray-800">
+                                    <div class="w-11 h-11 sm:w-10 sm:h-10 md:w-12 md:h-12 rounded-full bg-gradient-to-br from-primary-500 to-primary-600 flex items-center justify-center text-white font-bold text-base sm:text-base md:text-lg shadow-md ring-2 ring-white dark:ring-gray-800">
                                         {{ strtoupper(substr($item->user->name, 0, 1)) }}
                                     </div>
                                 </div>
@@ -111,7 +111,7 @@
                                             {{ $item->user->name }}
                                         </h4>
                                         @if($item->user_id == auth()->id())
-                                            <span class="inline-flex items-center gap-1 sm:gap-1 px-2 py-0.5 sm:px-2 bg-indigo-600 dark:bg-indigo-500 text-white text-xs sm:text-xs font-medium rounded-full">
+                                            <span class="inline-flex items-center gap-1 sm:gap-1 px-2 py-0.5 sm:px-2 bg-primary-600 dark:bg-primary-500 text-white text-xs sm:text-xs font-medium rounded-full">
                                                 <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20">
                                                     <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
                                                 </svg>
@@ -146,47 +146,15 @@
                                         <svg class="w-3.5 h-3.5 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
                                         </svg>
-                                        {{ \Carbon\Carbon::parse($item->tanggal_supervisi)->format('d M Y') }}
+                                        {{ \Carbon\Carbon::parse($item->tanggal_supervisi)->translatedFormat('d M Y') }}
                                     </p>
                                 </div>
                             </div>
                             
                             <!-- Status Badge -->
                             <div class="shrink-0">
-                                @if($item->status == 'draft')
-                                    <span class="inline-flex items-center gap-1 sm:gap-1.5 px-2 py-1 sm:px-3 sm:py-1.5 bg-gray-100 text-gray-700 text-[10px] sm:text-xs font-semibold rounded-full">
-                                        <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20"><circle cx="10" cy="10" r="3"/></svg>
-                                        Draft
-                                    </span>
-                                @elseif($item->status == 'submitted')
-                                    <span class="inline-flex items-center gap-1 sm:gap-1.5 px-2 py-1 sm:px-3 sm:py-1.5 bg-amber-100 text-amber-700 text-[10px] sm:text-xs font-semibold rounded-full">
-                                        <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20"><circle cx="10" cy="10" r="3"/></svg>
-                                        Disubmit
-                                    </span>
-                                @elseif($item->status == 'under_review')
-                                <span class="inline-flex items-center gap-1 sm:gap-1.5 px-2 py-1 sm:px-3 sm:py-1.5 bg-indigo-100 text-indigo-700 text-[10px] sm:text-xs font-semibold rounded-full">
-                                    <svg class="w-3.5 h-3.5 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
-                                    </svg>
-                                    Direview
-                                </span>
-                            @elseif($item->status == 'completed')
-                                <span class="inline-flex items-center gap-1 sm:gap-1.5 px-2 py-1 sm:px-3 sm:py-1.5 bg-emerald-100 text-emerald-700 text-[10px] sm:text-xs font-semibold rounded-full">
-                                    <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20">
-                                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
-                                    </svg>
-                                    Selesai
-                                </span>
-                            @elseif($item->status == 'revision')
-                                {{-- Badge for revision status --}}
-                                <span class="inline-flex items-center gap-1 sm:gap-1.5 px-2 py-1 sm:px-3 sm:py-1.5 bg-rose-100 text-rose-700 text-[10px] sm:text-xs font-semibold rounded-full">
-                                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
-                                    </svg>
-                                    Perlu Revisi
-                                </span>
-                            @endif
-                        </div>
+                                <x-status-badge :status="$item->status" />
+                            </div>
                     </div>
                 </div>
 
@@ -199,8 +167,8 @@
                             $hasProses = $item->prosesPembelajaran != null;
                         @endphp
 
-                        <div class="flex items-center gap-1.5 sm:gap-1.5 md:gap-2 px-2.5 py-1.5 sm:px-2.5 sm:py-1.5 md:px-3 bg-indigo-50 dark:bg-indigo-900/20 rounded-lg md:rounded-lg border border-indigo-100 dark:border-indigo-800">
-                            <svg class="w-4 h-4 sm:w-3.5 sm:h-3.5 md:w-4 md:h-4 text-indigo-600 dark:text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <div class="flex items-center gap-1.5 sm:gap-1.5 md:gap-2 px-2.5 py-1.5 sm:px-2.5 sm:py-1.5 md:px-3 bg-primary-50 dark:bg-primary-900/20 rounded-lg md:rounded-lg border border-primary-100 dark:border-primary-800">
+                            <svg class="w-4 h-4 sm:w-3.5 sm:h-3.5 md:w-4 md:h-4 text-primary-600 dark:text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
                             </svg>
                             <span class="text-xs sm:text-xs font-semibold text-gray-700 dark:text-gray-300">Dokumen: <span class="{{ $docCount == 7 ? 'text-green-600 dark:text-green-400' : 'text-orange-600 dark:text-orange-400' }}">{{ $docCount }}/7</span></span>
@@ -223,11 +191,11 @@
                         @endif
 
                         @if($item->feedback->count() > 0)
-                            <div class="flex items-center gap-1 sm:gap-1.5 md:gap-2 px-2 py-1 sm:px-2.5 sm:py-1.5 md:px-3 bg-purple-50 dark:bg-purple-900/20 rounded-md md:rounded-lg border border-purple-100 dark:border-purple-800">
-                                <svg class="w-3 h-3 sm:w-3.5 sm:h-3.5 md:w-4 md:h-4 text-purple-600 dark:text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <div class="flex items-center gap-1 sm:gap-1.5 md:gap-2 px-2 py-1 sm:px-2.5 sm:py-1.5 md:px-3 bg-primary-50 dark:bg-primary-900/20 rounded-md md:rounded-lg border border-primary-100 dark:border-primary-800">
+                                <svg class="w-3 h-3 sm:w-3.5 sm:h-3.5 md:w-4 md:h-4 text-primary-600 dark:text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z"/>
                                 </svg>
-                                <span class="text-[10px] sm:text-xs font-semibold text-purple-700 dark:text-purple-300">{{ $item->feedback->count() }} Feedback</span>
+                                <span class="text-[10px] sm:text-xs font-semibold text-primary-700 dark:text-primary-300">{{ $item->feedback->count() }} Feedback</span>
                             </div>
                         @endif
                     </div>
@@ -259,14 +227,14 @@
                                     @foreach($parentComments as $fb)
                                     <div class="bg-slate-50 dark:bg-gray-900/50 rounded-lg p-2.5 border border-slate-200 dark:border-gray-700">
                                         <div class="flex items-start gap-2">
-                                            <div class="w-7 h-7 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white font-semibold text-xs flex-shrink-0">
+                                            <div class="w-7 h-7 rounded-full bg-gradient-to-br from-primary-500 to-primary-600 flex items-center justify-center text-white font-semibold text-xs flex-shrink-0">
                                                 {{ strtoupper(substr($fb->user->name ?? 'U', 0, 1)) }}
                                             </div>
                                             <div class="flex-1 min-w-0">
                                                 <div class="flex items-center gap-1.5 mb-1 flex-wrap">
                                                     <p class="text-xs font-semibold text-slate-700 dark:text-gray-300">{{ $fb->user->name ?? 'User' }}</p>
                                                     @if($fb->user && $fb->user->role === 'kepala_sekolah')
-                                                    <span class="inline-flex items-center px-1.5 py-0.5 rounded text-xs font-semibold bg-purple-100 text-purple-700 dark:bg-purple-900/40 dark:text-purple-300">
+                                                    <span class="inline-flex items-center px-1.5 py-0.5 rounded text-xs font-semibold bg-primary-100 text-primary-700 dark:bg-primary-900/40 dark:text-primary-300">
                                                         <svg class="w-2.5 h-2.5 mr-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path>
                                                         </svg>
@@ -347,7 +315,7 @@
                             @endif
 
                             @if($item->status == 'draft')
-                                <a href="{{ route('guru.supervisi.continue', $item->id) }}" class="inline-flex items-center gap-1.5 sm:gap-1.5 px-4 py-2 sm:px-3 sm:py-1.5 md:px-4 bg-indigo-600 hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-600 text-white text-xs sm:text-xs font-semibold rounded-lg md:rounded-lg transition-all shadow-sm">
+                                <a href="{{ route('guru.supervisi.continue', $item->id) }}" class="inline-flex items-center gap-1.5 sm:gap-1.5 px-4 py-2 sm:px-3 sm:py-1.5 md:px-4 bg-primary-600 hover:bg-primary-700 dark:bg-primary-500 dark:hover:bg-primary-600 text-white text-xs sm:text-xs font-semibold rounded-lg md:rounded-lg transition-all shadow-sm">
                                     <svg class="w-4 h-4 sm:w-3.5 sm:h-3.5 md:w-4 md:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
                                     </svg>
@@ -402,15 +370,15 @@
                 <div class="bg-white dark:bg-gray-800 rounded-md sm:rounded-xl shadow w-full">
                     <div class="px-3 py-4 sm:px-5 sm:py-6 md:px-6 md:py-8 lg:px-8 lg:py-10">
                         <div class="bg-gray-50 dark:bg-gray-900/30 rounded-xl sm:rounded-2xl border-2 border-dashed border-gray-300 dark:border-gray-700 p-6 sm:p-10 md:p-14 lg:p-16 text-center">
-                            <div class="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 lg:w-28 lg:h-28 bg-gradient-to-br from-indigo-100 to-purple-100 dark:from-indigo-900/30 dark:to-purple-900/30 rounded-full flex items-center justify-center mx-auto mb-4 sm:mb-5 md:mb-6 shadow-inner">
-                                <svg class="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 lg:w-14 lg:h-14 text-indigo-600 dark:text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <div class="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 lg:w-28 lg:h-28 bg-gradient-to-br from-primary-100 to-primary-100 dark:from-primary-900/30 dark:to-primary-900/30 rounded-full flex items-center justify-center mx-auto mb-4 sm:mb-5 md:mb-6 shadow-inner">
+                                <svg class="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 lg:w-14 lg:h-14 text-primary-600 dark:text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
                                 </svg>
                             </div>
                             <h3 class="text-base sm:text-lg md:text-xl lg:text-2xl font-bold text-gray-900 dark:text-white mb-2 sm:mb-3">Belum Ada Supervisi</h3>
                             <p class="text-sm sm:text-base md:text-base text-gray-500 dark:text-gray-400 mb-5 sm:mb-6 md:mb-8 max-w-md mx-auto leading-relaxed">Anda belum memiliki supervisi apapun. Mulai dengan membuat supervisi baru.</p>
 
-                            <button onclick="openSupervisiModal()" class="inline-flex items-center gap-2 sm:gap-2.5 px-5 py-2.5 sm:px-6 sm:py-3 md:px-7 md:py-3.5 lg:px-8 lg:py-4 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white text-sm sm:text-base md:text-base font-semibold rounded-xl transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-0.5">
+                            <button onclick="openSupervisiModal()" class="inline-flex items-center gap-2 sm:gap-2.5 px-5 py-2.5 sm:px-6 sm:py-3 md:px-7 md:py-3.5 lg:px-8 lg:py-4 bg-gradient-to-r from-primary-600 to-primary-600 hover:from-primary-700 hover:to-primary-700 text-white text-sm sm:text-base md:text-base font-semibold rounded-xl transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-0.5">
                                 <svg class="w-5 h-5 sm:w-5 sm:h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
                                 </svg>
@@ -434,7 +402,7 @@
         <div class="relative overflow-hidden">
             <div class="relative px-4 py-5 sm:px-5 sm:py-6 md:px-6 md:py-7">
                 <!-- Icon -->
-                <div class="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl sm:rounded-2xl flex items-center justify-center mx-auto mb-3 sm:mb-4 shadow-lg">
+                <div class="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 bg-gradient-to-br from-primary-500 to-primary-600 rounded-xl sm:rounded-2xl flex items-center justify-center mx-auto mb-3 sm:mb-4 shadow-lg">
                     <svg class="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
                     </svg>
@@ -468,7 +436,7 @@
 
                 <!-- Action Buttons -->
                 <div class="flex flex-col gap-2.5 sm:gap-3">
-                    <button onclick="openGuideFromWelcome()" class="w-full px-5 py-3 sm:px-6 sm:py-3.5 md:px-7 md:py-4 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-semibold rounded-lg sm:rounded-xl transition-all shadow-md hover:shadow-lg flex items-center justify-center gap-2 text-sm sm:text-base md:text-lg">
+                    <button onclick="openGuideFromWelcome()" class="w-full px-5 py-3 sm:px-6 sm:py-3.5 md:px-7 md:py-4 bg-gradient-to-r from-primary-600 to-primary-600 hover:from-primary-700 hover:to-primary-700 text-white font-semibold rounded-lg sm:rounded-xl transition-all shadow-md hover:shadow-lg flex items-center justify-center gap-2 text-sm sm:text-base md:text-lg">
                         <svg class="w-4.5 h-4.5 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
                         </svg>
@@ -698,7 +666,7 @@
     <div id="supervisiModalContent" class="bg-white dark:bg-gray-800 rounded-[24px] shadow-2xl w-full max-w-md transform scale-90 opacity-0 transition-all duration-500 overflow-hidden" onclick="event.stopPropagation()">
 
         <!-- Header -->
-        <div class="bg-gradient-to-r from-purple-600 to-violet-600 dark:from-purple-700 dark:to-violet-700 px-6 py-6 text-center relative">
+        <div class="bg-gradient-to-r from-primary-600 to-primary-600 dark:from-primary-700 dark:to-primary-700 px-6 py-6 text-center relative">
             <button onclick="closeSupervisiModal()" class="absolute top-4 right-4 w-9 h-9 rounded-xl hover:bg-white/20 flex items-center justify-center text-white transition-colors">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
@@ -710,7 +678,7 @@
                 </svg>
             </div>
             <h2 class="text-xl font-bold text-white mb-2">Mulai Supervisi Baru?</h2>
-            <p class="text-purple-100 text-sm">
+            <p class="text-primary-100 text-sm">
                 Tanggal supervisi tercatat saat submit
             </p>
         </div>
@@ -743,9 +711,9 @@
                             <p class="text-xs text-gray-600 dark:text-gray-400">Dokumentasi pembelajaran</p>
                         </div>
                     </div>
-                    <div class="flex items-start gap-3 p-3.5 bg-white dark:bg-gray-700/30 rounded-xl border border-gray-200 dark:border-gray-600 hover:border-purple-300 dark:hover:border-purple-700 transition-colors">
-                        <div class="w-5 h-5 rounded-full bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center flex-shrink-0 mt-0.5">
-                            <svg class="w-3 h-3 text-purple-600 dark:text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <div class="flex items-start gap-3 p-3.5 bg-white dark:bg-gray-700/30 rounded-xl border border-gray-200 dark:border-gray-600 hover:border-primary-300 dark:hover:border-primary-700 transition-colors">
+                        <div class="w-5 h-5 rounded-full bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center flex-shrink-0 mt-0.5">
+                            <svg class="w-3 h-3 text-primary-600 dark:text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path>
                             </svg>
                         </div>
@@ -778,7 +746,7 @@
                 <button onclick="closeSupervisiModal()" class="flex-1 inline-flex items-center justify-center px-6 py-3 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 font-semibold rounded-xl hover:bg-gray-50 dark:hover:bg-gray-700 transition-all text-sm">
                     Batal
                 </button>
-                <button onclick="submitSupervisiForm()" class="flex-1 inline-flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-r from-purple-600 to-violet-600 hover:from-purple-700 hover:to-violet-700 text-white font-bold rounded-xl transition-all shadow-lg hover:shadow-xl text-sm">
+                <button onclick="submitSupervisiForm()" class="flex-1 inline-flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-r from-primary-600 to-primary-600 hover:from-primary-700 hover:to-primary-700 text-white font-bold rounded-xl transition-all shadow-lg hover:shadow-xl text-sm">
                     Mulai
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>

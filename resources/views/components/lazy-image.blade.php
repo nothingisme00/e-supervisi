@@ -2,7 +2,7 @@
     'src' => '',
     'alt' => '',
     'fallbackIcon' => true,
-    'fallbackGradient' => 'from-indigo-600 via-purple-600 to-indigo-800'
+    'fallbackGradient' => 'from-primary-600 via-primary-700 to-primary-900'
 ])
 
 @if($src)

@@ -2,7 +2,7 @@
 <div id="loadingSpinner" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
     <div class="text-center">
         <!-- Spinner -->
-        <div class="w-16 h-16 border-4 border-gray-300 border-t-indigo-600 rounded-full animate-spin mx-auto mb-4"></div>
+        <div class="w-16 h-16 border-4 border-gray-300 border-t-primary-600 rounded-full animate-spin mx-auto mb-4"></div>
 
         <!-- Loading Text -->
         <p class="text-white font-medium">Memuat...</p>

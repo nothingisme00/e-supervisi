@@ -119,10 +119,14 @@ class ProsesController extends Controller
             ], 400);
         }
 
-        // Update status to submitted and set tanggal_supervisi
+        // Submit (ulang) memulai siklus review baru: bersihkan sisa review
+        // sebelumnya dan pertahankan tanggal submit pertama
         $supervisi->update([
             'status' => Supervisi::STATUS_SUBMITTED,
-            'tanggal_supervisi' => now() // Set tanggal saat submit
+            'tanggal_supervisi' => $supervisi->tanggal_supervisi ?? now(),
+            'revision_notes' => null,
+            'reviewed_by' => null,
+            'reviewed_at' => null,
         ]);
 
         return response()->json([

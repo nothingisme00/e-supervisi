@@ -12,7 +12,7 @@
         <div class="flex flex-row items-center justify-between gap-2 sm:gap-3 md:gap-5 w-full">
             <!-- LEFT: Icon + Title - Hidden on mobile -->
             <div class="hidden sm:flex items-center gap-2 md:gap-4 flex-shrink min-w-0">
-                <div class="w-10 h-10 md:w-14 md:h-14 lg:w-16 lg:h-16 bg-gradient-to-r from-indigo-600 to-purple-600 dark:from-indigo-500 dark:to-purple-500 rounded-xl md:rounded-2xl flex items-center justify-center shadow-lg">
+                <div class="w-10 h-10 md:w-14 md:h-14 lg:w-16 lg:h-16 bg-gradient-to-r from-primary-600 to-primary-600 dark:from-primary-500 dark:to-primary-500 rounded-xl md:rounded-2xl flex items-center justify-center shadow-lg">
                     <svg class="w-5 h-5 md:w-7 md:h-7 lg:w-8 lg:h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
@@ -60,7 +60,7 @@
             </div>
         </a>
 
-        <a href="{{ route('admin.users.index') }}" class="group flex items-center gap-2.5 sm:gap-4 p-2.5 sm:p-4 bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 hover:from-blue-100 hover:to-indigo-100 dark:hover:from-blue-900/30 dark:hover:to-indigo-900/30 rounded-lg sm:rounded-xl border-2 border-blue-200 dark:border-blue-800 hover:border-blue-300 dark:hover:border-blue-700 transition-all shadow-sm hover:shadow-md">
+        <a href="{{ route('admin.users.index') }}" class="group flex items-center gap-2.5 sm:gap-4 p-2.5 sm:p-4 bg-gradient-to-r from-blue-50 to-primary-50 dark:from-blue-900/20 dark:to-primary-900/20 hover:from-blue-100 hover:to-primary-100 dark:hover:from-blue-900/30 dark:hover:to-primary-900/30 rounded-lg sm:rounded-xl border-2 border-blue-200 dark:border-blue-800 hover:border-blue-300 dark:hover:border-blue-700 transition-all shadow-sm hover:shadow-md">
             <div class="w-9 h-9 sm:w-12 sm:h-12 bg-blue-600 dark:bg-blue-500 rounded-lg sm:rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform">
                 <svg class="w-4 h-4 sm:w-6 sm:h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
@@ -78,11 +78,11 @@
 
         <!-- Card 1: Data Guru -->
         <div class="bg-gray-50 dark:bg-gray-900/30 rounded-md sm:rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
-            <div class="h-1 bg-gradient-to-r from-blue-400 to-indigo-500"></div>
+            <div class="h-1 bg-gradient-to-r from-blue-400 to-primary-500"></div>
             <div class="p-3 sm:p-6 border-b-2 border-gray-200 dark:border-gray-600">
                 <div class="flex items-center justify-between">
                     <div class="flex items-center gap-2 sm:gap-4">
-                        <div class="w-10 h-10 sm:w-14 sm:h-14 bg-gradient-to-br from-blue-100 to-indigo-100 dark:from-blue-900/30 dark:to-indigo-900/30 rounded-lg sm:rounded-xl flex items-center justify-center shadow-sm">
+                        <div class="w-10 h-10 sm:w-14 sm:h-14 bg-gradient-to-br from-blue-100 to-primary-100 dark:from-blue-900/30 dark:to-primary-900/30 rounded-lg sm:rounded-xl flex items-center justify-center shadow-sm">
                             <svg class="w-5 h-5 sm:w-7 sm:h-7 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
                             </svg>
@@ -101,7 +101,7 @@
             <div class="p-2.5 sm:p-4 max-h-96 overflow-y-auto">
                 @forelse($guruList as $guru)
                 <div class="flex items-center gap-2 sm:gap-3 p-2 sm:p-3 bg-white dark:bg-gray-800 rounded-md sm:rounded-lg mb-2 sm:mb-3 last:mb-0 hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-all border border-gray-200 dark:border-gray-700 hover:border-blue-300 dark:hover:border-blue-700">
-                    <div class="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-md sm:rounded-lg flex items-center justify-center text-white font-bold text-xs sm:text-sm shrink-0">
+                    <div class="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-br from-blue-600 to-primary-600 rounded-md sm:rounded-lg flex items-center justify-center text-white font-bold text-xs sm:text-sm shrink-0">
                         {{ strtoupper(substr($guru->name, 0, 1)) }}
                     </div>
                     <div class="flex-1 min-w-0">
@@ -129,12 +129,12 @@
 
         <!-- Card 2: Dalam Proses -->
         <div class="bg-gray-50 dark:bg-gray-900/30 rounded-md sm:rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
-            <div class="h-1 bg-gradient-to-r from-indigo-400 to-purple-500"></div>
+            <div class="h-1 bg-gradient-to-r from-primary-400 to-primary-500"></div>
             <div class="p-3 sm:p-6 border-b-2 border-gray-200 dark:border-gray-600">
                 <div class="flex items-center justify-between">
                     <div class="flex items-center gap-2 sm:gap-4">
-                        <div class="w-10 h-10 sm:w-14 sm:h-14 bg-gradient-to-br from-indigo-100 to-purple-100 dark:from-indigo-900/30 dark:to-purple-900/30 rounded-lg sm:rounded-xl flex items-center justify-center shadow-sm">
-                            <svg class="w-5 h-5 sm:w-7 sm:h-7 text-indigo-600 dark:text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <div class="w-10 h-10 sm:w-14 sm:h-14 bg-gradient-to-br from-primary-100 to-primary-100 dark:from-primary-900/30 dark:to-primary-900/30 rounded-lg sm:rounded-xl flex items-center justify-center shadow-sm">
+                            <svg class="w-5 h-5 sm:w-7 sm:h-7 text-primary-600 dark:text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
                             </svg>
@@ -145,15 +145,15 @@
                         </div>
                     </div>
                     <div class="text-right">
-                        <div class="text-xl sm:text-3xl font-bold text-indigo-600 dark:text-indigo-400">{{ $supervisiPending + $supervisiInProgress }}</div>
+                        <div class="text-xl sm:text-3xl font-bold text-primary-600 dark:text-primary-400">{{ $supervisiPending + $supervisiInProgress }}</div>
                         <div class="text-[10px] sm:text-xs text-gray-500 dark:text-gray-400">Supervisi</div>
                     </div>
                 </div>
             </div>
             <div class="p-2.5 sm:p-4 max-h-96 overflow-y-auto">
                 @forelse($supervisiUnderReviewList as $supervisi)
-                <div class="flex items-start gap-2 sm:gap-3 p-2 sm:p-3 bg-white dark:bg-gray-800 rounded-md sm:rounded-lg mb-2 sm:mb-3 last:mb-0 hover:bg-indigo-50 dark:hover:bg-indigo-900/20 transition-all border border-gray-200 dark:border-gray-700 hover:border-indigo-300 dark:hover:border-indigo-700">
-                    <div class="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-br from-indigo-600 to-purple-600 rounded-md sm:rounded-lg flex items-center justify-center text-white font-bold text-xs sm:text-sm shrink-0">
+                <div class="flex items-start gap-2 sm:gap-3 p-2 sm:p-3 bg-white dark:bg-gray-800 rounded-md sm:rounded-lg mb-2 sm:mb-3 last:mb-0 hover:bg-primary-50 dark:hover:bg-primary-900/20 transition-all border border-gray-200 dark:border-gray-700 hover:border-primary-300 dark:hover:border-primary-700">
+                    <div class="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-br from-primary-600 to-primary-600 rounded-md sm:rounded-lg flex items-center justify-center text-white font-bold text-xs sm:text-sm shrink-0">
                         {{ strtoupper(substr($supervisi->user->name, 0, 1)) }}
                     </div>
                     <div class="flex-1 min-w-0">
@@ -161,9 +161,9 @@
                         <div class="text-[10px] sm:text-xs text-gray-500 dark:text-gray-400 truncate">{{ $supervisi->user->nik }}</div>
                         <div class="flex items-center gap-2 mt-1">
                             @if($supervisi->status === 'submitted')
-                            <span class="px-1.5 py-0.5 sm:px-2 sm:py-0.5 bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300 rounded text-[8px] sm:text-[10px] font-medium">Submitted</span>
+                            <span class="px-1.5 py-0.5 sm:px-2 sm:py-0.5 bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300 rounded text-[8px] sm:text-[10px] font-medium">Disubmit</span>
                             @else
-                            <span class="px-1.5 py-0.5 sm:px-2 sm:py-0.5 bg-indigo-100 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-300 rounded text-[8px] sm:text-[10px] font-medium">Review</span>
+                            <span class="px-1.5 py-0.5 sm:px-2 sm:py-0.5 bg-primary-100 dark:bg-primary-900/30 text-primary-700 dark:text-primary-300 rounded text-[8px] sm:text-[10px] font-medium">Ditinjau</span>
                             @endif
                         </div>
                     </div>
@@ -214,7 +214,7 @@
                         <div class="font-semibold text-xs sm:text-sm text-gray-900 dark:text-white truncate">{{ $supervisi->user->name }}</div>
                         <div class="text-[10px] sm:text-xs text-gray-500 dark:text-gray-400 truncate">{{ $supervisi->user->nik }}</div>
                         <div class="flex items-center gap-2 mt-1">
-                            <span class="px-1.5 py-0.5 sm:px-2 sm:py-0.5 bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300 rounded text-[8px] sm:text-[10px] font-medium">Completed</span>
+                            <span class="px-1.5 py-0.5 sm:px-2 sm:py-0.5 bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300 rounded text-[8px] sm:text-[10px] font-medium">Selesai</span>
                         </div>
                     </div>
                     <div class="text-[10px] sm:text-xs text-gray-400 dark:text-gray-500 shrink-0">

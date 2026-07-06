@@ -1,0 +1,10 @@
+# Optional: Ignore sample images (jika tidak ingin di-commit)
+# Uncomment baris di bawah jika gambar sample hanya untuk dev
+
+# *.jpg
+# *.jpeg
+# *.png
+# *.webp
+
+# Keep README
+!README.md

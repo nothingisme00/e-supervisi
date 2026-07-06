@@ -11,8 +11,8 @@ return new class extends Migration
         Schema::create('supervisi', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->enum('status', ['draft', 'submitted', 'reviewed', 'completed'])->default('draft');
-            $table->date('tanggal_supervisi');
+            $table->enum('status', ['draft', 'submitted', 'under_review', 'completed', 'revision'])->default('draft');
+            $table->date('tanggal_supervisi')->nullable();
             $table->text('catatan')->nullable();
             $table->foreignId('reviewed_by')->nullable()->constrained('users');
             $table->timestamp('reviewed_at')->nullable();

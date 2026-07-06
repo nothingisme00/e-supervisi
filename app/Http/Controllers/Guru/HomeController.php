@@ -42,7 +42,7 @@ class HomeController extends Controller
     public function mySupervisi()
     {
         // Get only current user's draft supervisi
-        $mySupervisi = Supervisi::with(['dokumenEvaluasi', 'prosesPembelajaran'])
+        $mySupervisi = Supervisi::with(['dokumenEvaluasi', 'prosesPembelajaran', 'feedback'])
             ->where('user_id', Auth::id())
             ->orderBy('created_at', 'desc')
             ->get();

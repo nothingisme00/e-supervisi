@@ -90,7 +90,7 @@ class UserController extends Controller
 
         $request->validate($rules);
 
-        $defaultPassword = env('DEFAULT_USER_PASSWORD', 'pass123456');
+        $defaultPassword = config('app.default_user_password');
         $userData = [
             'nik' => $request->nik,
             'name' => $request->name,
@@ -127,6 +127,11 @@ class UserController extends Controller
     {
         $user = User::findOrFail($id);
         $isEditingSelf = Auth::id() == $user->id;
+
+        if ($isEditingSelf && $request->role !== $user->role) {
+            return redirect()->back()
+                ->with('error', 'Anda tidak dapat mengubah role akun Anda sendiri');
+        }
 
         // Validation rules
         $rules = [
@@ -178,7 +183,7 @@ class UserController extends Controller
     {
         $user = User::findOrFail($id);
 
-        $newPassword = env('DEFAULT_USER_PASSWORD', 'pass123456'); // Default password
+        $newPassword = config('app.default_user_password');
         $user->update([
             'password' => Hash::make($newPassword),
             'must_change_password' => true // Wajib ganti password saat login
@@ -223,6 +228,10 @@ class UserController extends Controller
 
     public function toggleStatus($id)
     {
+        if ((int) $id === (int) Auth::id()) {
+            abort(403, 'Anda tidak dapat menonaktifkan akun Anda sendiri');
+        }
+
         $user = User::findOrFail($id);
         $user->update(['is_active' => !$user->is_active]);
 

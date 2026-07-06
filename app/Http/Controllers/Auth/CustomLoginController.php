@@ -81,9 +81,10 @@ class CustomLoginController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
         
+        // Langsung ke login — redirect berantai lewat '/' menghanguskan flash
         if ($userName) {
-            return redirect('/')->with('success', 'Anda telah berhasil logout. Sampai jumpa, ' . $userName . '!');
+            return redirect()->route('login')->with('success', 'Anda telah berhasil logout. Sampai jumpa, ' . $userName . '!');
         }
-        return redirect('/')->with('success', 'Anda telah berhasil logout.');
+        return redirect()->route('login')->with('success', 'Anda telah berhasil logout.');
     }
 }

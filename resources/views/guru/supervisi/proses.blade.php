@@ -12,9 +12,9 @@
 
     <!-- Link Pembelajaran Card -->
     <div class="bg-white dark:bg-gray-800 rounded-xl sm:rounded-2xl border border-gray-200 dark:border-gray-700 shadow-lg overflow-hidden mb-4 sm:mb-6">
-        <div class="border-b border-gray-200 dark:border-gray-700 px-4 py-3 sm:px-6 sm:py-4 bg-gradient-to-r from-indigo-50/30 to-blue-50/30 dark:from-indigo-900/10 dark:to-blue-900/10">
+        <div class="border-b border-gray-200 dark:border-gray-700 px-4 py-3 sm:px-6 sm:py-4 bg-gradient-to-r from-primary-50/30 to-blue-50/30 dark:from-primary-900/10 dark:to-blue-900/10">
             <div class="flex items-center gap-3">
-                <div class="w-10 h-10 sm:w-10 sm:h-10 bg-indigo-600 dark:bg-indigo-500 rounded-lg flex items-center justify-center">
+                <div class="w-10 h-10 sm:w-10 sm:h-10 bg-primary-600 dark:bg-primary-500 rounded-lg flex items-center justify-center">
                     <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path>
                     </svg>
@@ -31,7 +31,7 @@
                 <!-- Link Video -->
                 <div id="field-link_video" data-filled="{{ !empty($proses->link_video) ? 'true' : 'false' }}" class="input-field bg-gray-50 dark:bg-gray-700/50 rounded-xl p-4 sm:p-5 border border-gray-200 dark:border-gray-600">
                     <label for="link_video" class="flex items-center gap-2 text-sm sm:text-sm font-bold text-gray-800 dark:text-gray-200 mb-3">
-                        <span class="flex items-center justify-center w-6 h-6 bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 rounded-full text-xs font-bold">1</span>
+                        <span class="flex items-center justify-center w-6 h-6 bg-primary-100 dark:bg-primary-900/30 text-primary-600 dark:text-primary-400 rounded-full text-xs font-bold">1</span>
                         Link Video <span class="text-red-500">*</span>
                     </label>
                     <div class="relative">
@@ -47,7 +47,7 @@
                             id="link_video"
                             placeholder="https://youtube.com/... atau https://drive.google.com/..."
                             value="{{ old('link_video', $proses->link_video ?? '') }}"
-                            class="w-full pl-11 pr-4 py-3 sm:py-3 text-sm border-2 border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-800 dark:text-white transition-all"
+                            class="w-full pl-11 pr-4 py-3 sm:py-3 text-sm border-2 border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-800 dark:text-white transition-all"
                         >
                     </div>
                     <p class="text-xs text-gray-600 dark:text-gray-400 mt-2 flex items-center gap-1.5">
@@ -61,7 +61,7 @@
                 <!-- Link Meeting -->
                 <div id="field-link_meeting" data-filled="{{ !empty($proses->link_meeting) ? 'true' : 'false' }}" class="input-field bg-gray-50 dark:bg-gray-700/50 rounded-xl p-4 sm:p-5 border border-gray-200 dark:border-gray-600">
                     <label for="link_meeting" class="flex items-center gap-2 text-sm sm:text-sm font-bold text-gray-800 dark:text-gray-200 mb-3">
-                        <span class="flex items-center justify-center w-6 h-6 bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 rounded-full text-xs font-bold">2</span>
+                        <span class="flex items-center justify-center w-6 h-6 bg-primary-100 dark:bg-primary-900/30 text-primary-600 dark:text-primary-400 rounded-full text-xs font-bold">2</span>
                         Link Meeting <span class="text-gray-500 text-xs">(Opsional)</span>
                     </label>
                     <div class="relative">
@@ -76,7 +76,7 @@
                             id="link_meeting"
                             placeholder="https://meet.google.com/... atau https://zoom.us/..."
                             value="{{ old('link_meeting', $proses->link_meeting ?? '') }}"
-                            class="w-full pl-11 pr-4 py-3 sm:py-3 text-sm border-2 border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-800 dark:text-white transition-all"
+                            class="w-full pl-11 pr-4 py-3 sm:py-3 text-sm border-2 border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-800 dark:text-white transition-all"
                         >
                     </div>
                     <p class="text-xs text-gray-600 dark:text-gray-400 mt-2 flex items-center gap-1.5">
@@ -92,9 +92,9 @@
 
     <!-- Refleksi Pembelajaran Card -->
     <div class="bg-white dark:bg-gray-800 rounded-xl sm:rounded-2xl border border-gray-200 dark:border-gray-700 shadow-lg overflow-hidden">
-        <div class="border-b border-gray-200 dark:border-gray-700 px-4 py-3 sm:px-6 sm:py-4 bg-gradient-to-r from-purple-50/30 to-pink-50/30 dark:from-purple-900/10 dark:to-pink-900/10">
+        <div class="border-b border-gray-200 dark:border-gray-700 px-4 py-3 sm:px-6 sm:py-4 bg-gradient-to-r from-primary-50/30 to-pink-50/30 dark:from-primary-900/10 dark:to-pink-900/10">
             <div class="flex items-center gap-3">
-                <div class="w-10 h-10 bg-purple-600 dark:bg-purple-500 rounded-lg flex items-center justify-center">
+                <div class="w-10 h-10 bg-primary-600 dark:bg-primary-500 rounded-lg flex items-center justify-center">
                     <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
                     </svg>
@@ -110,7 +110,7 @@
             @foreach($refleksiQuestions as $field => $question)
                 <div id="field-{{ $field }}" data-filled="{{ !empty($proses->$field) ? 'true' : 'false' }}" class="input-field bg-gray-50 dark:bg-gray-700/50 rounded-xl p-4 sm:p-5 border border-gray-200 dark:border-gray-600">
                     <label for="{{ $field }}" class="flex items-start gap-3 text-sm font-bold text-gray-800 dark:text-gray-200 mb-3">
-                        <span class="flex items-center justify-center w-7 h-7 sm:w-8 sm:h-8 bg-purple-600 dark:bg-purple-500 text-white rounded-lg text-xs sm:text-sm font-bold shrink-0 shadow-md">{{ $loop->iteration }}</span>
+                        <span class="flex items-center justify-center w-7 h-7 sm:w-8 sm:h-8 bg-primary-600 dark:bg-primary-500 text-white rounded-lg text-xs sm:text-sm font-bold shrink-0 shadow-md">{{ $loop->iteration }}</span>
                         <span class="flex-1 leading-relaxed pt-0.5">{{ $question }} <span class="text-red-500">*</span></span>
                     </label>
                     <div class="space-y-2">
@@ -120,7 +120,7 @@
                             rows="4"
                             maxlength="500"
                             placeholder="Tulis jawaban Anda di sini (minimal 10 karakter)..."
-                            class="w-full px-4 py-3 text-sm border-2 border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-purple-500 dark:bg-gray-800 dark:text-white transition-all resize-none"
+                            class="w-full px-4 py-3 text-sm border-2 border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-800 dark:text-white transition-all resize-none"
                             style="resize: none;"
                             oninput="updateCharCount('{{ $field }}')"
                         >{{ old($field, $proses->$field ?? '') }}</textarea>
@@ -218,8 +218,8 @@
         <!-- Content -->
         <div class="p-6 text-center">
             <!-- Icon -->
-            <div class="w-14 h-14 rounded-full flex items-center justify-center bg-indigo-100 dark:bg-indigo-900/30 mx-auto mb-4">
-                <svg class="w-7 h-7 text-indigo-600 dark:text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div class="w-14 h-14 rounded-full flex items-center justify-center bg-primary-100 dark:bg-primary-900/30 mx-auto mb-4">
+                <svg class="w-7 h-7 text-primary-600 dark:text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"></path>
                 </svg>
             </div>
@@ -239,7 +239,7 @@
                 <button onclick="closeConfirmModal()" class="flex-1 px-4 py-2.5 bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-200 font-medium rounded-lg transition-colors">
                     Batal
                 </button>
-                <button onclick="proceedSubmit()" class="flex-1 px-4 py-2.5 bg-indigo-600 hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-600 text-white font-medium rounded-lg transition-colors">
+                <button onclick="proceedSubmit()" class="flex-1 px-4 py-2.5 bg-primary-600 hover:bg-primary-700 dark:bg-primary-500 dark:hover:bg-primary-600 text-white font-medium rounded-lg transition-colors">
                     Ya, Submit
                 </button>
             </div>
@@ -273,7 +273,7 @@
             <!-- Button -->
             <button
                 onclick="window.location.href='{{ route('guru.home') }}'"
-                class="w-full px-6 py-3 bg-indigo-500 hover:bg-indigo-600 text-white font-semibold rounded-full transition-all duration-200 hover:shadow-lg">
+                class="w-full px-6 py-3 bg-primary-500 hover:bg-primary-600 text-white font-semibold rounded-full transition-all duration-200 hover:shadow-lg">
                 Kembali ke Beranda
             </button>
         </div>
@@ -304,7 +304,7 @@
 
             <!-- Buttons -->
             <div class="flex flex-col gap-3">
-                <button onclick="closeSaveOptionsModal(); window.location.href='{{ route('guru.home') }}';" class="w-full px-6 py-3 bg-indigo-500 hover:bg-indigo-600 text-white font-semibold rounded-full transition-all duration-200 hover:shadow-lg">
+                <button onclick="closeSaveOptionsModal(); window.location.href='{{ route('guru.home') }}';" class="w-full px-6 py-3 bg-primary-500 hover:bg-primary-600 text-white font-semibold rounded-full transition-all duration-200 hover:shadow-lg">
                     Kembali ke Beranda
                 </button>
                 <button onclick="closeSaveOptionsModal()" class="w-full text-sm text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 font-medium py-2 transition-colors">
@@ -435,28 +435,9 @@ function updateCharCount(field) {
 // Last action for retry functionality
 let lastAction = null;
 
-function showToast(message, isError = false) {
-    if (isError) {
-        // Show error modal instead of toast
-        showErrorModal(message);
-    } else {
-        // Show success toast
-        const toast = document.getElementById('successToast');
-        toast.classList.remove('hidden');
-        
-        setTimeout(() => {
-            toast.classList.remove('-translate-y-20', 'opacity-0');
-            toast.classList.add('translate-y-0', 'opacity-100');
-        }, 10);
-
-        setTimeout(() => {
-            toast.classList.remove('translate-y-0', 'opacity-100');
-            toast.classList.add('-translate-y-20', 'opacity-0');
-            setTimeout(() => toast.classList.add('hidden'), 300);
-        }, 3000);
-    }
-}
-
+// Catatan: jangan deklarasikan `showToast` lokal di sini — layout modern.blade
+// mendeklarasikan global dengan nama sama SETELAH skrip halaman dan menimpanya,
+// sehingga pesan error tampil bergaya sukses. Error memakai showErrorModal langsung.
 function showErrorModal(message) {
     const modal = document.getElementById('errorModal');
     const content = document.getElementById('errorModalContent');
@@ -532,12 +513,12 @@ document.getElementById('saveButton').addEventListener('click', async () => {
             showSaveOptionsModal();
             console.log('Save successful');
         } else {
-            showToast(result.message || 'Gagal menyimpan data', true);
+            showErrorModal(result.message || 'Gagal menyimpan data');
             console.error('Save failed:', result.message);
         }
     } catch (error) {
         console.error('Save error:', error);
-        showToast('Error: ' + error.message, true);
+        showErrorModal('Error: ' + error.message);
     } finally {
         // Re-enable button
         saveButton.disabled = false;
@@ -668,21 +649,21 @@ async function proceedSubmit() {
                 }, 10);
             } else {
                 console.error('Submit failed:', submitResult.message);
-                showToast(submitResult.message || 'Gagal submit supervisi', true);
+                showErrorModal(submitResult.message || 'Gagal submit supervisi');
                 // Re-enable button
                 submitButton.disabled = false;
                 validateForm(); // Reset button state
             }
         } else {
             console.error('Save failed:', saveResult.message);
-            showToast(saveResult.message || 'Gagal menyimpan data', true);
+            showErrorModal(saveResult.message || 'Gagal menyimpan data');
             // Re-enable button
             submitButton.disabled = false;
             validateForm(); // Reset button state
         }
     } catch (error) {
         console.error('Submit error:', error);
-        showToast('Error: ' + error.message, true);
+        showErrorModal('Error: ' + error.message);
         // Re-enable button
         submitButton.disabled = false;
         validateForm(); // Reset button state
@@ -696,6 +677,10 @@ setInterval(async () => {
     try {
         await fetch(`/guru/supervisi/${supervisiId}/proses/save`, {
             method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value,
+                'Accept': 'application/json'
+            },
             body: formData
         });
         console.log('Auto-saved at ' + new Date().toLocaleTimeString());
@@ -731,7 +716,7 @@ function scrollToFirstIncompleteField() {
             setTimeout(() => {
                 field.scrollIntoView({ behavior: 'smooth', block: 'center' });
                 // Add highlight effect
-                field.classList.add('ring-2', 'ring-indigo-500', 'ring-offset-2');
+                field.classList.add('ring-2', 'ring-primary-500', 'ring-offset-2');
                 field.style.transition = 'all 0.3s ease';
                 
                 // Focus on the input inside
@@ -741,7 +726,7 @@ function scrollToFirstIncompleteField() {
                 }
                 
                 setTimeout(() => {
-                    field.classList.remove('ring-2', 'ring-indigo-500', 'ring-offset-2');
+                    field.classList.remove('ring-2', 'ring-primary-500', 'ring-offset-2');
                 }, 2500);
             }, 800);
             break;

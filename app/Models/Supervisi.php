@@ -25,14 +25,12 @@ class Supervisi extends Model
         'catatan',
         'reviewed_by',
         'reviewed_at',
-        'needs_revision',
         'revision_notes'
     ];
 
     protected $casts = [
         'tanggal_supervisi' => 'date',
-        'reviewed_at' => 'datetime',
-        'needs_revision' => 'boolean'
+        'reviewed_at' => 'datetime'
     ];
 
     // Helper method untuk list semua status
@@ -68,7 +66,7 @@ class Supervisi extends Model
             // Delete related files before records
             foreach ($supervisi->dokumenEvaluasi as $dokumen) {
                 if ($dokumen->path_file) {
-                    \Illuminate\Support\Facades\Storage::disk('public')->delete($dokumen->path_file);
+                    \Illuminate\Support\Facades\Storage::disk('local')->delete($dokumen->path_file);
                 }
             }
             
@@ -106,6 +104,15 @@ class Supervisi extends Model
     public function scopeExcludeDrafts($query)
     {
         return $query->whereNotIn('status', [self::STATUS_DRAFT]);
+    }
+
+    // Review sedang diklaim reviewer lain? (klaim hanya berlaku selama under_review;
+    // setelah resubmit status kembali submitted dan siapa pun boleh mengklaim lagi)
+    public function lockedByOther(): bool
+    {
+        return $this->status === self::STATUS_UNDER_REVIEW
+            && $this->reviewed_by !== null
+            && $this->reviewed_by !== auth()->id();
     }
 
     // Relationships

@@ -33,7 +33,7 @@
         </a>
         
         <a href="{{ route('admin.supervisi.index', ['status' => 'under_review']) }}" 
-           class="@if($status === 'under_review') border-indigo-500 text-indigo-600 dark:text-indigo-400 @else border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 dark:text-gray-400 dark:hover:text-gray-300 @endif whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm transition-colors">
+           class="@if($status === 'under_review') border-primary-500 text-primary-600 dark:text-primary-400 @else border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 dark:text-gray-400 dark:hover:text-gray-300 @endif whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm transition-colors">
             <div class="flex items-center gap-2">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
@@ -49,7 +49,7 @@
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                 </svg>
-                Telah Ditinjau
+                Selesai
             </div>
         </a>
     </nav>
@@ -61,12 +61,12 @@
     @foreach($supervisiList as $supervisi)
     <div class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden hover:shadow-lg transition-shadow duration-200">
         <!-- Status Badge -->
-        <div class="h-1 @if($supervisi->status === 'submitted') bg-gradient-to-r from-amber-500 to-orange-500 @elseif($supervisi->status === 'under_review') bg-gradient-to-r from-indigo-500 to-purple-500 @else bg-gradient-to-r from-emerald-500 to-green-500 @endif"></div>
+        <div class="h-1 @if($supervisi->status === 'submitted') bg-gradient-to-r from-amber-500 to-orange-500 @elseif($supervisi->status === 'under_review') bg-gradient-to-r from-primary-500 to-primary-500 @else bg-gradient-to-r from-emerald-500 to-green-500 @endif"></div>
         
         <div class="p-6">
             <!-- Guru Info -->
             <div class="flex items-center gap-3 mb-4">
-                <div class="w-12 h-12 bg-gradient-to-br from-blue-500 to-indigo-500 rounded-full flex items-center justify-center text-white font-bold text-lg">
+                <div class="w-12 h-12 bg-gradient-to-br from-primary-500 to-primary-700 rounded-full flex items-center justify-center text-white font-bold text-lg">
                     {{ substr($supervisi->user->name, 0, 1) }}
                 </div>
                 <div class="flex-1 min-w-0">
@@ -96,7 +96,7 @@
             </div>
 
             <!-- Action Button -->
-            <a href="{{ route('admin.supervisi.show', $supervisi->id) }}" class="block w-full text-center px-4 py-2 @if($supervisi->status === 'submitted') bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 @elseif($supervisi->status === 'under_review') bg-gradient-to-r from-indigo-500 to-purple-500 hover:from-indigo-600 hover:to-purple-600 @else bg-gradient-to-r from-emerald-500 to-green-500 hover:from-emerald-600 hover:to-green-600 @endif text-white font-medium rounded-lg transition-all duration-200 hover:shadow-md">
+            <a href="{{ route('admin.supervisi.show', $supervisi->id) }}" class="block w-full text-center px-4 py-2 @if($supervisi->status === 'submitted') bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 @elseif($supervisi->status === 'under_review') bg-gradient-to-r from-primary-500 to-primary-500 hover:from-primary-600 hover:to-primary-600 @else bg-gradient-to-r from-emerald-500 to-green-500 hover:from-emerald-600 hover:to-green-600 @endif text-white font-medium rounded-lg transition-all duration-200 hover:shadow-md">
                 @if($supervisi->status === 'submitted')
                     Mulai Peninjauan
                 @elseif($supervisi->status === 'under_review')

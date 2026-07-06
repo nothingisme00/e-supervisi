@@ -9,7 +9,7 @@
         <div class="flex flex-row items-center justify-between gap-2 sm:gap-3 md:gap-5 w-full">
                     <!-- LEFT: Icon + Title -->
                     <div class="flex items-center gap-1.5 sm:gap-2 md:gap-4 flex-shrink min-w-0">
-                        <div class="w-7 h-7 sm:w-10 sm:h-10 md:w-14 md:h-14 lg:w-16 lg:h-16 bg-gradient-to-r from-violet-600 to-purple-600 dark:from-violet-500 dark:to-purple-500 rounded-md sm:rounded-xl flex items-center justify-center shadow-md sm:shadow-lg flex-shrink-0">
+                        <div class="w-7 h-7 sm:w-10 sm:h-10 md:w-14 md:h-14 lg:w-16 lg:h-16 bg-gradient-to-r from-primary-600 to-primary-600 dark:from-primary-500 dark:to-primary-500 rounded-md sm:rounded-xl flex items-center justify-center shadow-md sm:shadow-lg flex-shrink-0">
                             <svg class="w-3.5 h-3.5 sm:w-5 sm:h-5 md:w-7 md:h-7 lg:w-8 lg:h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
                             </svg>
@@ -79,7 +79,7 @@
                                 <div class="font-semibold text-sm sm:text-base text-gray-900 dark:text-white truncate mb-0.5 sm:mb-1">{{ $supervisi->user->name }}</div>
                                 <div class="flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm text-gray-600 dark:text-gray-400 flex-wrap">
                                     <span class="px-2 py-0.5 sm:px-3 sm:py-1 bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 rounded-md sm:rounded-lg font-medium text-[10px] sm:text-sm">{{ $supervisi->user->mata_pelajaran ?? '-' }}</span>
-                                    <span class="px-2 py-0.5 sm:px-3 sm:py-1 bg-purple-50 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 rounded-md sm:rounded-lg font-medium text-[10px] sm:text-sm">{{ $supervisi->user->tingkat ?? '-' }}</span>
+                                    <span class="px-2 py-0.5 sm:px-3 sm:py-1 bg-primary-50 dark:bg-primary-900/30 text-primary-700 dark:text-primary-300 rounded-md sm:rounded-lg font-medium text-[10px] sm:text-sm">{{ $supervisi->user->tingkat ?? '-' }}</span>
                                 </div>
                             </div>
                         </div>
@@ -88,7 +88,7 @@
                                 <svg class="w-3 h-3 sm:w-4 sm:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
                                 </svg>
-                                {{ $supervisi->updated_at->format('d M Y, H:i') }}
+                                {{ $supervisi->updated_at->translatedFormat('d M Y, H:i') }}
                             </span>
                         </div>
                         <a href="{{ route('kepala.evaluasi.show', $supervisi->id) }}" class="flex items-center justify-center gap-1.5 sm:gap-2 w-full px-3 py-2 sm:px-4 sm:py-2.5 bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700 text-white text-xs sm:text-sm font-semibold rounded-md sm:rounded-lg transition-all shadow-sm hover:shadow-md">
@@ -113,12 +113,12 @@
 
         <!-- Card 2: Sedang Ditinjau -->
         <div class="bg-gray-50 dark:bg-gray-900/30 rounded-md sm:rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
-            <div class="h-1 bg-gradient-to-r from-indigo-400 to-purple-500"></div>
+            <div class="h-1 bg-gradient-to-r from-primary-400 to-primary-500"></div>
             <div class="p-3 sm:p-6 border-b-2 border-gray-200 dark:border-gray-600">
                 <div class="flex items-center justify-between">
                     <div class="flex items-center gap-2 sm:gap-4">
-                        <div class="w-10 h-10 sm:w-14 sm:h-14 bg-gradient-to-br from-indigo-100 to-purple-100 dark:from-indigo-900/30 dark:to-purple-900/30 rounded-lg sm:rounded-xl flex items-center justify-center shadow-sm">
-                            <svg class="w-5 h-5 sm:w-7 sm:h-7 text-indigo-600 dark:text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <div class="w-10 h-10 sm:w-14 sm:h-14 bg-gradient-to-br from-primary-100 to-primary-100 dark:from-primary-900/30 dark:to-primary-900/30 rounded-lg sm:rounded-xl flex items-center justify-center shadow-sm">
+                            <svg class="w-5 h-5 sm:w-7 sm:h-7 text-primary-600 dark:text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
                             </svg>
@@ -129,7 +129,7 @@
                         </div>
                     </div>
                     <div class="text-right">
-                        <div class="text-xl sm:text-3xl font-bold text-indigo-600 dark:text-indigo-400">{{ $supervisiInProgress }}</div>
+                        <div class="text-xl sm:text-3xl font-bold text-primary-600 dark:text-primary-400">{{ $supervisiInProgress }}</div>
                         <div class="text-xs sm:text-sm text-gray-500 dark:text-gray-400 font-medium">Supervisi</div>
                     </div>
                 </div>
@@ -138,16 +138,16 @@
                 @if($inProgressList->count() > 0)
                 <div class="space-y-2 sm:space-y-3">
                     @foreach($inProgressList as $supervisi)
-                    <div class="bg-white dark:bg-gray-800 rounded-lg sm:rounded-xl p-3 sm:p-4 border border-indigo-100 dark:border-indigo-900/30 hover:border-indigo-300 dark:hover:border-indigo-700 hover:shadow-lg transition-all">
+                    <div class="bg-white dark:bg-gray-800 rounded-lg sm:rounded-xl p-3 sm:p-4 border border-primary-100 dark:border-primary-900/30 hover:border-primary-300 dark:hover:border-primary-700 hover:shadow-lg transition-all">
                         <div class="flex items-start gap-2 sm:gap-3 mb-2 sm:mb-3">
-                            <div class="w-9 h-9 sm:w-11 sm:h-11 bg-gradient-to-br from-indigo-500 to-purple-500 rounded-md sm:rounded-lg flex items-center justify-center text-white font-bold text-sm sm:text-base shrink-0 shadow-sm">
+                            <div class="w-9 h-9 sm:w-11 sm:h-11 bg-gradient-to-br from-primary-500 to-primary-500 rounded-md sm:rounded-lg flex items-center justify-center text-white font-bold text-sm sm:text-base shrink-0 shadow-sm">
                                 {{ strtoupper(substr($supervisi->user->name, 0, 2)) }}
                             </div>
                             <div class="flex-1 min-w-0">
                                 <div class="font-semibold text-sm sm:text-base text-gray-900 dark:text-white truncate mb-0.5 sm:mb-1">{{ $supervisi->user->name }}</div>
                                 <div class="flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm text-gray-600 dark:text-gray-400 flex-wrap">
                                     <span class="px-2 py-0.5 sm:px-3 sm:py-1 bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 rounded-md sm:rounded-lg font-medium text-[10px] sm:text-sm">{{ $supervisi->user->mata_pelajaran ?? '-' }}</span>
-                                    <span class="px-2 py-0.5 sm:px-3 sm:py-1 bg-purple-50 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 rounded-md sm:rounded-lg font-medium text-[10px] sm:text-sm">{{ $supervisi->user->tingkat ?? '-' }}</span>
+                                    <span class="px-2 py-0.5 sm:px-3 sm:py-1 bg-primary-50 dark:bg-primary-900/30 text-primary-700 dark:text-primary-300 rounded-md sm:rounded-lg font-medium text-[10px] sm:text-sm">{{ $supervisi->user->tingkat ?? '-' }}</span>
                                 </div>
                             </div>
                         </div>
@@ -156,10 +156,10 @@
                                 <svg class="w-3 h-3 sm:w-4 sm:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
                                 </svg>
-                                {{ $supervisi->reviewed_at ? $supervisi->reviewed_at->format('d M Y, H:i') : $supervisi->updated_at->format('d M Y, H:i') }}
+                                {{ $supervisi->reviewed_at ? $supervisi->reviewed_at->translatedFormat('d M Y, H:i') : $supervisi->updated_at->translatedFormat('d M Y, H:i') }}
                             </span>
                         </div>
-                        <a href="{{ route('kepala.evaluasi.show', $supervisi->id) }}" class="flex items-center justify-center gap-1.5 sm:gap-2 w-full px-3 py-2 sm:px-4 sm:py-2.5 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white text-xs sm:text-sm font-semibold rounded-md sm:rounded-lg transition-all shadow-sm hover:shadow-md">
+                        <a href="{{ route('kepala.evaluasi.show', $supervisi->id) }}" class="flex items-center justify-center gap-1.5 sm:gap-2 w-full px-3 py-2 sm:px-4 sm:py-2.5 bg-gradient-to-r from-primary-600 to-primary-600 hover:from-primary-700 hover:to-primary-700 text-white text-xs sm:text-sm font-semibold rounded-md sm:rounded-lg transition-all shadow-sm hover:shadow-md">
                             <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
                             </svg>
@@ -214,7 +214,7 @@
                                 <div class="font-semibold text-sm sm:text-base text-gray-900 dark:text-white truncate mb-0.5 sm:mb-1">{{ $supervisi->user->name }}</div>
                                 <div class="flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm text-gray-600 dark:text-gray-400 flex-wrap">
                                     <span class="px-2 py-0.5 sm:px-3 sm:py-1 bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 rounded-md sm:rounded-lg font-medium text-[10px] sm:text-sm">{{ $supervisi->user->mata_pelajaran ?? '-' }}</span>
-                                    <span class="px-2 py-0.5 sm:px-3 sm:py-1 bg-purple-50 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 rounded-md sm:rounded-lg font-medium text-[10px] sm:text-sm">{{ $supervisi->user->tingkat ?? '-' }}</span>
+                                    <span class="px-2 py-0.5 sm:px-3 sm:py-1 bg-primary-50 dark:bg-primary-900/30 text-primary-700 dark:text-primary-300 rounded-md sm:rounded-lg font-medium text-[10px] sm:text-sm">{{ $supervisi->user->tingkat ?? '-' }}</span>
                                 </div>
                             </div>
                         </div>
@@ -223,7 +223,7 @@
                                 <svg class="w-3 h-3 sm:w-4 sm:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
                                 </svg>
-                                {{ $supervisi->reviewed_at ? $supervisi->reviewed_at->format('d M Y, H:i') : $supervisi->updated_at->format('d M Y, H:i') }}
+                                {{ $supervisi->reviewed_at ? $supervisi->reviewed_at->translatedFormat('d M Y, H:i') : $supervisi->updated_at->translatedFormat('d M Y, H:i') }}
                             </span>
                         </div>
                         <a href="{{ route('kepala.evaluasi.show', $supervisi->id) }}" class="flex items-center justify-center gap-1.5 sm:gap-2 w-full px-3 py-2 sm:px-4 sm:py-2.5 bg-gradient-to-r from-emerald-600 to-green-600 hover:from-emerald-700 hover:to-green-700 text-white text-xs sm:text-sm font-semibold rounded-md sm:rounded-lg transition-all shadow-sm hover:shadow-md">

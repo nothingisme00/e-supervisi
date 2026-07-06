@@ -117,8 +117,8 @@
             theme: {
                 extend: {
                     colors: {
-                        primary: "#6366F1",
-                        primaryHover: "#4F46E5",
+                        primary: "#0F766E",
+                        primaryHover: "#115E59",
                         "background-light": "#F8FAFC", 
                         "background-dark": "#0F172A", 
                         "card-light": "#FFFFFF",
@@ -252,12 +252,12 @@
                 const icon = el.querySelector('.material-symbols-outlined');
                 if (valid) {
                     el.classList.remove('text-gray-400', 'dark:text-gray-500');
-                    el.classList.add('text-indigo-600', 'dark:text-indigo-400');
+                    el.classList.add('text-teal-600', 'dark:text-teal-400');
                     icon.textContent = 'check_circle';
                     icon.classList.add('fill-1');
                 } else {
                     el.classList.add('text-gray-400', 'dark:text-gray-500');
-                    el.classList.remove('text-indigo-600', 'dark:text-indigo-400');
+                    el.classList.remove('text-teal-600', 'dark:text-teal-400');
                     icon.textContent = 'radio_button_unchecked';
                     icon.classList.remove('fill-1');
                 }
@@ -292,7 +292,7 @@
                             </div>
                             <h2 class="text-4xl lg:text-5xl font-bold text-white leading-tight drop-shadow-sm">
                                 {{ $slide->title }} <br/>
-                                <span class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-300 to-white">{{ $slide->subtitle }}</span>
+                                <span class="text-transparent bg-clip-text bg-gradient-to-r from-teal-300 to-white">{{ $slide->subtitle }}</span>
                             </h2>
                             @if($slide->description)
                             <p class="text-gray-300 text-lg max-w-md leading-relaxed">
@@ -317,7 +317,7 @@
                             </div>
                             <h2 class="text-4xl lg:text-5xl font-bold text-white leading-tight drop-shadow-sm">
                                 Lindungi Akun <br/>
-                                <span class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-300 to-white">Anda Sekarang</span>
+                                <span class="text-transparent bg-clip-text bg-gradient-to-r from-teal-300 to-white">Anda Sekarang</span>
                             </h2>
                             <p class="text-gray-300 text-lg max-w-md leading-relaxed">
                                 Mengganti password secara berkala adalah langkah penting untuk menjaga keamanan data dan privasi Anda.
@@ -348,7 +348,7 @@
 <aside class="w-full md:w-[560px] lg:w-[600px] xl:w-[640px] flex-shrink-0 flex flex-col h-screen bg-white dark:bg-slate-900 border-l border-gray-200 dark:border-slate-800 shadow-2xl z-20 overflow-hidden relative transition-colors duration-300">
     <!-- Top Actions -->
     <div class="absolute top-6 right-6 flex items-center gap-3 z-30">
-        <button onclick="toggleTheme()" class="w-10 h-10 flex items-center justify-center rounded-xl bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 text-gray-600 dark:text-gray-400 hover:bg-indigo-50 dark:hover:bg-indigo-950/30 hover:text-indigo-600 dark:hover:text-indigo-400 transition-all shadow-sm">
+        <button onclick="toggleTheme()" class="w-10 h-10 flex items-center justify-center rounded-xl bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 text-gray-600 dark:text-gray-400 hover:bg-teal-50 dark:hover:bg-teal-950/30 hover:text-teal-600 dark:hover:text-teal-400 transition-all shadow-sm">
             <span class="material-symbols-outlined text-xl" id="theme-icon">light_mode</span>
         </button>
         <form action="{{ route('logout') }}" method="POST">
@@ -407,15 +407,15 @@
                 </label>
                 <div class="relative group">
                     <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                        <span class="material-symbols-outlined text-gray-400 dark:text-gray-500 text-xl group-focus-within:text-indigo-600 dark:group-focus-within:text-indigo-400 transition-colors">lock</span>
+                        <span class="material-symbols-outlined text-gray-400 dark:text-gray-500 text-xl group-focus-within:text-teal-600 dark:group-focus-within:text-teal-400 transition-colors">lock</span>
                     </div>
-                    <input class="block w-full pl-12 pr-14 py-3.5 border border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-800/50 rounded-xl text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:focus:ring-indigo-400 dark:focus:border-indigo-400 transition-all duration-200 text-sm font-medium hover:border-gray-300 dark:hover:border-slate-600" 
+                    <input class="block w-full pl-12 pr-14 py-3.5 border border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-800/50 rounded-xl text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:ring-2 focus:ring-teal-500 focus:border-teal-500 dark:focus:ring-teal-400 dark:focus:border-teal-400 transition-all duration-200 text-sm font-medium hover:border-gray-300 dark:hover:border-slate-600" 
                            id="password" 
                            name="password" 
                            placeholder="Masukkan password baru" 
                            type="password"
                            required/>
-                    <button type="button" onclick="togglePassword('password')" class="absolute inset-y-0 right-0 pr-5 flex items-center text-gray-400 dark:text-gray-500 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
+                    <button type="button" onclick="togglePassword('password')" class="absolute inset-y-0 right-0 pr-5 flex items-center text-gray-400 dark:text-gray-500 hover:text-teal-600 dark:hover:text-teal-400 transition-colors">
                         <span class="material-symbols-outlined text-xl" id="password-icon">visibility</span>
                     </button>
                 </div>
@@ -428,23 +428,23 @@
                 </label>
                 <div class="relative group">
                     <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                        <span class="material-symbols-outlined text-gray-400 dark:text-gray-500 text-xl group-focus-within:text-indigo-600 dark:group-focus-within:text-indigo-400 transition-colors">verified_user</span>
+                        <span class="material-symbols-outlined text-gray-400 dark:text-gray-500 text-xl group-focus-within:text-teal-600 dark:group-focus-within:text-teal-400 transition-colors">verified_user</span>
                     </div>
-                    <input class="block w-full pl-12 pr-14 py-3.5 border border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-800/50 rounded-xl text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:focus:ring-indigo-400 dark:focus:border-indigo-400 transition-all duration-200 text-sm font-medium hover:border-gray-300 dark:hover:border-slate-600" 
+                    <input class="block w-full pl-12 pr-14 py-3.5 border border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-800/50 rounded-xl text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:ring-2 focus:ring-teal-500 focus:border-teal-500 dark:focus:ring-teal-400 dark:focus:border-teal-400 transition-all duration-200 text-sm font-medium hover:border-gray-300 dark:hover:border-slate-600" 
                            id="password_confirmation" 
                            name="password_confirmation" 
                            placeholder="Ketik ulang password baru" 
                            type="password"
                            required/>
-                    <button type="button" onclick="togglePassword('password_confirmation')" class="absolute inset-y-0 right-0 pr-5 flex items-center text-gray-400 dark:text-gray-500 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
+                    <button type="button" onclick="togglePassword('password_confirmation')" class="absolute inset-y-0 right-0 pr-5 flex items-center text-gray-400 dark:text-gray-500 hover:text-teal-600 dark:hover:text-teal-400 transition-colors">
                         <span class="material-symbols-outlined text-xl" id="password_confirmation-icon">visibility</span>
                     </button>
                 </div>
             </div>
 
             <!-- Syarat Password Checklist -->
-            <div class="p-5 bg-indigo-50/50 dark:bg-indigo-900/10 border border-indigo-100 dark:border-indigo-900/30 rounded-2xl space-y-3">
-                <h3 class="text-sm font-bold text-indigo-900 dark:text-indigo-300 flex items-center gap-2">
+            <div class="p-5 bg-teal-50/50 dark:bg-teal-900/10 border border-teal-100 dark:border-teal-900/30 rounded-2xl space-y-3">
+                <h3 class="text-sm font-bold text-teal-900 dark:text-teal-300 flex items-center gap-2">
                     <span class="material-symbols-outlined text-lg">info</span>
                     Syarat Password
                 </h3>
@@ -465,7 +465,7 @@
             </div>
 
             <div class="pt-4">
-                <button class="group w-full flex justify-center items-center py-4 px-6 border border-transparent rounded-xl shadow-lg shadow-indigo-500/30 text-base font-bold text-white bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 hover:shadow-indigo-500/40 focus:outline-none focus:ring-4 focus:ring-indigo-500/50 transition-all duration-200 transform hover:-translate-y-0.5 active:scale-[0.98]" type="submit">
+                <button class="group w-full flex justify-center items-center py-4 px-6 border border-transparent rounded-xl shadow-lg shadow-teal-500/30 text-base font-bold text-white bg-gradient-to-r from-teal-600 to-teal-600 hover:from-teal-700 hover:to-teal-700 hover:shadow-teal-500/40 focus:outline-none focus:ring-4 focus:ring-teal-500/50 transition-all duration-200 transform hover:-translate-y-0.5 active:scale-[0.98]" type="submit">
                     <span class="material-symbols-outlined mr-2">check</span>
                     Simpan Password Baru
                 </button>
@@ -474,6 +474,10 @@
                 </p>
             </div>
         </form>
+
+        <div class="mt-8 text-center">
+            @include('auth.partials.footer')
+        </div>
     </div>
 </aside>
 

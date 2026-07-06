@@ -19,76 +19,43 @@
     <!-- Header Section -->
     <div class="bg-white dark:bg-gray-800 rounded-lg sm:rounded-xl shadow-sm sm:shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden mb-4 sm:mb-6">
         <!-- Decorative Header Bar -->
-        <div class="h-1.5 sm:h-2 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500"></div>
+        <div class="h-1.5 sm:h-2 bg-primary-600"></div>
         
         <div class="p-4 sm:p-6">
             <!-- Mobile: Stack vertically, Desktop: Side by side -->
             <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 sm:gap-4">
                 <div class="flex items-center sm:items-start gap-3 sm:gap-4">
-                    <div class="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white font-bold text-base sm:text-lg shadow-md ring-2 sm:ring-4 ring-indigo-100 dark:ring-indigo-900/50 flex-shrink-0">
+                    <div class="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-gradient-to-br from-primary-500 to-primary-600 flex items-center justify-center text-white font-bold text-base sm:text-lg shadow-md ring-2 sm:ring-4 ring-primary-100 dark:ring-primary-900/50 flex-shrink-0">
                         {{ strtoupper(substr($supervisi->user->name, 0, 2)) }}
                     </div>
                     <div class="min-w-0 flex-1">
                         <h1 class="text-base sm:text-xl lg:text-2xl font-bold text-gray-800 dark:text-white leading-tight">{{ $supervisi->user->name }}</h1>
                         <div class="flex flex-wrap gap-2 sm:gap-3 text-xs sm:text-sm text-gray-600 dark:text-gray-300 mt-1 sm:mt-2">
+                            @if($supervisi->user->mata_pelajaran)
                             <div class="flex items-center gap-1">
                                 <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-gray-500 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
                                 </svg>
-                                <span class="font-medium">{{ $supervisi->mata_pelajaran }}</span>
+                                <span class="font-medium">{{ $supervisi->user->mata_pelajaran }}</span>
                             </div>
-                            <div class="flex items-center gap-1">
-                                <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-gray-500 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
-                                </svg>
-                                <span class="font-medium">Kelas {{ $supervisi->kelas }}</span>
-                            </div>
+                            @endif
                         </div>
                         <p class="text-xs sm:text-sm text-gray-500 dark:text-gray-400 mt-1 sm:mt-2 flex items-center">
                             <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
                             </svg>
-                            {{ \Carbon\Carbon::parse($supervisi->tanggal_supervisi)->format('d F Y') }}
+                            {{ \Carbon\Carbon::parse($supervisi->tanggal_supervisi)->translatedFormat('d F Y') }}
                         </p>
                     </div>
                 </div>
                 <!-- Status Badge -->
                 <div class="self-start sm:self-auto mt-1 sm:mt-0">
-                    @if($supervisi->status == 'draft')
-                        <span class="inline-flex items-center px-2.5 py-1.5 sm:px-4 sm:py-2 rounded-lg text-xs sm:text-sm font-semibold bg-gray-100 text-gray-700 border border-gray-200 shadow-sm">
-                            <span class="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-gray-500 rounded-full mr-1.5 sm:mr-2"></span>
-                            Draft
-                        </span>
-                    @elseif($supervisi->status == 'submitted')
-                        <span class="inline-flex items-center px-2.5 py-1.5 sm:px-4 sm:py-2 rounded-lg text-xs sm:text-sm font-semibold bg-amber-100 text-amber-700 border border-amber-200 shadow-sm">
-                            <span class="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-amber-500 rounded-full mr-1.5 sm:mr-2 animate-pulse"></span>
-                            Menunggu Peninjauan
-                        </span>
-                    @elseif($supervisi->status == 'under_review')
-                        <span class="inline-flex items-center px-2.5 py-1.5 sm:px-4 sm:py-2 rounded-lg text-xs sm:text-sm font-semibold bg-indigo-100 text-indigo-700 border border-indigo-200 shadow-sm">
-                            <span class="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-indigo-600 rounded-full mr-1.5 sm:mr-2 animate-pulse"></span>
-                            Sedang Ditinjau
-                        </span>
-                    @elseif($supervisi->status == 'completed')
-                        <span class="inline-flex items-center px-2.5 py-1.5 sm:px-4 sm:py-2 rounded-lg text-xs sm:text-sm font-semibold bg-emerald-100 text-emerald-700 border border-emerald-200 shadow-sm">
-                            <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4 mr-1 sm:mr-2 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                            </svg>
-                            Telah Ditinjau
-                        </span>
-                    @elseif($supervisi->status == 'revision')
-                        <span class="inline-flex items-center px-2.5 py-1.5 sm:px-4 sm:py-2 rounded-lg text-xs sm:text-sm font-semibold bg-rose-100 text-rose-700 border border-rose-200 shadow-sm">
-                            <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4 mr-1 sm:mr-2 text-rose-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
-                            </svg>
-                            Perlu Revisi
-                        </span>
-                    @endif
+                    <x-status-badge :status="$supervisi->status" />
                     <p class="text-[10px] sm:text-xs text-gray-500 dark:text-gray-400 mt-2 flex items-center justify-end">
                         <svg class="w-3 h-3 sm:w-3.5 sm:h-3.5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                         </svg>
-                        Disubmit: {{ $supervisi->updated_at->format('d M Y, H:i') }}
+                        Disubmit: {{ $supervisi->updated_at->translatedFormat('d M Y, H:i') }}
                     </p>
                 </div>
             </div>
@@ -101,9 +68,7 @@
         <!-- Card 1: Dokumen Evaluasi Diri -->
         <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
             <!-- Card Header -->
-            <div class="bg-blue-600 dark:bg-blue-700 px-4 py-3 sm:px-6 sm:py-4">
-                <h3 class="text-sm sm:text-base font-semibold text-white">Dokumen Evaluasi Diri</h3>
-            </div>
+            <x-card-header title="Dokumen Evaluasi Diri" />
             <!-- Card Content -->
             <div class="p-3 sm:p-4 md:p-6">
                 @if($supervisi->dokumenEvaluasi && count($supervisi->dokumenEvaluasi) > 0)
@@ -119,7 +84,7 @@
                                 <p class="text-xs sm:text-sm font-medium text-gray-900 dark:text-white truncate">{{ $dokumen->nama_file }}</p>
                                 <p class="text-[10px] sm:text-xs text-gray-500 dark:text-gray-400">{{ strtoupper($dokumen->tipe_file) }} • {{ number_format($dokumen->ukuran_file / 1024, 2) }} KB</p>
                             </div>
-                            <a href="{{ asset('storage/' . $dokumen->path) }}" 
+                            <a href="{{ route('guru.supervisi.preview', $dokumen->id) }}"
                                target="_blank"
                                class="inline-flex items-center gap-1 px-2 py-1 sm:px-3 sm:py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-medium rounded-md transition-colors flex-shrink-0">
                                 <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -146,9 +111,7 @@
 
         <!-- Card 2: Link Pembelajaran -->
         <div class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden shadow-sm">
-            <div class="bg-gradient-to-r from-purple-500 to-purple-600 dark:from-purple-600 dark:to-purple-700 px-4 py-3 sm:px-6 sm:py-4">
-                <h3 class="text-sm sm:text-base font-semibold text-white">Link Pembelajaran</h3>
-            </div>
+            <x-card-header title="Link Pembelajaran" />
             <div class="p-3 sm:p-4 md:p-6 space-y-3 sm:space-y-4">
                 @if($supervisi->prosesPembelajaran)
                     @if($supervisi->prosesPembelajaran->link_video)
@@ -207,19 +170,17 @@
 
         <!-- Card 3: Refleksi Pembelajaran -->
         <div class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden shadow-sm">
-            <div class="bg-gradient-to-r from-emerald-500 to-emerald-600 dark:from-emerald-600 dark:to-emerald-700 px-4 py-3 sm:px-6 sm:py-4">
-                <h3 class="text-sm sm:text-base font-semibold text-white">Refleksi Pembelajaran</h3>
-            </div>
+            <x-card-header title="Refleksi Pembelajaran" />
             <div class="p-3 sm:p-4 md:p-6">
                 @if($supervisi->prosesPembelajaran)
                     <div class="space-y-2 sm:space-y-3 max-h-80 sm:max-h-96 overflow-y-auto">
                         @php
                             $refleksiItems = [
-                                ['key' => 'refleksi_1', 'title' => '1. Apa yang sudah berjalan dengan baik?', 'color' => 'purple'],
-                                ['key' => 'refleksi_2', 'title' => '2. Apa yang masih menjadi tantangan?', 'color' => 'blue'],
-                                ['key' => 'refleksi_3', 'title' => '3. Apa yang akan saya lakukan untuk meningkatkan pembelajaran?', 'color' => 'green'],
-                                ['key' => 'refleksi_4', 'title' => '4. Apa dukungan yang saya butuhkan?', 'color' => 'amber'],
-                                ['key' => 'refleksi_5', 'title' => '5. Refleksi tambahan', 'color' => 'rose'],
+                                ['key' => 'refleksi_1', 'title' => '1. Apa yang sudah berjalan dengan baik?'],
+                                ['key' => 'refleksi_2', 'title' => '2. Apa yang masih menjadi tantangan?'],
+                                ['key' => 'refleksi_3', 'title' => '3. Apa yang akan saya lakukan untuk meningkatkan pembelajaran?'],
+                                ['key' => 'refleksi_4', 'title' => '4. Apa dukungan yang saya butuhkan?'],
+                                ['key' => 'refleksi_5', 'title' => '5. Refleksi tambahan'],
                             ];
                             $hasAnyRefleksi = false;
                         @endphp
@@ -227,11 +188,11 @@
                         @foreach($refleksiItems as $index => $item)
                             @if($supervisi->prosesPembelajaran->{$item['key']})
                                 @php $hasAnyRefleksi = true; @endphp
-                                <div class="border-l-4 border-{{ $item['color'] }}-500 bg-{{ $item['color'] }}-50 dark:bg-{{ $item['color'] }}-900/20 rounded-r-lg p-2.5 sm:p-3">
+                                <div class="border-l-4 border-primary-500 bg-primary-50 dark:bg-primary-900/20 rounded-r-lg p-2.5 sm:p-3">
                                     <div class="flex items-start gap-2">
-                                        <span class="flex items-center justify-center w-5 h-5 sm:w-6 sm:h-6 bg-{{ $item['color'] }}-600 text-white rounded text-[10px] sm:text-xs font-bold flex-shrink-0">{{ $index + 1 }}</span>
+                                        <span class="flex items-center justify-center w-5 h-5 sm:w-6 sm:h-6 bg-primary-600 text-white rounded text-[10px] sm:text-xs font-bold flex-shrink-0">{{ $index + 1 }}</span>
                                         <div class="flex-1 min-w-0">
-                                            <div class="text-xs sm:text-sm font-semibold text-{{ $item['color'] }}-900 dark:text-{{ $item['color'] }}-300 mb-0.5 sm:mb-1 leading-tight">{{ $item['title'] }}</div>
+                                            <div class="text-xs sm:text-sm font-semibold text-primary-900 dark:text-primary-300 mb-0.5 sm:mb-1 leading-tight">{{ $item['title'] }}</div>
                                             <p class="text-xs sm:text-sm text-gray-700 dark:text-gray-300 leading-relaxed whitespace-pre-wrap">{{ $supervisi->prosesPembelajaran->{$item['key']} }}</p>
                                         </div>
                                     </div>
@@ -255,29 +216,15 @@
 
         <!-- Card 4: Diskusi & Feedback -->
         <div class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden shadow-sm">
-            <div class="bg-gradient-to-r from-purple-600 to-indigo-600 dark:from-purple-700 dark:to-indigo-700 px-4 py-3 sm:px-6 sm:py-4">
-                <h3 class="text-sm sm:text-base font-semibold text-white">Diskusi & Feedback</h3>
-            </div>
+            <x-card-header title="Diskusi & Feedback" />
             <div class="p-3 sm:p-4 md:p-6">
-                <!-- Success/Error Messages -->
-                @if(session('success'))
-                <div class="mb-3 sm:mb-4 p-3 sm:p-4 bg-emerald-50 dark:bg-emerald-900/20 border-l-4 border-emerald-500 dark:border-emerald-600 rounded-r-lg">
-                    <div class="flex items-center">
-                        <svg class="w-4 h-4 sm:w-5 sm:h-5 text-emerald-600 dark:text-emerald-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                        </svg>
-                        <span class="text-emerald-700 dark:text-emerald-300 text-xs sm:text-sm font-medium">{{ session('success') }}</span>
-                    </div>
-                </div>
-                @endif
-
                 <!-- Feedback List -->
                 <div class="space-y-2 sm:space-y-3 max-h-80 sm:max-h-96 overflow-y-auto mb-3 sm:mb-4">
                 @if($supervisi->feedback && $supervisi->feedback->count() > 0)
                     @foreach($supervisi->feedback->whereNull('parent_id')->sortByDesc('created_at') as $fb)
                     <div class="border-l-4 {{ $fb->is_revision_request ? 'border-red-500 bg-red-50 dark:bg-red-900/20' : ($fb->user_id == auth()->id() ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20' : 'border-amber-500 bg-amber-50 dark:bg-amber-900/20') }} rounded-r-lg p-3 sm:p-4">
                         <div class="flex items-start gap-2 sm:gap-3">
-                            <div class="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-br {{ $fb->user_id == auth()->id() ? 'from-blue-500 to-indigo-600' : 'from-amber-500 to-orange-600' }} rounded-full flex items-center justify-center text-white text-xs sm:text-sm font-bold flex-shrink-0 shadow-md">
+                            <div class="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-br {{ $fb->user_id == auth()->id() ? 'from-primary-500 to-primary-700' : 'from-amber-500 to-orange-600' }} rounded-full flex items-center justify-center text-white text-xs sm:text-sm font-bold flex-shrink-0 shadow-md">
                                 {{ strtoupper(substr($fb->user->name ?? 'U', 0, 2)) }}
                             </div>
                             <div class="flex-1 min-w-0">
@@ -285,7 +232,7 @@
                                     <div class="flex items-center gap-1.5 sm:gap-2 flex-wrap">
                                         <span class="text-xs sm:text-sm font-semibold text-gray-900 dark:text-white">{{ $fb->user->name ?? 'User' }}</span>
                                         @if($fb->user->role === 'kepala_sekolah')
-                                            <span class="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] sm:text-xs font-semibold bg-purple-100 text-purple-700 dark:bg-purple-900/40 dark:text-purple-300">Kepala Sekolah</span>
+                                            <span class="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] sm:text-xs font-semibold bg-primary-100 text-primary-700 dark:bg-primary-900/40 dark:text-primary-300">Kepala Sekolah</span>
                                         @elseif($fb->user_id == auth()->id())
                                             <span class="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] sm:text-xs font-semibold bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-300">Anda</span>
                                         @else
@@ -303,7 +250,7 @@
 
                                 <!-- Reply Button -->
                                 <div class="mt-2 sm:mt-3">
-                                    <button onclick="toggleReplyForm({{ $fb->id }})" class="inline-flex items-center gap-1 px-2 py-1 text-[10px] sm:text-xs font-semibold text-indigo-600 dark:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-indigo-900/20 rounded-lg transition-all">
+                                    <button onclick="toggleReplyForm({{ $fb->id }})" class="inline-flex items-center gap-1 px-2 py-1 text-[10px] sm:text-xs font-semibold text-primary-600 dark:text-primary-400 hover:bg-primary-50 dark:hover:bg-primary-900/20 rounded-lg transition-all">
                                         <svg class="w-3 h-3 sm:w-3.5 sm:h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6"></path>
                                         </svg>
@@ -312,13 +259,13 @@
                                 </div>
 
                                 <!-- Reply Form -->
-                                <div id="reply-form-{{ $fb->id }}" class="hidden mt-2 sm:mt-3 pl-3 sm:pl-4 border-l-2 border-indigo-200 dark:border-indigo-800">
+                                <div id="reply-form-{{ $fb->id }}" class="hidden mt-2 sm:mt-3 pl-3 sm:pl-4 border-l-2 border-primary-200 dark:border-primary-800">
                                     <form action="{{ route('guru.supervisi.comment', $supervisi->id) }}" method="POST" class="space-y-2">
                                         @csrf
                                         <input type="hidden" name="parent_id" value="{{ $fb->id }}">
-                                        <textarea name="komentar" rows="2" required class="w-full px-3 py-2 text-xs sm:text-sm border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 resize-none" placeholder="Tulis balasan Anda..."></textarea>
+                                        <textarea name="komentar" rows="2" required class="w-full px-3 py-2 text-xs sm:text-sm border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-400 bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 resize-none" placeholder="Tulis balasan Anda..."></textarea>
                                         <div class="flex gap-2">
-                                            <button type="submit" class="inline-flex items-center gap-1 px-2 py-1 sm:px-3 sm:py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white text-[10px] sm:text-xs font-semibold rounded-lg transition-all">Kirim</button>
+                                            <button type="submit" class="inline-flex items-center gap-1 px-2 py-1 sm:px-3 sm:py-1.5 bg-primary-600 hover:bg-primary-700 text-white text-[10px] sm:text-xs font-semibold rounded-lg transition-all">Kirim</button>
                                             <button type="button" onclick="toggleReplyForm({{ $fb->id }})" class="px-2 py-1 sm:px-3 sm:py-1.5 text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 text-[10px] sm:text-xs font-semibold rounded-lg transition-all">Batal</button>
                                         </div>
                                     </form>
@@ -330,7 +277,7 @@
                                         @foreach($fb->replies as $reply)
                                         <div class="bg-gray-50 dark:bg-gray-900/30 rounded-lg p-2 sm:p-3">
                                             <div class="flex items-start gap-2">
-                                                <div class="w-6 h-6 sm:w-8 sm:h-8 bg-gradient-to-br {{ $reply->user_id == auth()->id() ? 'from-blue-400 to-indigo-500' : 'from-gray-400 to-gray-600' }} rounded-full flex items-center justify-center text-white text-[10px] sm:text-xs font-bold flex-shrink-0">
+                                                <div class="w-6 h-6 sm:w-8 sm:h-8 bg-gradient-to-br {{ $reply->user_id == auth()->id() ? 'from-blue-400 to-primary-500' : 'from-gray-400 to-gray-600' }} rounded-full flex items-center justify-center text-white text-[10px] sm:text-xs font-bold flex-shrink-0">
                                                     {{ strtoupper(substr($reply->user->name ?? 'U', 0, 2)) }}
                                                 </div>
                                                 <div class="flex-1 min-w-0">
@@ -373,13 +320,13 @@
                             <label for="komentar" class="block text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 mb-1 sm:mb-2">
                                 Tambahkan Komentar atau Balasan
                             </label>
-                            <textarea name="komentar" id="komentar" rows="3" required class="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 text-xs sm:text-sm resize-none" placeholder="Tulis komentar, pertanyaan, atau balasan Anda di sini..."></textarea>
+                            <textarea name="komentar" id="komentar" rows="3" required class="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-400 bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 text-xs sm:text-sm resize-none" placeholder="Tulis komentar, pertanyaan, atau balasan Anda di sini..."></textarea>
                             @error('komentar')
                                 <p class="mt-1 text-[10px] sm:text-xs text-red-500 dark:text-red-400">{{ $message }}</p>
                             @enderror
                         </div>
                         <div class="flex justify-end">
-                            <button type="submit" class="inline-flex items-center gap-1.5 sm:gap-2 px-4 py-2 sm:px-5 sm:py-2.5 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white text-xs sm:text-sm font-semibold rounded-lg transition-all shadow-md hover:shadow-lg active:scale-95">
+                            <button type="submit" class="inline-flex items-center gap-1.5 sm:gap-2 px-4 py-2 sm:px-5 sm:py-2.5 bg-gradient-to-r from-primary-600 to-primary-600 hover:from-primary-700 hover:to-primary-700 text-white text-xs sm:text-sm font-semibold rounded-lg transition-all shadow-md hover:shadow-lg active:scale-95">
                                 <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
                                 </svg>

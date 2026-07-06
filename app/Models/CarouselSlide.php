@@ -11,6 +11,7 @@ class CarouselSlide extends Model
 
     protected $fillable = [
         'title',
+        'subtitle',
         'description',
         'image_path',
         'order',
@@ -40,10 +41,25 @@ class CarouselSlide extends Model
 
     /**
      * Get the image URL
+     * Supports:
+     * - Relative path dari storage: 'carousel/image.jpg' → /storage/carousel/image.jpg
+     * - Path dari public: 'images/carousel/samples/file.jpg' → /images/carousel/samples/file.jpg
+     * - Full URL: 'https://...' → https://...
      */
     public function getImageUrlAttribute()
     {
         if ($this->image_path) {
+            // Jika sudah full URL (http/https), return as is
+            if (str_starts_with($this->image_path, 'http://') || str_starts_with($this->image_path, 'https://')) {
+                return $this->image_path;
+            }
+            
+            // Jika path dari public/images (static assets), gunakan asset()
+            if (str_starts_with($this->image_path, 'images/')) {
+                return asset($this->image_path);
+            }
+            
+            // Default: path relatif dari storage (carousel/, avatars/, dll)
             return asset('storage/' . $this->image_path);
         }
         return null;

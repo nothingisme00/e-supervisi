@@ -59,14 +59,6 @@ class SupervisiController extends Controller
             'feedback.replies.user:id,name,role'
         ])->findOrFail($id);
 
-        // Auto-mark as under_review if submitted
-        if ($supervisi->status === Supervisi::STATUS_SUBMITTED) {
-            $supervisi->update([
-                'status' => Supervisi::STATUS_UNDER_REVIEW,
-                'reviewer_id' => Auth::id()
-            ]);
-        }
-
         return view('admin.supervisi.detail', compact('supervisi'));
     }
 
@@ -76,29 +68,50 @@ class SupervisiController extends Controller
     public function storeFeedback(Request $request, $id)
     {
         $request->validate([
-            'feedback' => 'required|string|min:10',
-            'mark_as_completed' => 'nullable|boolean'
+            'komentar' => 'required|string|min:10',
+            'mark_completed' => 'nullable'
         ]);
 
         $supervisi = Supervisi::findOrFail($id);
 
+        if (!in_array($supervisi->status, ['submitted', 'under_review', 'revision'])) {
+            abort(403, 'Supervisi tidak dapat diberi feedback dari status ini');
+        }
+
+        if ($request->mark_completed && !in_array($supervisi->status, ['submitted', 'under_review'])) {
+            abort(403, 'Supervisi tidak dapat diselesaikan dari status ini');
+        }
+
+        if ($request->mark_completed && $supervisi->lockedByOther()) {
+            abort(403, 'Supervisi sedang direview oleh reviewer lain');
+        }
+
         // Create feedback
         Feedback::create([
             'supervisi_id' => $supervisi->id,
-            'admin_id' => Auth::id(),
-            'feedback' => $request->feedback
+            'user_id' => Auth::id(),
+            'komentar' => $request->komentar
         ]);
 
         // Update status if mark as completed
-        if ($request->mark_as_completed) {
+        if ($request->mark_completed) {
             $supervisi->update([
                 'status' => Supervisi::STATUS_COMPLETED,
                 'reviewed_at' => now(),
-                'reviewer_id' => Auth::id()
+                'reviewed_by' => Auth::id()
             ]);
 
             return redirect()->route('admin.supervisi.show', $supervisi->id)
                 ->with('success', 'Feedback berhasil diberikan dan supervisi telah selesai ditinjau!');
+        }
+
+        // Explicit promotion (replaces old auto-mark on GET show)
+        if ($supervisi->status === Supervisi::STATUS_SUBMITTED) {
+            $supervisi->update([
+                'status' => Supervisi::STATUS_UNDER_REVIEW,
+                'reviewed_by' => Auth::id(),
+                'reviewed_at' => now()
+            ]);
         }
 
         return redirect()->route('admin.supervisi.show', $supervisi->id)
@@ -116,18 +129,26 @@ class SupervisiController extends Controller
 
         $supervisi = Supervisi::findOrFail($id);
 
+        if (!in_array($supervisi->status, ['submitted', 'under_review', 'revision'])) {
+            abort(403, 'Supervisi tidak dapat direvisi dari status ini');
+        }
+
+        if ($supervisi->lockedByOther()) {
+            abort(403, 'Supervisi sedang direview oleh reviewer lain');
+        }
+
         $supervisi->update([
             'status' => 'revision',
             'revision_notes' => $request->revision_notes,
-            'revision_count' => ($supervisi->revision_count ?? 0) + 1,
-            'reviewer_id' => Auth::id()
+            'reviewed_by' => Auth::id()
         ]);
 
         // Create feedback about revision
         Feedback::create([
             'supervisi_id' => $supervisi->id,
-            'admin_id' => Auth::id(),
-            'feedback' => "📝 Revisi diperlukan:\n\n" . $request->revision_notes
+            'user_id' => Auth::id(),
+            'komentar' => "📝 Revisi diperlukan:\n\n" . $request->revision_notes,
+            'is_revision_request' => true
         ]);
 
         return redirect()->route('admin.supervisi.show', $supervisi->id)
@@ -147,7 +168,7 @@ class SupervisiController extends Controller
             abort(403, 'Anda tidak memiliki akses ke dokumen ini');
         }
 
-        $filePath = storage_path('app/public/' . $dokumen->path_file);
+        $filePath = Storage::disk('local')->path($dokumen->path_file);
 
         if (!file_exists($filePath)) {
             abort(404, 'File tidak ditemukan');

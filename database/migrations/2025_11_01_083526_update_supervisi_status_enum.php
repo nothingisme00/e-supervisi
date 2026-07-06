@@ -11,6 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
+        // Skip on SQLite - it doesn't support enum changes and treats them as text anyway
+        if (Schema::getConnection()->getDriverName() === 'sqlite') {
+            return;
+        }
+
         Schema::table('supervisi', function (Blueprint $table) {
             $table->enum('status', ['draft', 'submitted', 'under_review', 'completed', 'revision'])->default('draft')->change();
         });

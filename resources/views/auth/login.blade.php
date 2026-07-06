@@ -107,7 +107,7 @@
         
         /* Modern Select Dropdown Styling */
         .dropdown-item.active {
-            background-color: #6366f1;
+            background-color: #0f766e;
             color: white !important;
         }
         
@@ -142,8 +142,8 @@
             theme: {
                 extend: {
                     colors: {
-                        primary: "#6366F1", // Indigo-500 for a fresher look
-                        primaryHover: "#4F46E5", // Indigo-600
+                        primary: "#0F766E", // teal-700
+                        primaryHover: "#115E59", // teal-800
                         "background-light": "#F8FAFC", 
                         "background-dark": "#0F172A", 
                         "card-light": "#FFFFFF",
@@ -168,7 +168,7 @@
                     boxShadow: {
                         'soft': '0 20px 40px -10px rgba(0,0,0,0.08)',
                         'card': '0 0 0 1px rgba(0,0,0,0.03), 0 1px 2px rgba(0,0,0,0.05), 0 10px 40px -10px rgba(0,0,0,0.05)',
-                        'input-focus': '0 0 0 4px rgba(99, 102, 241, 0.1)',
+                        'input-focus': '0 0 0 4px rgba(15, 118, 110, 0.1)',
                     }
                 },
             },
@@ -182,12 +182,12 @@
             if (html.classList.contains('dark')) {
                 html.classList.remove('dark');
                 localStorage.setItem('theme', 'light');
-                if(themeText) themeText.textContent = 'Light Mode';
+                if(themeText) themeText.textContent = 'Mode Terang';
                 if(themeIcon) themeIcon.textContent = 'light_mode';
             } else {
                 html.classList.add('dark');
                 localStorage.setItem('theme', 'dark');
-                if(themeText) themeText.textContent = 'Dark Mode';
+                if(themeText) themeText.textContent = 'Mode Gelap';
                 if(themeIcon) themeIcon.textContent = 'dark_mode';
             }
         }
@@ -199,11 +199,11 @@
             
             if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
                 document.documentElement.classList.add('dark');
-                if(themeText) themeText.textContent = 'Dark Mode';
+                if(themeText) themeText.textContent = 'Mode Gelap';
                 if(themeIcon) themeIcon.textContent = 'dark_mode';
             } else {
                 document.documentElement.classList.remove('dark');
-                if(themeText) themeText.textContent = 'Light Mode';
+                if(themeText) themeText.textContent = 'Mode Terang';
                 if(themeIcon) themeIcon.textContent = 'light_mode';
             }
 
@@ -427,7 +427,7 @@
                             </div>
                             <h2 class="text-2xl lg:text-4xl xl:text-5xl font-bold text-white leading-tight drop-shadow-sm">
                                 Meningkatkan Kualitas <br/>
-                                <span class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-300 to-white">Pendidikan Digital</span>
+                                <span class="text-transparent bg-clip-text bg-gradient-to-r from-teal-300 to-white">Pendidikan Digital</span>
                             </h2>
                             <p class="text-gray-300 text-sm lg:text-base xl:text-lg max-w-md leading-relaxed">
                                 Platform terintegrasi untuk pemantauan, evaluasi, dan pengembangan profesional guru yang lebih efektif.
@@ -460,7 +460,7 @@
         <!-- Header Section -->
         <div class="mb-4 lg:mb-6 text-center animate-[fadeIn_0.6s_ease-out]">
             <!-- Logo -->
-            <div class="inline-flex items-center justify-center w-12 h-12 lg:w-14 lg:h-14 bg-indigo-600 rounded-xl mb-3 lg:mb-4 shadow-lg">
+            <div class="inline-flex items-center justify-center w-12 h-12 lg:w-14 lg:h-14 bg-teal-600 rounded-xl mb-3 lg:mb-4 shadow-lg">
                 <span class="material-symbols-outlined text-xl lg:text-2xl text-white">school</span>
             </div>
             
@@ -472,6 +472,14 @@
                 Sistem Supervisi Pembelajaran Terpadu
             </p>
         </div>
+
+        <!-- Success Alert (mis. setelah logout) -->
+        @if(session('success'))
+        <div class="mb-3 lg:mb-4 bg-green-50 dark:bg-green-900/20 text-green-600 dark:text-green-400 p-2.5 lg:p-3 rounded-lg text-xs lg:text-sm border border-green-100 dark:border-green-800/50 flex items-center gap-2 animate-[slideUp_0.4s_ease-out]">
+            <span class="material-symbols-outlined text-base lg:text-lg">check_circle</span>
+            <span>{{ session('success') }}</span>
+        </div>
+        @endif
 
         <!-- Error Alert -->
         @if($errors->any())
@@ -495,10 +503,10 @@
                     </label>
                     <div class="relative group">
                         <div class="absolute inset-y-0 left-0 pl-3 lg:pl-4 flex items-center pointer-events-none">
-                            <span class="material-symbols-outlined text-gray-400 dark:text-gray-500 text-lg lg:text-xl group-focus-within:text-indigo-600 dark:group-focus-within:text-indigo-400 transition-colors">badge</span>
+                            <span class="material-symbols-outlined text-gray-400 dark:text-gray-500 text-lg lg:text-xl group-focus-within:text-teal-600 dark:group-focus-within:text-teal-400 transition-colors">badge</span>
                         </div>
                         <input autocomplete="username" 
-                               class="block w-full pl-10 lg:pl-12 pr-4 py-2.5 lg:py-3 border border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-800/50 rounded-xl text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:focus:ring-indigo-400 dark:focus:border-indigo-400 transition-all duration-200 text-xs lg:text-sm font-medium hover:border-gray-300 dark:hover:border-slate-600" 
+                               class="block w-full pl-10 lg:pl-12 pr-4 py-2.5 lg:py-3 border border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-800/50 rounded-xl text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:ring-2 focus:ring-teal-500 focus:border-teal-500 dark:focus:ring-teal-400 dark:focus:border-teal-400 transition-all duration-200 text-xs lg:text-sm font-medium hover:border-gray-300 dark:hover:border-slate-600" 
                                id="nik" 
                                name="nik" 
                                value="{{ old('nik') }}"
@@ -515,16 +523,16 @@
                     </label>
                     <div class="relative group">
                         <div class="absolute inset-y-0 left-0 pl-3 lg:pl-4 flex items-center pointer-events-none">
-                            <span class="material-symbols-outlined text-gray-400 dark:text-gray-500 text-lg lg:text-xl group-focus-within:text-indigo-600 dark:group-focus-within:text-indigo-400 transition-colors">lock</span>
+                            <span class="material-symbols-outlined text-gray-400 dark:text-gray-500 text-lg lg:text-xl group-focus-within:text-teal-600 dark:group-focus-within:text-teal-400 transition-colors">lock</span>
                         </div>
                         <input autocomplete="current-password" 
-                               class="block w-full pl-10 lg:pl-12 pr-12 py-2.5 lg:py-3 border border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-800/50 rounded-xl text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:focus:ring-indigo-400 dark:focus:border-indigo-400 transition-all duration-200 text-xs lg:text-sm font-medium hover:border-gray-300 dark:hover:border-slate-600" 
+                               class="block w-full pl-10 lg:pl-12 pr-12 py-2.5 lg:py-3 border border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-800/50 rounded-xl text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:ring-2 focus:ring-teal-500 focus:border-teal-500 dark:focus:ring-teal-400 dark:focus:border-teal-400 transition-all duration-200 text-xs lg:text-sm font-medium hover:border-gray-300 dark:hover:border-slate-600" 
                                id="password" 
                                name="password" 
                                placeholder="Password" 
                                type="password"
                                required/>
-                        <div id="toggle-password-btn" class="absolute inset-y-0 right-0 pr-3 lg:pr-4 flex items-center cursor-pointer text-gray-400 dark:text-gray-500 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
+                        <div id="toggle-password-btn" class="absolute inset-y-0 right-0 pr-3 lg:pr-4 flex items-center cursor-pointer text-gray-400 dark:text-gray-500 hover:text-teal-600 dark:hover:text-teal-400 transition-colors">
                             <span class="material-symbols-outlined text-lg lg:text-xl">visibility</span>
                         </div>
                     </div>
@@ -536,12 +544,12 @@
                     <div class="relative" id="custom-dropdown">
                         <input type="hidden" name="role" id="role-input" value="{{ old('role') }}" required>
                         <div class="absolute inset-y-0 left-0 pl-3 lg:pl-4 flex items-center pointer-events-none z-10">
-                            <span class="material-symbols-outlined text-gray-400 dark:text-gray-500 text-lg lg:text-xl group-focus-within:text-indigo-600 dark:group-focus-within:text-indigo-400 transition-colors">admin_panel_settings</span>
+                            <span class="material-symbols-outlined text-gray-400 dark:text-gray-500 text-lg lg:text-xl group-focus-within:text-teal-600 dark:group-focus-within:text-teal-400 transition-colors">admin_panel_settings</span>
                         </div>
                         
                         <button type="button" 
                                 id="dropdown-button"
-                                class="relative w-full pl-10 lg:pl-12 pr-12 py-2.5 lg:py-3 text-left border border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-800/50 rounded-xl text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:focus:ring-indigo-400 dark:focus:border-indigo-400 transition-all duration-200 text-xs lg:text-sm font-medium hover:border-gray-300 dark:hover:border-slate-600 cursor-pointer">
+                                class="relative w-full pl-10 lg:pl-12 pr-12 py-2.5 lg:py-3 text-left border border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-800/50 rounded-xl text-gray-900 dark:text-white focus:ring-2 focus:ring-teal-500 focus:border-teal-500 dark:focus:ring-teal-400 dark:focus:border-teal-400 transition-all duration-200 text-xs lg:text-sm font-medium hover:border-gray-300 dark:hover:border-slate-600 cursor-pointer">
                             <span id="dropdown-label" class="{{ old('role') ? '' : 'text-gray-400 dark:text-gray-500' }}">
                                 {{ old('role') ? ucfirst(str_replace('_', ' ', old('role'))) : 'Pilih role' }}
                             </span>
@@ -554,15 +562,15 @@
                         <div id="dropdown-menu" 
                              class="dropdown-menu-custom absolute top-full mt-1.5 left-0 w-full bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl shadow-2xl z-50 hidden opacity-0 transform scale-95 transition-all duration-200 origin-top">
                             <div class="p-1 space-y-0.5">
-                                <div class="dropdown-item px-3 lg:px-4 py-2 lg:py-2.5 rounded-lg text-xs lg:text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-indigo-50 dark:hover:bg-indigo-900/30 hover:text-indigo-600 dark:hover:text-indigo-400 cursor-pointer transition-colors flex items-center gap-2 lg:gap-3" data-value="admin">
+                                <div class="dropdown-item px-3 lg:px-4 py-2 lg:py-2.5 rounded-lg text-xs lg:text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-teal-50 dark:hover:bg-teal-900/30 hover:text-teal-600 dark:hover:text-teal-400 cursor-pointer transition-colors flex items-center gap-2 lg:gap-3" data-value="admin">
                                     <span class="material-symbols-outlined text-base lg:text-lg">shield_person</span>
                                     Admin
                                 </div>
-                                <div class="dropdown-item px-3 lg:px-4 py-2 lg:py-2.5 rounded-lg text-xs lg:text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-indigo-50 dark:hover:bg-indigo-900/30 hover:text-indigo-600 dark:hover:text-indigo-400 cursor-pointer transition-colors flex items-center gap-2 lg:gap-3" data-value="kepala_sekolah">
+                                <div class="dropdown-item px-3 lg:px-4 py-2 lg:py-2.5 rounded-lg text-xs lg:text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-teal-50 dark:hover:bg-teal-900/30 hover:text-teal-600 dark:hover:text-teal-400 cursor-pointer transition-colors flex items-center gap-2 lg:gap-3" data-value="kepala_sekolah">
                                     <span class="material-symbols-outlined text-base lg:text-lg">account_balance</span>
                                     Kepala Sekolah
                                 </div>
-                                <div class="dropdown-item px-3 lg:px-4 py-2 lg:py-2.5 rounded-lg text-xs lg:text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-indigo-50 dark:hover:bg-indigo-900/30 hover:text-indigo-600 dark:hover:text-indigo-400 cursor-pointer transition-colors flex items-center gap-2 lg:gap-3" data-value="guru">
+                                <div class="dropdown-item px-3 lg:px-4 py-2 lg:py-2.5 rounded-lg text-xs lg:text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-teal-50 dark:hover:bg-teal-900/30 hover:text-teal-600 dark:hover:text-teal-400 cursor-pointer transition-colors flex items-center gap-2 lg:gap-3" data-value="guru">
                                     <span class="material-symbols-outlined text-base lg:text-lg">person</span>
                                     Guru
                                 </div>
@@ -574,14 +582,14 @@
                     <label class="flex items-center cursor-pointer group select-none">
                         <div class="relative">
                             <input class="peer sr-only" id="remember-me" name="remember" type="checkbox" value="1"/>
-                            <div class="w-4 h-4 lg:w-5 lg:h-5 border-2 border-gray-300 dark:border-gray-600 rounded-md lg:rounded-lg bg-white dark:bg-slate-900 peer-checked:bg-indigo-600 peer-checked:border-indigo-600 transition-all duration-200"></div>
+                            <div class="w-4 h-4 lg:w-5 lg:h-5 border-2 border-gray-300 dark:border-gray-600 rounded-md lg:rounded-lg bg-white dark:bg-slate-900 peer-checked:bg-teal-600 peer-checked:border-teal-600 transition-all duration-200"></div>
                             <span class="material-symbols-outlined absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-white text-xs opacity-0 peer-checked:opacity-100 transition-opacity duration-200 font-bold">check</span>
                         </div>
-                        <span class="ml-2 text-xs lg:text-sm font-medium text-gray-600 dark:text-gray-400 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">Ingat saya</span>
+                        <span class="ml-2 text-xs lg:text-sm font-medium text-gray-600 dark:text-gray-400 group-hover:text-teal-600 dark:group-hover:text-teal-400 transition-colors">Ingat saya</span>
                     </label>
                 </div>
                 <div class="pt-2 lg:pt-3">
-                    <button id="loginBtn" class="group relative w-full flex justify-center items-center py-2.5 lg:py-3 px-6 rounded-xl text-xs lg:text-sm font-semibold text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-slate-900 transition-colors duration-200 disabled:opacity-70 disabled:cursor-not-allowed shadow-lg shadow-indigo-500/25" type="submit">
+                    <button id="loginBtn" class="group relative w-full flex justify-center items-center py-2.5 lg:py-3 px-6 rounded-xl text-xs lg:text-sm font-semibold text-white bg-teal-600 hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500 dark:focus:ring-offset-slate-900 transition-colors duration-200 disabled:opacity-70 disabled:cursor-not-allowed shadow-lg shadow-teal-500/25" type="submit">
                         <span id="loginBtnText">Masuk</span>
                         <svg id="loginSpinner" class="hidden ml-2 h-4 w-4 lg:h-5 lg:w-5 animate-spin text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                             <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
@@ -592,18 +600,14 @@
             </form>
 
         <div class="mt-4 lg:mt-5 pt-3 lg:pt-4 border-t border-gray-200 dark:border-slate-700 flex items-center justify-between animate-[fadeIn_0.6s_ease-out_0.2s_both]">
-            <button class="group flex items-center space-x-1.5 px-2.5 py-1.5 rounded-lg text-[10px] lg:text-xs font-semibold text-gray-600 dark:text-gray-400 bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 hover:border-indigo-300 dark:hover:border-indigo-600 hover:text-indigo-600 dark:hover:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-indigo-950/30 transition-all duration-200 shadow-sm" onclick="toggleTheme()">
+            <button class="group flex items-center space-x-1.5 px-2.5 py-1.5 rounded-lg text-[10px] lg:text-xs font-semibold text-gray-600 dark:text-gray-400 bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 hover:border-teal-300 dark:hover:border-teal-600 hover:text-teal-600 dark:hover:text-teal-400 hover:bg-teal-50 dark:hover:bg-teal-950/30 transition-all duration-200 shadow-sm" onclick="toggleTheme()">
                 <span class="material-symbols-outlined text-sm transition-transform duration-300 group-hover:rotate-180" id="theme-icon">light_mode</span>
-                <span id="theme-text">Light Mode</span>
+                <span id="theme-text">Mode Terang</span>
             </button>
-            <p class="text-[10px] lg:text-xs font-medium text-gray-500 dark:text-gray-500">
-                © {{ date('Y') }} E-Supervisi
-            </p>
+            @include('auth.partials.footer')
         </div>
     </div>
 </aside>
-
-</body>
 
 </body>
 </html>
