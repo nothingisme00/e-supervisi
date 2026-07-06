@@ -94,6 +94,46 @@ Persen baca = `halaman_terjauh / jumlah_halaman`, **dihitung saat ditampilkan**
 ### Navigasi
 Sidebar bertambah: "Modul Ajar" (admin, guru), "Progres Modul" (kepala sekolah).
 
+## Panduan UI/UX
+
+Prinsip utama: **menyatu dengan desain aplikasi yang sudah ada** (layout
+`modern.blade.php`, Bootstrap 5 + Tailwind, dark mode, ikon SVG inline) —
+bukan bahasa visual baru. Arah gaya dari analisis UI/UX Pro Max:
+*data-dense dashboard* profesional, hindari ornamen berlebihan.
+
+### Daftar modul (guru)
+- Kartu per modul: judul, badge kategori (reuse `status-badge`), jumlah
+  halaman, bilah progres + angka persen (warna tidak boleh jadi satu-satunya
+  penanda — selalu sertakan teks persen).
+- Filter kategori wajib ada sejak awal (anti-pattern: daftar tanpa filter).
+- Belum ada modul → komponen `empty-state` yang sudah ada, dengan pesan
+  membimbing, bukan halaman kosong.
+
+### Halaman baca (guru)
+- PDF.js memuat secara asinkron → tampilkan `skeleton-loader` selama render
+  pertama (> 300 ms wajib ada umpan balik), bukan layar putih.
+- Indikator posisi selalu terlihat: "Halaman 12 dari 40 • 30%".
+- Tombol maju/mundur: area sentuh minimal 44×44 px (guru banyak memakai HP),
+  dinonaktifkan + spinner kecil selama halaman berikutnya dirender
+  (cegah klik ganda).
+- Dukungan keyboard: panah kiri/kanan untuk pindah halaman.
+- Kanvas PDF diberi latar netral yang tetap nyaman di dark mode (halaman PDF
+  sendiri putih — bingkainya yang menyesuaikan tema).
+- Hormati `prefers-reduced-motion` untuk transisi antar halaman.
+
+### Rekap progres (kepala sekolah)
+- Tabel padat ala dashboard: baris di-highlight saat hover, persen ditampilkan
+  angka + bilah mini, bisa berganti sudut pandang per-modul/per-guru.
+- Guru yang belum membuka modul tetap muncul dengan 0% (bukan hilang dari
+  daftar) — ketiadaan data adalah informasi penting bagi kepala sekolah.
+
+### Umum
+- Ikon dari SVG inline seperti halaman lain — tidak ada emoji sebagai ikon.
+- Kontras teks minimal 4.5:1, diuji di kedua tema (dark mode dicek terpisah,
+  bukan diasumsikan dari tema terang).
+- Responsif mulai 375 px; tabel rekap boleh menggulir horizontal di dalam
+  kontainernya sendiri, bukan seluruh halaman.
+
 ## Penanganan Kesalahan
 
 - PDF rusak/terenkripsi → penghitung halaman gagal → unggahan ditolak dengan
