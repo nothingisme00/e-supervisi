@@ -17,6 +17,11 @@
             <directory>app</directory>
         </include>
     </source>
+    <extensions>
+        <bootstrap class="TddGuard\PHPUnit\TddGuardExtension">
+            <parameter name="projectRoot" value="D:/Dokumen/Abang Punya/Project/e-supervisi"/>
+        </bootstrap>
+    </extensions>
     <php>
         <env name="APP_ENV" value="testing" force="true"/>
         <env name="APP_MAINTENANCE_DRIVER" value="file" force="true"/>
