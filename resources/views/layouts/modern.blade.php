@@ -2108,7 +2108,6 @@ if (backToTopBtn) {
         </div>
     </div>
 </div>
-</div>
 
 
 <!-- Fitur Penting Modal (For Guru) -->
@@ -2379,24 +2378,6 @@ if (backToTopBtn) {
                             <p class="text-xs text-teal-800 dark:text-teal-300 leading-relaxed">
                                 <strong>Tips:</strong> Gunakan gambar berkualitas tinggi dengan pesan motivasi atau pencapaian sekolah untuk meningkatkan engagement user.
                             </p>
-                        </div>
-                    </div>
-                            <div class="guide-card bg-amber-50/50 dark:bg-amber-900/10 p-6 border-amber-100 dark:border-amber-900/30 text-center">
-                                <div class="w-20 h-20 bg-amber-500 rounded-[2rem] flex items-center justify-center shadow-xl shadow-amber-200 dark:shadow-none mx-auto mb-6">
-                                    <span class="material-symbols-outlined text-white text-4xl">monitoring</span>
-                                </div>
-                                <h4 class="text-2xl font-black text-gray-900 dark:text-white mb-3">Monitoring Real-time</h4>
-                                <p class="text-gray-600 dark:text-gray-400 leading-relaxed text-sm">
-                                    Pantau statistik pengajuan secara live. Lihat siapa yang perlu diingatkan atau diprioritaskan.
-                                </p>
-                            </div>
-                            <div class="p-4 rounded-2xl bg-gray-900 text-white flex items-center justify-between">
-                                <div class="flex items-center gap-3">
-                                    <span class="w-3 h-3 bg-red-500 rounded-full animate-ping"></span>
-                                    <span class="text-xs font-bold uppercase">Live Statistics</span>
-                                </div>
-                                <span class="material-symbols-outlined text-amber-500">troubleshoot</span>
-                            </div>
                         </div>
                     </div>
 
