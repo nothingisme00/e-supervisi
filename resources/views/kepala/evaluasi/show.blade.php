@@ -255,6 +255,37 @@
             </div>
 
             @if($supervisi->status !== 'submitted')
+            <!-- Card 3.5: Rubrik Penilaian -->
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+                <x-card-header title="Rubrik Penilaian" />
+                <div class="p-3 sm:p-4 md:p-6">
+                    @if($supervisi->evaluasiRubrik)
+                        <div class="flex flex-wrap items-center gap-4 mb-4">
+                            <div>
+                                <p class="text-xs text-gray-500 dark:text-gray-400">Nilai Akhir</p>
+                                <p class="text-2xl font-bold text-gray-900 dark:text-white">{{ $supervisi->evaluasiRubrik->nilai_akhir }}%</p>
+                            </div>
+                            <div>
+                                <p class="text-xs text-gray-500 dark:text-gray-400">Skor</p>
+                                <p class="text-sm font-semibold text-gray-700 dark:text-gray-300">{{ $supervisi->evaluasiRubrik->skor_total }}/{{ $supervisi->evaluasiRubrik->skor_maksimal }}</p>
+                            </div>
+                            <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-primary-100 text-primary-700 dark:bg-primary-900/40 dark:text-primary-300">
+                                {{ \App\Models\PredikatRubrik::where('kode', $supervisi->evaluasiRubrik->predikat)->value('label') ?? $supervisi->evaluasiRubrik->predikat }}
+                            </span>
+                        </div>
+                        <div class="flex gap-3">
+                            @if($supervisi->status !== 'completed')
+                                <a href="{{ route('kepala.evaluasi.rubrik', $supervisi->id) }}" wire:navigate class="px-4 py-2 rounded-xl text-sm font-semibold text-white bg-primary-600 hover:bg-primary-700">Edit Rubrik</a>
+                            @endif
+                            <a href="{{ route('kepala.evaluasi.rubrik.pdf', $supervisi->id) }}" class="px-4 py-2 rounded-xl text-sm font-semibold text-gray-700 dark:text-gray-200 border border-gray-200 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700">Unduh PDF</a>
+                        </div>
+                    @else
+                        <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">Rubrik penilaian belum diisi.</p>
+                        <a href="{{ route('kepala.evaluasi.rubrik', $supervisi->id) }}" wire:navigate class="inline-block px-4 py-2 rounded-xl text-sm font-semibold text-white bg-primary-600 hover:bg-primary-700">Isi Rubrik Penilaian</a>
+                    @endif
+                </div>
+            </div>
+
             <!-- Card 4: Riwayat Feedback & Diskusi -->
             <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
                 <!-- Card Header -->

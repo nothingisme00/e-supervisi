@@ -11,6 +11,7 @@ use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\Admin\SupervisiController as AdminSupervisiController;
 use App\Http\Controllers\Admin\CarouselController;
+use App\Http\Controllers\Admin\RubrikItemController;
 use App\Http\Controllers\KepalaSekolah\DashboardController as KepalaDashboardController;
 use App\Http\Controllers\KepalaSekolah\EvaluasiController;
 
@@ -80,6 +81,7 @@ Route::middleware(['auth', 'prevent.back', 'must.change.password'])->group(funct
             Route::delete('/{id}/delete-document', [SupervisiController::class, 'deleteDocument'])->name('delete-document');
             Route::get('/{id}/check-documents', [SupervisiController::class, 'checkDocuments'])->name('check-documents');
             Route::get('/{id}/detail', [GuruHomeController::class, 'detail'])->name('detail');
+            Route::get('/{id}/rubrik/pdf', [GuruHomeController::class, 'exportRubrikPdf'])->name('rubrik.pdf');
             Route::get('/{id}/view', [GuruHomeController::class, 'viewOther'])->name('view');
             Route::post('/{id}/comment', [GuruHomeController::class, 'storeComment'])->name('comment')->middleware('throttle:30,1');
             Route::delete('/{id}', [SupervisiController::class, 'destroy'])->name('delete');
@@ -118,6 +120,14 @@ Route::middleware(['auth', 'prevent.back', 'must.change.password'])->group(funct
             Route::post('/reorder', [CarouselController::class, 'reorder'])->name('reorder');
             Route::patch('/{carousel}/toggle', [CarouselController::class, 'toggle'])->name('toggle');
         });
+
+        // Rubrik Penilaian Management
+        Route::prefix('rubrik-items')->name('rubrik-items.')->group(function () {
+            Route::get('/', [RubrikItemController::class, 'index'])->name('index');
+            Route::post('/', [RubrikItemController::class, 'store'])->name('store');
+            Route::patch('/{rubrikItem}/toggle', [RubrikItemController::class, 'toggle'])->name('toggle');
+            Route::put('/predikat/{predikatRubrik}', [RubrikItemController::class, 'updatePredikat'])->name('predikat.update');
+        });
     });
 
     // Kepala Sekolah Routes
@@ -132,6 +142,9 @@ Route::middleware(['auth', 'prevent.back', 'must.change.password'])->group(funct
             Route::post('/{id}/feedback', [EvaluasiController::class, 'giveFeedback'])->name('feedback')->middleware('throttle:30,1');
             Route::post('/{id}/revision', [EvaluasiController::class, 'requestRevision'])->name('revision')->middleware('throttle:30,1');
             Route::post('/{id}/complete', [EvaluasiController::class, 'complete'])->name('complete');
+            Route::get('/{id}/rubrik', [EvaluasiController::class, 'showRubrik'])->name('rubrik');
+            Route::post('/{id}/rubrik', [EvaluasiController::class, 'storeRubrik'])->name('rubrik.store');
+            Route::get('/{id}/rubrik/pdf', [EvaluasiController::class, 'exportRubrikPdf'])->name('rubrik.pdf');
             // Note: preview and download routes moved outside prevent.back middleware (see above)
         });
     });

@@ -19,6 +19,33 @@ class SupervisiFlowTest extends TestCase
         return User::factory()->guru()->create(['must_change_password' => false]);
     }
 
+    public function test_guru_can_download_own_rubrik_pdf_after_completed(): void
+    {
+        \App\Models\RubrikItem::query()->delete();
+        $item = \App\Models\RubrikItem::create(['kode' => 'T.1', 'section' => 'A', 'section_label' => 'Tes', 'kelompok_nomor' => 1, 'kelompok_label' => 'Tes', 'sub_label' => 'Tes 1', 'urutan' => 1, 'is_active' => true]);
+
+        $guru = $this->createGuru();
+        $kepala = User::factory()->kepalaSekolah()->create();
+        $supervisi = Supervisi::factory()->completed()->create(['user_id' => $guru->id]);
+        \App\Models\EvaluasiRubrik::hitungDanSimpan($supervisi, $kepala->id, [$item->id => 2], null);
+
+        $response = $this->actingAs($guru)->get(route('guru.supervisi.rubrik.pdf', $supervisi->id));
+
+        $response->assertStatus(200);
+        $this->assertSame('application/pdf', $response->headers->get('content-type'));
+    }
+
+    public function test_guru_cannot_download_other_guru_rubrik_pdf(): void
+    {
+        $guru = $this->createGuru();
+        $otherGuru = User::factory()->guru()->create();
+        $supervisi = Supervisi::factory()->completed()->create(['user_id' => $otherGuru->id]);
+
+        $response = $this->actingAs($guru)->get(route('guru.supervisi.rubrik.pdf', $supervisi->id));
+
+        $response->assertStatus(404);
+    }
+
     public function test_guru_can_access_home(): void
     {
         $response = $this->actingAs($this->createGuru())->get(route('guru.home'));

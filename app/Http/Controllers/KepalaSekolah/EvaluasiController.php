@@ -158,6 +158,12 @@ class EvaluasiController extends Controller
             abort(403, 'Supervisi sedang direview oleh reviewer lain');
         }
 
+        $jumlahItemAktif = \App\Models\RubrikItem::active()->count();
+        if (!$supervisi->evaluasiRubrik || $supervisi->evaluasiRubrik->scores()->count() < $jumlahItemAktif) {
+            return redirect()->route('kepala.evaluasi.rubrik', $id)
+                ->with('error', 'Lengkapi rubrik penilaian terlebih dahulu sebelum menyelesaikan review.');
+        }
+
         $supervisi->update([
             'status' => 'completed',
             'reviewed_by' => auth()->id(),
@@ -204,6 +210,74 @@ class EvaluasiController extends Controller
 
         return redirect()->route('kepala.evaluasi.show', $id)
             ->with('success', 'Permintaan revisi berhasil dikirim');
+    }
+
+    public function showRubrik($id)
+    {
+        $supervisi = Supervisi::with('user', 'evaluasiRubrik.scores')->findOrFail($id);
+
+        if ($supervisi->user->tingkat !== auth()->user()->tingkat) {
+            abort(403, 'Anda tidak memiliki akses ke supervisi ini');
+        }
+
+        $rubrikItemsBySection = \App\Models\RubrikItem::active()->orderBy('urutan')->get()->groupBy('section');
+
+        $skorTersimpan = $supervisi->evaluasiRubrik
+            ? $supervisi->evaluasiRubrik->scores->pluck('skor', 'rubrik_item_id')
+            : collect();
+
+        return view('kepala.evaluasi.rubrik', compact('supervisi', 'rubrikItemsBySection', 'skorTersimpan'));
+    }
+
+    public function storeRubrik(Request $request, $id)
+    {
+        $supervisi = Supervisi::findOrFail($id);
+
+        if ($supervisi->user->tingkat !== auth()->user()->tingkat) {
+            abort(403, 'Anda tidak memiliki akses ke supervisi ini');
+        }
+
+        if ($supervisi->lockedByOther()) {
+            abort(403, 'Supervisi sedang direview oleh reviewer lain');
+        }
+
+        $validated = $request->validate([
+            'skor' => 'required|array',
+            'skor.*' => 'required|integer|in:0,1,2',
+            'masukan_umum' => 'nullable|string',
+            'nama_pengawas' => 'nullable|string',
+        ]);
+
+        \App\Models\EvaluasiRubrik::hitungDanSimpan(
+            $supervisi,
+            auth()->id(),
+            $validated['skor'],
+            $validated['masukan_umum'] ?? null
+        );
+
+        return redirect()->route('kepala.evaluasi.show', $id)
+            ->with('success', 'Rubrik penilaian berhasil disimpan');
+    }
+
+    public function exportRubrikPdf($id)
+    {
+        $supervisi = Supervisi::with('user', 'evaluasiRubrik.scores')->findOrFail($id);
+
+        if ($supervisi->user->tingkat !== auth()->user()->tingkat) {
+            abort(403, 'Anda tidak memiliki akses ke supervisi ini');
+        }
+
+        $evaluasi = $supervisi->evaluasiRubrik;
+        if (!$evaluasi) {
+            return redirect()->back()->with('error', 'Rubrik penilaian belum diisi.');
+        }
+
+        $rubrikItemsBySection = \App\Models\RubrikItem::active()->orderBy('urutan')->get()->groupBy('section');
+        $skorPerItem = $evaluasi->scores->pluck('skor', 'rubrik_item_id');
+
+        $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('kepala.evaluasi.rubrik-pdf', compact('supervisi', 'evaluasi', 'rubrikItemsBySection', 'skorPerItem'));
+
+        return $pdf->stream('rubrik-penilaian-' . $supervisi->id . '.pdf');
     }
 
     public function downloadDocument($id)

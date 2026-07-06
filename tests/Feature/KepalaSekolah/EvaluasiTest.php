@@ -5,6 +5,8 @@ namespace Tests\Feature\KepalaSekolah;
 use App\Models\User;
 use App\Models\Supervisi;
 use App\Models\Feedback;
+use App\Models\EvaluasiRubrik;
+use App\Models\RubrikItem;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -15,6 +17,15 @@ class EvaluasiTest extends TestCase
     private function createKepala(): User
     {
         return User::factory()->kepalaSekolah()->create(['must_change_password' => false, 'tingkat' => 'SD']);
+    }
+
+    /**
+     * complete() sekarang mensyaratkan rubrik penilaian lengkap terlebih dahulu.
+     */
+    private function fillRubrik(Supervisi $supervisi, User $kepala): void
+    {
+        $itemIds = RubrikItem::active()->pluck('id');
+        EvaluasiRubrik::hitungDanSimpan($supervisi, $kepala->id, $itemIds->mapWithKeys(fn ($id) => [$id => 2])->all(), null);
     }
 
     public function test_kepala_can_access_dashboard(): void
@@ -119,6 +130,7 @@ class EvaluasiTest extends TestCase
         $kepala = $this->createKepala();
         $guru = User::factory()->guru()->create(['tingkat' => 'SD']);
         $supervisi = Supervisi::factory()->underReview()->create(['user_id' => $guru->id, 'reviewed_by' => $kepala->id]);
+        $this->fillRubrik($supervisi, $kepala);
         $response = $this->actingAs($kepala)->post(route('kepala.evaluasi.complete', $supervisi->id));
         $response->assertRedirect(route('kepala.evaluasi.index'));
         $supervisi->refresh();
@@ -231,6 +243,7 @@ class EvaluasiTest extends TestCase
         $kepala = $this->createKepala();
         $guru = User::factory()->guru()->create(['tingkat' => 'SD']);
         $supervisi = Supervisi::factory()->underReview()->create(['user_id' => $guru->id, 'reviewed_by' => $kepala->id]);
+        $this->fillRubrik($supervisi, $kepala);
 
         $response = $this->actingAs($kepala)->post(route('kepala.evaluasi.complete', $supervisi->id));
         $response->assertRedirect(route('kepala.evaluasi.index'));
