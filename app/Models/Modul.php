@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Modul extends Model
 {
@@ -28,5 +29,10 @@ class Modul extends Model
     public function kategori(): BelongsTo
     {
         return $this->belongsTo(ModulKategori::class, 'modul_kategori_id');
+    }
+
+    public function videos(): HasMany
+    {
+        return $this->hasMany(ModulVideo::class);
     }
 }

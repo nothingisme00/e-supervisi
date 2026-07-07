@@ -12,6 +12,7 @@ use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\Admin\SupervisiController as AdminSupervisiController;
 use App\Http\Controllers\Admin\CarouselController;
 use App\Http\Controllers\Admin\RubrikItemController;
+use App\Http\Controllers\Admin\ModulController as AdminModulController;
 use App\Http\Controllers\KepalaSekolah\DashboardController as KepalaDashboardController;
 use App\Http\Controllers\KepalaSekolah\EvaluasiController;
 
@@ -127,6 +128,16 @@ Route::middleware(['auth', 'prevent.back', 'must.change.password'])->group(funct
             Route::post('/', [RubrikItemController::class, 'store'])->name('store');
             Route::patch('/{rubrikItem}/toggle', [RubrikItemController::class, 'toggle'])->name('toggle');
             Route::put('/predikat/{predikatRubrik}', [RubrikItemController::class, 'updatePredikat'])->name('predikat.update');
+        });
+
+        // Modul Ajar Management
+        Route::prefix('modul')->name('modul.')->group(function () {
+            Route::get('/', [AdminModulController::class, 'index'])->name('index');
+            Route::post('/', [AdminModulController::class, 'store'])->name('store')->middleware('throttle:30,1');
+            Route::put('/{modul}', [AdminModulController::class, 'update'])->name('update')->middleware('throttle:30,1');
+            Route::patch('/{modul}/toggle', [AdminModulController::class, 'toggle'])->name('toggle');
+            Route::post('/kategori', [AdminModulController::class, 'storeKategori'])->name('kategori.store');
+            Route::patch('/kategori/{modulKategori}/toggle', [AdminModulController::class, 'toggleKategori'])->name('kategori.toggle');
         });
     });
 
