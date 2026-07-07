@@ -40,22 +40,15 @@ class PdfPageCounterTest extends TestCase
         }
     }
 
-    public function test_melempar_exception_untuk_pdf_tanpa_halaman(): void
+    public function test_require_pages_melempar_exception_saat_nol(): void
     {
-        // PDF minimal valid secara struktur tapi pohon halamannya kosong (Count 0)
-        $pdfKosong = "%PDF-1.4\n"
-            . "1 0 obj\n<< /Type /Catalog /Pages 2 0 R >>\nendobj\n"
-            . "2 0 obj\n<< /Type /Pages /Kids [] /Count 0 >>\nendobj\n"
-            . "xref\n0 3\n0000000000 65535 f \n0000000009 00000 n \n0000000058 00000 n \n"
-            . "trailer\n<< /Size 3 /Root 1 0 R >>\nstartxref\n115\n%%EOF";
-        $path = $this->tempFile($pdfKosong);
-
         $this->expectException(\InvalidArgumentException::class);
 
-        try {
-            (new PdfPageCounter())->count($path);
-        } finally {
-            unlink($path);
-        }
+        (new PdfPageCounter())->requirePages(0);
+    }
+
+    public function test_require_pages_mengembalikan_jumlah_saat_valid(): void
+    {
+        $this->assertSame(3, (new PdfPageCounter())->requirePages(3));
     }
 }

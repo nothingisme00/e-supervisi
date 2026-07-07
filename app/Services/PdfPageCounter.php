@@ -20,10 +20,22 @@ class PdfPageCounter
             throw new \InvalidArgumentException('PDF tidak dapat dibaca: ' . $e->getMessage(), 0, $e);
         }
 
-        if ($pages < 1) {
+        return $this->requirePages($pages);
+    }
+
+    /**
+     * Pastikan jumlah halaman minimal 1. Dipisah agar guard "tanpa halaman"
+     * bisa diuji langsung — Document::getPages() melempar untuk dokumen
+     * tanpa halaman sehingga path ini tak terjangkau lewat parse file.
+     *
+     * @throws \InvalidArgumentException bila $pageCount < 1
+     */
+    public function requirePages(int $pageCount): int
+    {
+        if ($pageCount < 1) {
             throw new \InvalidArgumentException('PDF tidak memiliki halaman.');
         }
 
-        return $pages;
+        return $pageCount;
     }
 }
