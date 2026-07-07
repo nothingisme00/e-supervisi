@@ -35,6 +35,6 @@ class ModulProgress extends Model
             return 0;
         }
 
-        return min(100, (int) round($this->halaman_terjauh / $total * 100));
+        return max(0, min(100, (int) round($this->halaman_terjauh / $total * 100)));
     }
 }
