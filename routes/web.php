@@ -13,6 +13,7 @@ use App\Http\Controllers\Admin\SupervisiController as AdminSupervisiController;
 use App\Http\Controllers\Admin\CarouselController;
 use App\Http\Controllers\Admin\RubrikItemController;
 use App\Http\Controllers\Admin\ModulController as AdminModulController;
+use App\Http\Controllers\Guru\ModulController as GuruModulController;
 use App\Http\Controllers\KepalaSekolah\DashboardController as KepalaDashboardController;
 use App\Http\Controllers\KepalaSekolah\EvaluasiController;
 
@@ -91,6 +92,11 @@ Route::middleware(['auth', 'prevent.back', 'must.change.password'])->group(funct
             Route::get('/{id}/proses', [ProsesController::class, 'show'])->name('proses');
             Route::post('/{id}/proses/save', [ProsesController::class, 'save'])->name('proses.save');
             Route::post('/{id}/submit', [ProsesController::class, 'submit'])->name('submit');
+        });
+
+        // Modul Ajar Routes
+        Route::prefix('modul')->name('modul.')->group(function () {
+            Route::get('/', [GuruModulController::class, 'index'])->name('index');
         });
     });
 
