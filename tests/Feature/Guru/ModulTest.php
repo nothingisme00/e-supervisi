@@ -69,4 +69,115 @@ class ModulTest extends TestCase
 
         $response->assertStatus(403);
     }
+
+    public function test_opening_baca_page_creates_progress_row(): void
+    {
+        \Illuminate\Support\Facades\Storage::fake('local');
+        $guru = $this->createGuru();
+        $modul = Modul::factory()->create();
+
+        $response = $this->actingAs($guru)->get(route('guru.modul.show', $modul->id));
+
+        $response->assertStatus(200);
+        $this->assertDatabaseHas('modul_progress', [
+            'user_id' => $guru->id,
+            'modul_id' => $modul->id,
+            'halaman_terjauh' => 1,
+        ]);
+    }
+
+    public function test_baca_page_contains_reader_contract_attributes(): void
+    {
+        \Illuminate\Support\Facades\Storage::fake('local');
+        $guru = $this->createGuru();
+        $modul = Modul::factory()->create(['jumlah_halaman' => 7]);
+        \Illuminate\Support\Facades\Storage::disk('local')->put($modul->file_path, 'dummy');
+
+        $response = $this->actingAs($guru)->get(route('guru.modul.show', $modul->id));
+
+        $response->assertSee('id="modul-reader"', false);
+        $response->assertSee('data-jumlah-halaman="7"', false);
+        $response->assertSee(route('guru.modul.file', $modul->id));
+    }
+
+    public function test_file_endpoint_streams_pdf(): void
+    {
+        \Illuminate\Support\Facades\Storage::fake('local');
+        $guru = $this->createGuru();
+        $modul = Modul::factory()->create();
+        \Illuminate\Support\Facades\Storage::disk('local')->put($modul->file_path, '%PDF-1.4 dummy');
+
+        $response = $this->actingAs($guru)->get(route('guru.modul.file', $modul->id));
+
+        $response->assertStatus(200);
+    }
+
+    public function test_progress_only_increases(): void
+    {
+        $guru = $this->createGuru();
+        $modul = Modul::factory()->create(['jumlah_halaman' => 10]);
+
+        $this->actingAs($guru)->postJson(route('guru.modul.progress', $modul->id), ['halaman' => 5]);
+        $this->actingAs($guru)->postJson(route('guru.modul.progress', $modul->id), ['halaman' => 3]);
+
+        $this->assertDatabaseHas('modul_progress', [
+            'user_id' => $guru->id,
+            'modul_id' => $modul->id,
+            'halaman_terjauh' => 5,
+        ]);
+    }
+
+    public function test_missing_pdf_file_shows_friendly_message(): void
+    {
+        \Illuminate\Support\Facades\Storage::fake('local');
+        $guru = $this->createGuru();
+        $modul = Modul::factory()->create(); // file tidak pernah ditulis ke storage
+
+        $response = $this->actingAs($guru)->get(route('guru.modul.show', $modul->id));
+
+        $response->assertStatus(200);
+        $response->assertSee('File modul tidak ditemukan');
+    }
+
+    public function test_inactive_modul_returns_404_on_baca(): void
+    {
+        $modul = Modul::factory()->create(['is_active' => false]);
+
+        $response = $this->actingAs($this->createGuru())->get(route('guru.modul.show', $modul->id));
+
+        $response->assertStatus(404);
+    }
+
+    public function test_progress_rejects_page_out_of_range(): void
+    {
+        $guru = $this->createGuru();
+        $modul = Modul::factory()->create(['jumlah_halaman' => 10]);
+
+        $this->actingAs($guru)->postJson(route('guru.modul.progress', $modul->id), ['halaman' => 0])->assertStatus(422);
+        $this->actingAs($guru)->postJson(route('guru.modul.progress', $modul->id), ['halaman' => 11])->assertStatus(422);
+    }
+
+    public function test_progress_is_per_user(): void
+    {
+        $guruA = $this->createGuru();
+        $guruB = $this->createGuru();
+        $modul = Modul::factory()->create(['jumlah_halaman' => 10]);
+
+        $this->actingAs($guruA)->postJson(route('guru.modul.progress', $modul->id), ['halaman' => 8]);
+        $this->actingAs($guruB)->postJson(route('guru.modul.progress', $modul->id), ['halaman' => 2]);
+
+        $this->assertDatabaseHas('modul_progress', ['user_id' => $guruA->id, 'halaman_terjauh' => 8]);
+        $this->assertDatabaseHas('modul_progress', ['user_id' => $guruB->id, 'halaman_terjauh' => 2]);
+    }
+
+    public function test_file_endpoint_404_when_file_missing(): void
+    {
+        \Illuminate\Support\Facades\Storage::fake('local');
+        $guru = $this->createGuru();
+        $modul = Modul::factory()->create();
+
+        $response = $this->actingAs($guru)->get(route('guru.modul.file', $modul->id));
+
+        $response->assertStatus(404);
+    }
 }

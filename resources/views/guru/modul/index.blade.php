@@ -28,7 +28,7 @@
                     $progress = $progressByModul->get($modul->id);
                     $persen = $progress ? $progress->persen() : 0;
                 @endphp
-                <a href="#"
+                <a href="{{ route('guru.modul.show', $modul->id) }}"
                    class="block bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-4 hover:shadow-md transition-shadow cursor-pointer">
                     <div class="flex items-start justify-between gap-2 mb-2">
                         <h3 class="text-sm font-semibold text-gray-900 dark:text-gray-100">{{ $modul->judul }}</h3>

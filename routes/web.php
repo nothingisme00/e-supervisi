@@ -57,6 +57,7 @@ Route::middleware(['auth', 'must.change.password'])->group(function () {
     });
     Route::prefix('guru')->name('guru.')->middleware('can:isGuru')->group(function () {
         Route::get('/supervisi/preview/{id}', [SupervisiController::class, 'previewDocument'])->name('supervisi.preview');
+        Route::get('/modul/{modul}/file', [GuruModulController::class, 'file'])->name('modul.file');
     });
 });
 
@@ -97,6 +98,8 @@ Route::middleware(['auth', 'prevent.back', 'must.change.password'])->group(funct
         // Modul Ajar Routes
         Route::prefix('modul')->name('modul.')->group(function () {
             Route::get('/', [GuruModulController::class, 'index'])->name('index');
+            Route::get('/{modul}', [GuruModulController::class, 'show'])->name('show');
+            Route::post('/{modul}/progress', [GuruModulController::class, 'saveProgress'])->name('progress')->middleware('throttle:60,1');
         });
     });
 
