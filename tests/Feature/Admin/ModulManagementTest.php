@@ -190,4 +190,39 @@ class ModulManagementTest extends TestCase
         $this->actingAs($admin)->patch(route('admin.modul.kategori.toggle', $kategori->id));
         $this->assertFalse($kategori->refresh()->is_active);
     }
+
+    public function test_url_youtube_shorts_diterima(): void
+    {
+        Storage::fake('local');
+        $kategori = ModulKategori::factory()->create();
+
+        $response = $this->actingAs($this->createAdmin())->post(route('admin.modul.store'), [
+            'judul' => 'Modul Shorts',
+            'modul_kategori_id' => $kategori->id,
+            'file' => $this->fakePdfUpload(2),
+            'videos' => [
+                ['judul' => 'Cuplikan', 'youtube_url' => 'https://www.youtube.com/shorts/dQw4w9WgXcQ'],
+            ],
+        ]);
+
+        $response->assertSessionDoesntHaveErrors();
+        $this->assertDatabaseHas('modul_videos', ['judul' => 'Cuplikan']);
+    }
+
+    public function test_url_youtube_host_palsu_ditolak(): void
+    {
+        Storage::fake('local');
+        $kategori = ModulKategori::factory()->create();
+
+        $response = $this->actingAs($this->createAdmin())->post(route('admin.modul.store'), [
+            'judul' => 'Modul Host Palsu',
+            'modul_kategori_id' => $kategori->id,
+            'file' => $this->fakePdfUpload(2),
+            'videos' => [
+                ['judul' => 'Palsu', 'youtube_url' => 'https://evil.com/youtube.com/watch?v=dQw4w9WgXcQ'],
+            ],
+        ]);
+
+        $response->assertSessionHasErrors('videos.0.youtube_url');
+    }
 }

@@ -87,25 +87,7 @@
                     <div class="max-h-96 overflow-y-auto space-y-3">
                         @if($supervisi->prosesPembelajaran)
                             @if($supervisi->prosesPembelajaran->link_video)
-                                <div class="p-4 bg-gradient-to-r from-red-50 to-pink-50 dark:from-red-900/20 dark:to-pink-900/20 rounded-lg border border-red-100 dark:border-red-800/50">
-                                    <div class="flex items-start justify-between">
-                                        <div>
-                                            <p class="text-sm font-semibold text-slate-700 dark:text-gray-200 mb-1">Link Video Pembelajaran</p>
-                                            <a href="{{ $supervisi->prosesPembelajaran->link_video }}" 
-                                               target="_blank"
-                                               class="text-sm text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 underline break-all">
-                                                {{ Str::limit($supervisi->prosesPembelajaran->link_video, 50) }}
-                                            </a>
-                                        </div>
-                                        <a href="{{ $supervisi->prosesPembelajaran->link_video }}" 
-                                           target="_blank"
-                                           class="ml-2 text-red-600 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300">
-                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
-                                            </svg>
-                                        </a>
-                                    </div>
-                                </div>
+                                <x-video-praktik :url="$supervisi->prosesPembelajaran->link_video" />
                             @endif
 
                             @if($supervisi->prosesPembelajaran->link_meeting)

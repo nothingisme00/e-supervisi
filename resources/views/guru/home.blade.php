@@ -190,6 +190,8 @@
                             </div>
                         @endif
 
+                        <x-video-praktik-badge :supervisi="$item" />
+
                         @if($item->feedback->count() > 0)
                             <div class="flex items-center gap-1 sm:gap-1.5 md:gap-2 px-2 py-1 sm:px-2.5 sm:py-1.5 md:px-3 bg-primary-50 dark:bg-primary-900/20 rounded-md md:rounded-lg border border-primary-100 dark:border-primary-800">
                                 <svg class="w-3 h-3 sm:w-3.5 sm:h-3.5 md:w-4 md:h-4 text-primary-600 dark:text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">

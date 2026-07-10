@@ -16,10 +16,6 @@ class ModulVideo extends Model
 
     public function getYoutubeEmbedUrlAttribute(): ?string
     {
-        if (preg_match('#(?:youtube\.com/watch\?v=|youtu\.be/)([A-Za-z0-9_-]{11})#', $this->youtube_url, $m)) {
-            return 'https://www.youtube.com/embed/' . $m[1];
-        }
-
-        return null;
+        return \App\Support\VideoEmbed::youtubeEmbedUrl($this->youtube_url);
     }
 }
