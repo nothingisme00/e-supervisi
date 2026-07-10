@@ -122,7 +122,7 @@ class ModulController extends Controller
                 'nullable',
                 'required_with:videos.*.judul',
                 'url',
-                'regex:#(youtube\.com/watch\?v=|youtu\.be/)[A-Za-z0-9_-]{11}#',
+                'regex:#^https?://(?:(?:www\.|m\.)?youtube\.com/(?:watch\?(?:[^\s]*&)?v=|shorts/)|youtu\.be/)[A-Za-z0-9_-]{11}#',
             ],
         ]);
     }
