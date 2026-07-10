@@ -134,6 +134,8 @@
                                 </div>
                             </div>
 
+                            <x-video-praktik-badge :supervisi="$item" />
+
                             <!-- Revision Notes (if any) -->
                             @if($item->status == 'revision' && $item->revision_notes)
                             <div class="mb-3 p-3 bg-rose-50 dark:bg-rose-900/20 border border-rose-200 dark:border-rose-800 rounded-lg">
