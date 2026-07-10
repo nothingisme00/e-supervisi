@@ -125,9 +125,16 @@ class EvaluasiController extends Controller
                 'revision_notes' => $request->komentar
             ]);
 
+            try {
+                $supervisi->user->notify(new \App\Notifications\SupervisiDitanggapi($supervisi, 'revisi'));
+            } catch (\Throwable $e) {
+                report($e);
+            }
+
             return redirect()->route('kepala.evaluasi.show', $id)
                 ->with('success', 'Permintaan revisi berhasil dikirim ke guru');
         }
+
 
         // Update supervisi status to under_review if submitted
         if ($supervisi->status == 'submitted') {
@@ -138,8 +145,15 @@ class EvaluasiController extends Controller
             ]);
         }
 
+        try {
+            $supervisi->user->notify(new \App\Notifications\SupervisiDitanggapi($supervisi, 'feedback'));
+        } catch (\Throwable $e) {
+            report($e);
+        }
+
         return redirect()->route('kepala.evaluasi.show', $id)
             ->with('success', 'Feedback berhasil diberikan');
+
     }
 
     public function complete($id)
@@ -170,8 +184,15 @@ class EvaluasiController extends Controller
             'reviewed_at' => now()
         ]);
 
+        try {
+            $supervisi->user->notify(new \App\Notifications\SupervisiDitanggapi($supervisi, 'selesai'));
+        } catch (\Throwable $e) {
+            report($e);
+        }
+
         return redirect()->route('kepala.evaluasi.index')
             ->with('success', 'Supervisi telah diselesaikan');
+
     }
 
     public function requestRevision(Request $request, $id)
@@ -208,8 +229,15 @@ class EvaluasiController extends Controller
             'revision_notes' => $request->revision_notes
         ]);
 
+        try {
+            $supervisi->user->notify(new \App\Notifications\SupervisiDitanggapi($supervisi, 'revisi'));
+        } catch (\Throwable $e) {
+            report($e);
+        }
+
         return redirect()->route('kepala.evaluasi.show', $id)
             ->with('success', 'Permintaan revisi berhasil dikirim');
+
     }
 
     public function showRubrik($id)

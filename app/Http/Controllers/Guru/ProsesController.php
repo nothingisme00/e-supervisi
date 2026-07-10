@@ -129,6 +129,16 @@ class ProsesController extends Controller
             'reviewed_at' => null,
         ]);
 
+        try {
+            $penerima = \App\Models\User::where('role', 'kepala_sekolah')
+                ->where('tingkat', $supervisi->user->tingkat)
+                ->where('is_active', true)
+                ->get();
+            \Illuminate\Support\Facades\Notification::send($penerima, new \App\Notifications\SupervisiPerluDireview($supervisi));
+        } catch (\Throwable $e) {
+            report($e);
+        }
+
         return response()->json([
             'success' => true,
             'message' => 'Supervisi berhasil disubmit!'

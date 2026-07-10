@@ -50,6 +50,13 @@ class ModulController extends Controller
 
         $this->syncVideos($modul, $validated['videos'] ?? []);
 
+        try {
+            $guru = \App\Models\User::where('role', 'guru')->where('is_active', true)->get();
+            \Illuminate\Support\Facades\Notification::send($guru, new \App\Notifications\ModulBaruDiunggah($modul));
+        } catch (\Throwable $e) {
+            report($e);
+        }
+
         return redirect()->route('admin.modul.index')->with('success', 'Modul berhasil ditambahkan.');
     }
 

@@ -19,6 +19,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        \Illuminate\Support\Facades\View::composer('layouts.modern', function ($view) {
+            $user = auth()->user();
+            $view->with('unreadNotifCount', $user ? $user->unreadNotifications()->count() : 0);
+            $view->with('recentNotifs', $user ? $user->notifications()->take(5)->get() : collect());
+        });
     }
 }
