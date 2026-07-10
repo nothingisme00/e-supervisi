@@ -101,6 +101,12 @@ class SupervisiController extends Controller
                 'reviewed_by' => Auth::id()
             ]);
 
+            try {
+                $supervisi->user->notify(new \App\Notifications\SupervisiDitanggapi($supervisi, 'selesai'));
+            } catch (\Throwable $e) {
+                report($e);
+            }
+
             return redirect()->route('admin.supervisi.show', $supervisi->id)
                 ->with('success', 'Feedback berhasil diberikan dan supervisi telah selesai ditinjau!');
         }
@@ -112,6 +118,12 @@ class SupervisiController extends Controller
                 'reviewed_by' => Auth::id(),
                 'reviewed_at' => now()
             ]);
+        }
+
+        try {
+            $supervisi->user->notify(new \App\Notifications\SupervisiDitanggapi($supervisi, 'feedback'));
+        } catch (\Throwable $e) {
+            report($e);
         }
 
         return redirect()->route('admin.supervisi.show', $supervisi->id)
@@ -150,6 +162,12 @@ class SupervisiController extends Controller
             'komentar' => "📝 Revisi diperlukan:\n\n" . $request->revision_notes,
             'is_revision_request' => true
         ]);
+
+        try {
+            $supervisi->user->notify(new \App\Notifications\SupervisiDitanggapi($supervisi, 'revisi'));
+        } catch (\Throwable $e) {
+            report($e);
+        }
 
         return redirect()->route('admin.supervisi.show', $supervisi->id)
             ->with('success', 'Permintaan revisi berhasil dikirim ke guru!');
