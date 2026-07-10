@@ -87,4 +87,40 @@ class VideoPraktikEmbedTest extends TestCase
         $response->assertSee(self::UNKNOWN_URL);
         $response->assertDontSee('<iframe', false);
     }
+
+    public function test_lihat_supervisi_guru_lain_menampilkan_embed_youtube(): void
+    {
+        $pemilik = $this->createGuru();
+        $penonton = $this->createGuru();
+        $supervisi = $this->supervisiDenganVideo($pemilik, self::YOUTUBE_URL);
+
+        $response = $this->actingAs($penonton)->get(route('guru.supervisi.view', $supervisi->id));
+
+        $response->assertStatus(200);
+        $response->assertSee(self::YOUTUBE_EMBED);
+    }
+
+    public function test_evaluasi_kepala_sekolah_menampilkan_embed_youtube(): void
+    {
+        $guru = User::factory()->guru()->create(['must_change_password' => false, 'tingkat' => 'SD']);
+        $kepala = User::factory()->kepalaSekolah()->create(['must_change_password' => false, 'tingkat' => 'SD']);
+        $supervisi = $this->supervisiDenganVideo($guru, self::YOUTUBE_URL);
+
+        $response = $this->actingAs($kepala)->get(route('kepala.evaluasi.show', $supervisi->id));
+
+        $response->assertStatus(200);
+        $response->assertSee(self::YOUTUBE_EMBED);
+    }
+
+    public function test_detail_admin_menampilkan_embed_youtube(): void
+    {
+        $guru = $this->createGuru();
+        $admin = User::factory()->admin()->create(['must_change_password' => false]);
+        $supervisi = $this->supervisiDenganVideo($guru, self::YOUTUBE_URL);
+
+        $response = $this->actingAs($admin)->get(route('admin.supervisi.show', $supervisi->id));
+
+        $response->assertStatus(200);
+        $response->assertSee(self::YOUTUBE_EMBED);
+    }
 }
