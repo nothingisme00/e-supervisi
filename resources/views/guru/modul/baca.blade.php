@@ -60,4 +60,8 @@
         </div>
     @endif
 </div>
+
+@if (! $fileMissing)
+    @vite('resources/js/modul-reader.js')
+@endif
 @endsection
