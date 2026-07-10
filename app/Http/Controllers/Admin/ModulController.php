@@ -117,8 +117,9 @@ class ModulController extends Controller
             'modul_kategori_id' => 'required|exists:modul_kategoris,id',
             'file' => ($fileRequired ? 'required' : 'nullable') . '|file|mimes:pdf|max:20480',
             'videos' => 'nullable|array|max:5',
-            'videos.*.judul' => 'required_with:videos.*.youtube_url|string|max:255',
+            'videos.*.judul' => 'nullable|required_with:videos.*.youtube_url|string|max:255',
             'videos.*.youtube_url' => [
+                'nullable',
                 'required_with:videos.*.judul',
                 'url',
                 'regex:#(youtube\.com/watch\?v=|youtu\.be/)[A-Za-z0-9_-]{11}#',

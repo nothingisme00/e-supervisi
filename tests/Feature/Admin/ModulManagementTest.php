@@ -113,6 +113,28 @@ class ModulManagementTest extends TestCase
         $this->assertDatabaseHas('modul_videos', ['judul' => 'Pengantar']);
     }
 
+    public function test_baris_video_kosong_diabaikan_saat_membuat_modul(): void
+    {
+        Storage::fake('local');
+        $kategori = ModulKategori::factory()->create();
+
+        // Form admin selalu merender 2 baris input video ("kosongkan jika tidak ada");
+        // browser sungguhan tetap mengirim baris kosong sebagai string kosong.
+        $response = $this->actingAs($this->createAdmin())->post(route('admin.modul.store'), [
+            'judul' => 'Modul Dengan Baris Video Kosong',
+            'modul_kategori_id' => $kategori->id,
+            'file' => $this->fakePdfUpload(2),
+            'videos' => [
+                ['judul' => 'Video Pengantar', 'youtube_url' => 'https://www.youtube.com/watch?v=dQw4w9WgXcQ'],
+                ['judul' => '', 'youtube_url' => ''],
+            ],
+        ]);
+
+        $response->assertSessionHasNoErrors();
+        $response->assertRedirect(route('admin.modul.index'));
+        $this->assertDatabaseCount('modul_videos', 1);
+    }
+
     public function test_invalid_youtube_url_is_rejected(): void
     {
         Storage::fake('local');
