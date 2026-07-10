@@ -140,4 +140,9 @@ class Supervisi extends Model
     {
         return $this->hasMany(Feedback::class);
     }
+
+    public function evaluasiRubrik()
+    {
+        return $this->hasOne(EvaluasiRubrik::class);
+    }
 }

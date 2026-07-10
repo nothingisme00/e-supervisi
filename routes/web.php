@@ -11,8 +11,12 @@ use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\Admin\SupervisiController as AdminSupervisiController;
 use App\Http\Controllers\Admin\CarouselController;
+use App\Http\Controllers\Admin\RubrikItemController;
+use App\Http\Controllers\Admin\ModulController as AdminModulController;
+use App\Http\Controllers\Guru\ModulController as GuruModulController;
 use App\Http\Controllers\KepalaSekolah\DashboardController as KepalaDashboardController;
 use App\Http\Controllers\KepalaSekolah\EvaluasiController;
+use App\Http\Controllers\KepalaSekolah\ModulProgressController;
 
 // Public Routes
 Route::get('/', function () {
@@ -54,6 +58,7 @@ Route::middleware(['auth', 'must.change.password'])->group(function () {
     });
     Route::prefix('guru')->name('guru.')->middleware('can:isGuru')->group(function () {
         Route::get('/supervisi/preview/{id}', [SupervisiController::class, 'previewDocument'])->name('supervisi.preview');
+        Route::get('/modul/{modul}/file', [GuruModulController::class, 'file'])->name('modul.file');
     });
 });
 
@@ -80,6 +85,7 @@ Route::middleware(['auth', 'prevent.back', 'must.change.password'])->group(funct
             Route::delete('/{id}/delete-document', [SupervisiController::class, 'deleteDocument'])->name('delete-document');
             Route::get('/{id}/check-documents', [SupervisiController::class, 'checkDocuments'])->name('check-documents');
             Route::get('/{id}/detail', [GuruHomeController::class, 'detail'])->name('detail');
+            Route::get('/{id}/rubrik/pdf', [GuruHomeController::class, 'exportRubrikPdf'])->name('rubrik.pdf');
             Route::get('/{id}/view', [GuruHomeController::class, 'viewOther'])->name('view');
             Route::post('/{id}/comment', [GuruHomeController::class, 'storeComment'])->name('comment')->middleware('throttle:30,1');
             Route::delete('/{id}', [SupervisiController::class, 'destroy'])->name('delete');
@@ -88,6 +94,13 @@ Route::middleware(['auth', 'prevent.back', 'must.change.password'])->group(funct
             Route::get('/{id}/proses', [ProsesController::class, 'show'])->name('proses');
             Route::post('/{id}/proses/save', [ProsesController::class, 'save'])->name('proses.save');
             Route::post('/{id}/submit', [ProsesController::class, 'submit'])->name('submit');
+        });
+
+        // Modul Ajar Routes
+        Route::prefix('modul')->name('modul.')->group(function () {
+            Route::get('/', [GuruModulController::class, 'index'])->name('index');
+            Route::get('/{modul}', [GuruModulController::class, 'show'])->name('show');
+            Route::post('/{modul}/progress', [GuruModulController::class, 'saveProgress'])->name('progress')->middleware('throttle:60,1');
         });
     });
 
@@ -118,6 +131,24 @@ Route::middleware(['auth', 'prevent.back', 'must.change.password'])->group(funct
             Route::post('/reorder', [CarouselController::class, 'reorder'])->name('reorder');
             Route::patch('/{carousel}/toggle', [CarouselController::class, 'toggle'])->name('toggle');
         });
+
+        // Rubrik Penilaian Management
+        Route::prefix('rubrik-items')->name('rubrik-items.')->group(function () {
+            Route::get('/', [RubrikItemController::class, 'index'])->name('index');
+            Route::post('/', [RubrikItemController::class, 'store'])->name('store');
+            Route::patch('/{rubrikItem}/toggle', [RubrikItemController::class, 'toggle'])->name('toggle');
+            Route::put('/predikat/{predikatRubrik}', [RubrikItemController::class, 'updatePredikat'])->name('predikat.update');
+        });
+
+        // Modul Ajar Management
+        Route::prefix('modul')->name('modul.')->group(function () {
+            Route::get('/', [AdminModulController::class, 'index'])->name('index');
+            Route::post('/', [AdminModulController::class, 'store'])->name('store')->middleware('throttle:30,1');
+            Route::put('/{modul}', [AdminModulController::class, 'update'])->name('update')->middleware('throttle:30,1');
+            Route::patch('/{modul}/toggle', [AdminModulController::class, 'toggle'])->name('toggle');
+            Route::post('/kategori', [AdminModulController::class, 'storeKategori'])->name('kategori.store');
+            Route::patch('/kategori/{modulKategori}/toggle', [AdminModulController::class, 'toggleKategori'])->name('kategori.toggle');
+        });
     });
 
     // Kepala Sekolah Routes
@@ -132,8 +163,14 @@ Route::middleware(['auth', 'prevent.back', 'must.change.password'])->group(funct
             Route::post('/{id}/feedback', [EvaluasiController::class, 'giveFeedback'])->name('feedback')->middleware('throttle:30,1');
             Route::post('/{id}/revision', [EvaluasiController::class, 'requestRevision'])->name('revision')->middleware('throttle:30,1');
             Route::post('/{id}/complete', [EvaluasiController::class, 'complete'])->name('complete');
+            Route::get('/{id}/rubrik', [EvaluasiController::class, 'showRubrik'])->name('rubrik');
+            Route::post('/{id}/rubrik', [EvaluasiController::class, 'storeRubrik'])->name('rubrik.store');
+            Route::get('/{id}/rubrik/pdf', [EvaluasiController::class, 'exportRubrikPdf'])->name('rubrik.pdf');
             // Note: preview and download routes moved outside prevent.back middleware (see above)
         });
+
+        // Rekap Progres Modul Ajar
+        Route::get('/modul-progress', [ModulProgressController::class, 'index'])->name('modul-progress.index');
     });
 });
 

@@ -504,6 +504,24 @@
                         <div class="w-1.5 h-1.5 bg-primary-600 dark:bg-primary-400 rounded-full"></div>
                     @endif
                 </a>
+                <a href="{{ route('admin.rubrik-items.index') }}" wire:navigate class="group flex items-center gap-3 px-3 py-2.5 mb-1 rounded-lg text-sm font-medium transition-all duration-200 {{ request()->routeIs('admin.rubrik-items.*') ? 'bg-primary-50 dark:bg-primary-900/20 text-primary-600 dark:text-primary-400' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700/50' }}">
+                    <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                    </svg>
+                    <span class="flex-1">Rubrik Penilaian</span>
+                    @if(request()->routeIs('admin.rubrik-items.*'))
+                        <div class="w-1.5 h-1.5 bg-primary-600 dark:bg-primary-400 rounded-full"></div>
+                    @endif
+                </a>
+                <a href="{{ route('admin.modul.index') }}" wire:navigate class="group flex items-center gap-3 px-3 py-2.5 mb-1 rounded-lg text-sm font-medium transition-all duration-200 {{ request()->routeIs('admin.modul.*') ? 'bg-primary-50 dark:bg-primary-900/20 text-primary-600 dark:text-primary-400' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700/50' }}">
+                    <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+                    </svg>
+                    <span class="flex-1">Modul Ajar</span>
+                    @if(request()->routeIs('admin.modul.*'))
+                        <span class="w-1.5 h-1.5 rounded-full bg-primary-600 dark:bg-primary-400"></span>
+                    @endif
+                </a>
             @elseif(Auth::user()->isGuru())
                 <a href="{{ route('guru.home') }}" wire:navigate class="group flex items-center gap-3 px-3 py-2.5 mb-1 rounded-lg text-sm font-medium transition-all duration-200 {{ request()->routeIs('guru.home') ? 'bg-primary-50 dark:bg-primary-900/20 text-primary-600 dark:text-primary-400' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700/50' }}">
                     <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -512,6 +530,15 @@
                     <span class="flex-1">Beranda</span>
                     @if(request()->routeIs('guru.home'))
                         <div class="w-1.5 h-1.5 bg-primary-600 dark:bg-primary-400 rounded-full"></div>
+                    @endif
+                </a>
+                <a href="{{ route('guru.modul.index') }}" wire:navigate class="group flex items-center gap-3 px-3 py-2.5 mb-1 rounded-lg text-sm font-medium transition-all duration-200 {{ request()->routeIs('guru.modul.*') ? 'bg-primary-50 dark:bg-primary-900/20 text-primary-600 dark:text-primary-400' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700/50' }}">
+                    <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+                    </svg>
+                    <span class="flex-1">Modul Ajar</span>
+                    @if(request()->routeIs('guru.modul.*'))
+                        <span class="w-1.5 h-1.5 rounded-full bg-primary-600 dark:bg-primary-400"></span>
                     @endif
                 </a>
                 <a href="{{ route('guru.my-supervisi') }}" wire:navigate class="group flex items-center gap-3 px-3 py-2.5 mb-1 rounded-lg text-sm font-medium transition-all duration-200 {{ request()->routeIs('guru.my-supervisi') ? 'bg-emerald-50 dark:bg-emerald-900/20 text-emerald-600 dark:text-emerald-400' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700/50' }}">
@@ -531,6 +558,15 @@
                     <span class="flex-1">Dashboard</span>
                     @if(request()->routeIs('kepala.dashboard'))
                         <div class="w-1.5 h-1.5 bg-primary-600 dark:bg-primary-400 rounded-full"></div>
+                    @endif
+                </a>
+                <a href="{{ route('kepala.modul-progress.index') }}" wire:navigate class="group flex items-center gap-3 px-3 py-2.5 mb-1 rounded-lg text-sm font-medium transition-all duration-200 {{ request()->routeIs('kepala.modul-progress.*') ? 'bg-primary-50 dark:bg-primary-900/20 text-primary-600 dark:text-primary-400' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700/50' }}">
+                    <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+                    </svg>
+                    <span class="flex-1">Progres Modul</span>
+                    @if(request()->routeIs('kepala.modul-progress.*'))
+                        <span class="w-1.5 h-1.5 rounded-full bg-primary-600 dark:bg-primary-400"></span>
                     @endif
                 </a>
                 <a href="{{ route('kepala.evaluasi.index') }}" wire:navigate class="group flex items-center gap-3 px-3 py-2.5 mb-1 rounded-lg text-sm font-medium transition-all duration-200 {{ request()->routeIs('kepala.evaluasi.*') ? 'bg-primary-50 dark:bg-primary-900/20 text-primary-600 dark:text-primary-400' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700/50' }}">
@@ -2108,7 +2144,6 @@ if (backToTopBtn) {
         </div>
     </div>
 </div>
-</div>
 
 
 <!-- Fitur Penting Modal (For Guru) -->
@@ -2379,24 +2414,6 @@ if (backToTopBtn) {
                             <p class="text-xs text-teal-800 dark:text-teal-300 leading-relaxed">
                                 <strong>Tips:</strong> Gunakan gambar berkualitas tinggi dengan pesan motivasi atau pencapaian sekolah untuk meningkatkan engagement user.
                             </p>
-                        </div>
-                    </div>
-                            <div class="guide-card bg-amber-50/50 dark:bg-amber-900/10 p-6 border-amber-100 dark:border-amber-900/30 text-center">
-                                <div class="w-20 h-20 bg-amber-500 rounded-[2rem] flex items-center justify-center shadow-xl shadow-amber-200 dark:shadow-none mx-auto mb-6">
-                                    <span class="material-symbols-outlined text-white text-4xl">monitoring</span>
-                                </div>
-                                <h4 class="text-2xl font-black text-gray-900 dark:text-white mb-3">Monitoring Real-time</h4>
-                                <p class="text-gray-600 dark:text-gray-400 leading-relaxed text-sm">
-                                    Pantau statistik pengajuan secara live. Lihat siapa yang perlu diingatkan atau diprioritaskan.
-                                </p>
-                            </div>
-                            <div class="p-4 rounded-2xl bg-gray-900 text-white flex items-center justify-between">
-                                <div class="flex items-center gap-3">
-                                    <span class="w-3 h-3 bg-red-500 rounded-full animate-ping"></span>
-                                    <span class="text-xs font-bold uppercase">Live Statistics</span>
-                                </div>
-                                <span class="material-symbols-outlined text-amber-500">troubleshoot</span>
-                            </div>
                         </div>
                     </div>
 

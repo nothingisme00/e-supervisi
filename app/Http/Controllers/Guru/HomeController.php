@@ -60,6 +60,26 @@ class HomeController extends Controller
         return view('guru.supervisi.detail', compact('supervisi'));
     }
 
+    public function exportRubrikPdf($id)
+    {
+        $supervisi = Supervisi::with('user', 'evaluasiRubrik.scores')
+            ->where('id', $id)
+            ->where('user_id', Auth::id())
+            ->firstOrFail();
+
+        $evaluasi = $supervisi->evaluasiRubrik;
+        if (!$evaluasi) {
+            return redirect()->back()->with('error', 'Rubrik penilaian belum diisi.');
+        }
+
+        $rubrikItemsBySection = \App\Models\RubrikItem::active()->orderBy('urutan')->get()->groupBy('section');
+        $skorPerItem = $evaluasi->scores->pluck('skor', 'rubrik_item_id');
+
+        $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('kepala.evaluasi.rubrik-pdf', compact('supervisi', 'evaluasi', 'rubrikItemsBySection', 'skorPerItem'));
+
+        return $pdf->stream('rubrik-penilaian-' . $supervisi->id . '.pdf');
+    }
+
     public function viewOther($id)
     {
         // Get supervisi from other teacher (not own supervisi)

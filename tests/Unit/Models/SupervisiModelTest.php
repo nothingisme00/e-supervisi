@@ -143,4 +143,39 @@ class SupervisiModelTest extends TestCase
         $this->assertCount(0, ProsesPembelajaran::where('supervisi_id', $supervisiId)->get());
         $this->assertCount(0, Feedback::where('supervisi_id', $supervisiId)->get());
     }
+
+    public function test_evaluasi_rubrik_relation_returns_hasone(): void
+    {
+        $supervisi = Supervisi::factory()->create();
+        $kepala = User::factory()->kepalaSekolah()->create();
+        $evaluasi = \App\Models\EvaluasiRubrik::create([
+            'supervisi_id' => $supervisi->id,
+            'reviewed_by' => $kepala->id,
+            'skor_total' => 10,
+            'skor_maksimal' => 20,
+            'nilai_akhir' => 50,
+            'predikat' => 'K',
+        ]);
+
+        $this->assertTrue($supervisi->evaluasiRubrik->is($evaluasi));
+    }
+
+    public function test_cascade_delete_removes_evaluasi_rubrik(): void
+    {
+        $supervisi = Supervisi::factory()->create();
+        $kepala = User::factory()->kepalaSekolah()->create();
+        \App\Models\EvaluasiRubrik::create([
+            'supervisi_id' => $supervisi->id,
+            'reviewed_by' => $kepala->id,
+            'skor_total' => 10,
+            'skor_maksimal' => 20,
+            'nilai_akhir' => 50,
+            'predikat' => 'K',
+        ]);
+
+        $supervisiId = $supervisi->id;
+        $supervisi->delete();
+
+        $this->assertCount(0, \App\Models\EvaluasiRubrik::where('supervisi_id', $supervisiId)->get());
+    }
 }
