@@ -39,15 +39,30 @@ function setupDom({ jumlahHalaman = 5, halamanTerjauh = 1 } = {}) {
     `;
 }
 
+// jsdom `document` dipakai bersama antar test dalam satu file; listener yang
+// dipasang instance modul lama (akibat vi.resetModules) harus dicabut supaya
+// tidak mencemari test berikutnya.
+let documentListeners = [];
+const originalAddEventListener = document.addEventListener.bind(document);
+
 beforeEach(() => {
     vi.resetModules();
     getDocumentMock.mockReset();
+    document.addEventListener = (type, fn, opts) => {
+        documentListeners.push([type, fn, opts]);
+        return originalAddEventListener(type, fn, opts);
+    };
     Object.defineProperty(HTMLElement.prototype, 'clientWidth', { configurable: true, value: 400 });
     HTMLCanvasElement.prototype.getContext = vi.fn(() => ({}));
     vi.stubGlobal('fetch', vi.fn(() => Promise.resolve({ ok: true })));
 });
 
 afterEach(() => {
+    for (const [type, fn, opts] of documentListeners) {
+        document.removeEventListener(type, fn, opts);
+    }
+    documentListeners = [];
+    delete document.addEventListener;
     vi.unstubAllGlobals();
     vi.useRealTimers();
     document.head.innerHTML = '';
@@ -293,5 +308,40 @@ describe('modul-reader', () => {
         await vi.waitFor(() => expect(btnNext.disabled).toBe(false));
         btnNext.click();
         await vi.waitFor(() => expect(document.getElementById('page-info').textContent).toBe('dari 5 • 40%'));
+    });
+
+    it('does not let a stale keydown listener from a previous modul render or send progress after livewire re-init', async () => {
+        vi.useFakeTimers();
+
+        // Modul A.
+        setupDom({ jumlahHalaman: 5, halamanTerjauh: 1 });
+        const docA = makeFakePdfDoc(5);
+        getDocumentMock.mockReturnValue({ promise: Promise.resolve(docA) });
+
+        await import('./modul-reader.js');
+        await vi.waitFor(() => expect(document.getElementById('pdf-canvas').classList.contains('hidden')).toBe(false));
+        // Biarkan kiriman progres sah dari render awal modul A selesai, lalu bersihkan catatan fetch.
+        await vi.advanceTimersByTimeAsync(2000);
+        fetch.mockClear();
+        const getPageCallsA = docA.getPage.mock.calls.length;
+
+        // Navigasi Livewire ke modul B: DOM diganti elemen segar dengan endpoint progres berbeda.
+        setupDom({ jumlahHalaman: 5, halamanTerjauh: 1 });
+        document.getElementById('modul-reader').dataset.progressUrl = '/modul/2/progress';
+        const docB = makeFakePdfDoc(5);
+        getDocumentMock.mockReturnValue({ promise: Promise.resolve(docB) });
+        document.dispatchEvent(new Event('livewire:navigated'));
+        await vi.waitFor(() => expect(document.getElementById('pdf-canvas').classList.contains('hidden')).toBe(false));
+
+        // Panah kanan hanya boleh menggerakkan modul B — bukan handler basi milik A.
+        document.body.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true }));
+        await vi.waitFor(() => expect(document.getElementById('page-info').textContent).toBe('dari 5 • 40%'));
+        await vi.advanceTimersByTimeAsync(2000);
+
+        expect(docA.getPage.mock.calls.length).toBe(getPageCallsA);
+        expect(fetch.mock.calls.length).toBeGreaterThan(0);
+        for (const call of fetch.mock.calls) {
+            expect(call[0]).toBe('/modul/2/progress');
+        }
     });
 });

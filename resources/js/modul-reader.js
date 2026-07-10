@@ -3,6 +3,10 @@ import workerUrl from 'pdfjs-dist/build/pdf.worker.min.mjs?url';
 
 pdfjsLib.GlobalWorkerOptions.workerSrc = workerUrl;
 
+// Listener keyboard aktif; diganti setiap init agar handler modul lama
+// tidak menumpuk saat berpindah halaman lewat navigasi Livewire.
+let currentKeydownHandler = null;
+
 function initModulReader() {
     const el = document.getElementById('modul-reader');
     if (!el || el.dataset.readerInitialized) return;
@@ -108,11 +112,15 @@ function initModulReader() {
     btnPrev.addEventListener('click', () => goTo(pageNum - 1));
     btnNext.addEventListener('click', () => goTo(pageNum + 1));
     pageInput.addEventListener('change', () => goTo(parseInt(pageInput.value, 10) || 1));
-    document.addEventListener('keydown', (e) => {
+    if (currentKeydownHandler) {
+        document.removeEventListener('keydown', currentKeydownHandler);
+    }
+    currentKeydownHandler = (e) => {
         if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
         if (e.key === 'ArrowLeft') goTo(pageNum - 1);
         if (e.key === 'ArrowRight') goTo(pageNum + 1);
-    });
+    };
+    document.addEventListener('keydown', currentKeydownHandler);
 }
 
 initModulReader();
