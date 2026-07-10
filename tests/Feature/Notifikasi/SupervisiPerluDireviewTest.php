@@ -38,4 +38,18 @@ class SupervisiPerluDireviewTest extends TestCase
         Notification::assertNotSentTo($admin, SupervisiPerluDireview::class);
         Notification::assertNotSentTo($guru, SupervisiPerluDireview::class);
     }
+
+    public function test_data_notifikasi_berisi_judul_pesan_ikon_dan_url(): void
+    {
+        $guru = User::factory()->guru()->create(['name' => 'Bu Ani', 'tingkat' => 'SD']);
+        $supervisi = Supervisi::factory()->draft()->create(['user_id' => $guru->id]);
+        $kepala = User::factory()->kepalaSekolah()->create(['tingkat' => 'SD']);
+
+        $data = (new SupervisiPerluDireview($supervisi))->toArray($kepala);
+
+        $this->assertSame('Supervisi perlu direview', $data['judul']);
+        $this->assertStringContainsString('Bu Ani', $data['pesan']);
+        $this->assertSame('review', $data['ikon']);
+        $this->assertSame(route('kepala.evaluasi.show', $supervisi->id), $data['url']);
+    }
 }
