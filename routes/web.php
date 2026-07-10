@@ -70,6 +70,11 @@ Route::middleware(['auth', 'prevent.back', 'must.change.password'])->group(funct
     Route::post('/settings/password', [SettingsController::class, 'updatePassword'])->name('settings.password.update');
     Route::post('/settings/profile', [SettingsController::class, 'updateProfile'])->name('settings.profile.update');
 
+    // Notifikasi (semua peran)
+    Route::get('/notifikasi', [\App\Http\Controllers\NotifikasiController::class, 'index'])->name('notifikasi.index');
+    Route::get('/notifikasi/{id}/buka', [\App\Http\Controllers\NotifikasiController::class, 'buka'])->name('notifikasi.buka');
+    Route::post('/notifikasi/baca-semua', [\App\Http\Controllers\NotifikasiController::class, 'bacaSemua'])->name('notifikasi.baca-semua');
+
     // Guru Routes
     Route::prefix('guru')->name('guru.')->middleware('can:isGuru')->group(function () {
         Route::get('/home', [GuruHomeController::class, 'index'])->name('home');
