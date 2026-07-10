@@ -345,6 +345,43 @@
                     </a>
                 </div>
                 
+                <!-- Right: Notifikasi Bell + Profile Dropdown (bell always visible, profile hidden on mobile) -->
+                <div class="flex items-center gap-1 md:gap-2 lg:gap-3">
+                <!-- Notifikasi Bell (semua ukuran layar) -->
+                <div class="relative">
+                    <button id="notif-dropdown-btn" type="button" aria-label="Notifikasi"
+                            class="relative p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500">
+                        <svg class="w-6 h-6 text-gray-600 dark:text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path>
+                        </svg>
+                        @if(($unreadNotifCount ?? 0) > 0)
+                        <span data-notif-badge class="absolute -top-0.5 -right-0.5 min-w-[18px] h-[18px] px-1 rounded-full bg-red-600 text-white text-[10px] font-bold flex items-center justify-center">
+                            {{ $unreadNotifCount > 9 ? '9+' : $unreadNotifCount }}
+                        </span>
+                        @endif
+                    </button>
+
+                    <div id="notif-dropdown-menu" class="hidden absolute right-0 mt-2 w-80 max-w-[calc(100vw-1.5rem)] bg-white dark:bg-gray-800 rounded-xl shadow-xl border border-gray-200 dark:border-gray-700 overflow-hidden z-50">
+                        <div class="flex items-center justify-between px-4 py-3 border-b border-gray-200 dark:border-gray-700">
+                            <span class="text-sm font-bold text-gray-900 dark:text-white">Notifikasi</span>
+                            @if(($unreadNotifCount ?? 0) > 0)
+                            <form method="POST" action="{{ route('notifikasi.baca-semua') }}">
+                                @csrf
+                                <button type="submit" class="text-xs font-semibold text-primary-600 dark:text-primary-400 hover:underline">Tandai semua</button>
+                            </form>
+                            @endif
+                        </div>
+                        <div class="max-h-96 overflow-y-auto divide-y divide-gray-100 dark:divide-gray-700">
+                            @forelse(($recentNotifs ?? collect()) as $n)
+                                @include('notifikasi._item', ['n' => $n])
+                            @empty
+                                <p class="text-center text-sm text-gray-500 dark:text-gray-400 py-8">Belum ada notifikasi.</p>
+                            @endforelse
+                        </div>
+                        <a href="{{ route('notifikasi.index') }}" class="block text-center text-sm font-semibold text-primary-600 dark:text-primary-400 py-3 border-t border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700/50">Lihat semua</a>
+                    </div>
+                </div>
+
                 <!-- Right: Profile Dropdown (Hidden on mobile, show on md+) -->
                 <div class="hidden md:flex items-center gap-2.5 lg:gap-3">
                     <!-- Profile Dropdown -->
@@ -430,6 +467,7 @@
                         </div>
                     </div>
                 </div>
+                </div>
             </div>
         </header>
 
@@ -476,6 +514,17 @@
 
             <!-- NAVIGATION -->
             <nav class="flex-1 px-3 py-4 overflow-y-auto">
+                <a href="{{ route('notifikasi.index') }}" wire:navigate class="group flex items-center gap-3 px-3 py-2.5 mb-1 rounded-lg text-sm font-medium transition-all duration-200 {{ request()->routeIs('notifikasi.*') ? 'bg-primary-50 dark:bg-primary-900/20 text-primary-600 dark:text-primary-400' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700/50' }}">
+                    <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path>
+                    </svg>
+                    <span class="flex-1">Notifikasi</span>
+                    @if(($unreadNotifCount ?? 0) > 0)
+                        <span class="min-w-[20px] h-5 px-1.5 rounded-full bg-red-600 text-white text-[10px] font-bold flex items-center justify-center">{{ $unreadNotifCount > 9 ? '9+' : $unreadNotifCount }}</span>
+                    @elseif(request()->routeIs('notifikasi.*'))
+                        <div class="w-1.5 h-1.5 bg-primary-600 dark:bg-primary-400 rounded-full"></div>
+                    @endif
+                </a>
             @if(Auth::user()->isAdmin())
                 <a href="{{ route('admin.dashboard') }}" wire:navigate class="group flex items-center gap-3 px-3 py-2.5 mb-1 rounded-lg text-sm font-medium transition-all duration-200 {{ request()->routeIs('admin.dashboard') ? 'bg-primary-50 dark:bg-primary-900/20 text-primary-600 dark:text-primary-400' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700/50' }}">
                     <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -1016,6 +1065,10 @@
         const mainContent = document.getElementById('main-content');
         const html = document.documentElement;
 
+        // Notifikasi Dropdown
+        const notifDropdownBtn = document.getElementById('notif-dropdown-btn');
+        const notifDropdownMenu = document.getElementById('notif-dropdown-menu');
+
         // Profile Dropdown
         const profileDropdownBtn = document.getElementById('profile-dropdown-btn');
         const profileDropdownMenu = document.getElementById('profile-dropdown-menu');
@@ -1089,6 +1142,21 @@
 
         // Initialize theme icons on load
         updateThemeIcons();
+
+        // Notifikasi Dropdown functionality
+        if (notifDropdownBtn && notifDropdownMenu) {
+            notifDropdownBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                notifDropdownMenu.classList.toggle('hidden');
+            });
+
+            // Close dropdown when clicking outside
+            document.addEventListener('click', function(e) {
+                if (!notifDropdownBtn.contains(e.target) && !notifDropdownMenu.contains(e.target)) {
+                    notifDropdownMenu.classList.add('hidden');
+                }
+            });
+        }
 
         // Profile Dropdown functionality
         profileDropdownBtn.addEventListener('click', function(e) {
