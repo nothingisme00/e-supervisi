@@ -344,4 +344,31 @@ describe('modul-reader', () => {
             expect(call[0]).toBe('/modul/2/progress');
         }
     });
+
+    it('detaches the keydown listener when navigating from a reader page to a non-reader page', async () => {
+        vi.useFakeTimers();
+
+        // Modul A.
+        setupDom({ jumlahHalaman: 5, halamanTerjauh: 1 });
+        const docA = makeFakePdfDoc(5);
+        getDocumentMock.mockReturnValue({ promise: Promise.resolve(docA) });
+
+        await import('./modul-reader.js');
+        await vi.waitFor(() => expect(document.getElementById('pdf-canvas').classList.contains('hidden')).toBe(false));
+        // Biarkan kiriman progres sah dari render awal modul A selesai, lalu bersihkan catatan fetch.
+        await vi.advanceTimersByTimeAsync(2000);
+        fetch.mockClear();
+        const getPageCallsA = docA.getPage.mock.calls.length;
+
+        // Navigasi Livewire ke halaman TANPA #modul-reader (mis. daftar modul).
+        document.body.innerHTML = '<div id="halaman-lain">Bukan pembaca modul</div>';
+        document.dispatchEvent(new Event('livewire:navigated'));
+
+        // Panah kanan tidak boleh lagi menggerakkan modul A yang sudah lepas dari DOM.
+        document.body.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true }));
+        await vi.advanceTimersByTimeAsync(2000);
+
+        expect(docA.getPage.mock.calls.length).toBe(getPageCallsA);
+        expect(fetch).not.toHaveBeenCalled();
+    });
 });

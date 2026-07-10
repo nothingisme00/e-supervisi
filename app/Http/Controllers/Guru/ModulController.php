@@ -21,7 +21,7 @@ class ModulController extends Controller
             ->orderBy('judul')
             ->get();
 
-        $progressByModul = ModulProgress::where('user_id', auth()->id())
+        $progressByModul = ModulProgress::with('modul')->where('user_id', auth()->id())
             ->whereIn('modul_id', $moduls->pluck('id'))
             ->get()
             ->keyBy('modul_id');

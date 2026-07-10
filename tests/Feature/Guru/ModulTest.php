@@ -148,6 +148,24 @@ class ModulTest extends TestCase
         $response->assertStatus(404);
     }
 
+    public function test_inactive_modul_returns_404_on_file(): void
+    {
+        $modul = Modul::factory()->create(['is_active' => false]);
+
+        $response = $this->actingAs($this->createGuru())->get(route('guru.modul.file', $modul->id));
+
+        $response->assertStatus(404);
+    }
+
+    public function test_inactive_modul_returns_404_on_progress(): void
+    {
+        $modul = Modul::factory()->create(['is_active' => false]);
+
+        $response = $this->actingAs($this->createGuru())->postJson(route('guru.modul.progress', $modul->id), ['halaman' => 1]);
+
+        $response->assertStatus(404);
+    }
+
     public function test_progress_rejects_page_out_of_range(): void
     {
         $guru = $this->createGuru();

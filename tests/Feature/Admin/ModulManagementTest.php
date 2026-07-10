@@ -80,6 +80,22 @@ class ModulManagementTest extends TestCase
         $this->assertEmpty(Storage::disk('local')->allFiles('modul'));
     }
 
+    public function test_pdf_bermime_valid_tapi_rusak_ditolak_tanpa_sisa_file(): void
+    {
+        Storage::fake('local');
+        $kategori = ModulKategori::factory()->create();
+
+        $response = $this->actingAs($this->createAdmin())->post(route('admin.modul.store'), [
+            'judul' => 'Modul Rusak Bermime Valid',
+            'modul_kategori_id' => $kategori->id,
+            'file' => UploadedFile::fake()->createWithContent('rusak.pdf', "%PDF-1.4\nkonten rusak bukan pdf sungguhan"),
+        ]);
+
+        $response->assertSessionHasErrors('file');
+        $this->assertDatabaseCount('moduls', 0);
+        $this->assertEmpty(Storage::disk('local')->allFiles('modul'));
+    }
+
     public function test_admin_can_create_modul_with_video_links(): void
     {
         Storage::fake('local');

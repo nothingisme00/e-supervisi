@@ -116,6 +116,7 @@ function initModulReader() {
         document.removeEventListener('keydown', currentKeydownHandler);
     }
     currentKeydownHandler = (e) => {
+        if (!document.contains(el)) return;
         if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
         if (e.key === 'ArrowLeft') goTo(pageNum - 1);
         if (e.key === 'ArrowRight') goTo(pageNum + 1);
