@@ -46,4 +46,18 @@ class PengingatSupervisiTest extends TestCase
 
         Notification::assertNotSentTo($guru, PengingatSupervisi::class);
     }
+
+    public function test_data_notifikasi_berisi_judul_pesan_ikon_dan_url(): void
+    {
+        $guru = User::factory()->guru()->create();
+
+        $data = (new PengingatSupervisi())->toArray($guru);
+
+        $this->assertArrayHasKey('judul', $data);
+        $this->assertNotEmpty($data['judul']);
+        $this->assertArrayHasKey('pesan', $data);
+        $this->assertNotEmpty($data['pesan']);
+        $this->assertSame('pengingat', $data['ikon']);
+        $this->assertSame(route('guru.home'), $data['url']);
+    }
 }
