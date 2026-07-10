@@ -624,13 +624,14 @@ git commit -m "feat: pemutar video praktik di halaman lihat guru lain, evaluasi 
 ### Task 5: Thumbnail/badge video di kartu timeline (beranda + Supervisi Saya)
 
 **Files:**
+- Create: `resources/views/components/video-praktik-badge.blade.php`
 - Modify: `resources/views/guru/home.blade.php` (baris info-cards, setelah badge Proses — anchor: div `@if($hasProses) ... @endif` sekitar line 177–191)
 - Modify: `resources/views/guru/my-supervisi.blade.php` (setelah grid kotak status yang memuat `{{ $hasProses ? '✓' : '✗' }}`, sekitar line 117–124)
 - Test: `tests/Feature/Guru/TimelineVideoBadgeTest.php`
 
 **Interfaces:**
 - Consumes: `VideoEmbed::thumbnailUrl(?string): ?string` (Task 1); route `guru.supervisi.detail` (sudah ada).
-- Produces: — (tugas terakhir yang mengubah UI).
+- Produces: komponen `<x-video-praktik-badge :supervisi="$item" />` — prop tunggal `supervisi` (model `Supervisi`); komponen merender kosong bila tidak ada video.
 
 - [ ] **Step 1: Tulis test yang gagal**
 
@@ -720,32 +721,45 @@ Expected: FAIL — thumbnail/badge belum ada di kedua halaman.
 
 Catatan: bila `test_beranda_tanpa_video_tanpa_badge` PASS sejak awal itu wajar (fitur belum ada); ia menjadi guard regresi setelah implementasi.
 
-- [ ] **Step 3: Implementasi di beranda**
+- [ ] **Step 3: Buat komponen badge**
 
-Di `resources/views/guru/home.blade.php`, tepat SETELAH blok `@if($hasProses) ... @endif` (badge "Proses Selesai"/"Proses Belum", sebelum `@if($item->feedback->count() > 0)`), tambahkan:
+Buat `resources/views/components/video-praktik-badge.blade.php`:
 
 ```blade
-                        @php($videoUrl = $item->prosesPembelajaran->link_video ?? null)
-                        @if($videoUrl)
-                            @php($videoThumb = \App\Support\VideoEmbed::thumbnailUrl($videoUrl))
-                            <a href="{{ route('guru.supervisi.detail', $item->id) }}"
-                               class="flex items-center gap-1.5 sm:gap-1.5 md:gap-2 px-2 py-1 sm:px-2.5 sm:py-1.5 md:px-3 bg-red-50 dark:bg-red-900/20 rounded-md md:rounded-lg border border-red-100 dark:border-red-800 hover:bg-red-100 dark:hover:bg-red-900/40 transition-colors">
-                                @if($videoThumb)
-                                    <img src="{{ $videoThumb }}" alt="Thumbnail video praktik" loading="lazy"
-                                         class="w-12 h-7 sm:w-14 sm:h-8 object-cover rounded flex-shrink-0">
-                                @else
-                                    <svg class="w-3 h-3 sm:w-3.5 sm:h-3.5 md:w-4 md:h-4 text-red-600 dark:text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
-                                    </svg>
-                                @endif
-                                <span class="text-[10px] sm:text-xs font-semibold text-red-700 dark:text-red-300">Video Praktik</span>
-                            </a>
-                        @endif
+@props(['supervisi'])
+
+@php($videoUrl = $supervisi->prosesPembelajaran->link_video ?? null)
+
+@if($videoUrl)
+    @php($videoThumb = \App\Support\VideoEmbed::thumbnailUrl($videoUrl))
+    <a href="{{ route('guru.supervisi.detail', $supervisi->id) }}"
+       class="flex items-center gap-1.5 sm:gap-1.5 md:gap-2 px-2 py-1 sm:px-2.5 sm:py-1.5 md:px-3 bg-red-50 dark:bg-red-900/20 rounded-md md:rounded-lg border border-red-100 dark:border-red-800 hover:bg-red-100 dark:hover:bg-red-900/40 transition-colors">
+        @if($videoThumb)
+            <img src="{{ $videoThumb }}" alt="Thumbnail video praktik" loading="lazy"
+                 class="w-12 h-7 sm:w-14 sm:h-8 object-cover rounded flex-shrink-0">
+        @else
+            <svg class="w-3 h-3 sm:w-3.5 sm:h-3.5 md:w-4 md:h-4 text-red-600 dark:text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+            </svg>
+        @endif
+        <span class="text-[10px] sm:text-xs font-semibold text-red-700 dark:text-red-300">Video Praktik</span>
+    </a>
+@endif
 ```
 
-- [ ] **Step 4: Implementasi di Supervisi Saya**
+Lalu di `resources/views/guru/home.blade.php`, tepat SETELAH blok `@if($hasProses) ... @endif` (badge "Proses Selesai"/"Proses Belum", sebelum `@if($item->feedback->count() > 0)`), tambahkan:
 
-Di `resources/views/guru/my-supervisi.blade.php`, tepat SETELAH penutup div grid kotak status (grid yang memuat kotak `Proses` dengan `{{ $hasProses ? '✓' : '✗' }}`), tambahkan blok yang sama persis seperti Step 3 (salin utuh, variabel `$item` sama).
+```blade
+                        <x-video-praktik-badge :supervisi="$item" />
+```
+
+- [ ] **Step 4: Pasang di Supervisi Saya**
+
+Di `resources/views/guru/my-supervisi.blade.php`, tepat SETELAH penutup div grid kotak status (grid yang memuat kotak `Proses` dengan `{{ $hasProses ? '✓' : '✗' }}`), tambahkan tag komponen yang sama (variabel loop di file ini juga `$item` — verifikasi saat menyunting; sesuaikan bila namanya berbeda):
+
+```blade
+                        <x-video-praktik-badge :supervisi="$item" />
+```
 
 - [ ] **Step 5: Jalankan test, pastikan lulus + regresi**
 
@@ -758,7 +772,7 @@ Expected: PASS
 - [ ] **Step 6: Commit**
 
 ```bash
-git add resources/views/guru/home.blade.php resources/views/guru/my-supervisi.blade.php tests/Feature/Guru/TimelineVideoBadgeTest.php
+git add resources/views/components/video-praktik-badge.blade.php resources/views/guru/home.blade.php resources/views/guru/my-supervisi.blade.php tests/Feature/Guru/TimelineVideoBadgeTest.php
 git commit -m "feat: thumbnail/badge video praktik di kartu timeline beranda & supervisi saya"
 ```
 
