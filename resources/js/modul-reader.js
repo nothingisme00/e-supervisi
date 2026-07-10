@@ -31,7 +31,7 @@ function initModulReader() {
     let sendTimer = null;
     let gagalTerkirim = null; // halaman yang gagal dikirim, dicoba ulang diam-diam
 
-    pdfjsLib.getDocument(pdfUrl).promise.then((doc) => {
+    pdfjsLib.getDocument({ url: pdfUrl }).promise.then((doc) => {
         pdfDoc = doc;
         skeleton.classList.add('hidden');
         canvas.classList.remove('hidden');

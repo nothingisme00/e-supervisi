@@ -86,6 +86,8 @@ describe('modul-reader', () => {
         });
 
         expect(document.getElementById('pdf-canvas').classList.contains('hidden')).toBe(false);
+        // PDF.js v6 menolak argumen string; getDocument WAJIB dipanggil dengan bentuk objek { url }.
+        expect(getDocumentMock).toHaveBeenCalledWith(expect.objectContaining({ url: '/modul/1/file' }));
         expect(fakeDoc.getPage).toHaveBeenCalledWith(3);
         expect(document.getElementById('page-info').textContent).toBe('dari 5 • 60%');
         expect(document.getElementById('pdf-page-input').value).toBe('3');
