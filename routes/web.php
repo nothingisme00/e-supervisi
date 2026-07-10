@@ -16,6 +16,7 @@ use App\Http\Controllers\Admin\ModulController as AdminModulController;
 use App\Http\Controllers\Guru\ModulController as GuruModulController;
 use App\Http\Controllers\KepalaSekolah\DashboardController as KepalaDashboardController;
 use App\Http\Controllers\KepalaSekolah\EvaluasiController;
+use App\Http\Controllers\KepalaSekolah\ModulProgressController;
 
 // Public Routes
 Route::get('/', function () {
@@ -167,6 +168,9 @@ Route::middleware(['auth', 'prevent.back', 'must.change.password'])->group(funct
             Route::get('/{id}/rubrik/pdf', [EvaluasiController::class, 'exportRubrikPdf'])->name('rubrik.pdf');
             // Note: preview and download routes moved outside prevent.back middleware (see above)
         });
+
+        // Rekap Progres Modul Ajar
+        Route::get('/modul-progress', [ModulProgressController::class, 'index'])->name('modul-progress.index');
     });
 });
 
