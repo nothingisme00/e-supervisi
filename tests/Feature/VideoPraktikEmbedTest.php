@@ -56,6 +56,27 @@ class VideoPraktikEmbedTest extends TestCase
         $response->assertSee(self::DRIVE_EMBED);
     }
 
+    public function test_detail_guru_tautan_asli_youtube_tetap_tampil_di_bawah_pemutar(): void
+    {
+        $guru = $this->createGuru();
+        $supervisi = $this->supervisiDenganVideo($guru, self::YOUTUBE_URL);
+
+        $response = $this->actingAs($guru)->get(route('guru.supervisi.detail', $supervisi->id));
+
+        $response->assertSee(self::YOUTUBE_URL);
+    }
+
+    public function test_detail_guru_preview_drive_dirender_sebagai_iframe_dengan_tautan_asli(): void
+    {
+        $guru = $this->createGuru();
+        $supervisi = $this->supervisiDenganVideo($guru, self::DRIVE_URL);
+
+        $response = $this->actingAs($guru)->get(route('guru.supervisi.detail', $supervisi->id));
+
+        $response->assertSee('<iframe', false);
+        $response->assertSee(self::DRIVE_URL);
+    }
+
     public function test_detail_guru_url_tak_dikenal_jatuh_ke_tautan(): void
     {
         $guru = $this->createGuru();
