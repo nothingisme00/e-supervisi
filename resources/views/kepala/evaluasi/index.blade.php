@@ -101,7 +101,7 @@
 <!-- Supervisi List -->
 <div class="bg-white dark:bg-gray-800 rounded-lg sm:rounded-2xl border border-slate-200 dark:border-gray-700 overflow-hidden shadow-sm">
     <!-- Header -->
-    <div class="relative bg-gradient-to-r from-primary-500/90 to-primary-500/90 px-3 py-3 sm:px-6 sm:py-5">
+    <div class="relative bg-primary-500/90 px-3 py-3 sm:px-6 sm:py-5">
         <div class="absolute top-0 left-0 right-0 h-1 bg-primary-400"></div>
         <div class="flex items-center justify-between">
             <div>

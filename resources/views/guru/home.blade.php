@@ -97,7 +97,7 @@
                 @foreach($supervisiList as $item)
                 <div class="bg-gray-50 dark:bg-gray-900/30 rounded-xl md:rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md hover:border-primary-300 dark:hover:border-primary-700 transition-all duration-200 overflow-hidden">
                     <!-- Header Card -->
-                    <div class="p-3 sm:p-3 md:p-4 bg-gradient-to-r from-primary-50/80 to-primary-50/80 dark:from-primary-900/20 dark:to-primary-900/20">
+                    <div class="p-3 sm:p-3 md:p-4 bg-primary-50/80 dark:bg-primary-900/20">
                         <div class="flex items-start justify-between gap-3 sm:gap-2.5 md:gap-3">
                             <div class="flex items-center gap-3 sm:gap-2.5 md:gap-3 flex-1 min-w-0">
                                 <div class="shrink-0">
