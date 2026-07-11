@@ -12,10 +12,10 @@
           pernah render kosong.
         - class (merge, default "w-5 h-5" hanya saat caller tidak memberi class): ukuran/warna ikon via utility class.
 
-    Registry: bell, arrow-left, chevron-down, book-open, chat-bubble,
-    exclamation-triangle, star, clipboard-check, clock, eye, eye-slash,
+    Registry: bell, arrow-left, arrow-right, chevron-down, book-open, chat-bubble,
+    exclamation-triangle, star, clipboard-check, clock, calendar, eye, eye-slash,
     document, check-circle, x-mark, plus, search, users, pencil, trash,
-    home, inbox, check, lock, id-card, sun, moon, key, information-circle.
+    home, inbox, check, lock, id-card, sun, moon, key, information-circle, photo.
 --}}
 @props(['name'])
 
@@ -23,6 +23,18 @@
     @switch($name)
         @case('arrow-left')
             <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
+            @break
+
+        @case('arrow-right')
+            <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
+            @break
+
+        @case('calendar')
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5" />
+            @break
+
+        @case('photo')
+            <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 0 0 1.5-1.5V6a1.5 1.5 0 0 0-1.5-1.5H3.75A1.5 1.5 0 0 0 2.25 6v12a1.5 1.5 0 0 0 1.5 1.5Zm10.5-11.25h.008v.008h-.008V8.25Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
             @break
 
         @case('chevron-down')
