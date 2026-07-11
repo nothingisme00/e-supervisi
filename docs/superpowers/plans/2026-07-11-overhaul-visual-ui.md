@@ -206,6 +206,7 @@
 **Steps:**
 - [ ] SEMUA atribut `wire:*` dan struktur root tunggal Livewire dipertahankan persis. Dropdown Alpine existing dipertahankan (hanya restyle kelas).
 - [ ] Adopsi `x-page-header`, `x-card`, `x-button`, `x-form.*` di ketiga file; Material Symbols di create/edit → `x-icon`; tabel/list user dirapikan (badge role konsisten).
+- [ ] Pill Aktif/Nonaktif bespoke (±308-313 & ±470-474, termasuk label drift `'Off'` di varian mobile) → `<x-status-badge>`; hapus entri `livewire/admin/user-management.blade.php` dari whitelist sementara `StatusPillSingleSourceTest`.
 - [ ] **Full suite fase 2**: `php artisan config:clear && php artisan test` + `npm test` + `npm run build`; Playwright: buat user + cari + edit via UI; screenshot dashboard 3 peran 375/768/1440 × light/dark.
 - [ ] Commit: `style: manajemen user admin — adopsi komponen, wire: utuh`
 

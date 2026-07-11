@@ -21,8 +21,12 @@ class StatusPillSingleSourceTest extends TestCase
      *   oleh penutup tag/kutip, bukan bagian dari frasa lain seperti
      *   "Revisi Diminta") — supaya tidak menangkap label tak terkait yang
      *   kebetulan memuat salah satu kata tsb.
-     * - Kedua pola harus muncul berdekatan (baris yang sama atau baris
-     *   berikutnya) supaya dihitung sebagai satu elemen pill yang sama.
+     * - Kedua pola harus muncul berdekatan (jendela 5 baris: baris warna + 4
+     *   baris berikutnya) supaya dihitung sebagai satu elemen pill yang sama.
+     *   Jendela 2 baris terbukti terlalu sempit: pill Aktif/Nonaktif di
+     *   livewire/admin/user-management.blade.php menaruh teks status 3 baris
+     *   setelah kelas warnanya. Batasan yang tersisa: pill yang memisahkan
+     *   warna dan teks >4 baris masih bisa lolos — heuristik, bukan bukti.
      *
      * Sengaja TIDAK menangkap: components/status-badge.blade.php sendiri
      * (dikecualikan eksplisit), pemanggilan <x-status-badge>, atau pemakaian
@@ -33,14 +37,20 @@ class StatusPillSingleSourceTest extends TestCase
         // TODO Task 11: hapus setelah admin/dashboard.blade.php pakai <x-status-badge>
         // TODO Task 16: hapus setelah kepala/evaluasi/index.blade.php pakai <x-status-badge>
         // TODO Task 21: hapus setelah admin/modul/index.blade.php pakai <x-status-badge>
+        // TODO Task 12: hapus setelah pill Aktif/Nonaktif (+label drift 'Off')
+        //   di livewire/admin/user-management.blade.php diganti <x-status-badge>
         $whitelist = [
             'admin/dashboard.blade.php',
             'kepala/evaluasi/index.blade.php',
             'admin/modul/index.blade.php',
+            'livewire/admin/user-management.blade.php',
         ];
 
         $colorPattern = '/bg-(?:green|amber|blue|emerald|rose)-100\b/i';
-        $statusWordPattern = '/\b(?:Aktif|Nonaktif|Disubmit|Ditinjau|Draft|Revisi|Selesai|Review)\b(?=\s*(?:[<\'"]|$))/i';
+        // Lookbehind "Status: " mengecualikan teks panduan statis yang
+        // MENJELASKAN status (mis. "Status: Disubmit" di modal panduan
+        // layouts/modern.blade.php) — itu dokumentasi, bukan pill.
+        $statusWordPattern = '/(?<!Status: )\b(?:Aktif|Nonaktif|Disubmit|Ditinjau|Draft|Revisi|Selesai|Review)\b(?=\s*(?:[<\'"]|$))/i';
 
         $offenders = [];
 
@@ -63,7 +73,7 @@ class StatusPillSingleSourceTest extends TestCase
                     continue;
                 }
 
-                $window = $lines[$i].($lines[$i + 1] ?? '');
+                $window = implode('', array_slice($lines, $i, 5));
 
                 if (preg_match($statusWordPattern, $window)) {
                     $offenders[$relative] = true;
