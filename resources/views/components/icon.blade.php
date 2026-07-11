@@ -10,7 +10,7 @@
         - name (string, wajib): salah satu dari registry di bawah. Nilai yang
           tidak dikenal (atau kosong) jatuh ke default (bell) agar ikon tidak
           pernah render kosong.
-        - class (merge, default "w-5 h-5"): ukuran/warna ikon via utility class.
+        - class (merge, default "w-5 h-5" hanya saat caller tidak memberi class): ukuran/warna ikon via utility class.
 
     Registry: bell, arrow-left, chevron-down, book-open, chat-bubble,
     exclamation-triangle, star, clipboard-check, clock, eye, document,
@@ -18,7 +18,7 @@
 --}}
 @props(['name'])
 
-<svg {{ $attributes->merge(['class' => 'w-5 h-5', 'fill' => 'none', 'stroke' => 'currentColor', 'viewBox' => '0 0 24 24', 'stroke-width' => '1.5']) }}>
+<svg {{ $attributes->merge(['class' => $attributes->has('class') ? '' : 'w-5 h-5', 'fill' => 'none', 'stroke' => 'currentColor', 'viewBox' => '0 0 24 24', 'stroke-width' => '1.5']) }}>
     @switch($name)
         @case('arrow-left')
             <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
