@@ -11,6 +11,7 @@
 ## Global Constraints
 
 - **Arah estetika: PROFESIONAL & TENANG.** Depth hanya `border` + `shadow-sm`; TANPA gradient dekoratif baru (yang ada dihapus/diratakan jadi flat); animasi hanya transisi fungsional halus (dropdown/hover); warna non-teal hanya untuk makna (status/peringatan/jenis notifikasi), tidak pernah hiasan. Kalau ragu antara "lebih menarik" vs "lebih konsisten" → pilih konsisten.
+- **AWAS idiom dark-mode gradient:** `dark:from-X dark:to-X` (stop identik) pada elemen ber-gradient terang NYATA itu BENAR (meng-override stop gradient jadi warna solid di dark mode) — JANGAN diganti `dark:bg-X` (background-image tidak di-scope dark, warnanya tertimbun; insiden Task 5). Saat meratakan gradient terang dekoratif, hapus `bg-gradient-to-*` + kedua pasangan stop sekaligus, light dan dark.
 - **Palet:** nilai token `--color-primary-*` (teal) di `resources/css/app.css` TIDAK berubah. DILARANG kata/hex indigo, purple, violet di view & CSS (`ColorTokenMigrationTest`).
 - **Radius:** kartu/panel/dropdown = `rounded-xl`; tombol/input/select = `rounded-lg`; badge/pill/avatar = `rounded-full`; blok hero maks `rounded-2xl`. `rounded-md`/`rounded-3xl` dilarang di view — dinormalisasi repo-wide + guard test di Task 23.
 - **Kartu kanonik = komponen `x-card`** (render: `bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm`). Kode baru/tersentuh WAJIB pakai `x-card`, bukan menulis ulang string kelasnya; sisa string tulisan-tangan dimigrasi di Task 23.
