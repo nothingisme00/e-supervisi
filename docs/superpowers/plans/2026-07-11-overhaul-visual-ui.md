@@ -57,7 +57,7 @@
 ### Task 2: Cabut dependency mati (Bootstrap/Sass/Popper)
 
 **Files:**
-- Modify: `package.json`
+- Modify: `package.json`, `resources/js/bootstrap.js` (HANYA hapus baris mati `import 'bootstrap';` — wajib agar build tidak gagal resolve; setup axios di bawahnya utuh)
 - Delete: seluruh folder `resources/sass/`
 
 **Steps:**
