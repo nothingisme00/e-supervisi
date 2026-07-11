@@ -12,7 +12,7 @@
         <div class="flex flex-row items-center justify-between gap-2 sm:gap-3 md:gap-5 w-full">
             <!-- LEFT: Icon + Title - Hidden on mobile -->
             <div class="hidden sm:flex items-center gap-2 md:gap-4 flex-shrink min-w-0">
-                <div class="w-10 h-10 md:w-14 md:h-14 lg:w-16 lg:h-16 bg-gradient-to-r from-primary-600 to-primary-600 dark:from-primary-500 dark:to-primary-500 rounded-xl md:rounded-2xl flex items-center justify-center shadow-lg">
+                <div class="w-10 h-10 md:w-14 md:h-14 lg:w-16 lg:h-16 bg-primary-600 dark:bg-primary-500 rounded-xl md:rounded-2xl flex items-center justify-center shadow-lg">
                     <svg class="w-5 h-5 md:w-7 md:h-7 lg:w-8 lg:h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
@@ -133,7 +133,7 @@
             <div class="p-3 sm:p-6 border-b-2 border-gray-200 dark:border-gray-600">
                 <div class="flex items-center justify-between">
                     <div class="flex items-center gap-2 sm:gap-4">
-                        <div class="w-10 h-10 sm:w-14 sm:h-14 bg-gradient-to-br from-primary-100 to-primary-100 dark:from-primary-900/30 dark:to-primary-900/30 rounded-lg sm:rounded-xl flex items-center justify-center shadow-sm">
+                        <div class="w-10 h-10 sm:w-14 sm:h-14 bg-primary-100 dark:bg-primary-900/30 rounded-lg sm:rounded-xl flex items-center justify-center shadow-sm">
                             <svg class="w-5 h-5 sm:w-7 sm:h-7 text-primary-600 dark:text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
@@ -153,7 +153,7 @@
             <div class="p-2.5 sm:p-4 max-h-96 overflow-y-auto">
                 @forelse($supervisiUnderReviewList as $supervisi)
                 <div class="flex items-start gap-2 sm:gap-3 p-2 sm:p-3 bg-white dark:bg-gray-800 rounded-md sm:rounded-lg mb-2 sm:mb-3 last:mb-0 hover:bg-primary-50 dark:hover:bg-primary-900/20 transition-all border border-gray-200 dark:border-gray-700 hover:border-primary-300 dark:hover:border-primary-700">
-                    <div class="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-br from-primary-600 to-primary-600 rounded-md sm:rounded-lg flex items-center justify-center text-white font-bold text-xs sm:text-sm shrink-0">
+                    <div class="w-8 h-8 sm:w-10 sm:h-10 bg-primary-600 rounded-md sm:rounded-lg flex items-center justify-center text-white font-bold text-xs sm:text-sm shrink-0">
                         {{ strtoupper(substr($supervisi->user->name, 0, 1)) }}
                     </div>
                     <div class="flex-1 min-w-0">

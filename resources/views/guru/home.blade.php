@@ -372,7 +372,7 @@
                 <div class="bg-white dark:bg-gray-800 rounded-md sm:rounded-xl shadow w-full">
                     <div class="px-3 py-4 sm:px-5 sm:py-6 md:px-6 md:py-8 lg:px-8 lg:py-10">
                         <div class="bg-gray-50 dark:bg-gray-900/30 rounded-xl sm:rounded-2xl border-2 border-dashed border-gray-300 dark:border-gray-700 p-6 sm:p-10 md:p-14 lg:p-16 text-center">
-                            <div class="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 lg:w-28 lg:h-28 bg-gradient-to-br from-primary-100 to-primary-100 dark:from-primary-900/30 dark:to-primary-900/30 rounded-full flex items-center justify-center mx-auto mb-4 sm:mb-5 md:mb-6 shadow-inner">
+                            <div class="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 lg:w-28 lg:h-28 bg-primary-100 dark:bg-primary-900/30 rounded-full flex items-center justify-center mx-auto mb-4 sm:mb-5 md:mb-6 shadow-inner">
                                 <svg class="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 lg:w-14 lg:h-14 text-primary-600 dark:text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
                                 </svg>
@@ -380,7 +380,7 @@
                             <h3 class="text-base sm:text-lg md:text-xl lg:text-2xl font-bold text-gray-900 dark:text-white mb-2 sm:mb-3">Belum Ada Supervisi</h3>
                             <p class="text-sm sm:text-base md:text-base text-gray-500 dark:text-gray-400 mb-5 sm:mb-6 md:mb-8 max-w-md mx-auto leading-relaxed">Anda belum memiliki supervisi apapun. Mulai dengan membuat supervisi baru.</p>
 
-                            <button onclick="openSupervisiModal()" class="inline-flex items-center gap-2 sm:gap-2.5 px-5 py-2.5 sm:px-6 sm:py-3 md:px-7 md:py-3.5 lg:px-8 lg:py-4 bg-gradient-to-r from-primary-600 to-primary-600 hover:from-primary-700 hover:to-primary-700 text-white text-sm sm:text-base md:text-base font-semibold rounded-xl transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-0.5">
+                            <button onclick="openSupervisiModal()" class="inline-flex items-center gap-2 sm:gap-2.5 px-5 py-2.5 sm:px-6 sm:py-3 md:px-7 md:py-3.5 lg:px-8 lg:py-4 bg-primary-600 hover:bg-primary-700 text-white text-sm sm:text-base md:text-base font-semibold rounded-xl transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-0.5">
                                 <svg class="w-5 h-5 sm:w-5 sm:h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
                                 </svg>
@@ -438,7 +438,7 @@
 
                 <!-- Action Buttons -->
                 <div class="flex flex-col gap-2.5 sm:gap-3">
-                    <button onclick="openGuideFromWelcome()" class="w-full px-5 py-3 sm:px-6 sm:py-3.5 md:px-7 md:py-4 bg-gradient-to-r from-primary-600 to-primary-600 hover:from-primary-700 hover:to-primary-700 text-white font-semibold rounded-lg sm:rounded-xl transition-all shadow-md hover:shadow-lg flex items-center justify-center gap-2 text-sm sm:text-base md:text-lg">
+                    <button onclick="openGuideFromWelcome()" class="w-full px-5 py-3 sm:px-6 sm:py-3.5 md:px-7 md:py-4 bg-primary-600 hover:bg-primary-700 text-white font-semibold rounded-lg sm:rounded-xl transition-all shadow-md hover:shadow-lg flex items-center justify-center gap-2 text-sm sm:text-base md:text-lg">
                         <svg class="w-4.5 h-4.5 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
                         </svg>
@@ -668,7 +668,7 @@
     <div id="supervisiModalContent" class="bg-white dark:bg-gray-800 rounded-[24px] shadow-2xl w-full max-w-md transform scale-90 opacity-0 transition-all duration-500 overflow-hidden" onclick="event.stopPropagation()">
 
         <!-- Header -->
-        <div class="bg-gradient-to-r from-primary-600 to-primary-600 dark:from-primary-700 dark:to-primary-700 px-6 py-6 text-center relative">
+        <div class="bg-primary-600 dark:bg-primary-700 px-6 py-6 text-center relative">
             <button onclick="closeSupervisiModal()" class="absolute top-4 right-4 w-9 h-9 rounded-xl hover:bg-white/20 flex items-center justify-center text-white transition-colors">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
@@ -748,7 +748,7 @@
                 <button onclick="closeSupervisiModal()" class="flex-1 inline-flex items-center justify-center px-6 py-3 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 font-semibold rounded-xl hover:bg-gray-50 dark:hover:bg-gray-700 transition-all text-sm">
                     Batal
                 </button>
-                <button onclick="submitSupervisiForm()" class="flex-1 inline-flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-r from-primary-600 to-primary-600 hover:from-primary-700 hover:to-primary-700 text-white font-bold rounded-xl transition-all shadow-lg hover:shadow-xl text-sm">
+                <button onclick="submitSupervisiForm()" class="flex-1 inline-flex items-center justify-center gap-2 px-6 py-3 bg-primary-600 hover:bg-primary-700 text-white font-bold rounded-xl transition-all shadow-lg hover:shadow-xl text-sm">
                     Mulai
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>

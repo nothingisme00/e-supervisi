@@ -51,8 +51,8 @@
         <span class="dropdown-label flex items-center gap-2" :class="!value ? 'text-gray-400 dark:text-gray-500' : ''">
             <span x-text="label"></span>
         </span>
-        <span class="material-symbols-outlined text-gray-400 transition-transform duration-200 dropdown-arrow"
-              :style="open ? 'transform: rotate(180deg)' : 'transform: rotate(0deg)'">{{ $icon }}</span>
+        <x-icon name="chevron-down" class="w-4 h-4 text-gray-400 transition-transform duration-200 dropdown-arrow"
+              x-bind:style="open ? 'transform: rotate(180deg)' : 'transform: rotate(0deg)'" />
     </button>
 
     <div class="dropdown-menu-custom absolute top-full mt-1 left-0 w-full bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-xl z-50 transition-all duration-200 origin-top"

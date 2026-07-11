@@ -246,7 +246,7 @@
                         </button>
                         <button 
                             type="submit"
-                            class="px-6 py-2.5 bg-gradient-to-r from-primary-600 to-primary-600 hover:from-primary-700 hover:to-primary-700 text-white font-medium rounded-lg transition-all duration-200 shadow-sm hover:shadow">
+                            class="px-6 py-2.5 bg-primary-600 hover:bg-primary-700 text-white font-medium rounded-lg transition-all duration-200 shadow-sm hover:shadow">
                             Kirim Feedback
                         </button>
                     </div>

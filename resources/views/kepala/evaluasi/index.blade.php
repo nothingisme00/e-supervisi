@@ -102,7 +102,7 @@
 <div class="bg-white dark:bg-gray-800 rounded-lg sm:rounded-2xl border border-slate-200 dark:border-gray-700 overflow-hidden shadow-sm">
     <!-- Header -->
     <div class="relative bg-gradient-to-r from-primary-500/90 to-primary-500/90 px-3 py-3 sm:px-6 sm:py-5">
-        <div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary-400 to-primary-400"></div>
+        <div class="absolute top-0 left-0 right-0 h-1 bg-primary-400"></div>
         <div class="flex items-center justify-between">
             <div>
                 <h2 class="text-sm sm:text-lg font-bold text-white flex items-center gap-1.5 sm:gap-2">
@@ -124,7 +124,7 @@
             @foreach($supervisiList as $supervisi)
             <div class="relative p-3 sm:p-4 bg-white dark:bg-gray-700 rounded-lg sm:rounded-xl hover:bg-primary-50/50 dark:hover:bg-gray-600 transition-all border border-slate-200 dark:border-gray-600 hover:border-primary-300 dark:hover:border-primary-600 shadow-sm hover:shadow-md group">
                 <!-- Left accent line with dynamic color -->
-                <div class="absolute left-0 top-2 sm:top-3 bottom-2 sm:bottom-3 w-1 @if($supervisi->status == 'submitted') bg-gradient-to-b from-amber-400 to-orange-400 @elseif($supervisi->status == 'under_review') bg-gradient-to-b from-primary-400 to-primary-400 @elseif($supervisi->status == 'revision') bg-gradient-to-b from-rose-400 to-red-400 @else bg-gradient-to-b from-emerald-400 to-green-400 @endif rounded-r-full"></div>
+                <div class="absolute left-0 top-2 sm:top-3 bottom-2 sm:bottom-3 w-1 @if($supervisi->status == 'submitted') bg-gradient-to-b from-amber-400 to-orange-400 @elseif($supervisi->status == 'under_review') bg-primary-400 @elseif($supervisi->status == 'revision') bg-gradient-to-b from-rose-400 to-red-400 @else bg-gradient-to-b from-emerald-400 to-green-400 @endif rounded-r-full"></div>
                 
                 <div class="flex items-start justify-between gap-2 sm:gap-4 ml-2 sm:ml-3">
                     <div class="flex-1 min-w-0">

@@ -270,7 +270,7 @@
             
             <!-- Progress Bar -->
             <div class="h-1 bg-gray-100 dark:bg-gray-800">
-                <div class="welcome-progress h-full bg-gradient-to-r from-primary-500 to-primary-500 rounded-r-full"></div>
+                <div class="welcome-progress h-full bg-primary-500 rounded-r-full"></div>
             </div>
         </div>
     </div>
@@ -402,9 +402,9 @@
                         <!-- Dropdown Menu -->
                         <div id="profile-dropdown-menu" class="hidden absolute right-0 mt-2 w-64 bg-white dark:bg-gray-800 rounded-xl shadow-xl border border-gray-200 dark:border-gray-700 overflow-hidden z-50 origin-top-right transform transition-all duration-200 ease-out scale-95 opacity-0">
                             <!-- User Info -->
-                            <div class="px-4 py-3 bg-gradient-to-r from-primary-50 to-primary-50 dark:from-gray-700 dark:to-gray-700 border-b border-gray-200 dark:border-gray-600">
+                            <div class="px-4 py-3 bg-primary-50 dark:bg-gray-700 border-b border-gray-200 dark:border-gray-600">
                                 <div class="flex items-center gap-3">
-                                    <div class="w-12 h-12 bg-gradient-to-br from-primary-600 to-primary-600 rounded-full flex items-center justify-center text-white font-bold shadow-md">
+                                    <div class="w-12 h-12 bg-primary-600 rounded-full flex items-center justify-center text-white font-bold shadow-md">
                                         <span class="text-lg">{{ substr(Auth::user()->name, 0, 1) }}</span>
                                     </div>
                                     <div class="flex-1 min-w-0">
@@ -790,7 +790,7 @@
                     <!-- Profile Popup Menu -->
                     <div x-show="open" x-cloak @click.away="open = false" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 transform scale-95 translate-y-2" x-transition:enter-end="opacity-100 transform scale-100 translate-y-0" x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100 transform scale-100 translate-y-0" x-transition:leave-end="opacity-0 transform scale-95 translate-y-2" class="absolute bottom-full right-0 mb-2 w-56 bg-white dark:bg-gray-800 rounded-xl shadow-xl border border-gray-200 dark:border-gray-700 overflow-hidden z-50">
                         <!-- User Info -->
-                        <div class="px-4 py-3 bg-gradient-to-r from-primary-50 to-primary-50 dark:from-gray-700 dark:to-gray-700 border-b border-gray-200 dark:border-gray-600">
+                        <div class="px-4 py-3 bg-primary-50 dark:bg-gray-700 border-b border-gray-200 dark:border-gray-600">
                             <p class="text-sm font-bold text-gray-900 dark:text-white truncate">{{ Auth::user()->name }}</p>
                             <p class="text-xs text-gray-600 dark:text-gray-400">Administrator</p>
                         </div>
@@ -902,7 +902,7 @@
                     <!-- Profile Popup Menu -->
                     <div x-show="open" x-cloak @click.away="open = false" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 transform scale-95 translate-y-2" x-transition:enter-end="opacity-100 transform scale-100 translate-y-0" x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100 transform scale-100 translate-y-0" x-transition:leave-end="opacity-0 transform scale-95 translate-y-2" class="absolute bottom-full right-0 mb-2 w-56 bg-white dark:bg-gray-800 rounded-xl shadow-xl border border-gray-200 dark:border-gray-700 overflow-hidden z-50">
                         <!-- User Info -->
-                        <div class="px-4 py-3 bg-gradient-to-r from-primary-50 to-primary-50 dark:from-gray-700 dark:to-gray-700 border-b border-gray-200 dark:border-gray-600">
+                        <div class="px-4 py-3 bg-primary-50 dark:bg-gray-700 border-b border-gray-200 dark:border-gray-600">
                             <p class="text-sm font-bold text-gray-900 dark:text-white truncate">{{ Auth::user()->name }}</p>
                             <p class="text-xs text-gray-600 dark:text-gray-400">Guru</p>
                         </div>
@@ -967,7 +967,7 @@
                     <!-- Profile Popup Menu -->
                     <div x-show="open" @click.away="open = false" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 transform scale-95 translate-y-2" x-transition:enter-end="opacity-100 transform scale-100 translate-y-0" x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100 transform scale-100 translate-y-0" x-transition:leave-end="opacity-0 transform scale-95 translate-y-2" class="absolute bottom-full right-0 mb-2 w-56 bg-white dark:bg-gray-800 rounded-xl shadow-xl border border-gray-200 dark:border-gray-700 overflow-hidden z-50">
                         <!-- User Info -->
-                        <div class="px-4 py-3 bg-gradient-to-r from-primary-50 to-primary-50 dark:from-gray-700 dark:to-gray-700 border-b border-gray-200 dark:border-gray-600">
+                        <div class="px-4 py-3 bg-primary-50 dark:bg-gray-700 border-b border-gray-200 dark:border-gray-600">
                             <p class="text-sm font-bold text-gray-900 dark:text-white truncate">{{ Auth::user()->name }}</p>
                             <p class="text-xs text-gray-600 dark:text-gray-400">Kepala Sekolah</p>
                         </div>

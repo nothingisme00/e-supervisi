@@ -465,7 +465,7 @@
             </div>
 
             <div class="pt-4">
-                <button class="group w-full flex justify-center items-center py-4 px-6 border border-transparent rounded-xl shadow-lg shadow-teal-500/30 text-base font-bold text-white bg-gradient-to-r from-teal-600 to-teal-600 hover:from-teal-700 hover:to-teal-700 hover:shadow-teal-500/40 focus:outline-none focus:ring-4 focus:ring-teal-500/50 transition-all duration-200 transform hover:-translate-y-0.5 active:scale-[0.98]" type="submit">
+                <button class="group w-full flex justify-center items-center py-4 px-6 border border-transparent rounded-xl shadow-lg shadow-teal-500/30 text-base font-bold text-white bg-teal-600 hover:bg-teal-700 hover:shadow-teal-500/40 focus:outline-none focus:ring-4 focus:ring-teal-500/50 transition-all duration-200 transform hover:-translate-y-0.5 active:scale-[0.98]" type="submit">
                     <span class="material-symbols-outlined mr-2">check</span>
                     Simpan Password Baru
                 </button>

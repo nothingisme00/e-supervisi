@@ -15,7 +15,7 @@
                         <p class="text-[11px] sm:text-sm text-gray-500 dark:text-gray-400">Manajemen akun sistem</p>
                     </div>
                 </div>
-                <a href="{{ route('admin.users.create') }}" class="flex-shrink-0 inline-flex items-center gap-1.5 px-3 py-2 sm:px-4 sm:py-2.5 bg-gradient-to-r from-primary-600 to-primary-600 hover:from-primary-700 hover:to-primary-700 text-white text-xs sm:text-sm font-semibold rounded-lg transition-all shadow-md hover:shadow-lg">
+                <a href="{{ route('admin.users.create') }}" class="flex-shrink-0 inline-flex items-center gap-1.5 px-3 py-2 sm:px-4 sm:py-2.5 bg-primary-600 hover:bg-primary-700 text-white text-xs sm:text-sm font-semibold rounded-lg transition-all shadow-md hover:shadow-lg">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
                     </svg>
@@ -386,7 +386,7 @@
     <!-- ==================== MOBILE TABLE VIEW (< md) ==================== -->
     <div class="md:hidden bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden shadow-sm">
         <!-- Header -->
-        <div class="bg-gradient-to-r from-primary-50 to-primary-50 dark:from-gray-700 dark:to-gray-700 border-b border-gray-200 dark:border-gray-600 px-4 py-3">
+        <div class="bg-primary-50 dark:bg-gray-700 border-b border-gray-200 dark:border-gray-600 px-4 py-3">
             <div class="flex items-center justify-between">
                 <div class="flex items-center gap-3">
                     <div class="w-9 h-9 rounded-lg bg-primary-600 flex items-center justify-center shadow-lg shadow-primary-500/30">

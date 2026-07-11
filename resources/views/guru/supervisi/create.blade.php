@@ -9,7 +9,7 @@
     <div class="bg-white dark:bg-gray-800 rounded-md sm:rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden">
 
         <!-- Header -->
-        <div class="bg-gradient-to-r from-primary-600 to-primary-600 dark:from-primary-700 dark:to-primary-700 px-4 py-4 sm:px-6 sm:py-6 text-center">
+        <div class="bg-primary-600 dark:bg-primary-700 px-4 py-4 sm:px-6 sm:py-6 text-center">
             <div class="w-10 h-10 sm:w-16 sm:h-16 bg-white/20 rounded-lg sm:rounded-xl flex items-center justify-center mx-auto mb-2 sm:mb-3">
                 <svg class="w-5 h-5 sm:w-8 sm:h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
@@ -70,7 +70,7 @@
                     <a href="{{ route('guru.home') }}" class="flex-1 inline-flex items-center justify-center gap-1.5 sm:gap-2 px-4 py-2 sm:px-5 sm:py-3 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 text-xs sm:text-sm font-semibold rounded-md sm:rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-all">
                         Batal
                     </a>
-                    <button type="submit" class="flex-1 inline-flex items-center justify-center gap-1.5 sm:gap-2 px-4 py-2 sm:px-5 sm:py-3 bg-gradient-to-r from-primary-600 to-primary-600 hover:from-primary-700 hover:to-primary-700 text-white text-xs sm:text-sm font-bold rounded-md sm:rounded-lg transition-all shadow-md hover:shadow-lg">
+                    <button type="submit" class="flex-1 inline-flex items-center justify-center gap-1.5 sm:gap-2 px-4 py-2 sm:px-5 sm:py-3 bg-primary-600 hover:bg-primary-700 text-white text-xs sm:text-sm font-bold rounded-md sm:rounded-lg transition-all shadow-md hover:shadow-lg">
                         Ya, Mulai
                         <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
