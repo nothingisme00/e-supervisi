@@ -1795,8 +1795,11 @@ if (backToTopBtn) {
             }, 200);
         }
         
-        // Re-apply theme after navigation to fix dark mode reset
-        const savedTheme = localStorage.getItem('theme') || 'light';
+        // Re-apply theme after navigation to fix dark mode reset.
+        // Logika WAJIB sama dengan partials/theme-init: localStorage menang,
+        // tanpa preferensi tersimpan ikut prefers-color-scheme (bukan 'light').
+        const savedTheme = localStorage.getItem('theme')
+            || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
         if (savedTheme === 'dark') {
             document.documentElement.classList.add('dark');
         } else {
