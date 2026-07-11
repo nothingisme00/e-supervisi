@@ -276,15 +276,18 @@
                 </h3>
                 <div class="space-y-2.5">
                     <div id="req-length" class="flex items-center gap-3 text-xs font-medium text-gray-400 dark:text-gray-500 transition-colors duration-300">
-                        <x-icon name="check-circle" class="w-5 h-5" />
+                        <x-icon name="x-mark" class="w-5 h-5 req-icon-unmet" />
+                        <x-icon name="check-circle" class="w-5 h-5 req-icon-met hidden" />
                         <span>Minimal 8 karakter</span>
                     </div>
                     <div id="req-mixed" class="flex items-center gap-3 text-xs font-medium text-gray-400 dark:text-gray-500 transition-colors duration-300">
-                        <x-icon name="check-circle" class="w-5 h-5" />
+                        <x-icon name="x-mark" class="w-5 h-5 req-icon-unmet" />
+                        <x-icon name="check-circle" class="w-5 h-5 req-icon-met hidden" />
                         <span>Huruf besar (A-Z) &amp; huruf kecil (a-z)</span>
                     </div>
                     <div id="req-number" class="flex items-center gap-3 text-xs font-medium text-gray-400 dark:text-gray-500 transition-colors duration-300">
-                        <x-icon name="check-circle" class="w-5 h-5" />
+                        <x-icon name="x-mark" class="w-5 h-5 req-icon-unmet" />
+                        <x-icon name="check-circle" class="w-5 h-5 req-icon-met hidden" />
                         <span>Mengandung angka (0-9)</span>
                     </div>
                 </div>
@@ -442,14 +445,22 @@
         const reqMixed = document.getElementById('req-mixed');
         const reqNumber = document.getElementById('req-number');
 
+        // Status terpenuhi/belum disampaikan lewat BENTUK ikon + warna
+        // sekaligus (WCAG 1.4.1: warna tak boleh jadi satu-satunya penanda).
         function updateReq(el, valid) {
             if (!el) return;
+            const met = el.querySelector('.req-icon-met');
+            const unmet = el.querySelector('.req-icon-unmet');
             if (valid) {
                 el.classList.remove('text-gray-400', 'dark:text-gray-500');
                 el.classList.add('text-primary-600', 'dark:text-primary-400');
+                met?.classList.remove('hidden');
+                unmet?.classList.add('hidden');
             } else {
                 el.classList.add('text-gray-400', 'dark:text-gray-500');
                 el.classList.remove('text-primary-600', 'dark:text-primary-400');
+                met?.classList.add('hidden');
+                unmet?.classList.remove('hidden');
             }
         }
 
