@@ -180,10 +180,10 @@
 
     <!-- Navigation Buttons -->
     <div class="absolute bottom-8 lg:bottom-12 right-8 lg:right-12 flex items-center gap-3 lg:gap-5 z-20">
-        <button aria-label="Slide sebelumnya" type="button" class="carousel-nav-button group w-10 h-10 lg:w-14 lg:h-14" id="prevSlide">
+        <button aria-label="Slide sebelumnya" type="button" class="carousel-nav-button group w-11 h-11 lg:w-14 lg:h-14" id="prevSlide">
             <x-icon name="arrow-left" class="w-5 h-5 lg:w-7 lg:h-7 group-hover:-translate-x-0.5 transition-transform" />
         </button>
-        <button aria-label="Slide berikutnya" type="button" class="carousel-nav-button group w-10 h-10 lg:w-14 lg:h-14" id="nextSlide">
+        <button aria-label="Slide berikutnya" type="button" class="carousel-nav-button group w-11 h-11 lg:w-14 lg:h-14" id="nextSlide">
             <x-icon name="arrow-left" class="w-5 h-5 lg:w-7 lg:h-7 rotate-180 group-hover:translate-x-0.5 transition-transform" />
         </button>
     </div>
@@ -331,7 +331,7 @@
         </form>
 
         <div class="mt-4 lg:mt-5 pt-3 lg:pt-4 border-t border-gray-200 dark:border-gray-700 flex items-center justify-between">
-            <button type="button" class="group flex items-center space-x-1.5 px-2.5 py-1.5 rounded-lg text-[10px] lg:text-xs font-semibold text-gray-600 dark:text-gray-400 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-primary-300 dark:hover:border-primary-600 hover:text-primary-600 dark:hover:text-primary-400 hover:bg-primary-50 dark:hover:bg-primary-950/30 transition-all duration-200 shadow-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500" onclick="toggleTheme()">
+            <button type="button" class="group flex items-center space-x-1.5 px-2.5 py-1.5 min-h-11 rounded-lg text-xs font-semibold text-gray-600 dark:text-gray-400 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-primary-300 dark:hover:border-primary-600 hover:text-primary-600 dark:hover:text-primary-400 hover:bg-primary-50 dark:hover:bg-primary-950/30 transition-all duration-200 shadow-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500" onclick="toggleTheme()">
                 <x-icon name="sun" id="theme-icon-sun" class="w-4 h-4 transition-transform duration-300 group-hover:rotate-180" />
                 <x-icon name="moon" id="theme-icon-moon" class="w-4 h-4 hidden transition-transform duration-300 group-hover:rotate-180" />
                 <span id="theme-text">Mode Terang</span>

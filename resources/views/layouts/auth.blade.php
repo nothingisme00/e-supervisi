@@ -4,12 +4,17 @@
     `layouts.modern` (tanpa header/sidebar). Dibangun dari build Vite
     (bukan Tailwind CDN) supaya konsisten dengan seluruh aplikasi.
 
-    Pemakaian di halaman anak:
-        @extends('layouts.auth')
-        @section('page-title', 'Login')
-        @push('styles') ... @endpush   {{-- CSS spesifik halaman --}}
-        @section('content') ... @endsection
-        @push('scripts') ... @endpush  {{-- JS spesifik halaman --}}
+    Pemakaian di halaman anak (komentar Blade TIDAK bisa bersarang — contoh
+    di bawah sengaja tanpa penanda komentar):
+        extends('layouts.auth')
+        section('page-title', 'Login')
+        push('styles')  -> CSS spesifik halaman
+        section('content') -> isi halaman
+        push('scripts') -> JS spesifik halaman
+
+    CATATAN: footer auth (E-Supervisi · Sistem Supervisi Pembelajaran) adalah
+    tanggung jawab HALAMAN (posisinya menyatu di dalam panel form), bukan
+    layout ini — lihat login.blade.php / change-password.blade.php.
 --}}
 <!DOCTYPE html>
 <html lang="id">
