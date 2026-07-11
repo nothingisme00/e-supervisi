@@ -50,9 +50,7 @@
                     <div class="flex items-start justify-between gap-4">
                         <div class="flex-1">
                             <div class="flex items-center gap-2 mb-2">
-                                <span class="text-xs font-medium px-2 py-0.5 rounded-full {{ $slide->is_active ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' : 'bg-gray-100 text-gray-600 dark:bg-gray-700 dark:text-gray-400' }}">
-                                    {{ $slide->is_active ? 'Aktif' : 'Nonaktif' }}
-                                </span>
+                                <x-status-badge :status="$slide->is_active ? 'aktif' : 'nonaktif'" />
                                 <span class="text-xs text-gray-500 dark:text-gray-400">Urutan: {{ $index + 1 }} dari {{ $totalSlides }}</span>
                             </div>
                             <h3 class="text-lg font-bold text-gray-900 dark:text-white">{{ $slide->title ?: 'Tanpa Judul' }}</h3>
