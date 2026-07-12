@@ -71,7 +71,7 @@
         <div class="space-y-4 sm:space-y-6">
 
             <!-- Card 1: Dokumen Evaluasi Diri -->
-            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+            <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
                 <!-- Card Header -->
                 <x-card-header title="Dokumen Evaluasi Diri" />
                 <!-- Card Content -->
@@ -90,7 +90,7 @@
                         @endphp
                         
                         @forelse($supervisi->dokumenEvaluasi as $index => $dokumen)
-                            <div class="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700/50 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200 border-b border-gray-200 dark:border-gray-600 last:border-b-0">
+                            <div class="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700/50 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200 border-b border-gray-200 dark:border-gray-600 last:border-b-0">
                                 <div class="flex items-center space-x-4">
                                     <!-- Nomor Urut -->
                                     <div class="shrink-0 w-8 text-center">
@@ -148,7 +148,7 @@
             </div>
 
             <!-- Card 2: Link Pembelajaran -->
-            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+            <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
                 <!-- Card Header -->
                 <x-card-header title="Link Pembelajaran" />
                 <!-- Card Content -->
@@ -193,7 +193,7 @@
                     </div>
                 </div>
             </div>            <!-- Card 3: Refleksi Pembelajaran -->
-            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+            <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
                 <!-- Card Header -->
                 <x-card-header title="Refleksi Pembelajaran" />
                 <!-- Card Content -->
@@ -212,7 +212,7 @@
 
                             @foreach($reflections as $index => $reflection)
                                 @if($reflection['value'])
-                                    <div class="p-4 bg-gray-50 dark:bg-gray-700/50 rounded-md border-b border-gray-200 dark:border-gray-600 last:border-b-0">
+                                    <div class="p-4 bg-gray-50 dark:bg-gray-700/50 rounded-lg border-b border-gray-200 dark:border-gray-600 last:border-b-0">
                                         <div class="flex items-start space-x-3">
                                             <div class="shrink-0 w-6 text-center">
                                                 <span class="text-sm font-semibold text-gray-600 dark:text-gray-300">{{ $index + 1 }}.</span>
@@ -238,7 +238,7 @@
 
             @if($supervisi->status !== 'submitted')
             <!-- Card 3.5: Rubrik Penilaian -->
-            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+            <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
                 <x-card-header title="Rubrik Penilaian" />
                 <div class="p-3 sm:p-4 md:p-6">
                     @if($supervisi->evaluasiRubrik)
@@ -269,7 +269,7 @@
             </div>
 
             <!-- Card 4: Riwayat Feedback & Diskusi -->
-            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+            <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
                 <!-- Card Header -->
                 <x-card-header title="Diskusi & Feedback" />
                 <!-- Card Content -->
@@ -287,7 +287,7 @@
             </div>
 
             <!-- Card 5: Berikan Feedback -->
-            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+            <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
                 <!-- Card Header -->
                 <x-card-header title="Berikan Feedback" />
                 <!-- Card Content -->
@@ -414,7 +414,7 @@
                             rows="4"
                             required
                             minlength="10"
-                            class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-md focus:ring-2 focus:ring-red-500 dark:focus:ring-red-400 focus:border-red-500 dark:focus:border-red-400 bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 text-sm resize-none"
+                            class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-red-500 dark:focus:ring-red-400 focus:border-red-500 dark:focus:border-red-400 bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 text-sm resize-none"
                             placeholder="Jelaskan apa yang perlu direvisi..."
                         >{{ old('revision_notes') }}</textarea>
                         @error('revision_notes')
@@ -426,12 +426,12 @@
                         <button
                             type="button"
                             onclick="hideRevisionModal()"
-                            class="px-4 py-2 text-gray-900 dark:text-gray-100 bg-white hover:bg-gray-50 dark:bg-gray-700 dark:hover:bg-gray-600 text-sm font-medium rounded-md transition-colors border border-gray-300 dark:border-gray-600">
+                            class="px-4 py-2 text-gray-900 dark:text-gray-100 bg-white hover:bg-gray-50 dark:bg-gray-700 dark:hover:bg-gray-600 text-sm font-medium rounded-lg transition-colors border border-gray-300 dark:border-gray-600">
                             Batal
                         </button>
                         <button
                             type="submit"
-                            class="px-4 py-2 bg-red-600 hover:bg-red-700 dark:bg-red-500 dark:hover:bg-red-600 text-white text-sm font-medium rounded-md transition-colors">
+                            class="px-4 py-2 bg-red-600 hover:bg-red-700 dark:bg-red-500 dark:hover:bg-red-600 text-white text-sm font-medium rounded-lg transition-colors">
                             Kirim Permintaan Revisi
                         </button>
                     </div>

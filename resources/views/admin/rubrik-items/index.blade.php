@@ -10,7 +10,7 @@
     <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-1">Kelola Rubrik Penilaian</h2>
     <p class="text-sm text-gray-600 dark:text-gray-400 mb-6">Item yang dinonaktifkan tidak akan muncul di form penilaian baru, tapi tetap tampil di hasil evaluasi lama yang sudah memakainya.</p>
 
-    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden mb-6">
+    <x-card flush class="mb-6">
         <x-card-header title="Ambang Predikat" />
         <div class="p-3 sm:p-4 md:p-6 space-y-3">
             @foreach ($predikatList as $predikat)
@@ -24,10 +24,10 @@
                 </form>
             @endforeach
         </div>
-    </div>
+    </x-card>
 
     @foreach ($sectionLabels as $key => $label)
-        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden mb-4">
+        <x-card flush class="mb-4">
             <x-card-header title="{{ $key }}. {{ $label }}" />
             <div class="p-3 sm:p-4 md:p-6 overflow-x-auto">
                 <table class="w-full text-sm">
@@ -62,10 +62,10 @@
                     </tbody>
                 </table>
             </div>
-        </div>
+        </x-card>
     @endforeach
 
-    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+    <x-card flush>
         <x-card-header title="Tambah Item Baru" />
         <form method="POST" action="{{ route('admin.rubrik-items.store') }}" class="p-3 sm:p-4 md:p-6 grid grid-cols-1 md:grid-cols-2 gap-4">
             @csrf
@@ -99,9 +99,9 @@
                 <input type="number" name="urutan" required min="1" class="w-full px-3 py-2 border border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 rounded-lg text-sm">
             </div>
             <div class="md:col-span-2">
-                <button type="submit" class="px-5 py-2.5 rounded-xl text-sm font-semibold text-white bg-primary-600 hover:bg-primary-700">Tambah Item</button>
+                <button type="submit" class="px-5 py-2.5 rounded-lg text-sm font-semibold text-white bg-primary-600 hover:bg-primary-700 cursor-pointer">Tambah Item</button>
             </div>
         </form>
-    </div>
+    </x-card>
 </div>
 @endsection

@@ -190,7 +190,7 @@
 
     <div class="h-full flex flex-col justify-center px-6 py-12 sm:px-10 lg:px-14 max-w-lg mx-auto w-full overflow-y-auto scrollbar-hide">
         <div class="mb-8 text-center">
-            <div class="inline-flex items-center justify-center w-16 h-16 sm:w-20 sm:h-20 bg-amber-500 rounded-2xl sm:rounded-3xl mb-6 shadow-xl shadow-amber-500/30">
+            <div class="inline-flex items-center justify-center w-16 h-16 sm:w-20 sm:h-20 bg-amber-500 rounded-2xl sm:rounded-2xl mb-6 shadow-xl shadow-amber-500/30">
                 <x-icon name="key" class="w-8 h-8 sm:w-10 sm:h-10 text-white" />
             </div>
             <h1 class="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white tracking-tight mb-2">

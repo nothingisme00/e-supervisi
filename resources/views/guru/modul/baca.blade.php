@@ -27,7 +27,7 @@
              data-progress-url="{{ route('guru.modul.progress', $modul->id) }}"
              data-halaman-terjauh="{{ $progress->halaman_terjauh }}"
              data-jumlah-halaman="{{ $modul->jumlah_halaman }}"
-             class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+             class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
             <div class="flex items-center justify-between gap-2 px-4 py-3 border-b border-gray-200 dark:border-gray-700">
                 <button id="pdf-prev" type="button" disabled aria-label="Halaman sebelumnya"
                         class="min-w-11 min-h-11 px-3 rounded-lg text-sm font-semibold text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer">&larr;</button>

@@ -69,7 +69,7 @@
 
 
             <!-- Card 1: Dokumen Evaluasi Diri -->
-            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+            <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
                 <!-- Card Header -->
                 <x-card-header title="Dokumen Evaluasi Diri" />
                 <!-- Card Content -->
@@ -118,7 +118,7 @@
 
     <!-- Card 2: Link Pembelajaran -->
     @if($supervisi->prosesPembelajaran)
-    <div class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden shadow-sm">
+    <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden shadow-sm">
         <x-card-header title="Link Pembelajaran" />
         <div class="p-3 sm:p-4 md:p-6 space-y-3 sm:space-y-4">
                 @if($supervisi->prosesPembelajaran->link_video)
@@ -148,7 +148,7 @@
         </div>
     @else
     <!-- Empty State untuk Link Pembelajaran -->
-    <div class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden shadow-sm">
+    <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden shadow-sm">
         <x-card-header title="Link Pembelajaran" />
         <div class="p-4 sm:p-6 text-center py-6 sm:py-8">
             <div class="w-10 h-10 sm:w-12 sm:h-12 bg-gray-100 dark:bg-gray-700 rounded-lg flex items-center justify-center mx-auto mb-2 sm:mb-3">
@@ -163,7 +163,7 @@
 
     <!-- Card 3: Refleksi Pembelajaran -->
     @if($supervisi->prosesPembelajaran)
-    <div class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden shadow-sm">
+    <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden shadow-sm">
         <x-card-header title="Refleksi Pembelajaran" />
         <div class="p-3 sm:p-4 md:p-6">
             <div class="space-y-2 sm:space-y-3 max-h-80 sm:max-h-96 overflow-y-auto">
@@ -193,7 +193,7 @@
     </div>
     @else
     <!-- Empty State untuk Refleksi Pembelajaran -->
-    <div class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden shadow-sm">
+    <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden shadow-sm">
         <x-card-header title="Refleksi Pembelajaran" />
         <div class="p-4 sm:p-6 text-center py-6 sm:py-8">
             <div class="w-10 h-10 sm:w-12 sm:h-12 bg-gray-100 dark:bg-gray-700 rounded-lg flex items-center justify-center mx-auto mb-2 sm:mb-3">
@@ -208,7 +208,7 @@
 
     @if($supervisi->evaluasiRubrik)
     <!-- Card 3.5: Hasil Rubrik Penilaian -->
-    <div class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden shadow-sm">
+    <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden shadow-sm">
         <x-card-header title="Hasil Rubrik Penilaian" />
         <div class="p-4 sm:p-6">
             <div class="flex flex-wrap items-center gap-4 mb-4">
@@ -233,7 +233,7 @@
     @endif
 
     <!-- Card 4: Diskusi & Feedback -->
-    <div class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden shadow-sm">
+    <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden shadow-sm">
         <x-card-header title="Diskusi & Feedback" />
         <div class="p-3 sm:p-4 md:p-6">
             @include('supervisi._feedback-thread', [
