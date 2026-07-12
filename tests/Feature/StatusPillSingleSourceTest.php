@@ -34,10 +34,8 @@ class StatusPillSingleSourceTest extends TestCase
      */
     public function test_no_bespoke_status_pill_outside_status_badge_component(): void
     {
-        // TODO Task 16: hapus setelah kepala/evaluasi/index.blade.php pakai <x-status-badge>
         // TODO Task 21: hapus setelah admin/modul/index.blade.php pakai <x-status-badge>
         $whitelist = [
-            'kepala/evaluasi/index.blade.php',
             'admin/modul/index.blade.php',
         ];
 
