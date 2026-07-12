@@ -33,7 +33,7 @@ class DashboardController extends Controller
 
         // Single query to get all recent supervisi, then filter in PHP (avoid 4 separate queries)
         $allRecentSupervisi = cache()->remember('kepala.recent_supervisi', 60, function() {
-            return Supervisi::with('user:id,name,nik,tingkat')
+            return Supervisi::with('user:id,name,nik,tingkat,mata_pelajaran')
                 ->whereIn('status', ['submitted', 'under_review', 'completed'])
                 ->latest()
                 ->take(30) // Get enough for all 3 lists

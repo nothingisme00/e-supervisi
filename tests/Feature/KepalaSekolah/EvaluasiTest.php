@@ -34,6 +34,25 @@ class EvaluasiTest extends TestCase
         $response->assertStatus(200);
     }
 
+    public function test_kepala_dashboard_shows_guru_mata_pelajaran(): void
+    {
+        // Controller mem-cache 'kepala.recent_supervisi'; flush agar tak baca data test lain.
+        \Illuminate\Support\Facades\Cache::flush();
+
+        $guru = User::factory()->guru()->create([
+            'name' => 'Guru Mapel QA',
+            'mata_pelajaran' => 'Fisika QA Unik',
+            'tingkat' => 'SD',
+        ]);
+        Supervisi::factory()->submitted()->create(['user_id' => $guru->id]);
+
+        $response = $this->actingAs($this->createKepala())->get(route('kepala.dashboard'));
+
+        $response->assertStatus(200);
+        // Chip mata pelajaran di kartu _review-column harus menampilkan nilai asli, bukan '-'.
+        $response->assertSee('Fisika QA Unik');
+    }
+
     public function test_kepala_can_view_evaluasi_list(): void
     {
         Supervisi::factory()->submitted()->count(2)->create();
