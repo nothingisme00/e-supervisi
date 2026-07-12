@@ -62,6 +62,7 @@ class EvaluasiStepperTest extends TestCase
 
         $response->assertSee('Langkah 1');
         $response->assertSee('Lanjut: Isi Rubrik');
-        $response->assertDontSee('Berikan Feedback');
+        // Label textarea form feedback (Card 5 lama) — kini hanya boleh ada di halaman feedback.
+        $response->assertDontSee('Komentar dan Saran');
     }
 }

@@ -2187,7 +2187,7 @@ if (backToTopBtn) {
                         <div class="flex gap-3">
                             <x-icon name="chat-bubble" class="w-5 h-5 text-emerald-600" />
                             <div>
-                                <p class="text-sm font-bold text-gray-900 dark:text-white mb-1">Beri Masukan</p>
+                                <p class="text-sm font-bold text-gray-900 dark:text-white mb-1">Berikan Feedback</p>
                                 <p class="text-xs text-gray-600 dark:text-gray-400 leading-relaxed">Gunakan kolom komentar untuk memberikan masukan yang membangun kepada guru.</p>
                             </div>
                         </div>
@@ -2631,7 +2631,7 @@ if (backToTopBtn) {
                                     <x-icon name="chat-bubble" class="w-4 h-4 text-orange-600 dark:text-orange-400" />
                                 </div>
                                 <div>
-                                    <p class="text-sm font-semibold text-gray-900 dark:text-white mb-1">Beri Masukan Konstruktif</p>
+                                    <p class="text-sm font-semibold text-gray-900 dark:text-white mb-1">Berikan Feedback Konstruktif</p>
                                     <p class="text-xs text-gray-600 dark:text-gray-400">Saran perbaikan spesifik dan actionable jika ada komponen yang perlu ditingkatkan kualitasnya.</p>
                                 </div>
                             </div>
