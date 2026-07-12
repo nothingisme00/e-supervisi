@@ -67,6 +67,8 @@
         </div>
     </div>
 
+    <x-evaluasi-stepper :supervisi="$supervisi" :aktif="1" />
+
         <!-- Vertical Card Layout -->
         <div class="space-y-4 sm:space-y-6">
 
