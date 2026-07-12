@@ -13,10 +13,14 @@
     </div>
 
     @if ($fileMissing)
-        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-8 text-center">
-            <p class="text-sm font-medium text-gray-900 dark:text-gray-100 mb-1">File modul tidak ditemukan</p>
-            <p class="text-xs text-gray-500 dark:text-gray-400">Hubungi admin untuk mengunggah ulang file modul ini.</p>
-        </div>
+        <x-card flush>
+            <x-empty-state
+                icon="document"
+                title="File modul tidak ditemukan"
+                description="Hubungi admin untuk mengunggah ulang file modul ini."
+                :compact="true"
+            />
+        </x-card>
     @else
         <div id="modul-reader"
              data-pdf-url="{{ route('guru.modul.file', $modul->id) }}"
@@ -31,6 +35,10 @@
                     <input id="pdf-page-input" type="number" min="1" max="{{ $modul->jumlah_halaman }}" value="{{ $progress->halaman_terjauh }}" aria-label="Loncat ke halaman"
                            class="w-16 px-2 py-1 text-center border border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 rounded-lg text-sm">
                     <span id="page-info" aria-live="polite">dari {{ $modul->jumlah_halaman }}</span>
+                    <span id="progress-saved" class="hidden inline-flex items-center gap-1 text-xs font-medium text-emerald-600 dark:text-emerald-400" aria-live="polite">
+                        <x-icon name="check" class="w-3.5 h-3.5" />
+                        Progres tersimpan
+                    </span>
                 </div>
                 <button id="pdf-next" type="button" disabled aria-label="Halaman berikutnya"
                         class="min-w-11 min-h-11 px-3 rounded-lg text-sm font-semibold text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer">&rarr;</button>
@@ -43,7 +51,7 @@
     @endif
 
     @if ($modul->videos->isNotEmpty())
-        <div class="mt-6 bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+        <x-card flush class="mt-6">
             <x-card-header title="Video Pembelajaran" />
             <div class="p-3 sm:p-4 md:p-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
                 @foreach ($modul->videos as $video)
@@ -57,7 +65,7 @@
                     @endif
                 @endforeach
             </div>
-        </div>
+        </x-card>
     @endif
 </div>
 

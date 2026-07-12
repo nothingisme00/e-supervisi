@@ -23,12 +23,14 @@ function initModulReader() {
     const btnNext = document.getElementById('pdf-next');
     const pageInput = document.getElementById('pdf-page-input');
     const pageInfo = document.getElementById('page-info');
+    const savedEl = document.getElementById('progress-saved');
 
     let pdfDoc = null;
     let pageNum = Math.min(jumlahHalaman, Math.max(1, parseInt(el.dataset.halamanTerjauh, 10) || 1));
     let rendering = false;
     let pendingPage = null;
     let sendTimer = null;
+    let savedTimer = null;
     let gagalTerkirim = null; // halaman yang gagal dikirim, dicoba ulang diam-diam
 
     pdfjsLib.getDocument({ url: pdfUrl }).promise.then((doc) => {
@@ -93,9 +95,18 @@ function initModulReader() {
             body: JSON.stringify({ halaman }),
         }).then((res) => {
             gagalTerkirim = res.ok ? null : halaman;
+            if (res.ok) showSaved();
         }).catch(() => {
             gagalTerkirim = halaman; // dicoba ulang pada perpindahan halaman berikutnya
         });
+    }
+
+    // Affordance singkat "Progres tersimpan" dekat toolbar setelah kiriman sukses.
+    function showSaved() {
+        if (!savedEl) return;
+        savedEl.classList.remove('hidden');
+        clearTimeout(savedTimer);
+        savedTimer = setTimeout(() => savedEl.classList.add('hidden'), 1500);
     }
 
     function updateControls() {

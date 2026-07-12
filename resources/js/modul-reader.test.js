@@ -30,6 +30,7 @@ function setupDom({ jumlahHalaman = 5, halamanTerjauh = 1 } = {}) {
             <button id="pdf-prev" type="button">&larr;</button>
             <input id="pdf-page-input" type="number" value="${halamanTerjauh}">
             <span id="page-info"></span>
+            <span id="progress-saved" class="hidden">Progres tersimpan</span>
             <button id="pdf-next" type="button">&rarr;</button>
             <div class="reader-body">
                 <div id="pdf-skeleton" class="animate-pulse"></div>
@@ -345,6 +346,49 @@ describe('modul-reader', () => {
         for (const call of fetch.mock.calls) {
             expect(call[0]).toBe('/modul/2/progress');
         }
+    });
+
+    it('shows a brief "Progres tersimpan" affordance after progress is saved successfully', async () => {
+        vi.useFakeTimers();
+        setupDom({ jumlahHalaman: 5, halamanTerjauh: 1 });
+        const fakeDoc = makeFakePdfDoc(5);
+        getDocumentMock.mockReturnValue({ promise: Promise.resolve(fakeDoc) });
+
+        await import('./modul-reader.js');
+        await vi.waitFor(() => expect(document.getElementById('pdf-canvas').classList.contains('hidden')).toBe(false));
+
+        const saved = document.getElementById('progress-saved');
+        expect(saved.classList.contains('hidden')).toBe(true);
+
+        document.getElementById('pdf-next').click();
+        await vi.waitFor(() => expect(document.getElementById('page-info').textContent).toBe('dari 5 • 40%'));
+        await vi.advanceTimersByTimeAsync(2000);
+
+        // Muncul sesaat setelah kiriman progres sukses...
+        await vi.waitFor(() => expect(saved.classList.contains('hidden')).toBe(false));
+
+        // ...lalu menyembunyikan diri lagi setelah jeda singkat.
+        await vi.advanceTimersByTimeAsync(1500);
+        expect(saved.classList.contains('hidden')).toBe(true);
+    });
+
+    it('keeps the "Progres tersimpan" affordance hidden when the progress send fails', async () => {
+        vi.useFakeTimers();
+        setupDom({ jumlahHalaman: 5, halamanTerjauh: 1 });
+        const fakeDoc = makeFakePdfDoc(5);
+        getDocumentMock.mockReturnValue({ promise: Promise.resolve(fakeDoc) });
+        fetch.mockResolvedValue({ ok: false });
+
+        await import('./modul-reader.js');
+        await vi.waitFor(() => expect(document.getElementById('pdf-canvas').classList.contains('hidden')).toBe(false));
+
+        document.getElementById('pdf-next').click();
+        await vi.waitFor(() => expect(document.getElementById('page-info').textContent).toBe('dari 5 • 40%'));
+        await vi.advanceTimersByTimeAsync(2000);
+        await vi.waitFor(() => expect(fetch).toHaveBeenCalledTimes(1));
+        await vi.advanceTimersByTimeAsync(50);
+
+        expect(document.getElementById('progress-saved').classList.contains('hidden')).toBe(true);
     });
 
     it('detaches the keydown listener when navigating from a reader page to a non-reader page', async () => {
