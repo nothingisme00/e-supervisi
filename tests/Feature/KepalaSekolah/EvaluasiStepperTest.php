@@ -53,4 +53,15 @@ class EvaluasiStepperTest extends TestCase
 
         $response->assertSee('data-stepper-step="2" data-status="selesai"', false);
     }
+
+    public function test_show_menjadi_langkah_tinjau_materi_dengan_bar_aksi(): void
+    {
+        [$kepala, $supervisi] = $this->kepalaDanSupervisi('under_review');
+
+        $response = $this->actingAs($kepala)->get(route('kepala.evaluasi.show', $supervisi->id));
+
+        $response->assertSee('Langkah 1');
+        $response->assertSee('Lanjut: Isi Rubrik');
+        $response->assertDontSee('Berikan Feedback');
+    }
 }
