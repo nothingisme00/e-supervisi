@@ -16,7 +16,8 @@
     exclamation-triangle, star, clipboard-check, clock, calendar, eye, eye-slash,
     document, check-circle, x-mark, plus, search, users, pencil, trash,
     home, inbox, check, lock, id-card, sun, moon, key, information-circle, photo,
-    funnel, arrow-uturn-left, paper-airplane.
+    funnel, arrow-uturn-left, paper-airplane, link, arrow-down-tray,
+    arrow-top-right-on-square.
 --}}
 @props(['name'])
 
@@ -32,6 +33,18 @@
 
         @case('calendar')
             <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5" />
+            @break
+
+        @case('link')
+            <path stroke-linecap="round" stroke-linejoin="round" d="M13.19 8.688a4.5 4.5 0 0 1 1.242 7.244l-4.5 4.5a4.5 4.5 0 0 1-6.364-6.364l1.757-1.757m13.35-.622 1.757-1.757a4.5 4.5 0 0 0-6.364-6.364l-4.5 4.5a4.5 4.5 0 0 0 1.242 7.244" />
+            @break
+
+        @case('arrow-down-tray')
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3" />
+            @break
+
+        @case('arrow-top-right-on-square')
+            <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 0 0 3 8.25v10.5A2.25 2.25 0 0 0 5.25 21h10.5A2.25 2.25 0 0 0 18 18.75V10.5m-10.5 8.25L21 3m0 0h-5.25M21 3v5.25" />
             @break
 
         @case('arrow-uturn-left')

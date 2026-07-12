@@ -8,8 +8,9 @@
     Props:
         - feedbacks (Collection<Feedback>, wajib): relasi user + replies.user ter-eager-load.
         - supervisi (Supervisi, wajib): induk thread.
-        - action (string, wajib): URL POST form balasan (route guru.supervisi.comment
-          atau kepala.evaluasi.feedback) — nama field komentar/parent_id sama di keduanya.
+        - action (string, wajib bila readonly=false): URL POST form balasan (route
+          guru.supervisi.comment atau kepala.evaluasi.feedback) — nama field
+          komentar/parent_id sama di keduanya. Boleh null saat readonly (admin).
         - readonly (bool, default false): sembunyikan tombol Balas + form reply
           (dipakai kepala saat status completed; view rekan sejawat TETAP false karena
           backend mengizinkan komentar rekan).
@@ -22,7 +23,7 @@
 @props([
     'feedbacks',
     'supervisi',
-    'action',
+    'action' => null,
     'readonly' => false,
     'minlength' => null,
     'revisionNoteTitle' => null,
