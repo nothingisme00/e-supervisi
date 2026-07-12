@@ -1,7 +1,7 @@
 @extends('layouts.modern')
 
 @section('content')
-<div class="min-h-screen flex items-center justify-center p-4">
+<div class="min-h-screen w-full flex items-center justify-center p-4">
     <div class="text-center max-w-md">
         <!-- Icon -->
         <div class="w-16 h-16 mx-auto mb-6 bg-primary-50 dark:bg-primary-900/30 rounded-2xl flex items-center justify-center">
