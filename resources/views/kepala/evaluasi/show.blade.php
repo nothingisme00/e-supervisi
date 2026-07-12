@@ -211,7 +211,6 @@
             @endif
         </x-evaluasi-action-bar>
     </div>
-</div>
 
 @endsection
 
