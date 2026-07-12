@@ -34,13 +34,11 @@ class StatusPillSingleSourceTest extends TestCase
      */
     public function test_no_bespoke_status_pill_outside_status_badge_component(): void
     {
-        // TODO Task 11: hapus setelah admin/dashboard.blade.php pakai <x-status-badge>
         // TODO Task 16: hapus setelah kepala/evaluasi/index.blade.php pakai <x-status-badge>
         // TODO Task 21: hapus setelah admin/modul/index.blade.php pakai <x-status-badge>
         // TODO Task 12: hapus setelah pill Aktif/Nonaktif (+label drift 'Off')
         //   di livewire/admin/user-management.blade.php diganti <x-status-badge>
         $whitelist = [
-            'admin/dashboard.blade.php',
             'kepala/evaluasi/index.blade.php',
             'admin/modul/index.blade.php',
             'livewire/admin/user-management.blade.php',
