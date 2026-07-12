@@ -3,9 +3,8 @@
 @section('page-title', 'Modul Ajar')
 
 @section('content')
-<div class="max-w-5xl mx-auto pb-24 md:pb-8">
-    <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-1">Modul Ajar</h2>
-    <p class="text-sm text-gray-600 dark:text-gray-400 mb-6">Pelajari modul secara mandiri. Progres baca Anda tersimpan otomatis.</p>
+<div class="max-w-6xl mx-auto pb-24 md:pb-8">
+    <x-page-header title="Modul Ajar" subtitle="Pelajari modul secara mandiri. Progres baca Anda tersimpan otomatis." />
 
     <form method="GET" action="{{ route('guru.modul.index') }}" class="flex items-center gap-2 mb-6">
         <label for="kategori" class="text-sm text-gray-700 dark:text-gray-300">Kategori:</label>
@@ -16,34 +15,36 @@
                 <option value="{{ $kategori->id }}" @selected(request('kategori') == $kategori->id)>{{ $kategori->nama }}</option>
             @endforeach
         </select>
-        <button type="submit" class="px-3 py-1.5 rounded-lg text-xs font-semibold text-white bg-primary-600 hover:bg-primary-700">Terapkan</button>
+        <x-button type="submit" size="sm">Terapkan</x-button>
     </form>
 
     @if ($moduls->isEmpty())
         <x-empty-state title="Belum ada modul" description="Modul ajar yang diunggah admin akan tampil di sini." />
     @else
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             @foreach ($moduls as $modul)
                 @php
                     $progress = $progressByModul->get($modul->id);
                     $persen = $progress ? $progress->persen() : 0;
                 @endphp
                 <a href="{{ route('guru.modul.show', $modul->id) }}"
-                   class="block bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-4 hover:shadow-md transition-shadow cursor-pointer">
-                    <div class="flex items-start justify-between gap-2 mb-2">
-                        <h3 class="text-sm font-semibold text-gray-900 dark:text-gray-100">{{ $modul->judul }}</h3>
-                        <span class="shrink-0 px-2 py-0.5 rounded-full text-xs bg-primary-50 dark:bg-primary-900/20 text-primary-600 dark:text-primary-400">{{ $modul->kategori->nama }}</span>
-                    </div>
-                    @if ($modul->deskripsi)
-                        <p class="text-xs text-gray-600 dark:text-gray-400 mb-3 line-clamp-2">{{ $modul->deskripsi }}</p>
-                    @endif
-                    <div class="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400 mb-1">
-                        <span>{{ $modul->jumlah_halaman }} halaman</span>
-                        <span class="font-semibold text-gray-700 dark:text-gray-300">{{ $persen }}%</span>
-                    </div>
-                    <div class="h-2 rounded-full bg-gray-100 dark:bg-gray-700 overflow-hidden" role="progressbar" aria-valuenow="{{ $persen }}" aria-valuemin="0" aria-valuemax="100" aria-label="Progres baca {{ $modul->judul }}">
-                        <div class="h-full rounded-full bg-primary-600 dark:bg-primary-500" style="width: {{ $persen }}%"></div>
-                    </div>
+                   class="group block rounded-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-gray-900">
+                    <x-card class="p-4 h-full group-hover:border-primary-300 dark:group-hover:border-primary-700 group-hover:shadow-md transition-all">
+                        <div class="flex items-start justify-between gap-2 mb-2">
+                            <h2 class="text-base font-semibold text-gray-900 dark:text-gray-100">{{ $modul->judul }}</h2>
+                            <span class="shrink-0 px-2 py-0.5 rounded-full text-xs bg-primary-50 dark:bg-primary-900/20 text-primary-600 dark:text-primary-400">{{ $modul->kategori->nama }}</span>
+                        </div>
+                        @if ($modul->deskripsi)
+                            <p class="text-xs text-gray-600 dark:text-gray-400 mb-3 line-clamp-2">{{ $modul->deskripsi }}</p>
+                        @endif
+                        <div class="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400 mb-1">
+                            <span class="tabular-nums">{{ $modul->jumlah_halaman }} halaman</span>
+                            <span class="font-semibold text-gray-700 dark:text-gray-300 tabular-nums">{{ $persen }}%</span>
+                        </div>
+                        <div class="h-2 rounded-full bg-gray-100 dark:bg-gray-700 overflow-hidden" role="progressbar" aria-valuenow="{{ $persen }}" aria-valuemin="0" aria-valuemax="100" aria-label="Progres baca {{ $modul->judul }}">
+                            <div class="h-full rounded-full bg-primary-600 dark:bg-primary-500" style="width: {{ $persen }}%"></div>
+                        </div>
+                    </x-card>
                 </a>
             @endforeach
         </div>

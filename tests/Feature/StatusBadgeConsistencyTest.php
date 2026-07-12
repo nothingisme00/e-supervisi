@@ -53,4 +53,19 @@ class StatusBadgeConsistencyTest extends TestCase
             ->assertDontSee('Telah Ditinjau')
             ->assertDontSee('Direview');
     }
+
+    /**
+     * R9 perluasan: <x-status-badge> juga menjadi sumber tunggal untuk status
+     * aktif/nonaktif (dipakai carousel, modul, dsb), bukan hanya status supervisi.
+     */
+    public function test_status_badge_component_renders_aktif_nonaktif(): void
+    {
+        $aktif = $this->blade('<x-status-badge status="aktif" />');
+        $aktif->assertSee('Aktif');
+        $aktif->assertSee('bg-emerald-100', false);
+
+        $nonaktif = $this->blade('<x-status-badge status="nonaktif" />');
+        $nonaktif->assertSee('Nonaktif');
+        $nonaktif->assertSee('bg-gray-100', false);
+    }
 }

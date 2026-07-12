@@ -1,5 +1,7 @@
 @extends('layouts.modern')
 
+@section('page-title', 'Kelola Carousel')
+
 @section('content')
 @php
     $totalSlides = $slides->count();
@@ -30,7 +32,7 @@
     <!-- Slides List -->
     <div class="grid gap-4">
         @forelse($slides as $index => $slide)
-        <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+        <x-card flush class="hover:shadow-md transition-shadow">
             <div class="flex flex-col sm:flex-row">
                 <!-- Image Preview -->
                 <div class="sm:w-48 h-32 sm:h-auto bg-gradient-to-br from-teal-600 to-teal-800 flex-shrink-0">
@@ -50,9 +52,7 @@
                     <div class="flex items-start justify-between gap-4">
                         <div class="flex-1">
                             <div class="flex items-center gap-2 mb-2">
-                                <span class="text-xs font-medium px-2 py-0.5 rounded-full {{ $slide->is_active ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' : 'bg-gray-100 text-gray-600 dark:bg-gray-700 dark:text-gray-400' }}">
-                                    {{ $slide->is_active ? 'Aktif' : 'Nonaktif' }}
-                                </span>
+                                <x-status-badge :status="$slide->is_active ? 'aktif' : 'nonaktif'" />
                                 <span class="text-xs text-gray-500 dark:text-gray-400">Urutan: {{ $index + 1 }} dari {{ $totalSlides }}</span>
                             </div>
                             <h3 class="text-lg font-bold text-gray-900 dark:text-white">{{ $slide->title ?: 'Tanpa Judul' }}</h3>
@@ -87,9 +87,9 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </x-card>
         @empty
-        <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-8 text-center">
+        <x-card class="p-8 text-center">
             <div class="w-16 h-16 bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center mx-auto mb-4">
                 <svg class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
@@ -103,7 +103,7 @@
                 </svg>
                 Tambah Slide Pertama
             </button>
-        </div>
+        </x-card>
         @endforelse
     </div>
 </div>

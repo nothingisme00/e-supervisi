@@ -37,7 +37,7 @@
             <button type="submit" class="px-3 py-1.5 rounded-lg text-xs font-semibold text-white bg-primary-600 hover:bg-primary-700">Tampilkan</button>
         </form>
 
-        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+        <x-card flush>
             <x-card-header :title="$mode === 'modul' ? ($selectedModul->judul ?? '') : ($selectedGuru->name ?? '')" />
             <div class="p-3 sm:p-4 md:p-6 overflow-x-auto">
                 <table class="w-full text-sm">
@@ -68,7 +68,7 @@
                     </tbody>
                 </table>
             </div>
-        </div>
+        </x-card>
     @endif
 </div>
 @endsection

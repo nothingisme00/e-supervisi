@@ -47,12 +47,12 @@
 
     <button type="button" 
             @click="open = !open"
-            class="dropdown-button w-full px-3 sm:px-4 py-2 sm:py-3 text-left border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-md sm:rounded-lg text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 transition-all flex items-center justify-between">
+            class="dropdown-button w-full px-3 sm:px-4 py-2 sm:py-3 text-left border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg sm:rounded-lg text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 transition-all flex items-center justify-between">
         <span class="dropdown-label flex items-center gap-2" :class="!value ? 'text-gray-400 dark:text-gray-500' : ''">
             <span x-text="label"></span>
         </span>
-        <span class="material-symbols-outlined text-gray-400 transition-transform duration-200 dropdown-arrow"
-              :style="open ? 'transform: rotate(180deg)' : 'transform: rotate(0deg)'">{{ $icon }}</span>
+        <x-icon name="chevron-down" class="w-4 h-4 text-gray-400 transition-transform duration-200 dropdown-arrow"
+              x-bind:style="open ? 'transform: rotate(180deg)' : 'transform: rotate(0deg)'" />
     </button>
 
     <div class="dropdown-menu-custom absolute top-full mt-1 left-0 w-full bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-xl z-50 transition-all duration-200 origin-top"
@@ -66,11 +66,11 @@
          style="display: none;">
         <div class="p-1.5 space-y-1">
             @foreach($options as $option)
-                <div class="dropdown-item px-4 py-2.5 rounded-md text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-primary-50 dark:hover:bg-primary-900/30 hover:text-primary-600 dark:hover:text-primary-400 cursor-pointer transition-colors flex items-center gap-3"
+                <div class="dropdown-item px-4 py-2.5 rounded-lg text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-primary-50 dark:hover:bg-primary-900/30 hover:text-primary-600 dark:hover:text-primary-400 cursor-pointer transition-colors flex items-center gap-3"
                      :class="value === '{{ $option['value'] }}' ? 'active' : ''"
                      @click="select('{{ $option['value'] }}', '{{ $option['label'] }}', '{{ $option['icon'] ?? '' }}')">
                     @if(isset($option['icon']))
-                        <span class="material-symbols-outlined text-lg">{{ $option['icon'] }}</span>
+                        <x-icon :name="$option['icon']" class="w-4 h-4" />
                     @endif
                     {{ $option['label'] }}
                 </div>

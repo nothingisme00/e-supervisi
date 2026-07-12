@@ -11,9 +11,49 @@
 /* Enable dark mode variant with class selector */
 @variant dark (&:where(.dark, .dark *));
 
+/* Font "Inter" — self-hosted (variable font), agar tidak bergantung pada
+   Google Fonts/CDN eksternal saat runtime. File di public/fonts/inter/. */
+@font-face {
+    font-family: "Inter";
+    src: url("/fonts/inter/InterVariable.woff2") format("woff2");
+    font-weight: 100 900;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Inter";
+    src: url("/fonts/inter/InterVariable-Italic.woff2") format("woff2");
+    font-weight: 100 900;
+    font-style: italic;
+    font-display: swap;
+}
+
+/*
+ * Konvensi Desain E-Supervisi
+ * ----------------------------
+ * Skala radius (jangan pakai nilai lain di luar daftar ini):
+ *   - Kartu/panel/dropdown  → rounded-xl
+ *   - Tombol/input/select   → rounded-lg
+ *   - Badge/pill/avatar     → rounded-full
+ *   - Blok hero             → maksimal rounded-2xl
+ *
+ * Kanon warna status:
+ *   - draft        → gray
+ *   - submitted    → blue
+ *   - under_review → amber
+ *   - revision     → red
+ *   - completed    → emerald
+ *   - aktif        → emerald
+ *   - nonaktif     → gray
+ *
+ * Konvensi warna merah (red-*): dipakai sebagai aksen video praktik (bukan
+ * token warna baku di @theme) dan sebagai warna status "revision" di atas.
+ * Merah tidak pernah dipakai sekadar dekorasi.
+ */
 @theme {
-    --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-        "Helvetica Neue", Arial, sans-serif;
+    --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI",
+        Roboto, Arial, sans-serif;
 
     /* Palet "Teal Pendidikan" — primary = skala teal Tailwind, dipetakan
        sebagai token semantik agar view memakai primary-* (bukan hue mentah) */
@@ -330,4 +370,12 @@ html {
     -webkit-line-clamp: 4;
     -webkit-box-orient: vertical;
     overflow: hidden;
+}
+
+/* Perpustakaan komponen dasar (Task 3): styling kontrol form sekali di sini,
+   dipakai oleh x-form.input / x-form.select / x-form.textarea via class="form-control" */
+@layer components {
+    .form-control {
+        @apply w-full px-3 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 rounded-lg text-sm text-gray-900 dark:text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500;
+    }
 }

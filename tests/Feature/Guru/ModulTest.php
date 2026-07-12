@@ -100,6 +100,20 @@ class ModulTest extends TestCase
         $response->assertSee(route('guru.modul.file', $modul->id));
     }
 
+    public function test_baca_page_contains_progress_saved_affordance(): void
+    {
+        \Illuminate\Support\Facades\Storage::fake('local');
+        $guru = $this->createGuru();
+        $modul = Modul::factory()->create();
+        \Illuminate\Support\Facades\Storage::disk('local')->put($modul->file_path, 'dummy');
+
+        $response = $this->actingAs($guru)->get(route('guru.modul.show', $modul->id));
+
+        // Affordance "Progres tersimpan" (id dipakai modul-reader.js) tersembunyi default.
+        $response->assertSee('id="progress-saved"', false);
+        $response->assertSee('Progres tersimpan');
+    }
+
     public function test_file_endpoint_streams_pdf(): void
     {
         \Illuminate\Support\Facades\Storage::fake('local');

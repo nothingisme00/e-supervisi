@@ -9,14 +9,10 @@
     $totalItem = $rubrikItemsBySection->flatten()->count();
 @endphp
 <div class="max-w-4xl mx-auto pb-24 md:pb-8">
-    <div class="mb-4">
-        <a href="{{ route('kepala.evaluasi.show', $supervisi->id) }}" wire:navigate class="inline-flex items-center gap-1 text-sm text-gray-500 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400">
-            <span class="material-symbols-outlined text-lg">arrow_back</span> Kembali ke Detail Supervisi
-        </a>
-    </div>
-
-    <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-1">Rubrik Penilaian Supervisi</h2>
-    <p class="text-sm text-gray-600 dark:text-gray-400 mb-6">{{ $supervisi->user->name }} &bull; {{ optional($supervisi->tanggal_supervisi)->translatedFormat('d F Y') }}</p>
+    <x-page-header
+        title="Rubrik Penilaian Supervisi"
+        subtitle="{{ $supervisi->user->name }} • {{ optional($supervisi->tanggal_supervisi)->translatedFormat('d F Y') }}"
+        :back-url="route('kepala.evaluasi.show', $supervisi->id)" />
 
     <form method="POST" action="{{ route('kepala.evaluasi.rubrik.store', $supervisi->id) }}" id="rubrikForm">
         @csrf
@@ -35,12 +31,13 @@
             <div class="flex flex-wrap gap-2">
                 @foreach ($sectionKeys as $i => $key)
                     <button type="button" onclick="rubrikGoToStep({{ $i + 1 }})" data-rubrik-step-btn="{{ $i + 1 }}"
-                        class="rubrik-step-btn px-3 py-1.5 rounded-lg text-xs font-semibold border border-gray-200 dark:border-gray-600 text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700">
+                        class="rubrik-step-btn px-3 py-1.5 rounded-lg text-xs font-semibold border border-gray-200 dark:border-gray-600 text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 cursor-pointer transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500">
                         {{ $i + 1 }}. {{ $sectionLabels[$key] }}
+                        <span class="rubrik-step-count font-normal opacity-75 tabular-nums" data-rubrik-step-count="{{ $i + 1 }}"></span>
                     </button>
                 @endforeach
                 <button type="button" onclick="rubrikGoToStep(4)" data-rubrik-step-btn="4"
-                    class="rubrik-step-btn px-3 py-1.5 rounded-lg text-xs font-semibold border border-gray-200 dark:border-gray-600 text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700">
+                    class="rubrik-step-btn px-3 py-1.5 rounded-lg text-xs font-semibold border border-gray-200 dark:border-gray-600 text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 cursor-pointer transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500">
                     4. Ringkasan
                 </button>
             </div>
@@ -48,47 +45,56 @@
 
         @foreach ($sectionKeys as $i => $key)
             <div class="rubrik-step-content" data-rubrik-step="{{ $i + 1 }}">
-                <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4">{{ $i + 1 }}. {{ $sectionLabels[$key] }}</h3>
+                <h2 class="text-lg font-bold text-gray-900 dark:text-white mb-4">{{ $i + 1 }}. {{ $sectionLabels[$key] }}</h2>
                 @foreach ($rubrikItemsBySection->get($key, collect())->groupBy('kelompok_nomor') as $kelompokItems)
-                    <div class="mb-5 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-4">
-                        <h4 class="text-sm font-semibold text-primary-700 dark:text-primary-400 border-l-4 border-primary-500 pl-2 mb-3">
-                            {{ $kelompokItems->first()->kelompok_nomor }}. {{ $kelompokItems->first()->kelompok_label }}
-                        </h4>
-                        @foreach ($kelompokItems as $item)
-                            <div class="mb-3 last:mb-0">
-                                <p class="text-sm text-gray-700 dark:text-gray-300 mb-2">{{ $item->sub_label }}</p>
-                                <div class="flex gap-2 rubrik-radio-group" data-item-id="{{ $item->id }}">
-                                    @foreach ([0 => 'Tidak', 1 => 'Kurang Lengkap/Sesuai', 2 => 'Sudah Lengkap/Sesuai'] as $val => $label)
-                                        <label class="flex-1">
-                                            <input type="radio" name="skor[{{ $item->id }}]" value="{{ $val }}" class="sr-only peer rubrik-radio"
-                                                {{ (isset($skorTersimpan[$item->id]) && (int) $skorTersimpan[$item->id] === $val) ? 'checked' : '' }}>
-                                            <span class="block text-center text-xs font-medium px-2 py-2 rounded-lg border border-gray-200 dark:border-gray-600 text-gray-600 dark:text-gray-300 cursor-pointer peer-checked:bg-primary-600 peer-checked:text-white peer-checked:border-primary-600 transition-colors">
-                                                {{ $val }} &middot; {{ $label }}
-                                            </span>
-                                        </label>
-                                    @endforeach
+                    <x-card flush class="mb-5">
+                        <x-card-header title="{{ $kelompokItems->first()->kelompok_nomor }}. {{ $kelompokItems->first()->kelompok_label }}" />
+                        <div class="divide-y divide-gray-100 dark:divide-gray-700/60">
+                            @foreach ($kelompokItems as $item)
+                                <div class="px-4 py-4 sm:px-5">
+                                    <p class="text-sm text-gray-700 dark:text-gray-300 mb-3">{{ $item->sub_label }}</p>
+                                    <div class="grid grid-cols-3 rounded-lg border border-gray-200 dark:border-gray-600 divide-x divide-gray-200 dark:divide-gray-600 overflow-hidden rubrik-radio-group" data-item-id="{{ $item->id }}">
+                                        @foreach ([0 => 'Tidak', 1 => 'Kurang Lengkap/Sesuai', 2 => 'Sudah Lengkap/Sesuai'] as $val => $label)
+                                            <label class="block" title="{{ $val }} · {{ $label }}">
+                                                <input type="radio" name="skor[{{ $item->id }}]" value="{{ $val }}" class="sr-only peer rubrik-radio"
+                                                    {{ (isset($skorTersimpan[$item->id]) && (int) $skorTersimpan[$item->id] === $val) ? 'checked' : '' }}>
+                                                <span class="flex flex-col sm:flex-row items-center justify-center gap-0.5 sm:gap-1.5 text-center min-h-[44px] px-2 py-2 text-gray-600 dark:text-gray-300 bg-white dark:bg-gray-800 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700 peer-checked:bg-primary-600 peer-checked:text-white transition-colors peer-focus-visible:ring-2 peer-focus-visible:ring-inset peer-focus-visible:ring-primary-500">
+                                                    <span class="text-sm font-bold tabular-nums">{{ $val }}</span>
+                                                    <span class="text-xs font-medium leading-tight">{{ $label }}</span>
+                                                </span>
+                                            </label>
+                                        @endforeach
+                                    </div>
                                 </div>
-                            </div>
-                        @endforeach
-                    </div>
+                            @endforeach
+                        </div>
+                    </x-card>
                 @endforeach
                 <div class="flex justify-end">
-                    <button type="button" onclick="rubrikGoToStep({{ $i + 2 }})" class="px-5 py-2.5 rounded-xl text-sm font-semibold text-white bg-primary-600 hover:bg-primary-700">Lanjut</button>
+                    <x-button type="button" onclick="rubrikGoToStep({{ $i + 2 }})">
+                        Lanjut
+                        <x-icon name="arrow-right" class="w-4 h-4" />
+                    </x-button>
                 </div>
             </div>
         @endforeach
 
         <div class="rubrik-step-content" data-rubrik-step="4">
-            <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4">4. Ringkasan</h3>
-            <div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-4 mb-4">
-                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Masukan terhadap Pelaksanaan Proses Pembelajaran secara umum</label>
-                <textarea name="masukan_umum" rows="4" class="w-full px-4 py-2.5 border border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 rounded-xl text-sm text-gray-900 dark:text-white">{{ optional($supervisi->evaluasiRubrik)->masukan_umum }}</textarea>
-            </div>
-            <div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-4 mb-4">
-                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Nama Pengawas Madrasah (opsional)</label>
-                <input type="text" name="nama_pengawas" value="{{ optional($supervisi->evaluasiRubrik)->nama_pengawas }}" class="w-full px-4 py-2.5 border border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 rounded-xl text-sm text-gray-900 dark:text-white">
-            </div>
-            <button type="submit" class="w-full px-5 py-3 rounded-xl text-sm font-semibold text-white bg-primary-600 hover:bg-primary-700">Simpan Rubrik Penilaian</button>
+            <h2 class="text-lg font-bold text-gray-900 dark:text-white mb-4">4. Ringkasan</h2>
+            <x-card class="p-4 sm:p-5 mb-4">
+                <x-form.field label="Masukan terhadap Pelaksanaan Proses Pembelajaran secara umum" name="masukan_umum">
+                    <textarea name="masukan_umum" id="masukan_umum" rows="4" class="form-control resize-none">{{ optional($supervisi->evaluasiRubrik)->masukan_umum }}</textarea>
+                </x-form.field>
+            </x-card>
+            <x-card class="p-4 sm:p-5 mb-4">
+                <x-form.input
+                    name="nama_pengawas"
+                    label="Nama Pengawas Madrasah (opsional)"
+                    value="{{ optional($supervisi->evaluasiRubrik)->nama_pengawas }}" />
+            </x-card>
+            <x-button type="submit" class="w-full justify-center">
+                Simpan Rubrik Penilaian
+            </x-button>
         </div>
     </form>
 </div>
@@ -116,6 +122,18 @@ function rubrikUpdateProgress() {
     groups.forEach(g => { if (g.querySelector('.rubrik-radio:checked')) filled++; });
     document.getElementById('rubrikProgressCount').textContent = filled;
     document.getElementById('rubrikProgressBar').style.width = (filled / groups.length * 100) + '%';
+
+    // Hitungan terisi per bagian di tombol step nav
+    document.querySelectorAll('.rubrik-step-content').forEach(section => {
+        const step = section.dataset.rubrikStep;
+        const badge = document.querySelector('[data-rubrik-step-count="' + step + '"]');
+        if (!badge) return;
+        const sectionGroups = section.querySelectorAll('.rubrik-radio-group');
+        if (!sectionGroups.length) return;
+        let sectionFilled = 0;
+        sectionGroups.forEach(g => { if (g.querySelector('.rubrik-radio:checked')) sectionFilled++; });
+        badge.textContent = '(' + sectionFilled + '/' + sectionGroups.length + ')';
+    });
 }
 
 document.addEventListener('change', (e) => {

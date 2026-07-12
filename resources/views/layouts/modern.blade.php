@@ -5,22 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'E-Supervisi') }}</title>
+    <title>@hasSection('page-title')@yield('page-title') · @endif{{ config('app.name', 'E-Supervisi') }}</title>
 
-    <!-- Apply theme before body renders to prevent flash -->
-    <script>
-        (function() {
-            const theme = localStorage.getItem('theme') || 'light';
-            if (theme === 'dark') {
-                document.documentElement.classList.add('dark');
-            }
-        })();
-    </script>
+    @include('partials.theme-init')
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     
     <!-- Material Symbols -->
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
     
     <style>
         /* Global button cursor pointer */
@@ -270,7 +261,7 @@
             
             <!-- Progress Bar -->
             <div class="h-1 bg-gray-100 dark:bg-gray-800">
-                <div class="welcome-progress h-full bg-gradient-to-r from-primary-500 to-primary-500 rounded-r-full"></div>
+                <div class="welcome-progress h-full bg-primary-500 rounded-r-full"></div>
             </div>
         </div>
     </div>
@@ -351,9 +342,7 @@
                 <div class="relative">
                     <button id="notif-dropdown-btn" type="button" aria-label="Notifikasi"
                             class="relative p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500">
-                        <svg class="w-6 h-6 text-gray-600 dark:text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path>
-                        </svg>
+                        <x-icon name="bell" class="w-6 h-6 text-gray-600 dark:text-gray-300" />
                         @if(($unreadNotifCount ?? 0) > 0)
                         <span data-notif-badge class="absolute -top-0.5 -right-0.5 min-w-[18px] h-[18px] px-1 rounded-full bg-red-600 text-white text-[10px] font-bold flex items-center justify-center">
                             {{ $unreadNotifCount > 9 ? '9+' : $unreadNotifCount }}
@@ -361,7 +350,7 @@
                         @endif
                     </button>
 
-                    <div id="notif-dropdown-menu" class="hidden absolute right-0 mt-2 w-80 max-w-[calc(100vw-1.5rem)] bg-white dark:bg-gray-800 rounded-xl shadow-xl border border-gray-200 dark:border-gray-700 overflow-hidden z-50">
+                    <div id="notif-dropdown-menu" class="hidden absolute right-0 mt-2 w-80 max-w-[calc(100vw-1.5rem)] bg-white dark:bg-gray-800 rounded-xl shadow-xl border border-gray-200 dark:border-gray-700 overflow-hidden z-50 origin-top-right transform transition-all duration-200 ease-out scale-95 opacity-0">
                         <div class="flex items-center justify-between px-4 py-3 border-b border-gray-200 dark:border-gray-700">
                             <span class="text-sm font-bold text-gray-900 dark:text-white">Notifikasi</span>
                             @if(($unreadNotifCount ?? 0) > 0)
@@ -402,9 +391,9 @@
                         <!-- Dropdown Menu -->
                         <div id="profile-dropdown-menu" class="hidden absolute right-0 mt-2 w-64 bg-white dark:bg-gray-800 rounded-xl shadow-xl border border-gray-200 dark:border-gray-700 overflow-hidden z-50 origin-top-right transform transition-all duration-200 ease-out scale-95 opacity-0">
                             <!-- User Info -->
-                            <div class="px-4 py-3 bg-gradient-to-r from-primary-50 to-primary-50 dark:from-gray-700 dark:to-gray-700 border-b border-gray-200 dark:border-gray-600">
+                            <div class="px-4 py-3 bg-primary-50 dark:bg-gray-700 border-b border-gray-200 dark:border-gray-600">
                                 <div class="flex items-center gap-3">
-                                    <div class="w-12 h-12 bg-gradient-to-br from-primary-600 to-primary-600 rounded-full flex items-center justify-center text-white font-bold shadow-md">
+                                    <div class="w-12 h-12 bg-primary-600 rounded-full flex items-center justify-center text-white font-bold shadow-md">
                                         <span class="text-lg">{{ substr(Auth::user()->name, 0, 1) }}</span>
                                     </div>
                                     <div class="flex-1 min-w-0">
@@ -514,10 +503,8 @@
 
             <!-- NAVIGATION -->
             <nav class="flex-1 px-3 py-4 overflow-y-auto">
-                <a href="{{ route('notifikasi.index') }}" wire:navigate class="group flex items-center gap-3 px-3 py-2.5 mb-1 rounded-lg text-sm font-medium transition-all duration-200 {{ request()->routeIs('notifikasi.*') ? 'bg-primary-50 dark:bg-primary-900/20 text-primary-600 dark:text-primary-400' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700/50' }}">
-                    <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path>
-                    </svg>
+                <a href="{{ route('notifikasi.index') }}" wire:navigate class="group flex items-center gap-3 px-3 py-2.5 mb-1 min-h-11 rounded-lg text-sm font-medium transition-all duration-200 {{ request()->routeIs('notifikasi.*') ? 'bg-primary-50 dark:bg-primary-900/20 text-primary-600 dark:text-primary-400' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700/50' }}">
+                    <x-icon name="bell" class="w-5 h-5 flex-shrink-0" />
                     <span class="flex-1">Notifikasi</span>
                     @if(($unreadNotifCount ?? 0) > 0)
                         <span class="min-w-[20px] h-5 px-1.5 rounded-full bg-red-600 text-white text-[10px] font-bold flex items-center justify-center">{{ $unreadNotifCount > 9 ? '9+' : $unreadNotifCount }}</span>
@@ -526,7 +513,7 @@
                     @endif
                 </a>
             @if(Auth::user()->isAdmin())
-                <a href="{{ route('admin.dashboard') }}" wire:navigate class="group flex items-center gap-3 px-3 py-2.5 mb-1 rounded-lg text-sm font-medium transition-all duration-200 {{ request()->routeIs('admin.dashboard') ? 'bg-primary-50 dark:bg-primary-900/20 text-primary-600 dark:text-primary-400' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700/50' }}">
+                <a href="{{ route('admin.dashboard') }}" wire:navigate class="group flex items-center gap-3 px-3 py-2.5 mb-1 min-h-11 rounded-lg text-sm font-medium transition-all duration-200 {{ request()->routeIs('admin.dashboard') ? 'bg-primary-50 dark:bg-primary-900/20 text-primary-600 dark:text-primary-400' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700/50' }}">
                     <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
                     </svg>
@@ -535,7 +522,7 @@
                         <div class="w-1.5 h-1.5 bg-primary-600 dark:bg-primary-400 rounded-full"></div>
                     @endif
                 </a>
-                <a href="{{ route('admin.users.index') }}" wire:navigate class="group flex items-center gap-3 px-3 py-2.5 mb-1 rounded-lg text-sm font-medium transition-all duration-200 {{ request()->routeIs('admin.users.*') ? 'bg-primary-50 dark:bg-primary-900/20 text-primary-600 dark:text-primary-400' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700/50' }}">
+                <a href="{{ route('admin.users.index') }}" wire:navigate class="group flex items-center gap-3 px-3 py-2.5 mb-1 min-h-11 rounded-lg text-sm font-medium transition-all duration-200 {{ request()->routeIs('admin.users.*') ? 'bg-primary-50 dark:bg-primary-900/20 text-primary-600 dark:text-primary-400' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700/50' }}">
                     <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
                     </svg>
@@ -544,7 +531,7 @@
                         <div class="w-1.5 h-1.5 bg-primary-600 dark:bg-primary-400 rounded-full"></div>
                     @endif
                 </a>
-                <a href="{{ route('admin.carousel.index') }}" wire:navigate class="group flex items-center gap-3 px-3 py-2.5 mb-1 rounded-lg text-sm font-medium transition-all duration-200 {{ request()->routeIs('admin.carousel.*') ? 'bg-primary-50 dark:bg-primary-900/20 text-primary-600 dark:text-primary-400' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700/50' }}">
+                <a href="{{ route('admin.carousel.index') }}" wire:navigate class="group flex items-center gap-3 px-3 py-2.5 mb-1 min-h-11 rounded-lg text-sm font-medium transition-all duration-200 {{ request()->routeIs('admin.carousel.*') ? 'bg-primary-50 dark:bg-primary-900/20 text-primary-600 dark:text-primary-400' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700/50' }}">
                     <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
                     </svg>
@@ -553,7 +540,7 @@
                         <div class="w-1.5 h-1.5 bg-primary-600 dark:bg-primary-400 rounded-full"></div>
                     @endif
                 </a>
-                <a href="{{ route('admin.rubrik-items.index') }}" wire:navigate class="group flex items-center gap-3 px-3 py-2.5 mb-1 rounded-lg text-sm font-medium transition-all duration-200 {{ request()->routeIs('admin.rubrik-items.*') ? 'bg-primary-50 dark:bg-primary-900/20 text-primary-600 dark:text-primary-400' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700/50' }}">
+                <a href="{{ route('admin.rubrik-items.index') }}" wire:navigate class="group flex items-center gap-3 px-3 py-2.5 mb-1 min-h-11 rounded-lg text-sm font-medium transition-all duration-200 {{ request()->routeIs('admin.rubrik-items.*') ? 'bg-primary-50 dark:bg-primary-900/20 text-primary-600 dark:text-primary-400' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700/50' }}">
                     <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
                     </svg>
@@ -562,7 +549,7 @@
                         <div class="w-1.5 h-1.5 bg-primary-600 dark:bg-primary-400 rounded-full"></div>
                     @endif
                 </a>
-                <a href="{{ route('admin.modul.index') }}" wire:navigate class="group flex items-center gap-3 px-3 py-2.5 mb-1 rounded-lg text-sm font-medium transition-all duration-200 {{ request()->routeIs('admin.modul.*') ? 'bg-primary-50 dark:bg-primary-900/20 text-primary-600 dark:text-primary-400' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700/50' }}">
+                <a href="{{ route('admin.modul.index') }}" wire:navigate class="group flex items-center gap-3 px-3 py-2.5 mb-1 min-h-11 rounded-lg text-sm font-medium transition-all duration-200 {{ request()->routeIs('admin.modul.*') ? 'bg-primary-50 dark:bg-primary-900/20 text-primary-600 dark:text-primary-400' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700/50' }}">
                     <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
                     </svg>
@@ -572,7 +559,7 @@
                     @endif
                 </a>
             @elseif(Auth::user()->isGuru())
-                <a href="{{ route('guru.home') }}" wire:navigate class="group flex items-center gap-3 px-3 py-2.5 mb-1 rounded-lg text-sm font-medium transition-all duration-200 {{ request()->routeIs('guru.home') ? 'bg-primary-50 dark:bg-primary-900/20 text-primary-600 dark:text-primary-400' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700/50' }}">
+                <a href="{{ route('guru.home') }}" wire:navigate class="group flex items-center gap-3 px-3 py-2.5 mb-1 min-h-11 rounded-lg text-sm font-medium transition-all duration-200 {{ request()->routeIs('guru.home') ? 'bg-primary-50 dark:bg-primary-900/20 text-primary-600 dark:text-primary-400' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700/50' }}">
                     <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
                     </svg>
@@ -581,7 +568,7 @@
                         <div class="w-1.5 h-1.5 bg-primary-600 dark:bg-primary-400 rounded-full"></div>
                     @endif
                 </a>
-                <a href="{{ route('guru.modul.index') }}" wire:navigate class="group flex items-center gap-3 px-3 py-2.5 mb-1 rounded-lg text-sm font-medium transition-all duration-200 {{ request()->routeIs('guru.modul.*') ? 'bg-primary-50 dark:bg-primary-900/20 text-primary-600 dark:text-primary-400' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700/50' }}">
+                <a href="{{ route('guru.modul.index') }}" wire:navigate class="group flex items-center gap-3 px-3 py-2.5 mb-1 min-h-11 rounded-lg text-sm font-medium transition-all duration-200 {{ request()->routeIs('guru.modul.*') ? 'bg-primary-50 dark:bg-primary-900/20 text-primary-600 dark:text-primary-400' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700/50' }}">
                     <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
                     </svg>
@@ -590,7 +577,7 @@
                         <span class="w-1.5 h-1.5 rounded-full bg-primary-600 dark:bg-primary-400"></span>
                     @endif
                 </a>
-                <a href="{{ route('guru.my-supervisi') }}" wire:navigate class="group flex items-center gap-3 px-3 py-2.5 mb-1 rounded-lg text-sm font-medium transition-all duration-200 {{ request()->routeIs('guru.my-supervisi') ? 'bg-emerald-50 dark:bg-emerald-900/20 text-emerald-600 dark:text-emerald-400' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700/50' }}">
+                <a href="{{ route('guru.my-supervisi') }}" wire:navigate class="group flex items-center gap-3 px-3 py-2.5 mb-1 min-h-11 rounded-lg text-sm font-medium transition-all duration-200 {{ request()->routeIs('guru.my-supervisi') ? 'bg-emerald-50 dark:bg-emerald-900/20 text-emerald-600 dark:text-emerald-400' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700/50' }}">
                     <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
                     </svg>
@@ -600,7 +587,7 @@
                     @endif
                 </a>
             @elseif(Auth::user()->isKepalaSekolah())
-                <a href="{{ route('kepala.dashboard') }}" wire:navigate class="group flex items-center gap-3 px-3 py-2.5 mb-1 rounded-lg text-sm font-medium transition-all duration-200 {{ request()->routeIs('kepala.dashboard') ? 'bg-primary-50 dark:bg-primary-900/20 text-primary-600 dark:text-primary-400' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700/50' }}">
+                <a href="{{ route('kepala.dashboard') }}" wire:navigate class="group flex items-center gap-3 px-3 py-2.5 mb-1 min-h-11 rounded-lg text-sm font-medium transition-all duration-200 {{ request()->routeIs('kepala.dashboard') ? 'bg-primary-50 dark:bg-primary-900/20 text-primary-600 dark:text-primary-400' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700/50' }}">
                     <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
                     </svg>
@@ -609,7 +596,7 @@
                         <div class="w-1.5 h-1.5 bg-primary-600 dark:bg-primary-400 rounded-full"></div>
                     @endif
                 </a>
-                <a href="{{ route('kepala.modul-progress.index') }}" wire:navigate class="group flex items-center gap-3 px-3 py-2.5 mb-1 rounded-lg text-sm font-medium transition-all duration-200 {{ request()->routeIs('kepala.modul-progress.*') ? 'bg-primary-50 dark:bg-primary-900/20 text-primary-600 dark:text-primary-400' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700/50' }}">
+                <a href="{{ route('kepala.modul-progress.index') }}" wire:navigate class="group flex items-center gap-3 px-3 py-2.5 mb-1 min-h-11 rounded-lg text-sm font-medium transition-all duration-200 {{ request()->routeIs('kepala.modul-progress.*') ? 'bg-primary-50 dark:bg-primary-900/20 text-primary-600 dark:text-primary-400' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700/50' }}">
                     <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
                     </svg>
@@ -618,7 +605,7 @@
                         <span class="w-1.5 h-1.5 rounded-full bg-primary-600 dark:bg-primary-400"></span>
                     @endif
                 </a>
-                <a href="{{ route('kepala.evaluasi.index') }}" wire:navigate class="group flex items-center gap-3 px-3 py-2.5 mb-1 rounded-lg text-sm font-medium transition-all duration-200 {{ request()->routeIs('kepala.evaluasi.*') ? 'bg-primary-50 dark:bg-primary-900/20 text-primary-600 dark:text-primary-400' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700/50' }}">
+                <a href="{{ route('kepala.evaluasi.index') }}" wire:navigate class="group flex items-center gap-3 px-3 py-2.5 mb-1 min-h-11 rounded-lg text-sm font-medium transition-all duration-200 {{ request()->routeIs('kepala.evaluasi.*') ? 'bg-primary-50 dark:bg-primary-900/20 text-primary-600 dark:text-primary-400' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700/50' }}">
                     <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path>
                     </svg>
@@ -633,7 +620,7 @@
             <!-- SIDEBAR FOOTER -->
             <div class="border-t border-gray-200 dark:border-gray-700 px-3 py-3">
                 <!-- Dark Mode Toggle -->
-                <button id="theme-toggle-sidebar" class="group flex items-center gap-3 px-3 py-2.5 mb-1 rounded-lg text-sm font-medium transition-all duration-200 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700/50 w-full">
+                <button id="theme-toggle-sidebar" class="group flex items-center gap-3 px-3 py-2.5 mb-1 min-h-11 rounded-lg text-sm font-medium transition-all duration-200 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700/50 w-full">
                     <svg id="theme-icon-sun-sidebar" class="w-5 h-5 flex-shrink-0 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
                     </svg>
@@ -644,7 +631,7 @@
                 </button>
 
                 <!-- Settings Link -->
-                <a href="{{ route('settings.index') }}" wire:navigate class="group flex items-center gap-3 px-3 py-2.5 mb-1 rounded-lg text-sm font-medium transition-all duration-200 {{ request()->routeIs('settings.*') ? 'bg-primary-50 dark:bg-primary-900/20 text-primary-600 dark:text-primary-400' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700/50' }}">
+                <a href="{{ route('settings.index') }}" wire:navigate class="group flex items-center gap-3 px-3 py-2.5 mb-1 min-h-11 rounded-lg text-sm font-medium transition-all duration-200 {{ request()->routeIs('settings.*') ? 'bg-primary-50 dark:bg-primary-900/20 text-primary-600 dark:text-primary-400' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700/50' }}">
                     <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
@@ -659,7 +646,7 @@
                 <!-- Logout Button -->
                 <form action="{{ route('logout') }}" method="POST">
                     @csrf
-                    <button type="submit" class="group flex items-center gap-3 px-3 py-2.5 mb-1 rounded-lg text-sm font-medium transition-all duration-200 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 w-full">
+                    <button type="submit" class="group flex items-center gap-3 px-3 py-2.5 mb-1 min-h-11 rounded-lg text-sm font-medium transition-all duration-200 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 w-full">
                         <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
                         </svg>
@@ -752,7 +739,7 @@
                     <!-- Bantuan Popup Menu -->
                     <div x-show="open" x-cloak @click.away="open = false" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 transform scale-95 translate-y-2" x-transition:enter-end="opacity-100 transform scale-100 translate-y-0" x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100 transform scale-100 translate-y-0" x-transition:leave-end="opacity-0 transform scale-95 translate-y-2" class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-56 bg-white dark:bg-gray-800 rounded-xl shadow-xl border border-gray-200 dark:border-gray-700 overflow-hidden z-50">
                         <!-- Header -->
-                        <div class="px-4 py-3 bg-gradient-to-r from-blue-50 to-cyan-50 dark:from-gray-700 dark:to-gray-700 border-b border-gray-200 dark:border-gray-600">
+                        <div class="px-4 py-3 bg-gray-50 dark:bg-gray-700 border-b border-gray-200 dark:border-gray-600">
                             <p class="text-sm font-bold text-gray-900 dark:text-white">Pusat Bantuan</p>
                             <p class="text-xs text-gray-600 dark:text-gray-400">Tips & panduan admin</p>
                         </div>
@@ -790,7 +777,7 @@
                     <!-- Profile Popup Menu -->
                     <div x-show="open" x-cloak @click.away="open = false" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 transform scale-95 translate-y-2" x-transition:enter-end="opacity-100 transform scale-100 translate-y-0" x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100 transform scale-100 translate-y-0" x-transition:leave-end="opacity-0 transform scale-95 translate-y-2" class="absolute bottom-full right-0 mb-2 w-56 bg-white dark:bg-gray-800 rounded-xl shadow-xl border border-gray-200 dark:border-gray-700 overflow-hidden z-50">
                         <!-- User Info -->
-                        <div class="px-4 py-3 bg-gradient-to-r from-primary-50 to-primary-50 dark:from-gray-700 dark:to-gray-700 border-b border-gray-200 dark:border-gray-600">
+                        <div class="px-4 py-3 bg-primary-50 dark:bg-gray-700 border-b border-gray-200 dark:border-gray-600">
                             <p class="text-sm font-bold text-gray-900 dark:text-white truncate">{{ Auth::user()->name }}</p>
                             <p class="text-xs text-gray-600 dark:text-gray-400">Administrator</p>
                         </div>
@@ -855,7 +842,7 @@
                     <!-- Bantuan Popup Menu -->
                     <div x-show="open" x-cloak @click.away="open = false" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 transform scale-95 translate-y-2" x-transition:enter-end="opacity-100 transform scale-100 translate-y-0" x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100 transform scale-100 translate-y-0" x-transition:leave-end="opacity-0 transform scale-95 translate-y-2" class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-56 bg-white dark:bg-gray-800 rounded-xl shadow-xl border border-gray-200 dark:border-gray-700 overflow-hidden z-50">
                         <!-- Header -->
-                        <div class="px-4 py-3 bg-gradient-to-r from-blue-50 to-cyan-50 dark:from-gray-700 dark:to-gray-700 border-b border-gray-200 dark:border-gray-600">
+                        <div class="px-4 py-3 bg-gray-50 dark:bg-gray-700 border-b border-gray-200 dark:border-gray-600">
                             <p class="text-sm font-bold text-gray-900 dark:text-white">Pusat Bantuan</p>
                             <p class="text-xs text-gray-600 dark:text-gray-400">Tips & panduan supervisi</p>
                         </div>
@@ -902,7 +889,7 @@
                     <!-- Profile Popup Menu -->
                     <div x-show="open" x-cloak @click.away="open = false" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 transform scale-95 translate-y-2" x-transition:enter-end="opacity-100 transform scale-100 translate-y-0" x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100 transform scale-100 translate-y-0" x-transition:leave-end="opacity-0 transform scale-95 translate-y-2" class="absolute bottom-full right-0 mb-2 w-56 bg-white dark:bg-gray-800 rounded-xl shadow-xl border border-gray-200 dark:border-gray-700 overflow-hidden z-50">
                         <!-- User Info -->
-                        <div class="px-4 py-3 bg-gradient-to-r from-primary-50 to-primary-50 dark:from-gray-700 dark:to-gray-700 border-b border-gray-200 dark:border-gray-600">
+                        <div class="px-4 py-3 bg-primary-50 dark:bg-gray-700 border-b border-gray-200 dark:border-gray-600">
                             <p class="text-sm font-bold text-gray-900 dark:text-white truncate">{{ Auth::user()->name }}</p>
                             <p class="text-xs text-gray-600 dark:text-gray-400">Guru</p>
                         </div>
@@ -967,7 +954,7 @@
                     <!-- Profile Popup Menu -->
                     <div x-show="open" @click.away="open = false" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 transform scale-95 translate-y-2" x-transition:enter-end="opacity-100 transform scale-100 translate-y-0" x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100 transform scale-100 translate-y-0" x-transition:leave-end="opacity-0 transform scale-95 translate-y-2" class="absolute bottom-full right-0 mb-2 w-56 bg-white dark:bg-gray-800 rounded-xl shadow-xl border border-gray-200 dark:border-gray-700 overflow-hidden z-50">
                         <!-- User Info -->
-                        <div class="px-4 py-3 bg-gradient-to-r from-primary-50 to-primary-50 dark:from-gray-700 dark:to-gray-700 border-b border-gray-200 dark:border-gray-600">
+                        <div class="px-4 py-3 bg-primary-50 dark:bg-gray-700 border-b border-gray-200 dark:border-gray-600">
                             <p class="text-sm font-bold text-gray-900 dark:text-white truncate">{{ Auth::user()->name }}</p>
                             <p class="text-xs text-gray-600 dark:text-gray-400">Kepala Sekolah</p>
                         </div>
@@ -1017,7 +1004,7 @@
 
     <!-- MODAL CONFIRMATION -->
     <div id="modal-backdrop" class="hidden fixed inset-0 bg-black/40 backdrop-blur-sm z-[70] items-center justify-center p-4">
-        <div id="modal-content" class="bg-white dark:bg-gray-800 rounded-3xl shadow-2xl max-w-sm w-full transform transition-all duration-300 scale-95 opacity-0">
+        <div id="modal-content" class="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl max-w-sm w-full transform transition-all duration-300 scale-95 opacity-0">
             <!-- Content -->
             <div class="p-8 text-center">
                 <!-- Warning Icon - Large circle -->
@@ -1147,13 +1134,34 @@
         if (notifDropdownBtn && notifDropdownMenu) {
             notifDropdownBtn.addEventListener('click', function(e) {
                 e.stopPropagation();
-                notifDropdownMenu.classList.toggle('hidden');
+
+                if (notifDropdownMenu.classList.contains('hidden')) {
+                    // Show dropdown
+                    notifDropdownMenu.classList.remove('hidden');
+                    setTimeout(() => {
+                        notifDropdownMenu.classList.remove('scale-95', 'opacity-0');
+                        notifDropdownMenu.classList.add('scale-100', 'opacity-100');
+                    }, 10);
+                } else {
+                    // Hide dropdown
+                    notifDropdownMenu.classList.remove('scale-100', 'opacity-100');
+                    notifDropdownMenu.classList.add('scale-95', 'opacity-0');
+                    setTimeout(() => {
+                        notifDropdownMenu.classList.add('hidden');
+                    }, 200);
+                }
             });
 
             // Close dropdown when clicking outside
             document.addEventListener('click', function(e) {
                 if (!notifDropdownBtn.contains(e.target) && !notifDropdownMenu.contains(e.target)) {
-                    notifDropdownMenu.classList.add('hidden');
+                    if (!notifDropdownMenu.classList.contains('hidden')) {
+                        notifDropdownMenu.classList.remove('scale-100', 'opacity-100');
+                        notifDropdownMenu.classList.add('scale-95', 'opacity-0');
+                        setTimeout(() => {
+                            notifDropdownMenu.classList.add('hidden');
+                        }, 200);
+                    }
                 }
             });
         }
@@ -1483,7 +1491,7 @@
 
             // Create modal content
             const modal = document.createElement('div');
-            modal.className = 'bg-white dark:bg-gray-800 rounded-3xl shadow-2xl max-w-xs w-full transform transition-all duration-300 scale-90 opacity-0';
+            modal.className = 'bg-white dark:bg-gray-800 rounded-2xl shadow-2xl max-w-xs w-full transform transition-all duration-300 scale-90 opacity-0';
             modal.innerHTML = `
                 <div class="p-6 text-center">
                     <!-- Icon -->
@@ -1786,8 +1794,11 @@ if (backToTopBtn) {
             }, 200);
         }
         
-        // Re-apply theme after navigation to fix dark mode reset
-        const savedTheme = localStorage.getItem('theme') || 'light';
+        // Re-apply theme after navigation to fix dark mode reset.
+        // Logika WAJIB sama dengan partials/theme-init: localStorage menang,
+        // tanpa preferensi tersimpan ikut prefers-color-scheme (bukan 'light').
+        const savedTheme = localStorage.getItem('theme')
+            || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
         if (savedTheme === 'dark') {
             document.documentElement.classList.add('dark');
         } else {
@@ -2117,7 +2128,7 @@ if (backToTopBtn) {
 @auth
 <!-- Tips Modal (Role-Aware) -->
 <div id="tipsModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-[75] flex items-end md:items-center justify-center p-0 md:p-4" style="display: none;" onclick="closeTipsModal()">
-    <div id="tipsModalContent" class="bg-white dark:bg-gray-800 w-full md:max-w-md max-h-[85vh] overflow-hidden transform transition-all duration-300 rounded-t-3xl md:rounded-2xl shadow-2xl flex flex-col" onclick="event.stopPropagation()">
+    <div id="tipsModalContent" class="bg-white dark:bg-gray-800 w-full md:max-w-md max-h-[85vh] overflow-hidden transform transition-all duration-300 rounded-t-2xl md:rounded-2xl shadow-2xl flex flex-col" onclick="event.stopPropagation()">
         
         <!-- Mobile Drag Handle -->
         <div class="md:hidden flex justify-center pt-3 pb-1">
@@ -2128,7 +2139,7 @@ if (backToTopBtn) {
         <div class="px-6 py-4 border-b border-gray-100 dark:border-gray-700 flex items-center justify-between bg-white dark:bg-gray-800 sticky top-0 z-10">
             <div class="flex items-center gap-3">
                 <div class="w-10 h-10 bg-gradient-to-br from-primary-500 to-primary-700 rounded-xl flex items-center justify-center shadow-lg shadow-blue-200 dark:shadow-none shrink-0">
-                    <span class="material-symbols-outlined text-white text-xl">lightbulb</span>
+                    <x-icon name="light-bulb" class="w-5 h-5 text-white" />
                 </div>
                 <div>
                     <h3 class="text-sm md:text-base font-bold text-gray-900 dark:text-white leading-tight">Tips & Informasi</h3>
@@ -2136,7 +2147,7 @@ if (backToTopBtn) {
                 </div>
             </div>
             <button onclick="closeTipsModal()" class="w-8 h-8 flex items-center justify-center hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full transition-colors text-gray-400">
-                <span class="material-symbols-outlined text-xl">close</span>
+                <x-icon name="x-mark" class="w-5 h-5" />
             </button>
         </div>
 
@@ -2146,7 +2157,7 @@ if (backToTopBtn) {
                 @if(auth()->user()->role === 'admin')
                     <div class="bg-blue-50 dark:bg-blue-900/20 rounded-2xl p-4 border border-blue-100 dark:border-blue-800/50">
                         <div class="flex gap-3">
-                            <span class="material-symbols-outlined text-blue-600">group</span>
+                            <x-icon name="users" class="w-5 h-5 text-blue-600" />
                             <div>
                                 <p class="text-sm font-bold text-gray-900 dark:text-white mb-1">Kelola User</p>
                                 <p class="text-xs text-gray-600 dark:text-gray-400 leading-relaxed">Gunakan menu <strong class="text-blue-600">"Users"</strong> untuk menambah, mengedit, atau menghapus akun pengguna.</p>
@@ -2155,7 +2166,7 @@ if (backToTopBtn) {
                     </div>
                     <div class="bg-emerald-50 dark:bg-emerald-900/20 rounded-2xl p-4 border border-emerald-100 dark:border-emerald-800/50">
                         <div class="flex gap-3">
-                            <span class="material-symbols-outlined text-emerald-600">key</span>
+                            <x-icon name="key" class="w-5 h-5 text-emerald-600" />
                             <div>
                                 <p class="text-sm font-bold text-gray-900 dark:text-white mb-1">Reset Password</p>
                                 <p class="text-xs text-gray-600 dark:text-gray-400 leading-relaxed">Anda dapat mereset password user yang lupa melalui tombol kunci di daftar user.</p>
@@ -2165,7 +2176,7 @@ if (backToTopBtn) {
                 @elseif(auth()->user()->role === 'kepala_sekolah')
                     <div class="bg-blue-50 dark:bg-blue-900/20 rounded-2xl p-4 border border-blue-100 dark:border-blue-800/50">
                         <div class="flex gap-3">
-                            <span class="material-symbols-outlined text-blue-600">assignment_turned_in</span>
+                            <x-icon name="clipboard-check" class="w-5 h-5 text-blue-600" />
                             <div>
                                 <p class="text-sm font-bold text-gray-900 dark:text-white mb-1">Tinjau Evaluasi</p>
                                 <p class="text-xs text-gray-600 dark:text-gray-400 leading-relaxed">Klik menu <strong class="text-blue-600">"Evaluasi"</strong> untuk melihat daftar guru yang perlu dinilai.</p>
@@ -2174,7 +2185,7 @@ if (backToTopBtn) {
                     </div>
                     <div class="bg-emerald-50 dark:bg-emerald-900/20 rounded-2xl p-4 border border-emerald-100 dark:border-emerald-800/50">
                         <div class="flex gap-3">
-                            <span class="material-symbols-outlined text-emerald-600">chat</span>
+                            <x-icon name="chat-bubble" class="w-5 h-5 text-emerald-600" />
                             <div>
                                 <p class="text-sm font-bold text-gray-900 dark:text-white mb-1">Berikan Feedback</p>
                                 <p class="text-xs text-gray-600 dark:text-gray-400 leading-relaxed">Gunakan kolom komentar untuk memberikan masukan yang membangun kepada guru.</p>
@@ -2184,7 +2195,7 @@ if (backToTopBtn) {
                 @else
                     <div class="bg-blue-50 dark:bg-blue-900/20 rounded-2xl p-4 border border-blue-100 dark:border-blue-800/50">
                         <div class="flex gap-3">
-                            <span class="material-symbols-outlined text-blue-600">help</span>
+                            <x-icon name="information-circle" class="w-5 h-5 text-blue-600" />
                             <div>
                                 <p class="text-sm font-bold text-gray-900 dark:text-white mb-1">Lihat Panduan</p>
                                 <p class="text-xs text-gray-600 dark:text-gray-400 leading-relaxed">Tap menu <strong class="text-blue-600">"Bantuan"</strong> di bawah, lalu pilih <strong class="text-blue-600">"Panduan"</strong> untuk melihat langkah lengkap supervisi.</p>
@@ -2193,7 +2204,7 @@ if (backToTopBtn) {
                     </div>
                     <div class="bg-emerald-50 dark:bg-emerald-900/20 rounded-2xl p-4 border border-emerald-100 dark:border-emerald-800/50">
                         <div class="flex gap-3">
-                            <span class="material-symbols-outlined text-emerald-600">track_changes</span>
+                            <x-icon name="eye" class="w-5 h-5 text-emerald-600" />
                             <div>
                                 <p class="text-sm font-bold text-gray-900 dark:text-white mb-1">Lacak Status</p>
                                 <p class="text-xs text-gray-600 dark:text-gray-400 leading-relaxed">Lihat badge status supervisi: Draft, Disubmit, Ditinjau, Revisi, atau Selesai.</p>
@@ -2216,7 +2227,7 @@ if (backToTopBtn) {
 
 <!-- Fitur Penting Modal (For Guru) -->
 <div id="fiturPentingModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-[75] flex items-end md:items-center justify-center p-0 md:p-4" style="display: none;" onclick="closeFiturPentingModal()">
-    <div id="fiturPentingModalContent" class="bg-white dark:bg-gray-800 w-full md:max-w-md max-h-[85vh] overflow-hidden transform transition-all duration-300 rounded-t-3xl md:rounded-2xl shadow-2xl flex flex-col" onclick="event.stopPropagation()">
+    <div id="fiturPentingModalContent" class="bg-white dark:bg-gray-800 w-full md:max-w-md max-h-[85vh] overflow-hidden transform transition-all duration-300 rounded-t-2xl md:rounded-2xl shadow-2xl flex flex-col" onclick="event.stopPropagation()">
         
         <!-- Mobile Drag Handle -->
         <div class="md:hidden flex justify-center pt-3 pb-1">
@@ -2227,7 +2238,7 @@ if (backToTopBtn) {
         <div class="px-6 py-4 border-b border-gray-100 dark:border-gray-700 flex items-center justify-between bg-white dark:bg-gray-800 sticky top-0 z-10">
             <div class="flex items-center gap-3">
                 <div class="w-10 h-10 bg-gradient-to-br from-primary-500 to-primary-600 rounded-xl flex items-center justify-center shadow-lg shadow-primary-200 dark:shadow-none shrink-0">
-                    <span class="material-symbols-outlined text-white text-xl">auto_awesome</span>
+                    <x-icon name="star" class="w-5 h-5 text-white" />
                 </div>
                 <div>
                     <h3 class="text-sm md:text-base font-bold text-gray-900 dark:text-white leading-tight">Fitur Penting</h3>
@@ -2235,7 +2246,7 @@ if (backToTopBtn) {
                 </div>
             </div>
             <button onclick="closeFiturPentingModal()" class="w-8 h-8 flex items-center justify-center hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full transition-colors text-gray-400">
-                <span class="material-symbols-outlined text-xl">close</span>
+                <x-icon name="x-mark" class="w-5 h-5" />
             </button>
         </div>
 
@@ -2244,7 +2255,7 @@ if (backToTopBtn) {
             <div class="space-y-4">
                 <div class="bg-primary-50 dark:bg-primary-900/20 rounded-2xl p-4 border border-primary-100 dark:border-primary-800/50">
                     <div class="flex gap-3">
-                        <span class="material-symbols-outlined text-primary-600">save</span>
+                        <x-icon name="arrow-down-tray" class="w-5 h-5 text-primary-600" />
                         <div>
                             <p class="text-sm font-bold text-gray-900 dark:text-white mb-1">Auto-Save</p>
                             <p class="text-xs text-gray-600 dark:text-gray-400 leading-relaxed">Sistem menyimpan progres Anda secara otomatis setiap 30 detik. Jangan takut kehilangan data.</p>
@@ -2253,7 +2264,7 @@ if (backToTopBtn) {
                 </div>
                 <div class="bg-primary-50 dark:bg-primary-900/20 rounded-2xl p-4 border border-primary-100 dark:border-primary-800/50">
                     <div class="flex gap-3">
-                        <span class="material-symbols-outlined text-primary-600">history</span>
+                        <x-icon name="clock" class="w-5 h-5 text-primary-600" />
                         <div>
                             <p class="text-sm font-bold text-gray-900 dark:text-white mb-1">Riwayat Revisi</p>
                             <p class="text-xs text-gray-600 dark:text-gray-400 leading-relaxed">Anda dapat melihat catatan revisi sebelumnya dari Kepala Sekolah untuk perbaikan yang lebih baik.</p>
@@ -2262,7 +2273,7 @@ if (backToTopBtn) {
                 </div>
                 <div class="bg-amber-50 dark:bg-amber-900/20 rounded-2xl p-4 border border-amber-100 dark:border-amber-800/50">
                     <div class="flex gap-3">
-                        <span class="material-symbols-outlined text-amber-600">notifications_active</span>
+                        <x-icon name="bell" class="w-5 h-5 text-amber-600" />
                         <div>
                             <p class="text-sm font-bold text-gray-900 dark:text-white mb-1">Notifikasi Real-time</p>
                             <p class="text-xs text-gray-600 dark:text-gray-400 leading-relaxed">Dapatkan pemberitahuan langsung saat status supervisi Anda berubah atau ada feedback baru.</p>
@@ -2307,7 +2318,7 @@ if (backToTopBtn) {
                 <div class="flex items-center gap-3">
                     <span id="guideStepCounter" class="text-xs text-gray-500 dark:text-gray-400 font-medium">Step 1 of 4</span>
                     <button onclick="closeGuideModal()" class="p-1.5 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors group">
-                        <span class="material-symbols-outlined text-gray-400 group-hover:text-gray-600 dark:group-hover:text-gray-300 text-xl">close</span>
+                        <x-icon name="x-mark" class="w-5 h-5 text-gray-400 group-hover:text-gray-600 dark:group-hover:text-gray-300" />
                     </button>
                 </div>
             </div>
@@ -2323,7 +2334,7 @@ if (backToTopBtn) {
                         <div class="bg-primary-50/50 dark:bg-primary-900/10 rounded-2xl p-6 mb-5 guide-card">
                             <div class="flex items-center justify-center mb-4">
                                 <div class="w-16 h-16 bg-primary-600 rounded-2xl flex items-center justify-center shadow-lg">
-                                    <span class="material-symbols-outlined text-white text-4xl">manage_accounts</span>
+                                    <x-icon name="users" class="w-9 h-9 text-white" />
                                 </div>
                             </div>
                             <h3 class="text-lg font-bold text-gray-900 dark:text-white text-center mb-2">Manajemen Pengguna</h3>
@@ -2335,7 +2346,7 @@ if (backToTopBtn) {
                         <div class="space-y-3 guide-card">
                             <div class="flex items-start gap-3 p-4 bg-white dark:bg-gray-700/30 rounded-xl border border-gray-200 dark:border-gray-600 hover:border-primary-300 dark:hover:border-primary-700 transition-colors">
                                 <div class="w-5 h-5 rounded-full bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center flex-shrink-0 mt-0.5">
-                                    <span class="material-symbols-outlined text-primary-600 dark:text-primary-400 text-sm">check</span>
+                                    <x-icon name="check" class="w-4 h-4 text-primary-600 dark:text-primary-400" />
                                 </div>
                                 <div>
                                     <p class="text-sm font-semibold text-gray-900 dark:text-white mb-1">Validasi NIK & Data Personal</p>
@@ -2344,7 +2355,7 @@ if (backToTopBtn) {
                             </div>
                             <div class="flex items-start gap-3 p-4 bg-white dark:bg-gray-700/30 rounded-xl border border-gray-200 dark:border-gray-600 hover:border-primary-300 dark:hover:border-primary-700 transition-colors">
                                 <div class="w-5 h-5 rounded-full bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center flex-shrink-0 mt-0.5">
-                                    <span class="material-symbols-outlined text-primary-600 dark:text-primary-400 text-sm">check</span>
+                                    <x-icon name="check" class="w-4 h-4 text-primary-600 dark:text-primary-400" />
                                 </div>
                                 <div>
                                     <p class="text-sm font-semibold text-gray-900 dark:text-white mb-1">Atur Role & Hak Akses</p>
@@ -2353,7 +2364,7 @@ if (backToTopBtn) {
                             </div>
                             <div class="flex items-start gap-3 p-4 bg-white dark:bg-gray-700/30 rounded-xl border border-gray-200 dark:border-gray-600 hover:border-primary-300 dark:hover:border-primary-700 transition-colors">
                                 <div class="w-5 h-5 rounded-full bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center flex-shrink-0 mt-0.5">
-                                    <span class="material-symbols-outlined text-primary-600 dark:text-primary-400 text-sm">check</span>
+                                    <x-icon name="check" class="w-4 h-4 text-primary-600 dark:text-primary-400" />
                                 </div>
                                 <div>
                                     <p class="text-sm font-semibold text-gray-900 dark:text-white mb-1">Reset Password & Recovery</p>
@@ -2363,7 +2374,7 @@ if (backToTopBtn) {
                         </div>
                         
                         <div class="mt-5 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-xl border border-blue-200 dark:border-blue-800 flex items-start gap-2 guide-card">
-                            <span class="material-symbols-outlined text-blue-600 dark:text-blue-400 text-lg flex-shrink-0">info</span>
+                            <x-icon name="information-circle" class="w-5 h-5 text-blue-600 dark:text-blue-400 flex-shrink-0" />
                             <p class="text-xs text-blue-800 dark:text-blue-300 leading-relaxed">
                                 <strong>Keamanan:</strong> Semua pengguna baru wajib mengganti password saat login pertama. Email verifikasi otomatis terkirim untuk aktivasi akun.
                             </p>
@@ -2375,7 +2386,7 @@ if (backToTopBtn) {
                         <div class="bg-primary-50/50 dark:bg-primary-900/10 rounded-2xl p-6 mb-5 guide-card">
                             <div class="flex items-center justify-center mb-4">
                                 <div class="w-16 h-16 bg-primary-600 rounded-2xl flex items-center justify-center shadow-lg">
-                                    <span class="material-symbols-outlined text-white text-4xl">monitoring</span>
+                                    <x-icon name="clipboard-check" class="w-9 h-9 text-white" />
                                 </div>
                             </div>
                             <h3 class="text-lg font-bold text-gray-900 dark:text-white text-center mb-2">Dashboard & Monitoring</h3>
@@ -2387,14 +2398,14 @@ if (backToTopBtn) {
                         <div class="grid grid-cols-2 gap-3 mb-5 guide-card">
                             <div class="p-4 bg-emerald-50 dark:bg-emerald-900/10 rounded-xl border border-emerald-200 dark:border-emerald-800">
                                 <div class="flex items-center justify-center w-10 h-10 rounded-full bg-emerald-500 text-white mx-auto mb-2">
-                                    <span class="material-symbols-outlined text-xl">task_alt</span>
+                                    <x-icon name="check-circle" class="w-5 h-5" />
                                 </div>
                                 <p class="text-xs font-bold text-gray-900 dark:text-white text-center">Total Supervisi</p>
                                 <p class="text-[10px] text-gray-600 dark:text-gray-400 text-center mt-1">Selesai & Dalam Proses</p>
                             </div>
                             <div class="p-4 bg-blue-50 dark:bg-blue-900/10 rounded-xl border border-blue-200 dark:border-blue-800">
                                 <div class="flex items-center justify-center w-10 h-10 rounded-full bg-blue-500 text-white mx-auto mb-2">
-                                    <span class="material-symbols-outlined text-xl">groups</span>
+                                    <x-icon name="users" class="w-5 h-5" />
                                 </div>
                                 <p class="text-xs font-bold text-gray-900 dark:text-white text-center">Pengguna Aktif</p>
                                 <p class="text-[10px] text-gray-600 dark:text-gray-400 text-center mt-1">Guru & Kepala Sekolah</p>
@@ -2426,7 +2437,7 @@ if (backToTopBtn) {
                         </div>
                         
                         <div class="mt-5 p-3 bg-primary-50 dark:bg-primary-900/20 rounded-xl border border-primary-200 dark:border-primary-800 flex items-start gap-2 guide-card">
-                            <span class="material-symbols-outlined text-primary-600 dark:text-primary-400 text-lg flex-shrink-0">insights</span>
+                            <x-icon name="light-bulb" class="w-5 h-5 text-primary-600 dark:text-primary-400 flex-shrink-0" />
                             <p class="text-xs text-primary-800 dark:text-primary-300 leading-relaxed">
                                 <strong>Analytics:</strong> Grafik dan chart otomatis ter-generate untuk laporan bulanan dan tahunan kepada dinas pendidikan.
                             </p>
@@ -2438,7 +2449,7 @@ if (backToTopBtn) {
                         <div class="bg-teal-50/50 dark:bg-teal-900/10 rounded-2xl p-6 mb-5 guide-card">
                             <div class="flex items-center justify-center mb-4">
                                 <div class="w-16 h-16 bg-teal-600 rounded-2xl flex items-center justify-center shadow-lg">
-                                    <span class="material-symbols-outlined text-white text-4xl">image</span>
+                                    <x-icon name="photo" class="w-9 h-9 text-white" />
                                 </div>
                             </div>
                             <h3 class="text-lg font-bold text-gray-900 dark:text-white text-center mb-2">Carousel & Konten</h3>
@@ -2450,7 +2461,7 @@ if (backToTopBtn) {
                         <div class="space-y-3 guide-card">
                             <div class="flex items-start gap-3 p-4 bg-white dark:bg-gray-700/30 rounded-xl border border-gray-200 dark:border-gray-600 hover:border-teal-300 dark:hover:border-teal-700 transition-colors">
                                 <div class="w-5 h-5 rounded-full bg-teal-100 dark:bg-teal-900/30 flex items-center justify-center flex-shrink-0 mt-0.5">
-                                    <span class="material-symbols-outlined text-teal-600 dark:text-teal-400 text-sm">add_photo_alternate</span>
+                                    <x-icon name="photo" class="w-4 h-4 text-teal-600 dark:text-teal-400" />
                                 </div>
                                 <div>
                                     <p class="text-sm font-semibold text-gray-900 dark:text-white mb-1">Upload Gambar Banner</p>
@@ -2459,7 +2470,7 @@ if (backToTopBtn) {
                             </div>
                             <div class="flex items-start gap-3 p-4 bg-white dark:bg-gray-700/30 rounded-xl border border-gray-200 dark:border-gray-600 hover:border-teal-300 dark:hover:border-teal-700 transition-colors">
                                 <div class="w-5 h-5 rounded-full bg-teal-100 dark:bg-teal-900/30 flex items-center justify-center flex-shrink-0 mt-0.5">
-                                    <span class="material-symbols-outlined text-teal-600 dark:text-teal-400 text-sm">sort</span>
+                                    <x-icon name="funnel" class="w-4 h-4 text-teal-600 dark:text-teal-400" />
                                 </div>
                                 <div>
                                     <p class="text-sm font-semibold text-gray-900 dark:text-white mb-1">Atur Urutan Slide</p>
@@ -2468,7 +2479,7 @@ if (backToTopBtn) {
                             </div>
                             <div class="flex items-start gap-3 p-4 bg-white dark:bg-gray-700/30 rounded-xl border border-gray-200 dark:border-gray-600 hover:border-teal-300 dark:hover:border-teal-700 transition-colors">
                                 <div class="w-5 h-5 rounded-full bg-teal-100 dark:bg-teal-900/30 flex items-center justify-center flex-shrink-0 mt-0.5">
-                                    <span class="material-symbols-outlined text-teal-600 dark:text-teal-400 text-sm">toggle_on</span>
+                                    <x-icon name="check-circle" class="w-4 h-4 text-teal-600 dark:text-teal-400" />
                                 </div>
                                 <div>
                                     <p class="text-sm font-semibold text-gray-900 dark:text-white mb-1">Aktif/Nonaktifkan Slide</p>
@@ -2478,7 +2489,7 @@ if (backToTopBtn) {
                         </div>
                         
                         <div class="mt-5 p-3 bg-teal-50 dark:bg-teal-900/20 rounded-xl border border-teal-200 dark:border-teal-800 flex items-start gap-2 guide-card">
-                            <span class="material-symbols-outlined text-teal-600 dark:text-teal-400 text-lg flex-shrink-0">auto_awesome</span>
+                            <x-icon name="star" class="w-5 h-5 text-teal-600 dark:text-teal-400 flex-shrink-0" />
                             <p class="text-xs text-teal-800 dark:text-teal-300 leading-relaxed">
                                 <strong>Tips:</strong> Gunakan gambar berkualitas tinggi dengan pesan motivasi atau pencapaian sekolah untuk meningkatkan engagement user.
                             </p>
@@ -2490,7 +2501,7 @@ if (backToTopBtn) {
                         <div class="bg-amber-50/50 dark:bg-amber-900/10 rounded-2xl p-6 mb-5 guide-card">
                             <div class="flex items-center justify-center mb-4">
                                 <div class="w-16 h-16 bg-amber-600 rounded-2xl flex items-center justify-center shadow-lg">
-                                    <span class="material-symbols-outlined text-white text-4xl">analytics</span>
+                                    <x-icon name="clipboard-check" class="w-9 h-9 text-white" />
                                 </div>
                             </div>
                             <h3 class="text-lg font-bold text-gray-900 dark:text-white text-center mb-2">Laporan & Analitik</h3>
@@ -2502,7 +2513,7 @@ if (backToTopBtn) {
                         <div class="space-y-3 guide-card">
                             <div class="flex items-start gap-3 p-4 bg-white dark:bg-gray-700/30 rounded-xl border border-gray-200 dark:border-gray-600 hover:border-amber-300 dark:hover:border-amber-700 transition-colors">
                                 <div class="w-5 h-5 rounded-full bg-amber-100 dark:bg-amber-900/30 flex items-center justify-center flex-shrink-0 mt-0.5">
-                                    <span class="material-symbols-outlined text-amber-600 dark:text-amber-400 text-sm">table_chart</span>
+                                    <x-icon name="document" class="w-4 h-4 text-amber-600 dark:text-amber-400" />
                                 </div>
                                 <div>
                                     <p class="text-sm font-semibold text-gray-900 dark:text-white mb-1">Export Excel/CSV</p>
@@ -2511,7 +2522,7 @@ if (backToTopBtn) {
                             </div>
                             <div class="flex items-start gap-3 p-4 bg-white dark:bg-gray-700/30 rounded-xl border border-gray-200 dark:border-gray-600 hover:border-amber-300 dark:hover:border-amber-700 transition-colors">
                                 <div class="w-5 h-5 rounded-full bg-amber-100 dark:bg-amber-900/30 flex items-center justify-center flex-shrink-0 mt-0.5">
-                                    <span class="material-symbols-outlined text-amber-600 dark:text-amber-400 text-sm">picture_as_pdf</span>
+                                    <x-icon name="document" class="w-4 h-4 text-amber-600 dark:text-amber-400" />
                                 </div>
                                 <div>
                                     <p class="text-sm font-semibold text-gray-900 dark:text-white mb-1">Cetak PDF Official</p>
@@ -2520,7 +2531,7 @@ if (backToTopBtn) {
                             </div>
                             <div class="flex items-start gap-3 p-4 bg-white dark:bg-gray-700/30 rounded-xl border border-gray-200 dark:border-gray-600 hover:border-amber-300 dark:hover:border-amber-700 transition-colors">
                                 <div class="w-5 h-5 rounded-full bg-amber-100 dark:bg-amber-900/30 flex items-center justify-center flex-shrink-0 mt-0.5">
-                                    <span class="material-symbols-outlined text-amber-600 dark:text-amber-400 text-sm">query_stats</span>
+                                    <x-icon name="clipboard-check" class="w-4 h-4 text-amber-600 dark:text-amber-400" />
                                 </div>
                                 <div>
                                     <p class="text-sm font-semibold text-gray-900 dark:text-white mb-1">Dashboard Analytics</p>
@@ -2530,7 +2541,7 @@ if (backToTopBtn) {
                         </div>
                         
                         <div class="mt-5 p-3 bg-green-50 dark:bg-green-900/20 rounded-xl border border-green-200 dark:border-green-800 flex items-start gap-2 guide-card">
-                            <span class="material-symbols-outlined text-green-600 dark:text-green-400 text-lg flex-shrink-0">verified</span>
+                            <x-icon name="check-circle" class="w-5 h-5 text-green-600 dark:text-green-400 flex-shrink-0" />
                             <p class="text-xs text-green-800 dark:text-green-300 leading-relaxed">
                                 <strong>Otomatis:</strong> Sistem akan auto-generate grafik dan statistik setiap akhir bulan untuk memudahkan monitoring berkelanjutan.
                             </p>
@@ -2544,7 +2555,7 @@ if (backToTopBtn) {
                         <div class="bg-rose-50/50 dark:bg-rose-900/10 rounded-2xl p-6 mb-5 guide-card">
                             <div class="flex items-center justify-center mb-4">
                                 <div class="w-16 h-16 bg-rose-600 rounded-2xl flex items-center justify-center shadow-lg">
-                                    <span class="material-symbols-outlined text-white text-4xl">event_note</span>
+                                    <x-icon name="calendar" class="w-9 h-9 text-white" />
                                 </div>
                             </div>
                             <h3 class="text-lg font-bold text-gray-900 dark:text-white text-center mb-2">Review Jadwal Pengajuan</h3>
@@ -2556,7 +2567,7 @@ if (backToTopBtn) {
                         <div class="space-y-3 guide-card">
                             <div class="flex items-start gap-3 p-4 bg-white dark:bg-gray-700/30 rounded-xl border border-gray-200 dark:border-gray-600 hover:border-rose-300 dark:hover:border-rose-700 transition-colors">
                                 <div class="w-5 h-5 rounded-full bg-rose-100 dark:bg-rose-900/30 flex items-center justify-center flex-shrink-0 mt-0.5">
-                                    <span class="material-symbols-outlined text-rose-600 dark:text-rose-400 text-sm">check_circle</span>
+                                    <x-icon name="check-circle" class="w-4 h-4 text-rose-600 dark:text-rose-400" />
                                 </div>
                                 <div>
                                     <p class="text-sm font-semibold text-gray-900 dark:text-white mb-1">Approve Jadwal</p>
@@ -2565,7 +2576,7 @@ if (backToTopBtn) {
                             </div>
                             <div class="flex items-start gap-3 p-4 bg-white dark:bg-gray-700/30 rounded-xl border border-gray-200 dark:border-gray-600 hover:border-rose-300 dark:hover:border-rose-700 transition-colors">
                                 <div class="w-5 h-5 rounded-full bg-rose-100 dark:bg-rose-900/30 flex items-center justify-center flex-shrink-0 mt-0.5">
-                                    <span class="material-symbols-outlined text-rose-600 dark:text-rose-400 text-sm">schedule</span>
+                                    <x-icon name="clock" class="w-4 h-4 text-rose-600 dark:text-rose-400" />
                                 </div>
                                 <div>
                                     <p class="text-sm font-semibold text-gray-900 dark:text-white mb-1">Reschedule</p>
@@ -2574,7 +2585,7 @@ if (backToTopBtn) {
                             </div>
                             <div class="flex items-start gap-3 p-4 bg-white dark:bg-gray-700/30 rounded-xl border border-gray-200 dark:border-gray-600 hover:border-rose-300 dark:hover:border-rose-700 transition-colors">
                                 <div class="w-5 h-5 rounded-full bg-rose-100 dark:bg-rose-900/30 flex items-center justify-center flex-shrink-0 mt-0.5">
-                                    <span class="material-symbols-outlined text-rose-600 dark:text-rose-400 text-sm">event_busy</span>
+                                    <x-icon name="calendar" class="w-4 h-4 text-rose-600 dark:text-rose-400" />
                                 </div>
                                 <div>
                                     <p class="text-sm font-semibold text-gray-900 dark:text-white mb-1">Reject dengan Alasan</p>
@@ -2584,7 +2595,7 @@ if (backToTopBtn) {
                         </div>
                         
                         <div class="mt-5 p-3 bg-rose-50 dark:bg-rose-900/20 rounded-xl border border-rose-200 dark:border-rose-800 flex items-start gap-2 guide-card">
-                            <span class="material-symbols-outlined text-rose-600 dark:text-rose-400 text-lg flex-shrink-0">alarm</span>
+                            <x-icon name="bell" class="w-5 h-5 text-rose-600 dark:text-rose-400 flex-shrink-0" />
                             <p class="text-xs text-rose-800 dark:text-rose-300 leading-relaxed">
                                 <strong>Responsif:</strong> Usahakan merespons pengajuan dalam 1x24 jam agar guru punya waktu memadai untuk persiapan mengajar.
                             </p>
@@ -2596,7 +2607,7 @@ if (backToTopBtn) {
                         <div class="bg-orange-50/50 dark:bg-orange-900/10 rounded-2xl p-6 mb-5 guide-card">
                             <div class="flex items-center justify-center mb-4">
                                 <div class="w-16 h-16 bg-orange-600 rounded-2xl flex items-center justify-center shadow-lg">
-                                    <span class="material-symbols-outlined text-white text-4xl">fact_check</span>
+                                    <x-icon name="clipboard-check" class="w-9 h-9 text-white" />
                                 </div>
                             </div>
                             <h3 class="text-lg font-bold text-gray-900 dark:text-white text-center mb-2">Review Perangkat Pembelajaran</h3>
@@ -2608,7 +2619,7 @@ if (backToTopBtn) {
                         <div class="space-y-3 guide-card">
                             <div class="flex items-start gap-3 p-4 bg-white dark:bg-gray-700/30 rounded-xl border border-gray-200 dark:border-gray-600 hover:border-orange-300 dark:hover:border-orange-700 transition-colors">
                                 <div class="w-5 h-5 rounded-full bg-orange-100 dark:bg-orange-900/30 flex items-center justify-center flex-shrink-0 mt-0.5">
-                                    <span class="material-symbols-outlined text-orange-600 dark:text-orange-400 text-sm">description</span>
+                                    <x-icon name="document" class="w-4 h-4 text-orange-600 dark:text-orange-400" />
                                 </div>
                                 <div>
                                     <p class="text-sm font-semibold text-gray-900 dark:text-white mb-1">Cek Kelengkapan RPP</p>
@@ -2617,7 +2628,7 @@ if (backToTopBtn) {
                             </div>
                             <div class="flex items-start gap-3 p-4 bg-white dark:bg-gray-700/30 rounded-xl border border-gray-200 dark:border-gray-600 hover:border-orange-300 dark:hover:border-orange-700 transition-colors">
                                 <div class="w-5 h-5 rounded-full bg-orange-100 dark:bg-orange-900/30 flex items-center justify-center flex-shrink-0 mt-0.5">
-                                    <span class="material-symbols-outlined text-orange-600 dark:text-orange-400 text-sm">rate_review</span>
+                                    <x-icon name="chat-bubble" class="w-4 h-4 text-orange-600 dark:text-orange-400" />
                                 </div>
                                 <div>
                                     <p class="text-sm font-semibold text-gray-900 dark:text-white mb-1">Berikan Feedback Konstruktif</p>
@@ -2626,7 +2637,7 @@ if (backToTopBtn) {
                             </div>
                             <div class="flex items-start gap-3 p-4 bg-white dark:bg-gray-700/30 rounded-xl border border-gray-200 dark:border-gray-600 hover:border-orange-300 dark:hover:border-orange-700 transition-colors">
                                 <div class="w-5 h-5 rounded-full bg-orange-100 dark:bg-orange-900/30 flex items-center justify-center flex-shrink-0 mt-0.5">
-                                    <span class="material-symbols-outlined text-orange-600 dark:text-orange-400 text-sm">task_alt</span>
+                                    <x-icon name="check-circle" class="w-4 h-4 text-orange-600 dark:text-orange-400" />
                                 </div>
                                 <div>
                                     <p class="text-sm font-semibold text-gray-900 dark:text-white mb-1">Approve atau Revise</p>
@@ -2636,7 +2647,7 @@ if (backToTopBtn) {
                         </div>
                         
                         <div class="mt-5 p-3 bg-amber-50 dark:bg-amber-900/20 rounded-xl border border-amber-200 dark:border-amber-800 flex items-start gap-2 guide-card">
-                            <span class="material-symbols-outlined text-amber-600 dark:text-amber-400 text-lg flex-shrink-0">lightbulb</span>
+                            <x-icon name="light-bulb" class="w-5 h-5 text-amber-600 dark:text-amber-400 flex-shrink-0" />
                             <p class="text-xs text-amber-800 dark:text-amber-300 leading-relaxed">
                                 <strong>Tips:</strong> Gunakan fitur komentar inline untuk feedback yang lebih spesifik pada bagian tertentu dari dokumen.
                             </p>
@@ -2648,7 +2659,7 @@ if (backToTopBtn) {
                         <div class="bg-teal-50/50 dark:bg-teal-900/10 rounded-2xl p-6 mb-5 guide-card">
                             <div class="flex items-center justify-center mb-4">
                                 <div class="w-16 h-16 bg-teal-600 rounded-2xl flex items-center justify-center shadow-lg">
-                                    <span class="material-symbols-outlined text-white text-4xl">visibility</span>
+                                    <x-icon name="eye" class="w-9 h-9 text-white" />
                                 </div>
                             </div>
                             <h3 class="text-lg font-bold text-gray-900 dark:text-white text-center mb-2">Observasi Pembelajaran</h3>
@@ -2660,7 +2671,7 @@ if (backToTopBtn) {
                         <div class="space-y-3 guide-card">
                             <div class="flex items-start gap-3 p-4 bg-white dark:bg-gray-700/30 rounded-xl border border-gray-200 dark:border-gray-600 hover:border-teal-300 dark:hover:border-teal-700 transition-colors">
                                 <div class="w-5 h-5 rounded-full bg-teal-100 dark:bg-teal-900/30 flex items-center justify-center flex-shrink-0 mt-0.5">
-                                    <span class="material-symbols-outlined text-teal-600 dark:text-teal-400 text-sm">checklist</span>
+                                    <x-icon name="clipboard-check" class="w-4 h-4 text-teal-600 dark:text-teal-400" />
                                 </div>
                                 <div>
                                     <p class="text-sm font-semibold text-gray-900 dark:text-white mb-1">Isi Instrumen Digital</p>
@@ -2669,7 +2680,7 @@ if (backToTopBtn) {
                             </div>
                             <div class="flex items-start gap-3 p-4 bg-white dark:bg-gray-700/30 rounded-xl border border-gray-200 dark:border-gray-600 hover:border-teal-300 dark:hover:border-teal-700 transition-colors">
                                 <div class="w-5 h-5 rounded-full bg-teal-100 dark:bg-teal-900/30 flex items-center justify-center flex-shrink-0 mt-0.5">
-                                    <span class="material-symbols-outlined text-teal-600 dark:text-teal-400 text-sm">photo_camera</span>
+                                    <x-icon name="photo" class="w-4 h-4 text-teal-600 dark:text-teal-400" />
                                 </div>
                                 <div>
                                     <p class="text-sm font-semibold text-gray-900 dark:text-white mb-1">Dokumentasi Visual</p>
@@ -2678,7 +2689,7 @@ if (backToTopBtn) {
                             </div>
                             <div class="flex items-start gap-3 p-4 bg-white dark:bg-gray-700/30 rounded-xl border border-gray-200 dark:border-gray-600 hover:border-teal-300 dark:hover:border-teal-700 transition-colors">
                                 <div class="w-5 h-5 rounded-full bg-teal-100 dark:bg-teal-900/30 flex items-center justify-center flex-shrink-0 mt-0.5">
-                                    <span class="material-symbols-outlined text-teal-600 dark:text-teal-400 text-sm">edit_note</span>
+                                    <x-icon name="pencil" class="w-4 h-4 text-teal-600 dark:text-teal-400" />
                                 </div>
                                 <div>
                                     <p class="text-sm font-semibold text-gray-900 dark:text-white mb-1">Catatan Lapangan</p>
@@ -2688,7 +2699,7 @@ if (backToTopBtn) {
                         </div>
                         
                         <div class="mt-5 p-3 bg-teal-50 dark:bg-teal-900/20 rounded-xl border border-teal-200 dark:border-teal-800 flex items-start gap-2 guide-card">
-                            <span class="material-symbols-outlined text-teal-600 dark:text-teal-400 text-lg flex-shrink-0">timer</span>
+                            <x-icon name="clock" class="w-5 h-5 text-teal-600 dark:text-teal-400 flex-shrink-0" />
                             <p class="text-xs text-teal-800 dark:text-teal-300 leading-relaxed">
                                 <strong>Objektif:</strong> Observasi dilakukan minimal 1 jam pelajaran penuh untuk mendapat gambaran utuh proses pembelajaran.
                             </p>
@@ -2700,7 +2711,7 @@ if (backToTopBtn) {
                         <div class="bg-primary-50/50 dark:bg-primary-900/10 rounded-2xl p-6 mb-5 guide-card">
                             <div class="flex items-center justify-center mb-4">
                                 <div class="w-16 h-16 bg-primary-600 rounded-2xl flex items-center justify-center shadow-lg">
-                                    <span class="material-symbols-outlined text-white text-4xl">rate_review</span>
+                                    <x-icon name="chat-bubble" class="w-9 h-9 text-white" />
                                 </div>
                             </div>
                             <h3 class="text-lg font-bold text-gray-900 dark:text-white text-center mb-2">Finalisasi & Tindak Lanjut</h3>
@@ -2712,7 +2723,7 @@ if (backToTopBtn) {
                         <div class="space-y-3 guide-card">
                             <div class="flex items-start gap-3 p-4 bg-white dark:bg-gray-700/30 rounded-xl border border-gray-200 dark:border-gray-600 hover:border-primary-300 dark:hover:border-primary-700 transition-colors">
                                 <div class="w-5 h-5 rounded-full bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center flex-shrink-0 mt-0.5">
-                                    <span class="material-symbols-outlined text-primary-600 dark:text-primary-400 text-sm">stars</span>
+                                    <x-icon name="star" class="w-4 h-4 text-primary-600 dark:text-primary-400" />
                                 </div>
                                 <div>
                                     <p class="text-sm font-semibold text-gray-900 dark:text-white mb-1">Input Skor Final</p>
@@ -2721,7 +2732,7 @@ if (backToTopBtn) {
                             </div>
                             <div class="flex items-start gap-3 p-4 bg-white dark:bg-gray-700/30 rounded-xl border border-gray-200 dark:border-gray-600 hover:border-primary-300 dark:hover:border-primary-700 transition-colors">
                                 <div class="w-5 h-5 rounded-full bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center flex-shrink-0 mt-0.5">
-                                    <span class="material-symbols-outlined text-primary-600 dark:text-primary-400 text-sm">psychology</span>
+                                    <x-icon name="light-bulb" class="w-4 h-4 text-primary-600 dark:text-primary-400" />
                                 </div>
                                 <div>
                                     <p class="text-sm font-semibold text-gray-900 dark:text-white mb-1">Feedback Pengembangan</p>
@@ -2730,7 +2741,7 @@ if (backToTopBtn) {
                             </div>
                             <div class="flex items-start gap-3 p-4 bg-white dark:bg-gray-700/30 rounded-xl border border-gray-200 dark:border-gray-600 hover:border-primary-300 dark:hover:border-primary-700 transition-colors">
                                 <div class="w-5 h-5 rounded-full bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center flex-shrink-0 mt-0.5">
-                                    <span class="material-symbols-outlined text-primary-600 dark:text-primary-400 text-sm">rocket_launch</span>
+                                    <x-icon name="paper-airplane" class="w-4 h-4 text-primary-600 dark:text-primary-400" />
                                 </div>
                                 <div>
                                     <p class="text-sm font-semibold text-gray-900 dark:text-white mb-1">Rencana Tindak Lanjut</p>
@@ -2740,7 +2751,7 @@ if (backToTopBtn) {
                         </div>
                         
                         <div class="mt-5 p-3 bg-gradient-to-r from-primary-50 to-pink-50 dark:from-primary-900/20 dark:to-pink-900/20 rounded-xl border border-primary-200 dark:border-primary-800 flex items-start gap-2 guide-card">
-                            <span class="material-symbols-outlined text-primary-600 dark:text-primary-400 text-lg flex-shrink-0">workspace_premium</span>
+                            <x-icon name="star" class="w-5 h-5 text-primary-600 dark:text-primary-400 flex-shrink-0" />
                             <p class="text-xs text-primary-800 dark:text-primary-300 leading-relaxed">
                                 <strong>Apresiasi:</strong> Jangan lupa berikan apresiasi untuk aspek positif yang telah dilakukan guru dengan baik.
                             </p>
@@ -2754,7 +2765,7 @@ if (backToTopBtn) {
                         <div class="bg-blue-50/50 dark:bg-blue-900/10 rounded-2xl p-6 mb-5 guide-card">
                             <div class="flex items-center justify-center mb-4">
                                 <div class="w-16 h-16 bg-blue-600 rounded-2xl flex items-center justify-center shadow-lg">
-                                    <span class="material-symbols-outlined text-white text-4xl">edit_calendar</span>
+                                    <x-icon name="pencil" class="w-9 h-9 text-white" />
                                 </div>
                             </div>
                             <h3 class="text-lg font-bold text-gray-900 dark:text-white text-center mb-2">Ajukan Jadwal Supervisi</h3>
@@ -2766,7 +2777,7 @@ if (backToTopBtn) {
                         <div class="space-y-3 guide-card">
                             <div class="flex items-start gap-3 p-4 bg-white dark:bg-gray-700/30 rounded-xl border border-gray-200 dark:border-gray-600 hover:border-blue-300 dark:hover:border-blue-700 transition-colors">
                                 <div class="w-5 h-5 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center flex-shrink-0 mt-0.5">
-                                    <span class="material-symbols-outlined text-blue-600 dark:text-blue-400 text-sm">event</span>
+                                    <x-icon name="calendar" class="w-4 h-4 text-blue-600 dark:text-blue-400" />
                                 </div>
                                 <div>
                                     <p class="text-sm font-semibold text-gray-900 dark:text-white mb-1">Pilih Tanggal & Waktu</p>
@@ -2775,7 +2786,7 @@ if (backToTopBtn) {
                             </div>
                             <div class="flex items-start gap-3 p-4 bg-white dark:bg-gray-700/30 rounded-xl border border-gray-200 dark:border-gray-600 hover:border-blue-300 dark:hover:border-blue-700 transition-colors">
                                 <div class="w-5 h-5 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center flex-shrink-0 mt-0.5">
-                                    <span class="material-symbols-outlined text-blue-600 dark:text-blue-400 text-sm">description</span>
+                                    <x-icon name="document" class="w-4 h-4 text-blue-600 dark:text-blue-400" />
                                 </div>
                                 <div>
                                     <p class="text-sm font-semibold text-gray-900 dark:text-white mb-1">Siapkan Dokumen Awal</p>
@@ -2784,7 +2795,7 @@ if (backToTopBtn) {
                             </div>
                             <div class="flex items-start gap-3 p-4 bg-white dark:bg-gray-700/30 rounded-xl border border-gray-200 dark:border-gray-600 hover:border-blue-300 dark:hover:border-blue-700 transition-colors">
                                 <div class="w-5 h-5 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center flex-shrink-0 mt-0.5">
-                                    <span class="material-symbols-outlined text-blue-600 dark:text-blue-400 text-sm">notes</span>
+                                    <x-icon name="document" class="w-4 h-4 text-blue-600 dark:text-blue-400" />
                                 </div>
                                 <div>
                                     <p class="text-sm font-semibold text-gray-900 dark:text-white mb-1">Isi Catatan Tambahan</p>
@@ -2794,7 +2805,7 @@ if (backToTopBtn) {
                         </div>
                         
                         <div class="mt-5 p-3 bg-amber-50 dark:bg-amber-900/20 rounded-xl border border-amber-200 dark:border-amber-800 flex items-start gap-2 guide-card">
-                            <span class="material-symbols-outlined text-amber-600 dark:text-amber-400 text-lg flex-shrink-0">schedule</span>
+                            <x-icon name="clock" class="w-5 h-5 text-amber-600 dark:text-amber-400 flex-shrink-0" />
                             <p class="text-xs text-amber-800 dark:text-amber-300 leading-relaxed">
                                 <strong>Waktu Ideal:</strong> Ajukan supervisi minimal 3 hari kerja sebelumnya agar kepala sekolah memiliki waktu cukup untuk persiapan dan review dokumen.
                             </p>
@@ -2806,7 +2817,7 @@ if (backToTopBtn) {
                         <div class="bg-primary-50/50 dark:bg-primary-900/10 rounded-2xl p-6 mb-5 guide-card">
                             <div class="flex items-center justify-center mb-4">
                                 <div class="w-16 h-16 bg-primary-600 rounded-2xl flex items-center justify-center shadow-lg">
-                                    <span class="material-symbols-outlined text-white text-4xl">upload_file</span>
+                                    <x-icon name="arrow-down-tray" class="w-9 h-9 text-white" />
                                 </div>
                             </div>
                             <h3 class="text-lg font-bold text-gray-900 dark:text-white text-center mb-2">Lengkapi Dokumen</h3>
@@ -2818,7 +2829,7 @@ if (backToTopBtn) {
                         <div class="space-y-3 guide-card">
                             <div class="flex items-start gap-3 p-4 bg-white dark:bg-gray-700/30 rounded-xl border border-gray-200 dark:border-gray-600 hover:border-primary-300 dark:hover:border-primary-700 transition-colors">
                                 <div class="w-5 h-5 rounded-full bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center flex-shrink-0 mt-0.5">
-                                    <span class="material-symbols-outlined text-primary-600 dark:text-primary-400 text-sm">description</span>
+                                    <x-icon name="document" class="w-4 h-4 text-primary-600 dark:text-primary-400" />
                                 </div>
                                 <div>
                                     <p class="text-sm font-semibold text-gray-900 dark:text-white mb-1">RPP/Modul Ajar (Wajib)</p>
@@ -2827,7 +2838,7 @@ if (backToTopBtn) {
                             </div>
                             <div class="flex items-start gap-3 p-4 bg-white dark:bg-gray-700/30 rounded-xl border border-gray-200 dark:border-gray-600 hover:border-primary-300 dark:hover:border-primary-700 transition-colors">
                                 <div class="w-5 h-5 rounded-full bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center flex-shrink-0 mt-0.5">
-                                    <span class="material-symbols-outlined text-primary-600 dark:text-primary-400 text-sm">video_library</span>
+                                    <x-icon name="video-camera" class="w-4 h-4 text-primary-600 dark:text-primary-400" />
                                 </div>
                                 <div>
                                     <p class="text-sm font-semibold text-gray-900 dark:text-white mb-1">Media Pembelajaran (Opsional)</p>
@@ -2836,7 +2847,7 @@ if (backToTopBtn) {
                             </div>
                             <div class="flex items-start gap-3 p-4 bg-white dark:bg-gray-700/30 rounded-xl border border-gray-200 dark:border-gray-600 hover:border-primary-300 dark:hover:border-primary-700 transition-colors">
                                 <div class="w-5 h-5 rounded-full bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center flex-shrink-0 mt-0.5">
-                                    <span class="material-symbols-outlined text-primary-600 dark:text-primary-400 text-sm">assignment</span>
+                                    <x-icon name="document" class="w-4 h-4 text-primary-600 dark:text-primary-400" />
                                 </div>
                                 <div>
                                     <p class="text-sm font-semibold text-gray-900 dark:text-white mb-1">Instrumen Penilaian</p>
@@ -2846,7 +2857,7 @@ if (backToTopBtn) {
                         </div>
                         
                         <div class="mt-5 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-xl border border-blue-200 dark:border-blue-800 flex items-start gap-2 guide-card">
-                            <span class="material-symbols-outlined text-blue-600 dark:text-blue-400 text-lg flex-shrink-0">cloud_upload</span>
+                            <x-icon name="arrow-down-tray" class="w-5 h-5 text-blue-600 dark:text-blue-400 flex-shrink-0" />
                             <p class="text-xs text-blue-800 dark:text-blue-300 leading-relaxed">
                                 <strong>Upload:</strong> Sistem mendukung drag & drop. File otomatis tersimpan dan bisa direvisi sebelum pengajuan final.
                             </p>
@@ -2858,7 +2869,7 @@ if (backToTopBtn) {
                         <div class="bg-amber-50/50 dark:bg-amber-900/10 rounded-2xl p-6 mb-5 guide-card">
                             <div class="flex items-center justify-center mb-4">
                                 <div class="w-16 h-16 bg-amber-500 rounded-2xl flex items-center justify-center shadow-lg">
-                                    <span class="material-symbols-outlined text-white text-4xl">notifications_active</span>
+                                    <x-icon name="bell" class="w-9 h-9 text-white" />
                                 </div>
                             </div>
                             <h3 class="text-lg font-bold text-gray-900 dark:text-white text-center mb-2">Pantau Status</h3>
@@ -2870,7 +2881,7 @@ if (backToTopBtn) {
                         <div class="space-y-3 guide-card">
                             <div class="flex items-start gap-3 p-4 bg-white dark:bg-gray-700/30 rounded-xl border border-gray-200 dark:border-gray-600 hover:border-amber-300 dark:hover:border-amber-700 transition-colors">
                                 <div class="w-5 h-5 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center flex-shrink-0 mt-0.5">
-                                    <span class="material-symbols-outlined text-blue-600 dark:text-blue-400 text-sm">pending</span>
+                                    <x-icon name="clock" class="w-4 h-4 text-blue-600 dark:text-blue-400" />
                                 </div>
                                 <div>
                                     <p class="text-sm font-semibold text-gray-900 dark:text-white mb-1">Status: Disubmit</p>
@@ -2879,7 +2890,7 @@ if (backToTopBtn) {
                             </div>
                             <div class="flex items-start gap-3 p-4 bg-white dark:bg-gray-700/30 rounded-xl border border-gray-200 dark:border-gray-600 hover:border-amber-300 dark:hover:border-amber-700 transition-colors">
                                 <div class="w-5 h-5 rounded-full bg-amber-100 dark:bg-amber-900/30 flex items-center justify-center flex-shrink-0 mt-0.5">
-                                    <span class="material-symbols-outlined text-amber-600 dark:text-amber-400 text-sm">edit_note</span>
+                                    <x-icon name="pencil" class="w-4 h-4 text-amber-600 dark:text-amber-400" />
                                 </div>
                                 <div>
                                     <p class="text-sm font-semibold text-gray-900 dark:text-white mb-1">Status: Revisi</p>
@@ -2888,7 +2899,7 @@ if (backToTopBtn) {
                             </div>
                             <div class="flex items-start gap-3 p-4 bg-white dark:bg-gray-700/30 rounded-xl border border-gray-200 dark:border-gray-600 hover:border-amber-300 dark:hover:border-amber-700 transition-colors">
                                 <div class="w-5 h-5 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center flex-shrink-0 mt-0.5">
-                                    <span class="material-symbols-outlined text-green-600 dark:text-green-400 text-sm">check_circle</span>
+                                    <x-icon name="check-circle" class="w-4 h-4 text-green-600 dark:text-green-400" />
                                 </div>
                                 <div>
                                     <p class="text-sm font-semibold text-gray-900 dark:text-white mb-1">Status: Selesai</p>
@@ -2898,7 +2909,7 @@ if (backToTopBtn) {
                         </div>
                         
                         <div class="mt-5 p-3 bg-primary-50 dark:bg-primary-900/20 rounded-xl border border-primary-200 dark:border-primary-800 flex items-start gap-2 guide-card">
-                            <span class="material-symbols-outlined text-primary-600 dark:text-primary-400 text-lg flex-shrink-0">mark_email_read</span>
+                            <x-icon name="check-circle" class="w-5 h-5 text-primary-600 dark:text-primary-400 flex-shrink-0" />
                             <p class="text-xs text-primary-800 dark:text-primary-300 leading-relaxed">
                                 <strong>Notifikasi:</strong> Email dan notifikasi in-app akan otomatis terkirim setiap ada update status atau feedback baru.
                             </p>
@@ -2910,7 +2921,7 @@ if (backToTopBtn) {
                         <div class="bg-emerald-50/50 dark:bg-emerald-900/10 rounded-2xl p-6 mb-5 guide-card">
                             <div class="flex items-center justify-center mb-4">
                                 <div class="w-16 h-16 bg-emerald-600 rounded-2xl flex items-center justify-center shadow-lg">
-                                    <span class="material-symbols-outlined text-white text-4xl">assignment_turned_in</span>
+                                    <x-icon name="clipboard-check" class="w-9 h-9 text-white" />
                                 </div>
                             </div>
                             <h3 class="text-lg font-bold text-gray-900 dark:text-white text-center mb-2">Hasil & Evaluasi</h3>
@@ -2922,7 +2933,7 @@ if (backToTopBtn) {
                         <div class="space-y-3 guide-card">
                             <div class="flex items-start gap-3 p-4 bg-white dark:bg-gray-700/30 rounded-xl border border-gray-200 dark:border-gray-600 hover:border-emerald-300 dark:hover:border-emerald-700 transition-colors">
                                 <div class="w-5 h-5 rounded-full bg-emerald-100 dark:bg-emerald-900/30 flex items-center justify-center flex-shrink-0 mt-0.5">
-                                    <span class="material-symbols-outlined text-emerald-600 dark:text-emerald-400 text-sm">star</span>
+                                    <x-icon name="star" class="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
                                 </div>
                                 <div>
                                     <p class="text-sm font-semibold text-gray-900 dark:text-white mb-1">Skor Penilaian</p>
@@ -2931,7 +2942,7 @@ if (backToTopBtn) {
                             </div>
                             <div class="flex items-start gap-3 p-4 bg-white dark:bg-gray-700/30 rounded-xl border border-gray-200 dark:border-gray-600 hover:border-emerald-300 dark:hover:border-emerald-700 transition-colors">
                                 <div class="w-5 h-5 rounded-full bg-emerald-100 dark:bg-emerald-900/30 flex items-center justify-center flex-shrink-0 mt-0.5">
-                                    <span class="material-symbols-outlined text-emerald-600 dark:text-emerald-400 text-sm">comment</span>
+                                    <x-icon name="chat-bubble" class="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
                                 </div>
                                 <div>
                                     <p class="text-sm font-semibold text-gray-900 dark:text-white mb-1">Feedback Kepala Sekolah</p>
@@ -2940,7 +2951,7 @@ if (backToTopBtn) {
                             </div>
                             <div class="flex items-start gap-3 p-4 bg-white dark:bg-gray-700/30 rounded-xl border border-gray-200 dark:border-gray-600 hover:border-emerald-300 dark:hover:border-emerald-700 transition-colors">
                                 <div class="w-5 h-5 rounded-full bg-emerald-100 dark:bg-emerald-900/30 flex items-center justify-center flex-shrink-0 mt-0.5">
-                                    <span class="material-symbols-outlined text-emerald-600 dark:text-emerald-400 text-sm">download</span>
+                                    <x-icon name="arrow-down-tray" class="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
                                 </div>
                                 <div>
                                     <p class="text-sm font-semibold text-gray-900 dark:text-white mb-1">Download Laporan</p>
@@ -2950,7 +2961,7 @@ if (backToTopBtn) {
                         </div>
                         
                         <div class="mt-5 p-3 bg-gradient-to-r from-emerald-50 to-teal-50 dark:from-emerald-900/20 dark:to-teal-900/20 rounded-xl border border-emerald-200 dark:border-emerald-800 flex items-start gap-2 guide-card">
-                            <span class="material-symbols-outlined text-emerald-600 dark:text-emerald-400 text-lg flex-shrink-0">workspace_premium</span>
+                            <x-icon name="star" class="w-5 h-5 text-emerald-600 dark:text-emerald-400 flex-shrink-0" />
                             <p class="text-xs text-emerald-800 dark:text-emerald-300 leading-relaxed">
                                 <strong>Sertifikat:</strong> Guru dengan performa konsisten akan mendapat sertifikat digital apresiasi di akhir semester.
                             </p>
@@ -2964,13 +2975,14 @@ if (backToTopBtn) {
         <div class="px-6 py-5 border-t border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800">
             <div class="flex items-center justify-between gap-3">
                 <button id="prevStepBtn" onclick="prevStep()" class="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 transition-all disabled:opacity-0 disabled:invisible">
-                    <span class="material-symbols-outlined text-lg">arrow_back</span>
+                    <x-icon name="arrow-left" class="w-5 h-5" />
                     <span>Kembali</span>
                 </button>
                 
                 <button id="nextStepBtn" onclick="nextStep()" class="flex items-center gap-2 px-6 py-2.5 rounded-xl text-sm font-semibold text-white @if(auth()->user()->role === 'admin') bg-primary-600 hover:bg-primary-700 @elseif(auth()->user()->role === 'kepala_sekolah') bg-rose-500 hover:bg-rose-600 @else bg-blue-600 hover:bg-blue-700 @endif transition-all shadow-sm">
                     <span id="nextStepText">Lanjut</span>
-                    <span class="material-symbols-outlined text-lg" id="nextStepIcon">arrow_forward</span>
+                    <x-icon name="arrow-right" id="nextStepIconNext" class="w-5 h-5" />
+                    <x-icon name="check-circle" id="nextStepIconDone" class="w-5 h-5 hidden" />
                 </button>
             </div>
             
@@ -3164,7 +3176,8 @@ function updateStepDisplay() {
     const prevBtn = document.getElementById('prevStepBtn');
     const nextBtn = document.getElementById('nextStepBtn');
     const nextText = document.getElementById('nextStepText');
-    const nextIcon = document.getElementById('nextStepIcon');
+    const nextIconNext = document.getElementById('nextStepIconNext');
+    const nextIconDone = document.getElementById('nextStepIconDone');
     
     if (prevBtn) {
         prevBtn.disabled = currentStep === 1;
@@ -3174,11 +3187,13 @@ function updateStepDisplay() {
     if (nextBtn && nextText) {
         if (currentStep === totalSteps) {
             nextText.textContent = 'Selesai';
-            if (nextIcon) nextIcon.textContent = 'check_circle';
+            if (nextIconNext) nextIconNext.classList.add('hidden');
+            if (nextIconDone) nextIconDone.classList.remove('hidden');
             nextBtn.onclick = closeGuideModal;
         } else {
             nextText.textContent = 'Lanjut';
-            if (nextIcon) nextIcon.textContent = 'arrow_forward';
+            if (nextIconNext) nextIconNext.classList.remove('hidden');
+            if (nextIconDone) nextIconDone.classList.add('hidden');
             nextBtn.onclick = nextStep;
         }
     }

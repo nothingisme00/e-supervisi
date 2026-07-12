@@ -47,7 +47,7 @@
                     @if($supervisi->status === 'submitted')
                         <form action="{{ route('kepala.evaluasi.startReview', $supervisi->id) }}" method="POST" class="mt-2">
                             @csrf
-                            <button type="submit" class="w-full inline-flex items-center justify-center px-3 py-2 sm:px-5 sm:py-2.5 bg-gradient-to-r from-primary-600 to-primary-600 hover:from-primary-700 hover:to-primary-700 text-white text-xs sm:text-sm font-bold rounded-lg shadow-md hover:shadow-lg transition-all duration-200 active:scale-95">
+                            <button type="submit" class="w-full inline-flex items-center justify-center px-3 py-2 sm:px-5 sm:py-2.5 bg-primary-600 hover:bg-primary-700 text-white text-xs sm:text-sm font-bold rounded-lg shadow-md hover:shadow-lg transition-all duration-200 active:scale-95">
                                 <svg class="w-4 h-4 sm:w-5 sm:h-5 mr-1.5 sm:mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path>
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
@@ -71,7 +71,7 @@
         <div class="space-y-4 sm:space-y-6">
 
             <!-- Card 1: Dokumen Evaluasi Diri -->
-            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+            <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
                 <!-- Card Header -->
                 <x-card-header title="Dokumen Evaluasi Diri" />
                 <!-- Card Content -->
@@ -90,7 +90,7 @@
                         @endphp
                         
                         @forelse($supervisi->dokumenEvaluasi as $index => $dokumen)
-                            <div class="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700/50 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200 border-b border-gray-200 dark:border-gray-600 last:border-b-0">
+                            <div class="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700/50 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200 border-b border-gray-200 dark:border-gray-600 last:border-b-0">
                                 <div class="flex items-center space-x-4">
                                     <!-- Nomor Urut -->
                                     <div class="shrink-0 w-8 text-center">
@@ -148,7 +148,7 @@
             </div>
 
             <!-- Card 2: Link Pembelajaran -->
-            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+            <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
                 <!-- Card Header -->
                 <x-card-header title="Link Pembelajaran" />
                 <!-- Card Content -->
@@ -193,7 +193,7 @@
                     </div>
                 </div>
             </div>            <!-- Card 3: Refleksi Pembelajaran -->
-            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+            <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
                 <!-- Card Header -->
                 <x-card-header title="Refleksi Pembelajaran" />
                 <!-- Card Content -->
@@ -212,7 +212,7 @@
 
                             @foreach($reflections as $index => $reflection)
                                 @if($reflection['value'])
-                                    <div class="p-4 bg-gray-50 dark:bg-gray-700/50 rounded-md border-b border-gray-200 dark:border-gray-600 last:border-b-0">
+                                    <div class="p-4 bg-gray-50 dark:bg-gray-700/50 rounded-lg border-b border-gray-200 dark:border-gray-600 last:border-b-0">
                                         <div class="flex items-start space-x-3">
                                             <div class="shrink-0 w-6 text-center">
                                                 <span class="text-sm font-semibold text-gray-600 dark:text-gray-300">{{ $index + 1 }}.</span>
@@ -238,7 +238,7 @@
 
             @if($supervisi->status !== 'submitted')
             <!-- Card 3.5: Rubrik Penilaian -->
-            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+            <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
                 <x-card-header title="Rubrik Penilaian" />
                 <div class="p-3 sm:p-4 md:p-6">
                     @if($supervisi->evaluasiRubrik)
@@ -269,186 +269,25 @@
             </div>
 
             <!-- Card 4: Riwayat Feedback & Diskusi -->
-            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+            <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
                 <!-- Card Header -->
                 <x-card-header title="Diskusi & Feedback" />
                 <!-- Card Content -->
                 <div class="p-3 sm:p-4 md:p-6">
-                    <!-- Feedback List -->
-                    <div class="space-y-2 sm:space-y-3 max-h-80 sm:max-h-96 overflow-y-auto mb-3 sm:mb-4">
-                    @if($supervisi->feedback && $supervisi->feedback->count() > 0)
-                        @foreach($supervisi->feedback->whereNull('parent_id')->sortByDesc('created_at') as $fb)
-                        <div class="border-l-4 {{ $fb->is_revision_request ? 'border-red-500 bg-red-50 dark:bg-red-900/20' : ($fb->user_id == auth()->id() ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20' : 'border-amber-500 bg-amber-50 dark:bg-amber-900/20') }} rounded-r-lg p-3 sm:p-4">
-                            <div class="flex items-start gap-2 sm:gap-3">
-                                <div class="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-br {{ $fb->user_id == auth()->id() ? 'from-primary-500 to-primary-700' : 'from-amber-500 to-orange-600' }} rounded-full flex items-center justify-center text-white text-xs sm:text-sm font-bold flex-shrink-0 shadow-md">
-                                    {{ strtoupper(substr($fb->user->name ?? 'U', 0, 2)) }}
-                                </div>
-                                <div class="flex-1 min-w-0">
-                                    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1 sm:gap-2 mb-1 sm:mb-2">
-                                        <div class="flex items-center gap-1.5 sm:gap-2 flex-wrap">
-                                            <span class="text-xs sm:text-sm font-semibold text-gray-900 dark:text-white">{{ $fb->user->name ?? 'User' }}</span>
-
-                                            @if($fb->user->role === 'kepala_sekolah')
-                                                <span class="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] sm:text-xs font-semibold bg-primary-100 text-primary-700 dark:bg-primary-900/40 dark:text-primary-300">Kepala Sekolah</span>
-                                            @elseif($fb->user_id == auth()->id())
-                                                <span class="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] sm:text-xs font-semibold bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-300">Anda</span>
-                                            @else
-                                                <span class="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] sm:text-xs font-semibold bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300">Guru</span>
-                                            @endif
-
-                                            @if($fb->is_revision_request)
-                                                <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-semibold bg-red-100 text-red-700 dark:bg-red-900/40 dark:text-red-300">
-                                                    <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
-                                                    </svg>
-                                                    Revisi Diminta
-                                                </span>
-                                            @endif
-                                        </div>
-                                        <div class="inline-flex items-center gap-1 text-[10px] sm:text-xs text-gray-500 dark:text-gray-400">
-                                            <svg class="w-3 h-3 sm:w-3.5 sm:h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                                            </svg>
-                                            {{ $fb->created_at->diffForHumans() }}
-                                        </div>
-                                    </div>
-                                    <p class="text-xs sm:text-sm text-gray-700 dark:text-gray-300 leading-relaxed">{{ $fb->komentar }}</p>
-
-                                    @if($fb->is_revision_request)
-                                        <div class="mt-3 p-3 bg-red-100 dark:bg-red-900/30 rounded-lg border border-red-200 dark:border-red-800/50">
-                                            <p class="text-xs font-semibold text-red-800 dark:text-red-300 mb-1">⚠️ Revisi Diminta</p>
-                                            <p class="text-xs text-red-700 dark:text-red-400">Guru akan melakukan revisi sesuai feedback di atas.</p>
-                                        </div>
-                                    @endif
-
-                                    <!-- Reply Button -->
-                                    @if($supervisi->status !== 'completed')
-                                    <div class="mt-3">
-                                        <button onclick="toggleReplyForm({{ $fb->id }})" class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 hover:bg-primary-50 dark:hover:bg-primary-900/20 rounded-lg transition-all">
-                                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6"></path>
-                                            </svg>
-                                            Balas
-                                        </button>
-                                    </div>
-
-                                    <!-- Reply Form -->
-                                    <div id="reply-form-{{ $fb->id }}" class="hidden mt-3 pl-4 border-l-2 border-primary-200 dark:border-primary-800">
-                                        <form action="{{ route('kepala.evaluasi.feedback', $supervisi->id) }}" method="POST" class="space-y-2">
-                                            @csrf
-                                            <input type="hidden" name="parent_id" value="{{ $fb->id }}">
-                                            <textarea
-                                                name="komentar"
-                                                rows="2"
-                                                required
-                                                minlength="10"
-                                                class="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-400 focus:border-primary-500 dark:focus:border-primary-400 bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 resize-none"
-                                                placeholder="Tulis balasan Anda..."></textarea>
-                                            <div class="flex gap-2">
-                                                <button type="submit" class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-primary-600 hover:bg-primary-700 text-white text-xs font-semibold rounded-lg transition-all">
-                                                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
-                                                    </svg>
-                                                    Kirim
-                                                </button>
-                                                <button type="button" onclick="toggleReplyForm({{ $fb->id }})" class="px-3 py-1.5 text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 text-xs font-semibold rounded-lg transition-all">
-                                                    Batal
-                                                </button>
-                                            </div>
-                                        </form>
-                                    </div>
-                                    @endif
-
-                                    <!-- Nested Replies -->
-                                    @if($fb->replies && $fb->replies->count() > 0)
-                                        <div class="mt-4 ml-6 space-y-3 pl-4 border-l-2 border-gray-200 dark:border-gray-700">
-                                            @foreach($fb->replies as $reply)
-                                            <div class="bg-gray-50 dark:bg-gray-900/30 rounded-lg p-3">
-                                                <div class="flex items-start gap-2">
-                                                    <div class="w-8 h-8 bg-gradient-to-br {{ $reply->user_id == auth()->id() ? 'from-blue-400 to-primary-500' : 'from-gray-400 to-gray-600' }} rounded-full flex items-center justify-center text-white text-xs font-bold flex-shrink-0">
-                                                        {{ strtoupper(substr($reply->user->name ?? 'U', 0, 2)) }}
-                                                    </div>
-                                                    <div class="flex-1 min-w-0">
-                                                        <div class="flex items-center gap-2 mb-1 flex-wrap">
-                                                            <span class="text-xs font-semibold text-gray-900 dark:text-white">{{ $reply->user->name ?? 'User' }}</span>
-
-                                                            @if($reply->user->role === 'kepala_sekolah')
-                                                                <span class="inline-flex items-center px-1.5 py-0.5 rounded text-xs font-semibold bg-primary-100 text-primary-700 dark:bg-primary-900/40 dark:text-primary-300">
-                                                                    <svg class="w-2.5 h-2.5 mr-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path>
-                                                                    </svg>
-                                                                    Kepsek
-                                                                </span>
-                                                            @elseif($reply->user_id == auth()->id())
-                                                                <span class="inline-flex items-center px-1.5 py-0.5 rounded text-xs font-semibold bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-300">
-                                                                    Anda
-                                                                </span>
-                                                            @endif
-
-                                                            <span class="text-xs text-gray-500 dark:text-gray-400">{{ $reply->created_at->diffForHumans() }}</span>
-                                                        </div>
-                                                        <p class="text-xs text-gray-700 dark:text-gray-300">{{ $reply->komentar }}</p>
-
-                                                        <!-- Reply to reply button -->
-                                                        @if($supervisi->status !== 'completed')
-                                                        <div class="mt-2">
-                                                            <button onclick="toggleReplyForm({{ $reply->id }})" class="inline-flex items-center gap-1 text-xs font-semibold text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300">
-                                                                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6"></path>
-                                                                </svg>
-                                                                Balas
-                                                            </button>
-                                                        </div>
-
-                                                        <!-- Reply to reply form -->
-                                                        <div id="reply-form-{{ $reply->id }}" class="hidden mt-2">
-                                                            <form action="{{ route('kepala.evaluasi.feedback', $supervisi->id) }}" method="POST" class="space-y-2">
-                                                                @csrf
-                                                                <input type="hidden" name="parent_id" value="{{ $fb->id }}">
-                                                                <textarea
-                                                                    name="komentar"
-                                                                    rows="2"
-                                                                    required
-                                                                    minlength="10"
-                                                                    class="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-400 bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 resize-none"
-                                                                    placeholder="Tulis balasan Anda..."></textarea>
-                                                                <div class="flex gap-2">
-                                                                    <button type="submit" class="inline-flex items-center gap-1 px-2 py-1 bg-primary-600 hover:bg-primary-700 text-white text-xs font-semibold rounded transition-all">
-                                                                        Kirim
-                                                                    </button>
-                                                                    <button type="button" onclick="toggleReplyForm({{ $reply->id }})" class="px-2 py-1 text-gray-600 dark:text-gray-400 text-xs font-semibold rounded transition-all">
-                                                                        Batal
-                                                                    </button>
-                                                                </div>
-                                                            </form>
-                                                        </div>
-                                                        @endif
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            @endforeach
-                                        </div>
-                                    @endif
-                                </div>
-                            </div>
-                        </div>
-                        @endforeach
-                    @else
-                        <div class="text-center py-8">
-                            <div class="w-12 h-12 bg-gray-100 dark:bg-gray-700 rounded-lg flex items-center justify-center mx-auto mb-3">
-                                <svg class="w-6 h-6 text-gray-400 dark:text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
-                                </svg>
-                            </div>
-                            <p class="text-gray-500 dark:text-gray-400 text-sm">Belum ada komentar</p>
-                        </div>
-                    @endif
-                    </div>
+                    @include('supervisi._feedback-thread', [
+                        'feedbacks' => $supervisi->feedback,
+                        'supervisi' => $supervisi,
+                        'action' => route('kepala.evaluasi.feedback', $supervisi->id),
+                        'readonly' => $supervisi->status === 'completed',
+                        'minlength' => 10,
+                        'revisionNoteTitle' => 'Revisi Diminta',
+                        'revisionNote' => 'Guru akan melakukan revisi sesuai feedback di atas.',
+                    ])
                 </div>
             </div>
 
             <!-- Card 5: Berikan Feedback -->
-            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+            <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
                 <!-- Card Header -->
                 <x-card-header title="Berikan Feedback" />
                 <!-- Card Content -->
@@ -575,7 +414,7 @@
                             rows="4"
                             required
                             minlength="10"
-                            class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-md focus:ring-2 focus:ring-red-500 dark:focus:ring-red-400 focus:border-red-500 dark:focus:border-red-400 bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 text-sm resize-none"
+                            class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-red-500 dark:focus:ring-red-400 focus:border-red-500 dark:focus:border-red-400 bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 text-sm resize-none"
                             placeholder="Jelaskan apa yang perlu direvisi..."
                         >{{ old('revision_notes') }}</textarea>
                         @error('revision_notes')
@@ -587,12 +426,12 @@
                         <button
                             type="button"
                             onclick="hideRevisionModal()"
-                            class="px-4 py-2 text-gray-900 dark:text-gray-100 bg-white hover:bg-gray-50 dark:bg-gray-700 dark:hover:bg-gray-600 text-sm font-medium rounded-md transition-colors border border-gray-300 dark:border-gray-600">
+                            class="px-4 py-2 text-gray-900 dark:text-gray-100 bg-white hover:bg-gray-50 dark:bg-gray-700 dark:hover:bg-gray-600 text-sm font-medium rounded-lg transition-colors border border-gray-300 dark:border-gray-600">
                             Batal
                         </button>
                         <button
                             type="submit"
-                            class="px-4 py-2 bg-red-600 hover:bg-red-700 dark:bg-red-500 dark:hover:bg-red-600 text-white text-sm font-medium rounded-md transition-colors">
+                            class="px-4 py-2 bg-red-600 hover:bg-red-700 dark:bg-red-500 dark:hover:bg-red-600 text-white text-sm font-medium rounded-lg transition-colors">
                             Kirim Permintaan Revisi
                         </button>
                     </div>
