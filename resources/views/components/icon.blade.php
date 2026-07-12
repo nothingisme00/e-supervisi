@@ -15,7 +15,8 @@
     Registry: bell, arrow-left, arrow-right, chevron-down, book-open, chat-bubble,
     exclamation-triangle, star, clipboard-check, clock, calendar, eye, eye-slash,
     document, check-circle, x-mark, plus, search, users, pencil, trash,
-    home, inbox, check, lock, id-card, sun, moon, key, information-circle, photo.
+    home, inbox, check, lock, id-card, sun, moon, key, information-circle, photo,
+    funnel.
 --}}
 @props(['name'])
 
@@ -31,6 +32,10 @@
 
         @case('calendar')
             <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5" />
+            @break
+
+        @case('funnel')
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 3c2.755 0 5.455.232 8.083.678.533.09.917.556.917 1.096v1.044a2.25 2.25 0 0 1-.659 1.591l-5.432 5.432a2.25 2.25 0 0 0-.659 1.591v2.927a2.25 2.25 0 0 1-1.244 2.013L9.75 21v-6.568a2.25 2.25 0 0 0-.659-1.591L3.659 7.409A2.25 2.25 0 0 1 3 5.818V4.774c0-.54.384-1.006.917-1.096A48.32 48.32 0 0 1 12 3Z" />
             @break
 
         @case('photo')

@@ -36,12 +36,9 @@ class StatusPillSingleSourceTest extends TestCase
     {
         // TODO Task 16: hapus setelah kepala/evaluasi/index.blade.php pakai <x-status-badge>
         // TODO Task 21: hapus setelah admin/modul/index.blade.php pakai <x-status-badge>
-        // TODO Task 12: hapus setelah pill Aktif/Nonaktif (+label drift 'Off')
-        //   di livewire/admin/user-management.blade.php diganti <x-status-badge>
         $whitelist = [
             'kepala/evaluasi/index.blade.php',
             'admin/modul/index.blade.php',
-            'livewire/admin/user-management.blade.php',
         ];
 
         $colorPattern = '/bg-(?:green|amber|blue|emerald|rose)-100\b/i';
