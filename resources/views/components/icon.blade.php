@@ -16,7 +16,7 @@
     exclamation-triangle, star, clipboard-check, clock, calendar, eye, eye-slash,
     document, check-circle, x-mark, plus, search, users, pencil, trash,
     home, inbox, check, lock, id-card, sun, moon, key, information-circle, photo,
-    funnel.
+    funnel, arrow-uturn-left, paper-airplane.
 --}}
 @props(['name'])
 
@@ -32,6 +32,14 @@
 
         @case('calendar')
             <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5" />
+            @break
+
+        @case('arrow-uturn-left')
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 15 3 9m0 0 6-6M3 9h12a6 6 0 0 1 0 12h-3" />
+            @break
+
+        @case('paper-airplane')
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 12 3.269 3.125A59.769 59.769 0 0 1 21.485 12 59.768 59.768 0 0 1 3.27 20.875L5.999 12Zm0 0h7.5" />
             @break
 
         @case('funnel')
