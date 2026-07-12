@@ -1,5 +1,7 @@
 @extends('layouts.modern')
 
+@section('page-title', 'Supervisi Pembelajaran')
+
 @section('content')
 <x-page-header title="Supervisi Pembelajaran" subtitle="Monitor dan evaluasi supervisi guru">
     <x-slot:actions>

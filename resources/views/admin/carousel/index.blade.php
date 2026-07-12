@@ -1,5 +1,7 @@
 @extends('layouts.modern')
 
+@section('page-title', 'Kelola Carousel')
+
 @section('content')
 @php
     $totalSlides = $slides->count();
