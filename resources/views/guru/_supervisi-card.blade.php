@@ -64,6 +64,9 @@
         </div>
     </div>
 
+    <!-- Video Hero (16:9, hanya saat ada video praktik) -->
+    <x-video-praktik-hero :supervisi="$supervisi" />
+
     <!-- Content Area -->
     <div class="px-3 py-2.5 sm:px-3 sm:py-2.5 md:px-4 md:py-3 bg-white dark:bg-gray-800 border-t border-gray-100 dark:border-gray-700">
         <!-- Info Cards (Dokumen & Proses) -->
@@ -89,8 +92,6 @@
                     <span class="text-[10px] sm:text-xs font-medium text-gray-500 dark:text-gray-400">Proses Belum</span>
                 </div>
             @endif
-
-            <x-video-praktik-badge :supervisi="$supervisi" />
 
             @if($supervisi->feedback->count() > 0)
                 <div class="flex items-center gap-1 sm:gap-1.5 md:gap-2 px-2 py-1 sm:px-2.5 sm:py-1.5 md:px-3 bg-primary-50 dark:bg-primary-900/20 rounded-lg md:rounded-lg border border-primary-100 dark:border-primary-800">

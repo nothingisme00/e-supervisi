@@ -17,7 +17,7 @@
     document, check-circle, x-mark, plus, search, users, pencil, trash,
     home, inbox, check, lock, id-card, sun, moon, key, information-circle, photo,
     funnel, arrow-uturn-left, paper-airplane, link, arrow-down-tray,
-    arrow-top-right-on-square, video-camera, light-bulb.
+    arrow-top-right-on-square, video-camera, light-bulb, play.
 --}}
 @props(['name'])
 
@@ -33,6 +33,10 @@
 
         @case('calendar')
             <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5" />
+            @break
+
+        @case('play')
+            <path stroke-linecap="round" stroke-linejoin="round" d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.347a1.125 1.125 0 0 1 0 1.972l-11.54 6.347a1.125 1.125 0 0 1-1.667-.986V5.653Z" />
             @break
 
         @case('video-camera')
