@@ -61,6 +61,26 @@ class EvaluasiController extends Controller
         return view('kepala.evaluasi.show', compact('supervisi'));
     }
 
+    public function showFeedback($id)
+    {
+        $supervisi = Supervisi::with([
+            'user',
+            'evaluasiRubrik.scores',
+            'feedback.user',
+            'feedback.replies.user',
+        ])->findOrFail($id);
+
+        if ($supervisi->user->tingkat !== auth()->user()->tingkat) {
+            abort(403, 'Anda tidak memiliki akses ke supervisi ini');
+        }
+
+        if (!in_array($supervisi->status, ['submitted', 'under_review', 'revision', 'completed'])) {
+            abort(403, 'Anda tidak memiliki akses ke supervisi ini');
+        }
+
+        return view('kepala.evaluasi.feedback', compact('supervisi'));
+    }
+
     public function startReview($id)
     {
         $supervisi = Supervisi::findOrFail($id);

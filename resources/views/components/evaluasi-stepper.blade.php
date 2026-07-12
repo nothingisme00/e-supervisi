@@ -26,7 +26,7 @@
               'url' => route('kepala.evaluasi.rubrik', $supervisi->id)],
         3 => ['label' => 'Feedback',
               'selesai' => $adaFeedbackKepala,
-              'url' => null], // diisi route feedback.show pada Task 3
+              'url' => route('kepala.evaluasi.feedback.show', $supervisi->id)],
         4 => ['label' => 'Selesai',
               'selesai' => $supervisi->status === 'completed',
               'url' => null],
