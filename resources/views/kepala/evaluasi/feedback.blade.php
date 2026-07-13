@@ -267,7 +267,6 @@ document.getElementById('revisionModal')?.addEventListener('click', function(e) 
 // Handle ESC key to close modals
 document.addEventListener('keydown', function(e) {
     if (e.key === 'Escape') {
-        closePreviewModal();
         hideRevisionModal();
     }
 });

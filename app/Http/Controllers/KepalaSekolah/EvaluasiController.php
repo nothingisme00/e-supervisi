@@ -44,6 +44,7 @@ class EvaluasiController extends Controller
             'user',
             'dokumenEvaluasi',
             'prosesPembelajaran',
+            'evaluasiRubrik.scores',
             'feedback.user',
             'feedback.replies.user'
         ])->findOrFail($id);
@@ -262,7 +263,7 @@ class EvaluasiController extends Controller
 
     public function showRubrik($id)
     {
-        $supervisi = Supervisi::with('user', 'evaluasiRubrik.scores')->findOrFail($id);
+        $supervisi = Supervisi::with('user', 'evaluasiRubrik.scores', 'feedback.user')->findOrFail($id);
 
         if ($supervisi->user->tingkat !== auth()->user()->tingkat) {
             abort(403, 'Anda tidak memiliki akses ke supervisi ini');

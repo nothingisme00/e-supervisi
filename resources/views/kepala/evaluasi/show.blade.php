@@ -203,6 +203,11 @@
                         <x-icon name="arrow-right" class="w-4 h-4" />
                     </x-button>
                 </form>
+            @elseif ($supervisi->status === 'completed')
+                <x-button href="{{ route('kepala.evaluasi.feedback.show', $supervisi->id) }}">
+                    Lihat Feedback
+                    <x-icon name="eye" class="w-4 h-4" />
+                </x-button>
             @else
                 <x-button href="{{ route('kepala.evaluasi.rubrik', $supervisi->id) }}">
                     Lanjut: Isi Rubrik

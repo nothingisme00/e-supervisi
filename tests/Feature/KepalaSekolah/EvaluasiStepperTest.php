@@ -77,4 +77,40 @@ class EvaluasiStepperTest extends TestCase
         $response->assertSee('id="btnLanjutFeedback"', false);
         $response->assertSee('Simpan Draf');
     }
+
+    public function test_show_completed_menawarkan_lihat_feedback(): void
+    {
+        [$kepala, $supervisi] = $this->kepalaDanSupervisi('completed');
+
+        $response = $this->actingAs($kepala)->get(route('kepala.evaluasi.show', $supervisi->id));
+
+        $response->assertSee('Lihat Feedback');
+        $response->assertDontSee('Lanjut: Isi Rubrik');
+    }
+
+    public function test_halaman_stepper_tidak_lazy_load_relasi(): void
+    {
+        [$kepala, $supervisi] = $this->kepalaDanSupervisi('under_review');
+        \App\Models\Feedback::create([
+            'supervisi_id' => $supervisi->id,
+            'user_id' => $kepala->id,
+            'komentar' => 'Feedback untuk uji lazy loading stepper.',
+        ]);
+
+        // Stepper membaca evaluasiRubrik.scores dan feedback.user di ketiga halaman;
+        // relasi itu wajib di-eager-load agar tak ada kueri lazy per-render.
+        $this->actingAs($kepala);
+
+        \Illuminate\Support\Facades\DB::enableQueryLog();
+        $this->get(route('kepala.evaluasi.show', $supervisi->id))->assertOk();
+        $queriesShow = count(\Illuminate\Support\Facades\DB::getQueryLog());
+        \Illuminate\Support\Facades\DB::flushQueryLog();
+
+        $this->get(route('kepala.evaluasi.rubrik', $supervisi->id))->assertOk();
+        $queriesRubrik = count(\Illuminate\Support\Facades\DB::getQueryLog());
+        \Illuminate\Support\Facades\DB::disableQueryLog();
+
+        $this->assertLessThanOrEqual(25, $queriesShow, "Kueri halaman show: {$queriesShow}");
+        $this->assertLessThanOrEqual(25, $queriesRubrik, "Kueri halaman rubrik: {$queriesRubrik}");
+    }
 }
