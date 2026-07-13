@@ -151,7 +151,7 @@ class EvaluasiController extends Controller
                 report($e);
             }
 
-            return redirect()->route('kepala.evaluasi.show', $id)
+            return redirect()->route('kepala.evaluasi.feedback.show', $id)
                 ->with('success', 'Permintaan revisi berhasil dikirim ke guru');
         }
 
@@ -171,7 +171,7 @@ class EvaluasiController extends Controller
             report($e);
         }
 
-        return redirect()->route('kepala.evaluasi.show', $id)
+        return redirect()->route('kepala.evaluasi.feedback.show', $id)
             ->with('success', 'Feedback berhasil diberikan');
 
     }
@@ -303,8 +303,13 @@ class EvaluasiController extends Controller
             $validated['masukan_umum'] ?? null
         );
 
-        return redirect()->route('kepala.evaluasi.show', $id)
-            ->with('success', 'Rubrik penilaian berhasil disimpan');
+        if ($request->boolean('lanjut')) {
+            return redirect()->route('kepala.evaluasi.feedback.show', $id)
+                ->with('success', 'Rubrik penilaian berhasil disimpan');
+        }
+
+        return redirect()->route('kepala.evaluasi.rubrik', $id)
+            ->with('success', 'Draf rubrik tersimpan');
     }
 
     public function exportRubrikPdf($id)

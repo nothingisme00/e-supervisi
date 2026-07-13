@@ -66,4 +66,29 @@ class EvaluasiFeedbackPageTest extends TestCase
         $response->assertSee('Ke Langkah 1');
         $response->assertDontSee('Komentar dan Saran');
     }
+
+    public function test_simpan_rubrik_dengan_lanjut_redirect_ke_halaman_feedback(): void
+    {
+        [$kepala, $supervisi] = $this->kepalaDanSupervisi();
+        \App\Models\RubrikItem::query()->delete();
+        $item = \App\Models\RubrikItem::create(['kode' => 'T.1', 'section' => 'A', 'section_label' => 'Tes', 'kelompok_nomor' => 1, 'kelompok_label' => 'Tes', 'sub_label' => 'Tes 1', 'urutan' => 1, 'is_active' => true]);
+
+        $response = $this->actingAs($kepala)->post(route('kepala.evaluasi.rubrik.store', $supervisi->id), [
+            'skor' => [$item->id => 2],
+            'lanjut' => '1',
+        ]);
+
+        $response->assertRedirect(route('kepala.evaluasi.feedback.show', $supervisi->id));
+    }
+
+    public function test_kirim_feedback_redirect_ke_halaman_feedback(): void
+    {
+        [$kepala, $supervisi] = $this->kepalaDanSupervisi();
+
+        $response = $this->actingAs($kepala)->post(route('kepala.evaluasi.feedback', $supervisi->id), [
+            'komentar' => 'Feedback minimal sepuluh karakter.',
+        ]);
+
+        $response->assertRedirect(route('kepala.evaluasi.feedback.show', $supervisi->id));
+    }
 }
