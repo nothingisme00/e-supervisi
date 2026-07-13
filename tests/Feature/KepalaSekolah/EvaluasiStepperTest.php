@@ -65,4 +65,16 @@ class EvaluasiStepperTest extends TestCase
         // Label textarea form feedback (Card 5 lama) — kini hanya boleh ada di halaman feedback.
         $response->assertDontSee('Komentar dan Saran');
     }
+
+    public function test_halaman_rubrik_menampilkan_stepper_dan_tombol_lanjut_feedback(): void
+    {
+        [$kepala, $supervisi] = $this->kepalaDanSupervisi('under_review');
+
+        $response = $this->actingAs($kepala)->get(route('kepala.evaluasi.rubrik', $supervisi->id));
+
+        $response->assertSee('data-stepper-step="2" data-status="aktif"', false);
+        $response->assertSee('Simpan & Lanjut Feedback');
+        $response->assertSee('id="btnLanjutFeedback"', false);
+        $response->assertSee('Simpan Draf');
+    }
 }

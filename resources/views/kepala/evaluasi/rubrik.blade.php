@@ -14,6 +14,9 @@
         subtitle="{{ $supervisi->user->name }} • {{ optional($supervisi->tanggal_supervisi)->translatedFormat('d F Y') }}"
         :back-url="route('kepala.evaluasi.show', $supervisi->id)" />
 
+    <x-evaluasi-guru-header :supervisi="$supervisi" />
+    <x-evaluasi-stepper :supervisi="$supervisi" :aktif="2" />
+
     <form method="POST" action="{{ route('kepala.evaluasi.rubrik.store', $supervisi->id) }}" id="rubrikForm">
         @csrf
 
@@ -92,10 +95,19 @@
                     label="Nama Pengawas Madrasah (opsional)"
                     value="{{ optional($supervisi->evaluasiRubrik)->nama_pengawas }}" />
             </x-card>
-            <x-button type="submit" class="w-full justify-center">
-                Simpan Rubrik Penilaian
-            </x-button>
         </div>
+
+        <x-evaluasi-action-bar :langkah="2" judul="Isi Rubrik Penilaian">
+            <x-button href="{{ route('kepala.evaluasi.show', $supervisi->id) }}" variant="secondary">
+                <x-icon name="arrow-left" class="w-4 h-4" />
+                Kembali
+            </x-button>
+            <x-button type="submit" variant="secondary">Simpan Draf</x-button>
+            <x-button type="submit" id="btnLanjutFeedback" name="lanjut" value="1" disabled>
+                Simpan &amp; Lanjut Feedback
+                <x-icon name="arrow-right" class="w-4 h-4" />
+            </x-button>
+        </x-evaluasi-action-bar>
     </form>
 </div>
 
@@ -122,6 +134,9 @@ function rubrikUpdateProgress() {
     groups.forEach(g => { if (g.querySelector('.rubrik-radio:checked')) filled++; });
     document.getElementById('rubrikProgressCount').textContent = filled;
     document.getElementById('rubrikProgressBar').style.width = (filled / groups.length * 100) + '%';
+
+    const btnLanjut = document.getElementById('btnLanjutFeedback');
+    if (btnLanjut) btnLanjut.disabled = filled < groups.length;
 
     // Hitungan terisi per bagian di tombol step nav
     document.querySelectorAll('.rubrik-step-content').forEach(section => {
