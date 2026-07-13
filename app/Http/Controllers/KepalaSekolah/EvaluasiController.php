@@ -44,6 +44,7 @@ class EvaluasiController extends Controller
             'user',
             'dokumenEvaluasi',
             'prosesPembelajaran',
+            'evaluasiRubrik.scores',
             'feedback.user',
             'feedback.replies.user'
         ])->findOrFail($id);
@@ -59,6 +60,26 @@ class EvaluasiController extends Controller
         // Don't auto mark - let kepala sekolah explicitly start review
 
         return view('kepala.evaluasi.show', compact('supervisi'));
+    }
+
+    public function showFeedback($id)
+    {
+        $supervisi = Supervisi::with([
+            'user',
+            'evaluasiRubrik.scores',
+            'feedback.user',
+            'feedback.replies.user',
+        ])->findOrFail($id);
+
+        if ($supervisi->user->tingkat !== auth()->user()->tingkat) {
+            abort(403, 'Anda tidak memiliki akses ke supervisi ini');
+        }
+
+        if (!in_array($supervisi->status, ['submitted', 'under_review', 'revision', 'completed'])) {
+            abort(403, 'Anda tidak memiliki akses ke supervisi ini');
+        }
+
+        return view('kepala.evaluasi.feedback', compact('supervisi'));
     }
 
     public function startReview($id)
@@ -131,7 +152,7 @@ class EvaluasiController extends Controller
                 report($e);
             }
 
-            return redirect()->route('kepala.evaluasi.show', $id)
+            return redirect()->route('kepala.evaluasi.feedback.show', $id)
                 ->with('success', 'Permintaan revisi berhasil dikirim ke guru');
         }
 
@@ -151,7 +172,7 @@ class EvaluasiController extends Controller
             report($e);
         }
 
-        return redirect()->route('kepala.evaluasi.show', $id)
+        return redirect()->route('kepala.evaluasi.feedback.show', $id)
             ->with('success', 'Feedback berhasil diberikan');
 
     }
@@ -242,7 +263,7 @@ class EvaluasiController extends Controller
 
     public function showRubrik($id)
     {
-        $supervisi = Supervisi::with('user', 'evaluasiRubrik.scores')->findOrFail($id);
+        $supervisi = Supervisi::with('user', 'evaluasiRubrik.scores', 'feedback.user')->findOrFail($id);
 
         if ($supervisi->user->tingkat !== auth()->user()->tingkat) {
             abort(403, 'Anda tidak memiliki akses ke supervisi ini');
@@ -283,8 +304,13 @@ class EvaluasiController extends Controller
             $validated['masukan_umum'] ?? null
         );
 
-        return redirect()->route('kepala.evaluasi.show', $id)
-            ->with('success', 'Rubrik penilaian berhasil disimpan');
+        if ($request->boolean('lanjut')) {
+            return redirect()->route('kepala.evaluasi.feedback.show', $id)
+                ->with('success', 'Rubrik penilaian berhasil disimpan');
+        }
+
+        return redirect()->route('kepala.evaluasi.rubrik', $id)
+            ->with('success', 'Draf rubrik tersimpan');
     }
 
     public function exportRubrikPdf($id)

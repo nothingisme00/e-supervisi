@@ -171,6 +171,7 @@ Route::middleware(['auth', 'prevent.back', 'must.change.password'])->group(funct
             Route::get('/{id}/rubrik', [EvaluasiController::class, 'showRubrik'])->name('rubrik');
             Route::post('/{id}/rubrik', [EvaluasiController::class, 'storeRubrik'])->name('rubrik.store');
             Route::get('/{id}/rubrik/pdf', [EvaluasiController::class, 'exportRubrikPdf'])->name('rubrik.pdf');
+            Route::get('/{id}/feedback', [EvaluasiController::class, 'showFeedback'])->name('feedback.show');
             // Note: preview and download routes moved outside prevent.back middleware (see above)
         });
 

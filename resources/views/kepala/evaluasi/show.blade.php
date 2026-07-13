@@ -18,54 +18,9 @@
     
     {{-- Notifikasi sukses ditangani toast global di layouts.modern --}}
 
-    <!-- Header Section -->
-    <div class="bg-white dark:bg-gray-800 rounded-lg sm:rounded-xl shadow-sm sm:shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden mb-4 sm:mb-6">
-        <!-- Decorative Header Bar -->
-        <div class="h-1.5 sm:h-2 bg-primary-600"></div>
-        
-        <div class="p-4 sm:p-6">
-            <!-- Mobile: Stack vertically, Desktop: Side by side -->
-            <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 sm:gap-4">
-                <div class="flex items-center sm:items-start gap-3 sm:gap-4">
-                    <div class="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-gradient-to-br from-primary-500 to-primary-600 flex items-center justify-center text-white font-bold text-base sm:text-lg shadow-md ring-2 sm:ring-4 ring-primary-100 dark:ring-primary-900/50 flex-shrink-0">
-                        {{ strtoupper(substr($supervisi->user->name, 0, 2)) }}
-                    </div>
-                    <div class="min-w-0 flex-1">
-                        <h1 class="text-base sm:text-xl lg:text-2xl font-bold text-gray-800 dark:text-white leading-tight">{{ $supervisi->user->name }}</h1>
-                        <p class="text-xs sm:text-sm text-gray-600 dark:text-gray-300 truncate">{{ $supervisi->user->email }}</p>
-                        <p class="text-xs sm:text-sm text-gray-500 dark:text-gray-400 mt-0.5 sm:mt-1 flex items-center">
-                            <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5m-4 0V5a2 2 0 114 0v1m-4 0a2 2 0 104 0m-5 8a2 2 0 100-4 2 2 0 000 4zm0 0c1.306 0 2.417.835 2.83 2M9 14a3.001 3.001 0 00-2.83 2M15 11h3m-3 4h2"></path>
-                            </svg>
-                            NIK: {{ $supervisi->user->nik }}
-                        </p>
-                    </div>
-                </div>
-                <!-- Status Badge -->
-                <div class="self-start sm:self-auto mt-1 sm:mt-0">
-                    <x-status-badge :status="$supervisi->status" />
-                    @if($supervisi->status === 'submitted')
-                        <form action="{{ route('kepala.evaluasi.startReview', $supervisi->id) }}" method="POST" class="mt-2">
-                            @csrf
-                            <button type="submit" class="w-full inline-flex items-center justify-center px-3 py-2 sm:px-5 sm:py-2.5 bg-primary-600 hover:bg-primary-700 text-white text-xs sm:text-sm font-bold rounded-lg shadow-md hover:shadow-lg transition-all duration-200 active:scale-95">
-                                <svg class="w-4 h-4 sm:w-5 sm:h-5 mr-1.5 sm:mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path>
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                                </svg>
-                                Mulai Review
-                            </button>
-                        </form>
-                    @endif
-                    <p class="text-[10px] sm:text-xs text-gray-500 dark:text-gray-400 mt-2 flex items-center justify-end">
-                        <svg class="w-3 h-3 sm:w-3.5 sm:h-3.5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                        </svg>
-                        Disubmit: {{ $supervisi->updated_at->translatedFormat('d M Y, H:i') }}
-                    </p>
-                </div>
-            </div>
-        </div>
-    </div>
+    <x-evaluasi-guru-header :supervisi="$supervisi" />
+
+    <x-evaluasi-stepper :supervisi="$supervisi" :aktif="1" />
 
         <!-- Vertical Card Layout -->
         <div class="space-y-4 sm:space-y-6">
@@ -236,294 +191,31 @@
                 </div>
             </div>
 
-            @if($supervisi->status !== 'submitted')
-            <!-- Card 3.5: Rubrik Penilaian -->
-            <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
-                <x-card-header title="Rubrik Penilaian" />
-                <div class="p-3 sm:p-4 md:p-6">
-                    @if($supervisi->evaluasiRubrik)
-                        <div class="flex flex-wrap items-center gap-4 mb-4">
-                            <div>
-                                <p class="text-xs text-gray-500 dark:text-gray-400">Nilai Akhir</p>
-                                <p class="text-2xl font-bold text-gray-900 dark:text-white">{{ $supervisi->evaluasiRubrik->nilai_akhir }}%</p>
-                            </div>
-                            <div>
-                                <p class="text-xs text-gray-500 dark:text-gray-400">Skor</p>
-                                <p class="text-sm font-semibold text-gray-700 dark:text-gray-300">{{ $supervisi->evaluasiRubrik->skor_total }}/{{ $supervisi->evaluasiRubrik->skor_maksimal }}</p>
-                            </div>
-                            <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-primary-100 text-primary-700 dark:bg-primary-900/40 dark:text-primary-300">
-                                {{ \App\Models\PredikatRubrik::where('kode', $supervisi->evaluasiRubrik->predikat)->value('label') ?? $supervisi->evaluasiRubrik->predikat }}
-                            </span>
-                        </div>
-                        <div class="flex gap-3">
-                            @if($supervisi->status !== 'completed')
-                                <a href="{{ route('kepala.evaluasi.rubrik', $supervisi->id) }}" wire:navigate class="px-4 py-2 rounded-xl text-sm font-semibold text-white bg-primary-600 hover:bg-primary-700">Edit Rubrik</a>
-                            @endif
-                            <a href="{{ route('kepala.evaluasi.rubrik.pdf', $supervisi->id) }}" class="px-4 py-2 rounded-xl text-sm font-semibold text-gray-700 dark:text-gray-200 border border-gray-200 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700">Unduh PDF</a>
-                        </div>
-                    @else
-                        <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">Rubrik penilaian belum diisi.</p>
-                        <a href="{{ route('kepala.evaluasi.rubrik', $supervisi->id) }}" wire:navigate class="inline-block px-4 py-2 rounded-xl text-sm font-semibold text-white bg-primary-600 hover:bg-primary-700">Isi Rubrik Penilaian</a>
-                    @endif
-                </div>
-            </div>
-
-            <!-- Card 4: Riwayat Feedback & Diskusi -->
-            <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
-                <!-- Card Header -->
-                <x-card-header title="Diskusi & Feedback" />
-                <!-- Card Content -->
-                <div class="p-3 sm:p-4 md:p-6">
-                    @include('supervisi._feedback-thread', [
-                        'feedbacks' => $supervisi->feedback,
-                        'supervisi' => $supervisi,
-                        'action' => route('kepala.evaluasi.feedback', $supervisi->id),
-                        'readonly' => $supervisi->status === 'completed',
-                        'minlength' => 10,
-                        'revisionNoteTitle' => 'Revisi Diminta',
-                        'revisionNote' => 'Guru akan melakukan revisi sesuai feedback di atas.',
-                    ])
-                </div>
-            </div>
-
-            <!-- Card 5: Berikan Feedback -->
-            <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
-                <!-- Card Header -->
-                <x-card-header title="Berikan Feedback" />
-                <!-- Card Content -->
-                <div class="p-3 sm:p-4 md:p-6">
-                    @if($supervisi->status === 'completed')
-                        <!-- Status Completed Message -->
-                        <div class="text-center py-6 sm:py-8">
-                            <div class="w-12 h-12 sm:w-16 sm:h-16 bg-emerald-100 dark:bg-emerald-900/30 rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4">
-                                <svg class="w-6 h-6 sm:w-8 sm:h-8 text-emerald-600 dark:text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                                </svg>
-                            </div>
-                            <h4 class="text-base sm:text-lg font-semibold text-gray-900 dark:text-white mb-2">Supervisi Telah Selesai Ditinjau</h4>
-                            <p class="text-xs sm:text-sm text-gray-600 dark:text-gray-400 mb-3 sm:mb-4">
-                                Supervisi ini telah ditandai sebagai selesai. Anda masih dapat melihat riwayat feedback di atas.
-                            </p>
-                            <a href="{{ route('kepala.evaluasi.index') }}"
-                               class="inline-flex items-center gap-1.5 sm:gap-2 px-4 py-2 sm:px-5 sm:py-2.5 bg-primary-600 hover:bg-primary-700 dark:bg-primary-500 dark:hover:bg-primary-600 text-white text-xs sm:text-sm font-medium rounded-lg transition-colors">
-                                <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
-                                </svg>
-                                Kembali ke Daftar Evaluasi
-                            </a>
-                        </div>
-                    @else
-                    <form action="{{ route('kepala.evaluasi.feedback', $supervisi->id) }}" method="POST" class="space-y-4 sm:space-y-5">
-                @csrf
-                
-                <div>
-                    <label for="komentar" class="block text-xs sm:text-sm font-medium text-gray-900 dark:text-gray-100 mb-1.5 sm:mb-2">
-                        Komentar dan Saran
-                    </label>
-                    <textarea
-                        name="komentar"
-                        id="komentar"
-                        rows="4"
-                        class="w-full px-3 py-2 sm:px-4 sm:py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-400 bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 text-xs sm:text-sm resize-none"
-                        placeholder="Berikan feedback, komentar, atau saran untuk guru..."
-                        required minlength="10">{{ old('komentar') }}</textarea>
-                    @error('komentar')
-                        <p class="mt-1.5 text-xs sm:text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
-                    @enderror
-                </div>
-
-                <div class="flex items-start gap-2 p-3 sm:p-4 bg-gradient-to-r from-amber-50 to-orange-50 dark:from-amber-900/20 dark:to-orange-900/20 rounded-lg border border-amber-300 dark:border-amber-700">
-                    <input
-                        type="checkbox"
-                        name="is_revision_request"
-                        id="is_revision_request"
-                        value="1"
-                        class="w-4 h-4 sm:w-5 sm:h-5 text-amber-600 bg-white dark:bg-gray-700 border-amber-400 dark:border-amber-600 rounded focus:ring-0 mt-0.5">
-                    <label for="is_revision_request" class="text-xs sm:text-sm font-semibold text-amber-900 dark:text-amber-200 cursor-pointer">
-                        Minta revisi untuk supervisi ini
-                    </label>
-                </div>
-
-                <div class="flex flex-col sm:flex-row justify-end items-stretch sm:items-center gap-2 sm:gap-3 pt-3 sm:pt-4">
-                    <a href="{{ route('kepala.evaluasi.index') }}"
-                       class="px-4 py-2 sm:px-5 sm:py-2.5 bg-white hover:bg-gray-50 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-900 dark:text-gray-100 text-xs sm:text-sm font-medium rounded-lg transition-colors border border-gray-300 dark:border-gray-600 text-center">
-                        Kembali
-                    </a>
-                    
-                    <button type="submit"
-                            class="px-4 py-2 sm:px-5 sm:py-2.5 bg-primary-600 hover:bg-primary-700 dark:bg-primary-500 dark:hover:bg-primary-600 text-white text-xs sm:text-sm font-medium rounded-lg transition-colors">
-                        Kirim Feedback
-                    </button>
-                    
-                    @if($supervisi->status === 'under_review')
-                    <button type="button"
-                            id="completeButton"
-                            onclick="confirmComplete()"
-                            class="inline-flex items-center justify-center gap-1.5 sm:gap-2 px-4 py-2 sm:px-5 sm:py-2.5 bg-gradient-to-r from-emerald-500 to-green-600 hover:from-emerald-600 hover:to-green-700 text-white text-xs sm:text-sm font-bold rounded-lg transition-all duration-200 cursor-pointer active:scale-95">
-                        <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                        </svg>
-                        <span class="hidden sm:inline">Tandai Selesai Ditinjau</span>
-                        <span class="sm:hidden">Selesai</span>
-                    </button>
-                    @endif
-                </div>
-                    </form>
-                    @endif
-                </div>
-            </div>
-            @endif
-
         </div>
         <!-- End Vertical Card Layout -->
-    </div>
-</div>
 
-<!-- Complete Form (Hidden) -->
-<form id="completeForm" action="{{ route('kepala.evaluasi.complete', $supervisi->id) }}" method="POST" style="display: none;">
-    @csrf
-</form>
-
-<!-- Revision Request Modal -->
-<div id="revisionModal" class="fixed inset-0 bg-black bg-opacity-50 dark:bg-black dark:bg-opacity-60 z-50 hidden" style="display: none;">
-    <div class="min-h-screen flex items-center justify-center p-4">
-        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg max-w-md w-full border border-gray-200 dark:border-gray-700">
-            <div class="p-6">
-                <div class="flex items-center justify-between mb-4">
-                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Minta Revisi</h3>
-                    <button
-                        type="button"
-                        onclick="hideRevisionModal()"
-                        class="text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300 transition-colors">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                        </svg>
-                    </button>
-                </div>
-
-                <form action="{{ route('kepala.evaluasi.revision', $supervisi->id) }}" method="POST">
+        <x-evaluasi-action-bar :langkah="1" judul="Tinjau Materi">
+            @if ($supervisi->status === 'submitted')
+                <form action="{{ route('kepala.evaluasi.startReview', $supervisi->id) }}" method="POST">
                     @csrf
-
-                    <div class="mb-4">
-                        <label for="revision_notes" class="block text-sm font-medium text-gray-900 dark:text-gray-100 mb-2">
-                            Catatan Revisi <span class="text-red-600 dark:text-red-400">*</span>
-                        </label>
-                        <textarea
-                            name="revision_notes"
-                            id="revision_notes"
-                            rows="4"
-                            required
-                            minlength="10"
-                            class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-red-500 dark:focus:ring-red-400 focus:border-red-500 dark:focus:border-red-400 bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 text-sm resize-none"
-                            placeholder="Jelaskan apa yang perlu direvisi..."
-                        >{{ old('revision_notes') }}</textarea>
-                        @error('revision_notes')
-                            <p class="mt-1.5 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
-                        @enderror
-                    </div>
-
-                    <div class="flex justify-end space-x-3">
-                        <button
-                            type="button"
-                            onclick="hideRevisionModal()"
-                            class="px-4 py-2 text-gray-900 dark:text-gray-100 bg-white hover:bg-gray-50 dark:bg-gray-700 dark:hover:bg-gray-600 text-sm font-medium rounded-lg transition-colors border border-gray-300 dark:border-gray-600">
-                            Batal
-                        </button>
-                        <button
-                            type="submit"
-                            class="px-4 py-2 bg-red-600 hover:bg-red-700 dark:bg-red-500 dark:hover:bg-red-600 text-white text-sm font-medium rounded-lg transition-colors">
-                            Kirim Permintaan Revisi
-                        </button>
-                    </div>
+                    <x-button type="submit">
+                        Mulai Review & Lanjut
+                        <x-icon name="arrow-right" class="w-4 h-4" />
+                    </x-button>
                 </form>
-            </div>
-        </div>
+            @elseif ($supervisi->status === 'completed')
+                <x-button href="{{ route('kepala.evaluasi.feedback.show', $supervisi->id) }}">
+                    Lihat Feedback
+                    <x-icon name="eye" class="w-4 h-4" />
+                </x-button>
+            @else
+                <x-button href="{{ route('kepala.evaluasi.rubrik', $supervisi->id) }}">
+                    Lanjut: Isi Rubrik
+                    <x-icon name="arrow-right" class="w-4 h-4" />
+                </x-button>
+            @endif
+        </x-evaluasi-action-bar>
     </div>
-</div>
-
-<script>
-// Complete Confirmation Function
-function confirmComplete() {
-    const completeButton = document.getElementById('completeButton');
-
-    // Prevent submission if button is disabled
-    if (completeButton && completeButton.disabled) {
-        return false;
-    }
-
-    showConfirmModal(
-        'Apakah Anda yakin ingin menandai supervisi ini sebagai selesai ditinjau? Status akan berubah menjadi "Telah Selesai" dan supervisi akan dipindahkan ke tab Telah Selesai.',
-        'Konfirmasi Selesaikan Tinjauan',
-        function() {
-            document.getElementById('completeForm').submit();
-        },
-        { type: 'info', confirmText: 'Ya, Selesaikan' }
-    );
-}
-
-// Revision Modal Functions
-function showRevisionModal() {
-    const modal = document.getElementById('revisionModal');
-    modal.classList.remove('hidden');
-    modal.style.display = 'block';
-}
-
-function hideRevisionModal() {
-    const modal = document.getElementById('revisionModal');
-    modal.classList.add('hidden');
-    modal.style.display = 'none';
-}
-
-// Buka kembali modal bila validasi revision_notes gagal (agar error terlihat)
-@if($errors->has('revision_notes'))
-document.addEventListener('DOMContentLoaded', showRevisionModal);
-@endif
-
-// Close revision modal when clicking outside
-document.getElementById('revisionModal')?.addEventListener('click', function(e) {
-    if (e.target === this) {
-        hideRevisionModal();
-    }
-});
-
-// Handle ESC key to close modals
-document.addEventListener('keydown', function(e) {
-    if (e.key === 'Escape') {
-        closePreviewModal();
-        hideRevisionModal();
-    }
-});
-
-// Toggle Complete Button based on Revision Checkbox
-document.addEventListener('DOMContentLoaded', function() {
-    const revisionCheckbox = document.getElementById('is_revision_request');
-    const completeButton = document.getElementById('completeButton');
-
-    if (revisionCheckbox && completeButton) {
-        revisionCheckbox.addEventListener('change', function() {
-            if (this.checked) {
-                // Disable button when revision is checked
-                completeButton.disabled = true;
-                completeButton.classList.remove('bg-gradient-to-r', 'from-emerald-500', 'to-green-600', 'hover:from-emerald-600', 'hover:to-green-700', 'cursor-pointer');
-                completeButton.classList.add('bg-gray-300', 'dark:bg-gray-700', 'text-gray-500', 'dark:text-gray-400', 'cursor-not-allowed', 'shadow-none');
-            } else {
-                // Enable button when revision is unchecked
-                completeButton.disabled = false;
-                completeButton.classList.remove('bg-gray-300', 'dark:bg-gray-700', 'text-gray-500', 'dark:text-gray-400', 'cursor-not-allowed');
-                completeButton.classList.add('bg-gradient-to-r', 'from-emerald-500', 'to-green-600', 'hover:from-emerald-600', 'hover:to-green-700', 'cursor-pointer', 'shadow-none');
-            }
-        });
-    }
-});
-
-// Toggle reply form visibility
-function toggleReplyForm(id) {
-    const form = document.getElementById('reply-form-' + id);
-    if (form) {
-        form.classList.toggle('hidden');
-    }
-}
-</script>
 
 @endsection
 
