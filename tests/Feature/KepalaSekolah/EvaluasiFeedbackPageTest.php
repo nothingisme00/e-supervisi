@@ -54,4 +54,16 @@ class EvaluasiFeedbackPageTest extends TestCase
 
         $response->assertSee('data-stepper-step="3" data-status="selesai"', false);
     }
+
+    public function test_halaman_feedback_menampilkan_ajakan_mulai_review_saat_submitted(): void
+    {
+        [$kepala, $supervisi] = $this->kepalaDanSupervisi('submitted');
+
+        $response = $this->actingAs($kepala)->get(route('kepala.evaluasi.feedback.show', $supervisi->id));
+
+        $response->assertOk();
+        $response->assertSee('Review Belum Dimulai');
+        $response->assertSee('Ke Langkah 1');
+        $response->assertDontSee('Komentar dan Saran');
+    }
 }

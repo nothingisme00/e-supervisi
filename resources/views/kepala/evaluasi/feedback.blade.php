@@ -127,6 +127,19 @@
                 @endif
             </div>
         </div>
+        @else
+        <!-- Empty State: Review belum dimulai -->
+        <x-card class="p-6 sm:p-8 text-center">
+            <x-icon name="information-circle" class="w-10 h-10 text-primary-500 dark:text-primary-400 mx-auto mb-3" />
+            <h4 class="text-base sm:text-lg font-semibold text-gray-900 dark:text-white mb-2">Review Belum Dimulai</h4>
+            <p class="text-xs sm:text-sm text-gray-600 dark:text-gray-400 mb-4 max-w-md mx-auto">
+                Mulai review di langkah 1 (Tinjau Materi) untuk membuka rubrik penilaian dan feedback.
+            </p>
+            <x-button href="{{ route('kepala.evaluasi.show', $supervisi->id) }}" class="inline-flex">
+                <x-icon name="arrow-left" class="w-4 h-4" />
+                Ke Langkah 1
+            </x-button>
+        </x-card>
         @endif
     </div>
 
