@@ -256,7 +256,7 @@ class EvaluasiController extends Controller
             report($e);
         }
 
-        return redirect()->route('kepala.evaluasi.show', $id)
+        return redirect()->route('kepala.evaluasi.feedback.show', $id)
             ->with('success', 'Permintaan revisi berhasil dikirim');
 
     }

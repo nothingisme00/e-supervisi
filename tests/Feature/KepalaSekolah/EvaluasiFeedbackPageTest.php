@@ -91,4 +91,52 @@ class EvaluasiFeedbackPageTest extends TestCase
 
         $response->assertRedirect(route('kepala.evaluasi.feedback.show', $supervisi->id));
     }
+
+    public function test_minta_revisi_redirect_ke_halaman_feedback(): void
+    {
+        [$kepala, $supervisi] = $this->kepalaDanSupervisi();
+
+        $response = $this->actingAs($kepala)->post(route('kepala.evaluasi.revision', $supervisi->id), [
+            'revision_notes' => 'Mohon perbaiki bagian pendahuluan modul ajar.',
+        ]);
+
+        $response->assertRedirect(route('kepala.evaluasi.feedback.show', $supervisi->id));
+    }
+
+    public function test_halaman_feedback_completed_menampilkan_status_selesai_tanpa_tombol_tandai(): void
+    {
+        [$kepala, $supervisi] = $this->kepalaDanSupervisi('completed');
+
+        $response = $this->actingAs($kepala)->get(route('kepala.evaluasi.feedback.show', $supervisi->id));
+
+        $response->assertOk();
+        $response->assertSee('Supervisi Telah Selesai Ditinjau');
+        $response->assertDontSee('Tandai Selesai');
+    }
+
+    public function test_halaman_feedback_revision_menampilkan_form_dan_tanpa_tombol_tandai(): void
+    {
+        [$kepala, $supervisi] = $this->kepalaDanSupervisi('revision');
+
+        $response = $this->actingAs($kepala)->get(route('kepala.evaluasi.feedback.show', $supervisi->id));
+
+        $response->assertOk();
+        $response->assertSee('data-stepper-step="3" data-status="aktif"', false);
+        $response->assertSee('Komentar dan Saran');
+        $response->assertDontSee('Tandai Selesai');
+    }
+
+    public function test_simpan_rubrik_tanpa_lanjut_kembali_ke_rubrik_sebagai_draf(): void
+    {
+        [$kepala, $supervisi] = $this->kepalaDanSupervisi();
+        \App\Models\RubrikItem::query()->delete();
+        $item = \App\Models\RubrikItem::create(['kode' => 'T.1', 'section' => 'A', 'section_label' => 'Tes', 'kelompok_nomor' => 1, 'kelompok_label' => 'Tes', 'sub_label' => 'Tes 1', 'urutan' => 1, 'is_active' => true]);
+
+        $response = $this->actingAs($kepala)->post(route('kepala.evaluasi.rubrik.store', $supervisi->id), [
+            'skor' => [$item->id => 1],
+        ]);
+
+        $response->assertRedirect(route('kepala.evaluasi.rubrik', $supervisi->id));
+        $response->assertSessionHas('success', 'Draf rubrik tersimpan');
+    }
 }

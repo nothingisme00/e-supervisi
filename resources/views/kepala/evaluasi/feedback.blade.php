@@ -162,63 +162,6 @@
     @csrf
 </form>
 
-<!-- Revision Request Modal -->
-<div id="revisionModal" class="fixed inset-0 bg-black bg-opacity-50 dark:bg-black dark:bg-opacity-60 z-50 hidden" style="display: none;">
-    <div class="min-h-screen flex items-center justify-center p-4">
-        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg max-w-md w-full border border-gray-200 dark:border-gray-700">
-            <div class="p-6">
-                <div class="flex items-center justify-between mb-4">
-                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Minta Revisi</h3>
-                    <button
-                        type="button"
-                        onclick="hideRevisionModal()"
-                        class="text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300 transition-colors">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                        </svg>
-                    </button>
-                </div>
-
-                <form action="{{ route('kepala.evaluasi.revision', $supervisi->id) }}" method="POST">
-                    @csrf
-
-                    <div class="mb-4">
-                        <label for="revision_notes" class="block text-sm font-medium text-gray-900 dark:text-gray-100 mb-2">
-                            Catatan Revisi <span class="text-red-600 dark:text-red-400">*</span>
-                        </label>
-                        <textarea
-                            name="revision_notes"
-                            id="revision_notes"
-                            rows="4"
-                            required
-                            minlength="10"
-                            class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-red-500 dark:focus:ring-red-400 focus:border-red-500 dark:focus:border-red-400 bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 text-sm resize-none"
-                            placeholder="Jelaskan apa yang perlu direvisi..."
-                        >{{ old('revision_notes') }}</textarea>
-                        @error('revision_notes')
-                            <p class="mt-1.5 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
-                        @enderror
-                    </div>
-
-                    <div class="flex justify-end space-x-3">
-                        <button
-                            type="button"
-                            onclick="hideRevisionModal()"
-                            class="px-4 py-2 text-gray-900 dark:text-gray-100 bg-white hover:bg-gray-50 dark:bg-gray-700 dark:hover:bg-gray-600 text-sm font-medium rounded-lg transition-colors border border-gray-300 dark:border-gray-600">
-                            Batal
-                        </button>
-                        <button
-                            type="submit"
-                            class="px-4 py-2 bg-red-600 hover:bg-red-700 dark:bg-red-500 dark:hover:bg-red-600 text-white text-sm font-medium rounded-lg transition-colors">
-                            Kirim Permintaan Revisi
-                        </button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-
 <script>
 // Complete Confirmation Function
 function confirmComplete() {
@@ -239,38 +182,6 @@ function confirmComplete() {
     );
 }
 
-// Revision Modal Functions
-function showRevisionModal() {
-    const modal = document.getElementById('revisionModal');
-    modal.classList.remove('hidden');
-    modal.style.display = 'block';
-}
-
-function hideRevisionModal() {
-    const modal = document.getElementById('revisionModal');
-    modal.classList.add('hidden');
-    modal.style.display = 'none';
-}
-
-// Buka kembali modal bila validasi revision_notes gagal (agar error terlihat)
-@if($errors->has('revision_notes'))
-document.addEventListener('DOMContentLoaded', showRevisionModal);
-@endif
-
-// Close revision modal when clicking outside
-document.getElementById('revisionModal')?.addEventListener('click', function(e) {
-    if (e.target === this) {
-        hideRevisionModal();
-    }
-});
-
-// Handle ESC key to close modals
-document.addEventListener('keydown', function(e) {
-    if (e.key === 'Escape') {
-        hideRevisionModal();
-    }
-});
-
 // Toggle Complete Button based on Revision Checkbox
 document.addEventListener('DOMContentLoaded', function() {
     const revisionCheckbox = document.getElementById('is_revision_request');
@@ -278,15 +189,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
     if (revisionCheckbox && completeButton) {
         revisionCheckbox.addEventListener('change', function() {
-            if (this.checked) {
-                // Disable button when revision is checked
-                completeButton.disabled = true;
-                completeButton.classList.add('opacity-50', 'cursor-not-allowed', 'pointer-events-none');
-            } else {
-                // Enable button when revision is unchecked
-                completeButton.disabled = false;
-                completeButton.classList.remove('opacity-50', 'cursor-not-allowed', 'pointer-events-none');
-            }
+            // opacity & pointer-events ikut varian disabled: bawaan x-button;
+            // cukup set atribut disabled + kursor.
+            completeButton.disabled = this.checked;
+            completeButton.classList.toggle('cursor-not-allowed', this.checked);
         });
     }
 });
