@@ -188,126 +188,156 @@
             closeSupervisiModal();
         }
     });
+
+    // Auto-show panduan bila guru belum punya supervisi (sekali per sesi browser)
+    document.addEventListener('DOMContentLoaded', function () {
+        const belumAdaSupervisi = {{ $mySupervisi->count() === 0 ? 'true' : 'false' }};
+        if (belumAdaSupervisi && !sessionStorage.getItem('panduanSupervisiSudahTampil')) {
+            sessionStorage.setItem('panduanSupervisiSudahTampil', '1');
+            setTimeout(openSupervisiGuideModal, 800);
+        }
+    });
 </script>
 
 <!-- Panduan Modal with Responsive Content -->
-<div id="supervisiGuideModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-[75] items-center justify-center p-4" style="display: none;" onclick="closeSupervisiGuideModal()">
-    <div id="supervisiGuideModalContent" class="bg-white dark:bg-gray-800 rounded-xl shadow-2xl w-full max-w-lg max-h-[80vh] overflow-hidden transform transition-all duration-300 scale-95 opacity-0" onclick="event.stopPropagation()">
-        <!-- Header - Different subtitle for mobile/desktop -->
-        <div class="px-4 py-3 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between bg-amber-50 dark:bg-gray-700">
-            <div class="flex items-center gap-3">
-                <div class="w-9 h-9 bg-amber-500 rounded-lg flex items-center justify-center">
-                    <x-icon name="book-open" class="w-4 h-4 text-white" />
-                </div>
-                <div>
-                    <h3 class="text-sm font-bold text-gray-900 dark:text-white">Panduan Supervisi</h3>
-                    <p class="text-xs text-gray-500 dark:text-gray-400 hidden md:block">Langkah-langkah di Laptop/Desktop</p>
-                    <p class="text-xs text-gray-500 dark:text-gray-400 md:hidden">Langkah-langkah di Mobile</p>
-                </div>
+<div id="supervisiGuideModal" class="fixed inset-0 bg-gray-900/40 backdrop-blur-sm z-[75] items-center justify-center p-4" style="display: none;" onclick="closeSupervisiGuideModal()">
+    <div id="supervisiGuideModalContent" class="bg-white dark:bg-gray-800 rounded-[24px] shadow-2xl w-full max-w-[480px] max-h-[80vh] overflow-hidden transform transition-all duration-300 scale-95 opacity-0 flex flex-col" onclick="event.stopPropagation()">
+        <!-- Aksen atas (warna brand, selaras Guru Guide) -->
+        <div class="h-1 bg-primary-600"></div>
+
+        <!-- Header - subtitle berbeda untuk mobile/desktop -->
+        <div class="px-6 pt-5 pb-4 flex items-start justify-between gap-4">
+            <div>
+                <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-0.5">Panduan Supervisi</h3>
+                <p class="text-xs text-gray-500 dark:text-gray-400 hidden md:block">Langkah-langkah di Laptop/Desktop</p>
+                <p class="text-xs text-gray-500 dark:text-gray-400 md:hidden">Langkah-langkah di Mobile</p>
             </div>
-            <button onclick="closeSupervisiGuideModal()" aria-label="Tutup" class="p-1.5 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg transition-colors cursor-pointer">
-                <x-icon name="x-mark" class="w-5 h-5 text-gray-500 dark:text-gray-400" />
+            <button onclick="closeSupervisiGuideModal()" aria-label="Tutup" class="p-1.5 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors group cursor-pointer">
+                <x-icon name="x-mark" class="w-5 h-5 text-gray-400 group-hover:text-gray-600 dark:group-hover:text-gray-300" />
             </button>
         </div>
-        <div class="p-3 overflow-y-auto max-h-[calc(80vh-60px)]">
+
+        <div class="px-6 pb-6 flex-1 overflow-y-auto">
             <!-- DESKTOP CONTENT - Hidden on mobile, shown on md and up -->
-            <div class="hidden md:block space-y-2.5">
+            <div class="hidden md:block space-y-3">
                 <!-- LANGKAH 1 -->
-                <div class="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-3 border-l-4 border-blue-500">
-                    <span class="inline-block px-2 py-0.5 bg-blue-600 text-white text-xs font-bold rounded-full mb-1">LANGKAH 1</span>
-                    <h4 class="text-sm font-bold text-gray-900 dark:text-white">Akses Supervisi Saya</h4>
-                    <p class="text-xs text-gray-600 dark:text-gray-400 mt-1">Klik menu <strong>"Supervisi Saya"</strong> di sidebar kiri untuk masuk ke halaman ini.</p>
+                <div data-guide-step="1" class="flex items-start gap-3 p-4 bg-white dark:bg-gray-700/30 rounded-xl border border-gray-200 dark:border-gray-600 hover:border-primary-300 dark:hover:border-primary-700 transition-colors">
+                    <div class="w-7 h-7 rounded-full bg-primary-600 text-white text-xs font-bold flex items-center justify-center shrink-0">1</div>
+                    <div class="flex-1 min-w-0">
+                        <h4 class="text-sm font-semibold text-gray-900 dark:text-white mb-0.5">Akses Supervisi Saya</h4>
+                        <p class="text-xs text-gray-600 dark:text-gray-400">Klik menu <strong>"Supervisi Saya"</strong> di sidebar kiri untuk masuk ke halaman ini.</p>
+                    </div>
                 </div>
 
                 <!-- LANGKAH 2 -->
-                <div class="bg-emerald-50 dark:bg-emerald-900/20 rounded-lg p-3 border-l-4 border-emerald-500">
-                    <span class="inline-block px-2 py-0.5 bg-emerald-600 text-white text-xs font-bold rounded-full mb-1">LANGKAH 2</span>
-                    <h4 class="text-sm font-bold text-gray-900 dark:text-white">Buat Supervisi Baru</h4>
-                    <p class="text-xs text-gray-600 dark:text-gray-400 mt-1">Klik tombol <strong>"Buat Baru"</strong> di pojok kanan atas, lalu klik <strong>"Mulai"</strong>.</p>
+                <div data-guide-step="2" class="flex items-start gap-3 p-4 bg-white dark:bg-gray-700/30 rounded-xl border border-gray-200 dark:border-gray-600 hover:border-primary-300 dark:hover:border-primary-700 transition-colors">
+                    <div class="w-7 h-7 rounded-full bg-primary-600 text-white text-xs font-bold flex items-center justify-center shrink-0">2</div>
+                    <div class="flex-1 min-w-0">
+                        <h4 class="text-sm font-semibold text-gray-900 dark:text-white mb-0.5">Buat Supervisi Baru</h4>
+                        <p class="text-xs text-gray-600 dark:text-gray-400">Klik tombol <strong>"Buat Baru"</strong> di pojok kanan atas, lalu klik <strong>"Mulai"</strong>.</p>
+                    </div>
                 </div>
 
                 <!-- LANGKAH 3 -->
-                <div class="bg-primary-50 dark:bg-primary-900/20 rounded-lg p-3 border-l-4 border-primary-500">
-                    <div class="flex items-center gap-2 mb-1">
-                        <span class="inline-block px-2 py-0.5 bg-primary-600 text-white text-xs font-bold rounded-full">LANGKAH 3</span>
-                        <span class="px-1.5 py-0.5 bg-red-100 dark:bg-red-900/30 text-red-600 text-xs font-bold rounded-full">WAJIB</span>
+                <div data-guide-step="3" class="flex items-start gap-3 p-4 bg-white dark:bg-gray-700/30 rounded-xl border border-gray-200 dark:border-gray-600 hover:border-primary-300 dark:hover:border-primary-700 transition-colors">
+                    <div class="w-7 h-7 rounded-full bg-primary-600 text-white text-xs font-bold flex items-center justify-center shrink-0">3</div>
+                    <div class="flex-1 min-w-0">
+                        <div class="flex items-center gap-2 mb-0.5">
+                            <h4 class="text-sm font-semibold text-gray-900 dark:text-white">Upload 7 Dokumen</h4>
+                            <span class="px-1.5 py-0.5 bg-red-100 dark:bg-red-900/30 text-red-600 text-xs font-bold rounded-full">WAJIB</span>
+                        </div>
+                        <p class="text-xs text-gray-600 dark:text-gray-400">Upload CP, ATP, Kalender, Prota, Prosem, Modul Ajar, dan Bahan Ajar (PDF/JPG/PNG, max 2MB).</p>
                     </div>
-                    <h4 class="text-sm font-bold text-gray-900 dark:text-white">Upload 7 Dokumen</h4>
-                    <p class="text-xs text-gray-600 dark:text-gray-400 mt-1">Upload CP, ATP, Kalender, Prota, Prosem, Modul Ajar, dan Bahan Ajar (PDF/JPG/PNG, max 2MB).</p>
                 </div>
 
                 <!-- LANGKAH 4 -->
-                <div class="bg-green-50 dark:bg-green-900/20 rounded-lg p-3 border-l-4 border-green-500">
-                    <div class="flex items-center gap-2 mb-1">
-                        <span class="inline-block px-2 py-0.5 bg-green-600 text-white text-xs font-bold rounded-full">LANGKAH 4</span>
-                        <span class="px-1.5 py-0.5 bg-red-100 dark:bg-red-900/30 text-red-600 text-xs font-bold rounded-full">WAJIB</span>
+                <div data-guide-step="4" class="flex items-start gap-3 p-4 bg-white dark:bg-gray-700/30 rounded-xl border border-gray-200 dark:border-gray-600 hover:border-primary-300 dark:hover:border-primary-700 transition-colors">
+                    <div class="w-7 h-7 rounded-full bg-primary-600 text-white text-xs font-bold flex items-center justify-center shrink-0">4</div>
+                    <div class="flex-1 min-w-0">
+                        <div class="flex items-center gap-2 mb-0.5">
+                            <h4 class="text-sm font-semibold text-gray-900 dark:text-white">Isi Proses Pembelajaran</h4>
+                            <span class="px-1.5 py-0.5 bg-red-100 dark:bg-red-900/30 text-red-600 text-xs font-bold rounded-full">WAJIB</span>
+                        </div>
+                        <p class="text-xs text-gray-600 dark:text-gray-400">Klik tab <strong>"Proses"</strong>, masukkan link video dan jawab 5 pertanyaan refleksi.</p>
                     </div>
-                    <h4 class="text-sm font-bold text-gray-900 dark:text-white">Isi Proses Pembelajaran</h4>
-                    <p class="text-xs text-gray-600 dark:text-gray-400 mt-1">Klik tab <strong>"Proses"</strong>, masukkan link video dan jawab 5 pertanyaan refleksi.</p>
                 </div>
 
                 <!-- LANGKAH 5 -->
-                <div class="bg-amber-50 dark:bg-amber-900/20 rounded-lg p-3 border-l-4 border-amber-500">
-                    <span class="inline-block px-2 py-0.5 bg-amber-600 text-white text-xs font-bold rounded-full mb-1">LANGKAH 5</span>
-                    <h4 class="text-sm font-bold text-gray-900 dark:text-white">Submit Supervisi</h4>
-                    <p class="text-xs text-gray-600 dark:text-gray-400 mt-1">Klik tombol <strong>"Submit Supervisi"</strong> untuk mengirim ke Kepala Sekolah untuk direview.</p>
+                <div data-guide-step="5" class="flex items-start gap-3 p-4 bg-white dark:bg-gray-700/30 rounded-xl border border-gray-200 dark:border-gray-600 hover:border-primary-300 dark:hover:border-primary-700 transition-colors">
+                    <div class="w-7 h-7 rounded-full bg-primary-600 text-white text-xs font-bold flex items-center justify-center shrink-0">5</div>
+                    <div class="flex-1 min-w-0">
+                        <h4 class="text-sm font-semibold text-gray-900 dark:text-white mb-0.5">Submit Supervisi</h4>
+                        <p class="text-xs text-gray-600 dark:text-gray-400">Klik tombol <strong>"Submit Supervisi"</strong> untuk mengirim ke Kepala Sekolah untuk direview.</p>
+                    </div>
                 </div>
 
                 <!-- LANGKAH 6 -->
-                <div class="bg-primary-50 dark:bg-primary-900/20 rounded-lg p-3 border-l-4 border-primary-500">
-                    <span class="inline-block px-2 py-0.5 bg-primary-600 text-white text-xs font-bold rounded-full mb-1">LANGKAH 6</span>
-                    <h4 class="text-sm font-bold text-gray-900 dark:text-white">Tunggu Review</h4>
-                    <p class="text-xs text-gray-600 dark:text-gray-400 mt-1">Pantau status supervisi di halaman ini. Lihat feedback dari Kepala Sekolah jika ada.</p>
+                <div data-guide-step="6" class="flex items-start gap-3 p-4 bg-white dark:bg-gray-700/30 rounded-xl border border-gray-200 dark:border-gray-600 hover:border-primary-300 dark:hover:border-primary-700 transition-colors">
+                    <div class="w-7 h-7 rounded-full bg-primary-600 text-white text-xs font-bold flex items-center justify-center shrink-0">6</div>
+                    <div class="flex-1 min-w-0">
+                        <h4 class="text-sm font-semibold text-gray-900 dark:text-white mb-0.5">Tunggu Review</h4>
+                        <p class="text-xs text-gray-600 dark:text-gray-400">Pantau status supervisi di halaman ini. Lihat feedback dari Kepala Sekolah jika ada.</p>
+                    </div>
                 </div>
             </div>
 
             <!-- MOBILE CONTENT - Shown on mobile, hidden on md and up -->
-            <div class="md:hidden space-y-2.5">
+            <div class="md:hidden space-y-3">
                 <!-- LANGKAH 1 -->
-                <div class="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-3 border-l-4 border-blue-500">
-                    <span class="inline-block px-2 py-0.5 bg-blue-600 text-white text-xs font-bold rounded-full mb-1">LANGKAH 1</span>
-                    <h4 class="text-sm font-bold text-gray-900 dark:text-white">Buat Supervisi Baru</h4>
-                    <p class="text-xs text-gray-600 dark:text-gray-400 mt-1">Tap menu <strong>"Home"</strong> di bawah, lalu tap tombol <strong>"Mulai Supervisi"</strong> dan isi tanggal.</p>
+                <div data-guide-step="1" class="flex items-start gap-3 p-4 bg-white dark:bg-gray-700/30 rounded-xl border border-gray-200 dark:border-gray-600 hover:border-primary-300 dark:hover:border-primary-700 transition-colors">
+                    <div class="w-7 h-7 rounded-full bg-primary-600 text-white text-xs font-bold flex items-center justify-center shrink-0">1</div>
+                    <div class="flex-1 min-w-0">
+                        <h4 class="text-sm font-semibold text-gray-900 dark:text-white mb-0.5">Buat Supervisi Baru</h4>
+                        <p class="text-xs text-gray-600 dark:text-gray-400">Tap menu <strong>"Home"</strong> di bawah, lalu tap tombol <strong>"Mulai Supervisi"</strong> dan isi tanggal.</p>
+                    </div>
                 </div>
 
                 <!-- LANGKAH 2 -->
-                <div class="bg-primary-50 dark:bg-primary-900/20 rounded-lg p-3 border-l-4 border-primary-500">
-                    <div class="flex items-center gap-2 mb-1">
-                        <span class="inline-block px-2 py-0.5 bg-primary-600 text-white text-xs font-bold rounded-full">LANGKAH 2</span>
-                        <span class="px-1.5 py-0.5 bg-red-100 dark:bg-red-900/30 text-red-600 text-xs font-bold rounded-full">WAJIB</span>
+                <div data-guide-step="2" class="flex items-start gap-3 p-4 bg-white dark:bg-gray-700/30 rounded-xl border border-gray-200 dark:border-gray-600 hover:border-primary-300 dark:hover:border-primary-700 transition-colors">
+                    <div class="w-7 h-7 rounded-full bg-primary-600 text-white text-xs font-bold flex items-center justify-center shrink-0">2</div>
+                    <div class="flex-1 min-w-0">
+                        <div class="flex items-center gap-2 mb-0.5">
+                            <h4 class="text-sm font-semibold text-gray-900 dark:text-white">Upload 7 Dokumen</h4>
+                            <span class="px-1.5 py-0.5 bg-red-100 dark:bg-red-900/30 text-red-600 text-xs font-bold rounded-full">WAJIB</span>
+                        </div>
+                        <p class="text-xs text-gray-600 dark:text-gray-400">Tap <strong>"Lanjutkan"</strong> di kartu supervisi, lalu upload dokumen satu per satu.</p>
                     </div>
-                    <h4 class="text-sm font-bold text-gray-900 dark:text-white">Upload 7 Dokumen</h4>
-                    <p class="text-xs text-gray-600 dark:text-gray-400 mt-1">Tap <strong>"Lanjutkan"</strong> di kartu supervisi, lalu upload dokumen satu per satu.</p>
                 </div>
 
                 <!-- LANGKAH 3 -->
-                <div class="bg-green-50 dark:bg-green-900/20 rounded-lg p-3 border-l-4 border-green-500">
-                    <div class="flex items-center gap-2 mb-1">
-                        <span class="inline-block px-2 py-0.5 bg-green-600 text-white text-xs font-bold rounded-full">LANGKAH 3</span>
-                        <span class="px-1.5 py-0.5 bg-red-100 dark:bg-red-900/30 text-red-600 text-xs font-bold rounded-full">WAJIB</span>
+                <div data-guide-step="3" class="flex items-start gap-3 p-4 bg-white dark:bg-gray-700/30 rounded-xl border border-gray-200 dark:border-gray-600 hover:border-primary-300 dark:hover:border-primary-700 transition-colors">
+                    <div class="w-7 h-7 rounded-full bg-primary-600 text-white text-xs font-bold flex items-center justify-center shrink-0">3</div>
+                    <div class="flex-1 min-w-0">
+                        <div class="flex items-center gap-2 mb-0.5">
+                            <h4 class="text-sm font-semibold text-gray-900 dark:text-white">Isi Proses Pembelajaran</h4>
+                            <span class="px-1.5 py-0.5 bg-red-100 dark:bg-red-900/30 text-red-600 text-xs font-bold rounded-full">WAJIB</span>
+                        </div>
+                        <p class="text-xs text-gray-600 dark:text-gray-400">Tap tab <strong>"Proses"</strong>, masukkan link video dan jawab 5 refleksi.</p>
                     </div>
-                    <h4 class="text-sm font-bold text-gray-900 dark:text-white">Isi Proses Pembelajaran</h4>
-                    <p class="text-xs text-gray-600 dark:text-gray-400 mt-1">Tap tab <strong>"Proses"</strong>, masukkan link video dan jawab 5 refleksi.</p>
                 </div>
 
                 <!-- LANGKAH 4 -->
-                <div class="bg-amber-50 dark:bg-amber-900/20 rounded-lg p-3 border-l-4 border-amber-500">
-                    <span class="inline-block px-2 py-0.5 bg-amber-600 text-white text-xs font-bold rounded-full mb-1">LANGKAH 4</span>
-                    <h4 class="text-sm font-bold text-gray-900 dark:text-white">Submit Supervisi</h4>
-                    <p class="text-xs text-gray-600 dark:text-gray-400 mt-1">Tap tombol <strong>"Submit"</strong> untuk kirim ke Kepala Sekolah.</p>
+                <div data-guide-step="4" class="flex items-start gap-3 p-4 bg-white dark:bg-gray-700/30 rounded-xl border border-gray-200 dark:border-gray-600 hover:border-primary-300 dark:hover:border-primary-700 transition-colors">
+                    <div class="w-7 h-7 rounded-full bg-primary-600 text-white text-xs font-bold flex items-center justify-center shrink-0">4</div>
+                    <div class="flex-1 min-w-0">
+                        <h4 class="text-sm font-semibold text-gray-900 dark:text-white mb-0.5">Submit Supervisi</h4>
+                        <p class="text-xs text-gray-600 dark:text-gray-400">Tap tombol <strong>"Submit"</strong> untuk kirim ke Kepala Sekolah.</p>
+                    </div>
                 </div>
 
                 <!-- LANGKAH 5 -->
-                <div class="bg-primary-50 dark:bg-primary-900/20 rounded-lg p-3 border-l-4 border-primary-500">
-                    <span class="inline-block px-2 py-0.5 bg-primary-600 text-white text-xs font-bold rounded-full mb-1">LANGKAH 5</span>
-                    <h4 class="text-sm font-bold text-gray-900 dark:text-white">Tunggu Review</h4>
-                    <p class="text-xs text-gray-600 dark:text-gray-400 mt-1">Cek status di kartu supervisi. Tap <strong>"Komentar"</strong> untuk melihat feedback.</p>
+                <div data-guide-step="5" class="flex items-start gap-3 p-4 bg-white dark:bg-gray-700/30 rounded-xl border border-gray-200 dark:border-gray-600 hover:border-primary-300 dark:hover:border-primary-700 transition-colors">
+                    <div class="w-7 h-7 rounded-full bg-primary-600 text-white text-xs font-bold flex items-center justify-center shrink-0">5</div>
+                    <div class="flex-1 min-w-0">
+                        <h4 class="text-sm font-semibold text-gray-900 dark:text-white mb-0.5">Tunggu Review</h4>
+                        <p class="text-xs text-gray-600 dark:text-gray-400">Cek status di kartu supervisi. Tap <strong>"Komentar"</strong> untuk melihat feedback.</p>
+                    </div>
                 </div>
             </div>
 
-            <button onclick="closeSupervisiGuideModal()" class="w-full mt-3 px-4 py-2.5 bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 font-semibold rounded-lg transition-colors text-sm cursor-pointer">
+            <x-button variant="secondary" class="w-full mt-4 justify-center" onclick="closeSupervisiGuideModal()">
                 Tutup
-            </button>
+            </x-button>
         </div>
     </div>
 </div>
