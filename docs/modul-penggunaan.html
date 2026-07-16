@@ -1,0 +1,795 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Modul Penggunaan E-Supervisi</title>
+<style>
+/* ============================================================
+   FONT — Inter (font asli aplikasi) di-embed dari file lokal
+   ============================================================ */
+@font-face{
+  font-family:'Inter';
+  src:url('./InterVariable.woff2') format('woff2');
+  font-weight:100 900; font-style:normal; font-display:swap;
+}
+@font-face{
+  font-family:'Inter';
+  src:url('./InterVariable-Italic.woff2') format('woff2');
+  font-weight:100 900; font-style:italic; font-display:swap;
+}
+
+/* ============================================================
+   TOKENS
+   ============================================================ */
+:root{
+  --teal:#0F766E;
+  --teal-deep:#0B4F49;
+  --teal-ink:#14201E;
+  --amber:#F59E0B;
+  --amber-deep:#B45309;
+  --paper:#FBF9F4;
+  --mist:#EAF2F0;
+  --mist-line:#D9E2DF;
+  --muted:#5C6B67;
+  --rose:#E11D48;
+  --success:#059669;
+  --serif:'Cambria','Georgia','Times New Roman',serif;
+  --sans:'Inter','Segoe UI',system-ui,sans-serif;
+}
+
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  font-family:var(--sans);
+  color:var(--teal-ink);
+  background:var(--paper);
+  font-size:10.2pt;
+  line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+  -webkit-print-color-adjust:exact;
+  print-color-adjust:exact;
+}
+
+/* ============================================================
+   PRINT / PAGE
+   ============================================================ */
+@page{ size:A4; margin:17mm 15mm 16mm; }
+@page cover{ margin:0; }
+@page divider{ margin:0; }
+
+.page{ page-break-after:always; }
+.page:last-child{ page-break-after:auto; }
+.break{ page-break-before:always; }
+
+h1,h2,h3,h4{ margin:0; font-weight:700; }
+p{ margin:0 0 .7em; }
+strong{ font-weight:700; }
+ul,ol{ margin:.2em 0 .9em; padding-left:1.15em; }
+li{ margin:.28em 0; }
+small{ font-size:8.4pt; }
+
+/* ============================================================
+   COVER
+   ============================================================ */
+.cover{
+  page:cover;
+  page-break-after:always;
+  position:relative;
+  height:297mm; width:210mm;
+  background:
+    radial-gradient(120% 80% at 82% 8%, rgba(245,158,11,.22), transparent 55%),
+    linear-gradient(155deg, #0C5852 0%, var(--teal-deep) 55%, #082F2C 100%);
+  color:#F4F3EC;
+  overflow:hidden;
+}
+.cover__grid{
+  position:absolute; inset:0;
+  background-image:linear-gradient(rgba(255,255,255,.045) 1px,transparent 1px),
+                   linear-gradient(90deg,rgba(255,255,255,.045) 1px,transparent 1px);
+  background-size:22mm 22mm;
+}
+.cover__seal{
+  position:absolute; top:26mm; right:22mm;
+  width:34mm; height:34mm; border-radius:50%;
+  border:2px solid rgba(245,158,11,.55);
+  display:flex; align-items:center; justify-content:center;
+  color:var(--amber); font-family:var(--sans); font-weight:800;
+  font-size:7.5pt; letter-spacing:.18em; text-align:center; line-height:1.35;
+}
+.cover__seal::before{
+  content:''; position:absolute; inset:4.5mm; border-radius:50%;
+  border:1px dashed rgba(245,158,11,.4);
+}
+.cover__inner{ position:absolute; inset:0; padding:34mm 24mm; display:flex; flex-direction:column; }
+.cover__eyebrow{
+  font-weight:700; letter-spacing:.42em; font-size:8.5pt;
+  color:var(--amber); text-transform:uppercase; margin-bottom:auto;
+}
+.cover__title{
+  font-family:var(--serif); font-weight:700;
+  font-size:47pt; line-height:1.02; letter-spacing:-.01em; margin:0 0 6mm;
+}
+.cover__title em{ color:var(--amber); font-style:normal; }
+.cover__sub{
+  font-size:13pt; color:#CFE3DF; max-width:130mm; line-height:1.5; font-weight:400;
+}
+.cover__rule{ height:2px; width:40mm; background:var(--amber); margin:9mm 0 7mm; }
+.cover__roles{ display:flex; gap:7mm; margin-top:2mm; }
+.cover__role{
+  border:1px solid rgba(255,255,255,.22); border-radius:4px;
+  padding:3mm 5mm; font-size:9pt; font-weight:600; letter-spacing:.02em;
+  background:rgba(255,255,255,.04);
+}
+.cover__role span{ display:block; color:var(--amber); font-size:7pt; letter-spacing:.2em; margin-bottom:1mm; }
+.cover__foot{
+  margin-top:auto; display:flex; justify-content:space-between; align-items:flex-end;
+  font-size:8.6pt; color:#AFCBC6; border-top:1px solid rgba(255,255,255,.16); padding-top:5mm;
+}
+.cover__foot b{ color:#F4F3EC; font-weight:700; }
+
+/* ============================================================
+   CHAPTER DIVIDER
+   ============================================================ */
+.divider{
+  page:divider; page-break-before:always; page-break-after:always;
+  position:relative; height:297mm; width:210mm;
+  background:linear-gradient(160deg,#0E6A62,var(--teal-deep));
+  color:#EAF3F0; padding:40mm 26mm; display:flex; flex-direction:column;
+  -webkit-print-color-adjust:exact; print-color-adjust:exact;
+}
+.divider__no{
+  font-family:var(--serif); font-size:120pt; line-height:.9; font-weight:700;
+  color:rgba(245,158,11,.9);
+}
+.divider__kicker{ letter-spacing:.4em; font-size:9pt; font-weight:700; color:#9FD3CB; text-transform:uppercase; margin-bottom:6mm; }
+.divider__title{ font-family:var(--serif); font-size:34pt; line-height:1.08; margin:5mm 0 6mm; max-width:150mm; }
+.divider__desc{ font-size:11pt; color:#C7E0DB; max-width:135mm; line-height:1.6; }
+.divider__spine{ margin-top:auto; display:flex; gap:2mm; align-items:center; }
+.divider__spine i{ height:3px; width:14mm; background:var(--amber); display:block; }
+.divider__spine span{ font-size:8.5pt; letter-spacing:.14em; color:#9FD3CB; }
+
+/* ============================================================
+   CONTENT SHELL
+   ============================================================ */
+.chapline{
+  display:flex; align-items:baseline; gap:4mm;
+  border-bottom:2px solid var(--teal); padding-bottom:3mm; margin-bottom:7mm;
+}
+.chapline__no{ font-family:var(--sans); font-weight:800; color:var(--amber); font-size:12pt; letter-spacing:.05em; }
+.chapline__t{ font-family:var(--serif); font-size:20pt; color:var(--teal-deep); font-weight:700; }
+
+.lead{ font-size:11pt; color:#324744; max-width:none; margin-bottom:6mm; }
+
+h3.sub{
+  font-family:var(--sans); font-size:12pt; color:var(--teal-deep);
+  margin:8mm 0 3mm; display:flex; align-items:center; gap:3mm;
+}
+h3.sub::before{ content:''; width:4mm; height:4mm; background:var(--amber); border-radius:1px; display:inline-block; flex:none; }
+
+h4.mini{ font-size:10pt; color:var(--teal); margin:5mm 0 2mm; letter-spacing:.02em; text-transform:uppercase; font-weight:800; font-size:8.6pt; }
+
+/* eyebrow label */
+.eyebrow{ font-weight:800; letter-spacing:.28em; font-size:7.6pt; color:var(--amber-deep); text-transform:uppercase; }
+
+/* ============================================================
+   SIGNATURE — PROCESS SPINE (langkah bernomor)
+   ============================================================ */
+.flow{ margin:5mm 0 7mm; }
+.step{
+  position:relative; padding:0 0 6mm 15mm; break-inside:avoid;
+}
+.step::before{ /* garis spine */
+  content:''; position:absolute; left:5.5mm; top:9mm; bottom:-2mm; width:2px;
+  background:linear-gradient(var(--amber),rgba(245,158,11,.25));
+}
+.step:last-child::before{ display:none; }
+.step__no{
+  position:absolute; left:0; top:0; width:11mm; height:11mm; border-radius:50%;
+  background:var(--amber); color:#3A2400; font-weight:800; font-size:11pt;
+  display:flex; align-items:center; justify-content:center;
+  box-shadow:0 0 0 3px var(--paper),0 0 0 4px var(--mist-line);
+}
+.step__t{ font-weight:700; font-size:11pt; color:var(--teal-deep); margin:1mm 0 1.5mm; }
+.step__b{ color:#37474400; }
+.step p{ margin:.15em 0 .5em; color:#33403D; }
+
+/* ============================================================
+   CALLOUTS
+   ============================================================ */
+.note{
+  border-left:3px solid var(--teal); background:var(--mist);
+  padding:4mm 5mm; border-radius:0 5px 5px 0; margin:4mm 0 5mm; break-inside:avoid;
+}
+.note--warn{ border-left-color:var(--amber); background:#FEF6E7; }
+.note--stop{ border-left-color:var(--rose); background:#FDECEF; }
+.note__h{ font-weight:800; font-size:8.4pt; letter-spacing:.14em; text-transform:uppercase; margin-bottom:1.5mm; color:var(--teal-deep); }
+.note--warn .note__h{ color:var(--amber-deep); }
+.note--stop .note__h{ color:#9F1239; }
+.note p{ margin:0; font-size:9.6pt; }
+
+/* ============================================================
+   TABLES
+   ============================================================ */
+table.t{ width:100%; border-collapse:collapse; margin:3mm 0 6mm; font-size:9.4pt; break-inside:avoid; }
+table.t th{
+  background:var(--teal-deep); color:#EAF3F0; text-align:left; font-weight:700;
+  padding:2.6mm 3mm; font-size:8.4pt; letter-spacing:.05em; text-transform:uppercase;
+}
+table.t td{ padding:2.4mm 3mm; border-bottom:1px solid var(--mist-line); vertical-align:top; }
+table.t tr:nth-child(even) td{ background:#F3F0E8; }
+table.t td code{ font-family:var(--sans); font-weight:700; color:var(--teal); font-size:8.8pt; }
+
+/* ============================================================
+   UI MOCKUPS (digambar dengan CSS)
+   ============================================================ */
+.mock{
+  border:1px solid var(--mist-line); border-radius:8px; overflow:hidden;
+  background:#fff; box-shadow:0 6px 18px rgba(11,79,73,.07); margin:4mm 0 3mm; break-inside:avoid;
+}
+.mock__bar{ background:var(--teal); color:#fff; padding:2.4mm 4mm; display:flex; align-items:center; gap:2.5mm; font-size:8.8pt; font-weight:700; }
+.mock__dots{ display:flex; gap:1.4mm; }
+.mock__dots i{ width:2.4mm; height:2.4mm; border-radius:50%; background:rgba(255,255,255,.5); display:block; }
+.mock__role{ margin-left:auto; background:rgba(255,255,255,.16); padding:.8mm 2.6mm; border-radius:20px; font-size:7.4pt; letter-spacing:.08em; font-weight:700; }
+.mock__body{ padding:5mm; }
+.mock__cap{ font-size:8pt; color:var(--muted); text-align:center; margin:0 0 5mm; font-style:italic; }
+
+/* form field mock */
+.fld{ margin-bottom:3mm; }
+.fld__l{ font-size:8pt; font-weight:700; color:var(--muted); text-transform:uppercase; letter-spacing:.08em; display:block; margin-bottom:1.2mm; }
+.fld__b{ border:1.4px solid var(--mist-line); border-radius:5px; padding:2.6mm 3mm; font-size:9.4pt; color:#33403D; background:#FCFCFB; }
+.fld__b--focus{ border-color:var(--teal); box-shadow:0 0 0 2.5px rgba(15,118,110,.14); }
+.fld__b .ph{ color:#A9B4B1; }
+.btn{ background:var(--teal); color:#fff; text-align:center; padding:3mm; border-radius:5px; font-weight:700; font-size:9.6pt; }
+.btn--amber{ background:var(--amber); color:#3A2400; }
+
+/* status pipeline */
+.pipe{ display:flex; align-items:stretch; gap:0; margin:2mm 0; }
+.pipe__s{ flex:1; text-align:center; position:relative; }
+.pipe__chip{
+  background:var(--mist); border:1.5px solid var(--mist-line); color:var(--teal-deep);
+  border-radius:20px; padding:2mm 1mm; font-size:8pt; font-weight:700; margin:0 1.5mm;
+}
+.pipe__s--on .pipe__chip{ background:var(--teal); color:#fff; border-color:var(--teal); }
+.pipe__s--done .pipe__chip{ background:var(--success); color:#fff; border-color:var(--success); }
+.pipe__s::after{ content:'▸'; position:absolute; right:-1.5mm; top:50%; transform:translateY(-55%); color:var(--mist-line); font-size:9pt; }
+.pipe__s:last-child::after{ display:none; }
+.pipe__lbl{ font-size:7pt; color:var(--muted); margin-top:1.5mm; }
+.revloop{ text-align:center; font-size:8pt; color:var(--amber-deep); font-weight:700; margin-top:2mm; }
+
+/* checklist mock */
+.chk{ display:flex; align-items:center; gap:3mm; padding:2mm 0; border-bottom:1px dashed var(--mist-line); font-size:9.4pt; }
+.chk:last-child{ border-bottom:none; }
+.chk__box{ width:5mm; height:5mm; border-radius:3px; flex:none; display:flex; align-items:center; justify-content:center; font-size:8pt; font-weight:800; }
+.chk__box--on{ background:var(--success); color:#fff; }
+.chk__box--off{ background:#fff; border:1.6px solid var(--mist-line); color:transparent; }
+.chk__n{ margin-left:auto; font-size:7.6pt; color:var(--muted); font-weight:700; }
+
+/* rubric row mock */
+.rub{ border:1px solid var(--mist-line); border-radius:6px; padding:3mm; margin-bottom:2.5mm; display:flex; gap:3mm; align-items:center; }
+.rub__code{ font-weight:800; color:var(--teal); font-size:8.6pt; flex:none; width:14mm; }
+.rub__txt{ font-size:8.8pt; color:#33403D; flex:1; line-height:1.4; }
+.rub__scores{ display:flex; gap:1.6mm; flex:none; }
+.rub__s{ width:7mm; height:7mm; border-radius:5px; border:1.5px solid var(--mist-line); display:flex; align-items:center; justify-content:center; font-weight:800; font-size:9pt; color:var(--muted); }
+.rub__s--on{ background:var(--teal); color:#fff; border-color:var(--teal); }
+
+/* predikat scale */
+.scale{ display:flex; border-radius:6px; overflow:hidden; margin:3mm 0; border:1px solid var(--mist-line); }
+.scale__seg{ flex:1; padding:2.6mm 2mm; text-align:center; color:#fff; }
+.scale__seg b{ display:block; font-size:10pt; }
+.scale__seg small{ font-size:7pt; opacity:.9; }
+
+/* two-column helper */
+.cols{ display:flex; gap:6mm; }
+.cols>div{ flex:1; }
+
+/* role matrix cards */
+.rolecards{ display:flex; gap:4mm; margin:4mm 0 6mm; }
+.rolecard{ flex:1; border:1px solid var(--mist-line); border-top:3px solid var(--teal); border-radius:6px; padding:4mm; background:#fff; }
+.rolecard--k{ border-top-color:var(--amber); }
+.rolecard--a{ border-top-color:var(--teal-deep); }
+.rolecard h5{ margin:0 0 1mm; font-size:10.5pt; color:var(--teal-deep); }
+.rolecard p{ font-size:8.6pt; color:var(--muted); margin:0; }
+
+/* TOC */
+.toc{ margin-top:4mm; }
+.toc__row{ display:flex; align-items:baseline; gap:3mm; padding:2.4mm 0; border-bottom:1px solid var(--mist-line); }
+.toc__no{ font-weight:800; color:var(--amber); width:9mm; font-size:10pt; }
+.toc__t{ font-weight:600; color:var(--teal-ink); font-size:11pt; }
+.toc__d{ flex:1; border-bottom:1px dotted var(--mist-line); transform:translateY(-2px); }
+.toc__sub{ font-size:8.4pt; color:var(--muted); padding-left:12mm; margin:.5mm 0 1mm; }
+
+.kbd{ font-family:var(--sans); font-weight:700; background:var(--mist); border:1px solid var(--mist-line); border-radius:4px; padding:.3mm 1.6mm; font-size:8.6pt; color:var(--teal-deep); }
+
+.footnote{ font-size:8pt; color:var(--muted); border-top:1px solid var(--mist-line); padding-top:3mm; margin-top:6mm; }
+</style>
+</head>
+<body>
+
+<!-- ============================ COVER ============================ -->
+<section class="cover">
+  <div class="cover__grid"></div>
+  <div class="cover__seal">PANDUAN<br>RESMI<br>v1.0</div>
+  <div class="cover__inner">
+    <div class="cover__eyebrow">Modul Penggunaan Sistem</div>
+    <div>
+      <h1 class="cover__title">E&#8209;Supervisi<br><em>Pembelajaran</em></h1>
+      <div class="cover__rule"></div>
+      <p class="cover__sub">Panduan lengkap penggunaan sistem supervisi dan evaluasi pembelajaran sekolah — dari pengajuan dokumen oleh guru, penilaian oleh kepala sekolah, hingga pengelolaan oleh administrator.</p>
+      <div class="cover__roles">
+        <div class="cover__role"><span>PERAN 1</span>Administrator</div>
+        <div class="cover__role"><span>PERAN 2</span>Kepala Sekolah</div>
+        <div class="cover__role"><span>PERAN 3</span>Guru</div>
+      </div>
+    </div>
+    <div class="cover__foot">
+      <div>Disusun untuk pengguna sistem<br><b>Sistem Informasi Supervisi Pembelajaran</b></div>
+      <div style="text-align:right">Versi Dokumen <b>1.0</b><br>Edisi Juli 2026</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ TOC ============================ -->
+<section class="page">
+  <div class="chapline"><span class="chapline__no">—</span><span class="chapline__t">Daftar Isi</span></div>
+  <p class="lead">Modul ini disusun per peran. Anda dapat langsung menuju bab yang sesuai dengan tugas Anda. Bab 01 dan 02 berlaku untuk semua pengguna.</p>
+  <div class="toc">
+    <div class="toc__row"><span class="toc__no">01</span><span class="toc__t">Tentang E-Supervisi</span><span class="toc__d"></span><span class="eyebrow">Semua</span></div>
+    <div class="toc__sub">Apa itu sistem ini · tiga peran · alur besar supervisi · arti status</div>
+    <div class="toc__row"><span class="toc__no">02</span><span class="toc__t">Masuk ke Sistem</span><span class="toc__d"></span><span class="eyebrow">Semua</span></div>
+    <div class="toc__sub">Login · ganti kata sandi pertama · pengaturan akun · keamanan sesi</div>
+    <div class="toc__row"><span class="toc__no">03</span><span class="toc__t">Panduan Guru</span><span class="toc__d"></span><span class="eyebrow">Guru</span></div>
+    <div class="toc__sub">Ajukan supervisi · unggah 7 dokumen · isi proses pembelajaran · tanggapi revisi · modul ajar</div>
+    <div class="toc__row"><span class="toc__no">04</span><span class="toc__t">Panduan Kepala Sekolah</span><span class="toc__d"></span><span class="eyebrow">Kepala</span></div>
+    <div class="toc__sub">Tinjau evaluasi · isi rubrik 47 aspek · beri umpan balik · selesaikan / minta revisi · rekap modul</div>
+    <div class="toc__row"><span class="toc__no">05</span><span class="toc__t">Panduan Administrator</span><span class="toc__d"></span><span class="eyebrow">Admin</span></div>
+    <div class="toc__sub">Kelola pengguna · tinjau supervisi · kelola rubrik, modul ajar & carousel</div>
+    <div class="toc__row"><span class="toc__no">06</span><span class="toc__t">Notifikasi &amp; Hal Umum</span><span class="toc__d"></span><span class="eyebrow">Semua</span></div>
+    <div class="toc__sub">Lonceng notifikasi · pengingat otomatis · batas waktu sesi</div>
+    <div class="toc__row"><span class="toc__no">07</span><span class="toc__t">Pemecahan Masalah</span><span class="toc__d"></span><span class="eyebrow">Semua</span></div>
+    <div class="toc__sub">Pertanyaan yang sering muncul &amp; solusinya</div>
+  </div>
+  <div class="note" style="margin-top:8mm">
+    <div class="note__h">Cara membaca modul ini</div>
+    <p>Ikon nomor bulat berwarna <b>amber</b> menandai langkah yang harus dikerjakan berurutan. Kotak <b>biru-hijau</b> berisi tips, kotak <b>amber</b> berisi hal penting, dan kotak <b>merah</b> berisi peringatan yang wajib diperhatikan.</p>
+  </div>
+</section>
+
+<!-- ==================================================================
+     BAB 01
+     ================================================================== -->
+<section class="divider">
+  <div class="divider__no">01</div>
+  <div class="divider__kicker">Bagian Satu · Untuk Semua Pengguna</div>
+  <h2 class="divider__title">Tentang E-Supervisi</h2>
+  <p class="divider__desc">Mengenal tujuan sistem, tiga peran pengguna, dan bagaimana satu siklus supervisi berjalan dari awal hingga selesai.</p>
+  <div class="divider__spine"><i></i><span>SIKLUS SUPERVISI PEMBELAJARAN</span></div>
+</section>
+
+<section class="page">
+  <div class="chapline"><span class="chapline__no">01</span><span class="chapline__t">Tentang E-Supervisi</span></div>
+  <p class="lead">E-Supervisi adalah sistem berbasis web untuk mengelola supervisi pembelajaran di sekolah secara digital — menggantikan berkas kertas dengan alur yang tercatat rapi, mulai dari guru mengajukan dokumen, kepala sekolah menilai, hingga administrator mengelola data.</p>
+
+  <h3 class="sub">Tiga peran pengguna</h3>
+  <div class="rolecards">
+    <div class="rolecard rolecard--a">
+      <h5>Administrator</h5>
+      <p>Mengelola akun pengguna, rubrik penilaian, modul ajar, dan memantau seluruh proses supervisi.</p>
+    </div>
+    <div class="rolecard rolecard--k">
+      <h5>Kepala Sekolah</h5>
+      <p>Meninjau pengajuan guru, mengisi rubrik penilaian 47 aspek, memberi umpan balik, dan menyelesaikan evaluasi.</p>
+    </div>
+    <div class="rolecard">
+      <h5>Guru</h5>
+      <p>Mengajukan supervisi, mengunggah dokumen pembelajaran, mengisi refleksi, dan menanggapi revisi.</p>
+    </div>
+  </div>
+
+  <h3 class="sub">Alur besar satu siklus supervisi</h3>
+  <p>Setiap supervisi mengalir melalui rangkaian status berikut. Guru memulai, kepala sekolah menutup.</p>
+  <div class="mock">
+    <div class="mock__bar"><span class="mock__dots"><i></i><i></i><i></i></span> E-Supervisi · Alur Status</div>
+    <div class="mock__body">
+      <div class="pipe">
+        <div class="pipe__s pipe__s--done"><div class="pipe__chip">Draft</div><div class="pipe__lbl">Guru menyiapkan</div></div>
+        <div class="pipe__s pipe__s--done"><div class="pipe__chip">Diajukan</div><div class="pipe__lbl">Guru mengirim</div></div>
+        <div class="pipe__s pipe__s--on"><div class="pipe__chip">Ditinjau</div><div class="pipe__lbl">Kepala menilai</div></div>
+        <div class="pipe__s"><div class="pipe__chip">Selesai</div><div class="pipe__lbl">Evaluasi tuntas</div></div>
+      </div>
+      <div class="revloop">↺ Bila perlu perbaikan, kepala sekolah mengembalikan ke status <b>Revisi</b> — guru memperbaiki lalu mengirim ulang.</div>
+    </div>
+  </div>
+
+  <h3 class="sub">Arti setiap status</h3>
+  <table class="t">
+    <thead><tr><th style="width:32mm">Status</th><th>Artinya</th><th style="width:38mm">Siapa yang bertindak</th></tr></thead>
+    <tbody>
+      <tr><td><code>Draft</code></td><td>Supervisi baru dibuat, dokumen sedang disiapkan. Belum terlihat oleh kepala sekolah.</td><td>Guru</td></tr>
+      <tr><td><code>Diajukan</code></td><td>Guru sudah melengkapi dokumen &amp; refleksi lalu mengirim. Menunggu ditinjau.</td><td>Guru → Kepala</td></tr>
+      <tr><td><code>Ditinjau</code></td><td>Kepala sekolah mulai menilai. Rubrik &amp; umpan balik sedang diisi.</td><td>Kepala Sekolah</td></tr>
+      <tr><td><code>Revisi</code></td><td>Kepala sekolah meminta perbaikan. Supervisi kembali dapat diedit guru.</td><td>Kepala → Guru</td></tr>
+      <tr><td><code>Selesai</code></td><td>Evaluasi tuntas. Hasil rubrik &amp; umpan balik final dapat dilihat &amp; diunduh.</td><td>—</td></tr>
+    </tbody>
+  </table>
+
+  <div class="note">
+    <div class="note__h">Prinsip penting</div>
+    <p>Seorang guru hanya boleh memiliki <b>satu supervisi aktif</b> pada satu waktu (berstatus Draft atau Revisi). Supervisi baru dapat dibuat setelah yang berjalan diajukan atau selesai.</p>
+  </div>
+</section>
+
+<!-- ==================================================================
+     BAB 02
+     ================================================================== -->
+<section class="divider">
+  <div class="divider__no">02</div>
+  <div class="divider__kicker">Bagian Dua · Untuk Semua Pengguna</div>
+  <h2 class="divider__title">Masuk ke Sistem</h2>
+  <p class="divider__desc">Cara masuk dengan aman, mengganti kata sandi pertama kali, dan mengatur profil akun Anda.</p>
+  <div class="divider__spine"><i></i><span>LOGIN · KEAMANAN AKUN</span></div>
+</section>
+
+<section class="page">
+  <div class="chapline"><span class="chapline__no">02</span><span class="chapline__t">Masuk ke Sistem</span></div>
+  <p class="lead">Semua peran masuk melalui halaman login yang sama. Akun Anda dibuatkan oleh administrator — Anda akan menerima NIK dan kata sandi awal.</p>
+
+  <div class="cols">
+    <div>
+      <h3 class="sub">Langkah masuk</h3>
+      <div class="flow">
+        <div class="step"><div class="step__no">1</div><div class="step__t">Buka halaman login</div><p>Akses alamat sistem yang diberikan sekolah. Halaman login akan tampil otomatis.</p></div>
+        <div class="step"><div class="step__no">2</div><div class="step__t">Pilih peran &amp; isi NIK</div><p>Pilih peran Anda (Guru / Kepala Sekolah / Administrator), lalu masukkan <b>NIK</b> Anda.</p></div>
+        <div class="step"><div class="step__no">3</div><div class="step__t">Masukkan kata sandi</div><p>Ketik kata sandi, lalu tekan tombol <b>Masuk</b>.</p></div>
+      </div>
+    </div>
+    <div>
+      <div class="mock">
+        <div class="mock__bar"><span class="mock__dots"><i></i><i></i><i></i></span> Masuk ke E-Supervisi</div>
+        <div class="mock__body">
+          <div class="fld"><span class="fld__l">Peran</span><div class="fld__b">Guru ▾</div></div>
+          <div class="fld"><span class="fld__l">NIK</span><div class="fld__b fld__b--focus">1987xxxxxxxxxxxx</div></div>
+          <div class="fld"><span class="fld__l">Kata Sandi</span><div class="fld__b"><span class="ph">••••••••</span></div></div>
+          <div class="btn">Masuk</div>
+        </div>
+      </div>
+      <p class="mock__cap">Tampilan halaman login</p>
+    </div>
+  </div>
+
+  <div class="note note--warn">
+    <div class="note__h">Keamanan · batas percobaan</div>
+    <p>Demi keamanan, login dibatasi <b>5 kali percobaan per menit</b>. Bila melebihi, tunggu sebentar sebelum mencoba lagi. Pastikan peran dan NIK sudah benar.</p>
+  </div>
+
+  <h3 class="sub">Ganti kata sandi pertama kali (wajib)</h3>
+  <p>Saat pertama masuk dengan kata sandi awal dari administrator, sistem akan <b>meminta Anda membuat kata sandi baru</b> sebelum bisa menggunakan fitur apa pun. Ini melindungi akun Anda.</p>
+  <div class="flow">
+    <div class="step"><div class="step__no">1</div><div class="step__t">Masukkan kata sandi baru</div><p>Gunakan kombinasi yang kuat dan mudah Anda ingat, lalu ketik ulang untuk konfirmasi.</p></div>
+    <div class="step"><div class="step__no">2</div><div class="step__t">Simpan</div><p>Setelah tersimpan, Anda langsung diarahkan ke halaman utama sesuai peran.</p></div>
+  </div>
+
+  <h3 class="sub">Pengaturan akun</h3>
+  <p>Menu <b>Pengaturan</b> tersedia untuk semua peran. Di sana Anda dapat:</p>
+  <ul>
+    <li><b>Memperbarui profil</b> — memperbaiki data diri Anda.</li>
+    <li><b>Mengganti kata sandi</b> — sewaktu-waktu, untuk menjaga keamanan.</li>
+  </ul>
+
+  <div class="note note--stop">
+    <div class="note__h">Sesi berakhir otomatis</div>
+    <p>Demi keamanan data, sesi Anda berakhir otomatis setelah <b>10 menit tanpa aktivitas</b>. Bila ini terjadi, Anda cukup masuk kembali. Selalu <b>keluar (logout)</b> saat menggunakan komputer bersama.</p>
+  </div>
+</section>
+
+<!-- ==================================================================
+     BAB 03 — GURU
+     ================================================================== -->
+<section class="divider">
+  <div class="divider__no">03</div>
+  <div class="divider__kicker">Bagian Tiga · Untuk Guru</div>
+  <h2 class="divider__title">Panduan Guru</h2>
+  <p class="divider__desc">Mengajukan supervisi dari awal: menyiapkan tujuh dokumen wajib, mengisi refleksi pembelajaran, mengirim, dan menanggapi revisi dari kepala sekolah.</p>
+  <div class="divider__spine"><i></i><span>AJUKAN · UNGGAH · REFLEKSI · KIRIM</span></div>
+</section>
+
+<section class="page">
+  <div class="chapline"><span class="chapline__no">03</span><span class="chapline__t">Panduan Guru</span></div>
+  <p class="lead">Sebagai guru, tugas utama Anda adalah mengajukan supervisi yang lengkap. Prosesnya terdiri dari tiga tahap: unggah dokumen, isi proses pembelajaran, lalu kirim untuk dinilai.</p>
+
+  <h3 class="sub">Alur pengajuan supervisi</h3>
+  <div class="flow">
+    <div class="step"><div class="step__no">1</div><div class="step__t">Buat supervisi baru</div><p>Dari beranda guru, pilih <b>Ajukan Supervisi</b>. Sistem membuat lembar supervisi berstatus <code style="color:var(--teal);font-weight:700">Draft</code>. Bila Anda sudah punya supervisi aktif, sistem akan membawa Anda melanjutkan yang itu.</p></div>
+    <div class="step"><div class="step__no">2</div><div class="step__t">Unggah 7 dokumen wajib</div><p>Pada tab <b>Dokumen</b>, unggah ketujuh berkas administrasi pembelajaran. Format yang diterima: <span class="kbd">PDF</span> <span class="kbd">JPG</span> <span class="kbd">PNG</span>, ukuran maksimal <b>2 MB</b> per berkas.</p></div>
+    <div class="step"><div class="step__no">3</div><div class="step__t">Isi Proses Pembelajaran</div><p>Setelah <b>ketujuh</b> dokumen lengkap, tab <b>Proses</b> terbuka. Jawab 5 pertanyaan refleksi pembelajaran (maksimal 500 karakter tiap jawaban).</p></div>
+    <div class="step"><div class="step__no">4</div><div class="step__t">Kirim untuk dinilai</div><p>Setelah dokumen &amp; refleksi lengkap, tekan <b>Kirim</b>. Status berubah menjadi <code style="color:var(--teal);font-weight:700">Diajukan</code> dan kepala sekolah dapat mulai meninjau.</p></div>
+  </div>
+
+  <div class="note note--warn">
+    <div class="note__h">Syarat membuka tab Proses</div>
+    <p>Tab <b>Proses</b> hanya bisa dibuka jika <b>ketujuh dokumen sudah terunggah</b>. Bila belum lengkap, sistem mengarahkan Anda kembali ke tab Dokumen dan menampilkan berapa yang sudah diunggah (mis. 5/7).</p>
+  </div>
+
+  <h3 class="sub">Tujuh dokumen wajib</h3>
+  <div class="cols">
+    <div>
+      <table class="t">
+        <thead><tr><th style="width:12mm">No</th><th>Dokumen</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>Capaian Pembelajaran</td></tr>
+          <tr><td>2</td><td>Alur Tujuan Pembelajaran</td></tr>
+          <tr><td>3</td><td>Kalender Pendidikan</td></tr>
+          <tr><td>4</td><td>Program Tahunan</td></tr>
+          <tr><td>5</td><td>Program Semester</td></tr>
+          <tr><td>6</td><td>Modul Ajar</td></tr>
+          <tr><td>7</td><td>Bahan Ajar</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div>
+      <div class="mock">
+        <div class="mock__bar"><span class="mock__dots"><i></i><i></i><i></i></span> Dokumen<span class="mock__role">GURU</span></div>
+        <div class="mock__body">
+          <div class="chk"><span class="chk__box chk__box--on">✓</span> Capaian Pembelajaran <span class="chk__n">Terunggah</span></div>
+          <div class="chk"><span class="chk__box chk__box--on">✓</span> Alur Tujuan Pembelajaran <span class="chk__n">Terunggah</span></div>
+          <div class="chk"><span class="chk__box chk__box--on">✓</span> Kalender Pendidikan <span class="chk__n">Terunggah</span></div>
+          <div class="chk"><span class="chk__box chk__box--on">✓</span> Program Tahunan <span class="chk__n">Terunggah</span></div>
+          <div class="chk"><span class="chk__box chk__box--on">✓</span> Program Semester <span class="chk__n">Terunggah</span></div>
+          <div class="chk"><span class="chk__box chk__box--off">·</span> Modul Ajar <span class="chk__n">Belum</span></div>
+          <div class="chk"><span class="chk__box chk__box--off">·</span> Bahan Ajar <span class="chk__n">Belum</span></div>
+        </div>
+      </div>
+      <p class="mock__cap">Daftar unggahan dokumen — 5 dari 7 lengkap</p>
+    </div>
+  </div>
+
+  <h3 class="sub">Lima pertanyaan refleksi</h3>
+  <p>Pada tab Proses, jawab kelima pertanyaan berikut berdasarkan pembelajaran yang Anda laksanakan:</p>
+  <ol>
+    <li>Apa tujuan pembelajaran yang ingin dicapai dalam pembelajaran ini?</li>
+    <li>Bagaimana strategi atau metode pembelajaran yang digunakan?</li>
+    <li>Apa saja tantangan yang dihadapi selama proses pembelajaran?</li>
+    <li>Bagaimana respon dan partisipasi siswa selama pembelajaran?</li>
+    <li>Apa rencana tindak lanjut untuk meningkatkan kualitas pembelajaran?</li>
+  </ol>
+  <div class="note">
+    <div class="note__h">Tips</div>
+    <p>Anda dapat <b>menyimpan sementara</b> jawaban dan dokumen, lalu melanjutkan nanti selama status masih Draft. Kelima refleksi wajib terisi sebelum tombol Kirim aktif.</p>
+  </div>
+</section>
+
+<section class="page">
+  <h3 class="sub">Menanggapi permintaan revisi</h3>
+  <p>Bila kepala sekolah meminta perbaikan, supervisi Anda kembali berstatus <code style="color:var(--teal);font-weight:700">Revisi</code> dan Anda akan menerima notifikasi. Lembar supervisi dapat diedit kembali.</p>
+  <div class="flow">
+    <div class="step"><div class="step__no">1</div><div class="step__t">Baca catatan revisi</div><p>Buka supervisi tersebut dan baca catatan perbaikan dari kepala sekolah dengan teliti.</p></div>
+    <div class="step"><div class="step__no">2</div><div class="step__t">Perbaiki dokumen / refleksi</div><p>Ganti dokumen yang perlu diperbaiki atau sunting jawaban refleksi Anda.</p></div>
+    <div class="step"><div class="step__no">3</div><div class="step__t">Kirim ulang</div><p>Tekan <b>Kirim</b> kembali. Status menjadi <code style="color:var(--teal);font-weight:700">Diajukan</code> lagi dan siap ditinjau ulang.</p></div>
+  </div>
+
+  <h3 class="sub">Melihat hasil penilaian</h3>
+  <p>Setelah supervisi <code style="color:var(--teal);font-weight:700">Selesai</code>, Anda dapat melihat hasil rubrik penilaian dan umpan balik dari kepala sekolah, serta <b>mengunduh rubrik dalam bentuk PDF</b> sebagai arsip.</p>
+
+  <h3 class="sub">Modul Ajar</h3>
+  <p>Menu <b>Modul Ajar</b> berisi materi pembelajaran yang disediakan sekolah. Anda dapat:</p>
+  <ul>
+    <li><b>Membuka modul</b> — membaca materi berupa berkas PDF dan menonton video praktik pembelajaran.</li>
+    <li><b>Melanjutkan progres</b> — sistem mengingat sampai mana Anda membaca, sehingga bisa dilanjutkan kapan saja.</li>
+  </ul>
+  <div class="note">
+    <div class="note__h">Catatan</div>
+    <p>Progres membaca modul Anda terekam dan dapat dilihat oleh kepala sekolah pada rekap progres — sebagai bagian dari pembinaan, bukan penilaian.</p>
+  </div>
+</section>
+
+<!-- ==================================================================
+     BAB 04 — KEPALA SEKOLAH
+     ================================================================== -->
+<section class="divider">
+  <div class="divider__no">04</div>
+  <div class="divider__kicker">Bagian Empat · Untuk Kepala Sekolah</div>
+  <h2 class="divider__title">Panduan Kepala Sekolah</h2>
+  <p class="divider__desc">Meninjau pengajuan guru secara berurutan: mulai tinjau, isi rubrik penilaian 47 aspek, beri umpan balik, lalu selesaikan atau minta revisi.</p>
+  <div class="divider__spine"><i></i><span>TINJAU · RUBRIK · UMPAN BALIK</span></div>
+</section>
+
+<section class="page">
+  <div class="chapline"><span class="chapline__no">04</span><span class="chapline__t">Panduan Kepala Sekolah</span></div>
+  <p class="lead">Sebagai kepala sekolah, Anda menilai supervisi yang telah diajukan guru. Penilaian terdiri dari dua langkah berurutan — rubrik dulu, baru umpan balik — sebelum evaluasi diselesaikan.</p>
+
+  <h3 class="sub">Alur peninjauan</h3>
+  <div class="flow">
+    <div class="step"><div class="step__no">1</div><div class="step__t">Buka daftar evaluasi</div><p>Menu <b>Evaluasi</b> menampilkan semua supervisi yang berstatus Diajukan, Ditinjau, Revisi, atau Selesai. Pilih salah satu untuk membuka detailnya.</p></div>
+    <div class="step"><div class="step__no">2</div><div class="step__t">Periksa dokumen guru</div><p>Tinjau ketujuh dokumen dan jawaban refleksi. Anda dapat <b>melihat pratinjau</b> atau <b>mengunduh</b> setiap dokumen.</p></div>
+    <div class="step"><div class="step__no">3</div><div class="step__t">Mulai tinjau</div><p>Tekan <b>Mulai Tinjau</b>. Status supervisi berubah menjadi <code style="color:var(--teal);font-weight:700">Ditinjau</code> dan Anda mulai menilai.</p></div>
+    <div class="step"><div class="step__no">4</div><div class="step__t">Langkah 1 — Isi rubrik penilaian</div><p>Nilai <b>47 aspek</b> pelaksanaan pembelajaran, masing-masing dengan skor <b>0, 1, atau 2</b>. Simpan setelah selesai.</p></div>
+    <div class="step"><div class="step__no">5</div><div class="step__t">Langkah 2 — Beri umpan balik</div><p>Tuliskan catatan pembinaan untuk guru sebagai umpan balik atas pembelajaran yang dinilai.</p></div>
+    <div class="step"><div class="step__no">6</div><div class="step__t">Selesaikan atau minta revisi</div><p><b>Selesaikan</b> bila sudah sesuai (status jadi <code style="color:var(--teal);font-weight:700">Selesai</code>), atau <b>Minta Revisi</b> dengan catatan bila guru perlu memperbaiki.</p></div>
+  </div>
+
+  <div class="note note--warn">
+    <div class="note__h">Rubrik dulu, baru selesai</div>
+    <p>Evaluasi <b>tidak dapat diselesaikan</b> sebelum rubrik penilaian terisi lengkap. Ini memastikan setiap guru mendapat penilaian yang utuh.</p>
+  </div>
+</section>
+
+<section class="page">
+  <h3 class="sub">Dua langkah penilaian</h3>
+  <div class="mock">
+    <div class="mock__bar"><span class="mock__dots"><i></i><i></i><i></i></span> Penilaian Supervisi<span class="mock__role">KEPALA SEKOLAH</span></div>
+    <div class="mock__body">
+      <div class="pipe" style="margin-bottom:4mm">
+        <div class="pipe__s pipe__s--on"><div class="pipe__chip">Langkah 1 · Rubrik</div><div class="pipe__lbl">47 aspek · skor 0–2</div></div>
+        <div class="pipe__s"><div class="pipe__chip">Langkah 2 · Umpan Balik</div><div class="pipe__lbl">Catatan pembinaan</div></div>
+      </div>
+      <div class="rub"><span class="rub__code">A.1.a</span><span class="rub__txt">Guru menyiapkan fisik dan psikis peserta didik dengan menyapa dan memberi salam.</span><span class="rub__scores"><span class="rub__s">0</span><span class="rub__s">1</span><span class="rub__s rub__s--on">2</span></span></div>
+      <div class="rub"><span class="rub__code">B.1.a</span><span class="rub__txt">Guru menyampaikan materi sesuai dengan Tujuan Pembelajaran.</span><span class="rub__scores"><span class="rub__s">0</span><span class="rub__s rub__s--on">1</span><span class="rub__s">2</span></span></div>
+      <div class="rub"><span class="rub__code">C.1.a</span><span class="rub__txt">Guru memfasilitasi peserta didik membuat rangkuman/simpulan pembelajaran.</span><span class="rub__scores"><span class="rub__s">0</span><span class="rub__s">1</span><span class="rub__s rub__s--on">2</span></span></div>
+    </div>
+  </div>
+  <p class="mock__cap">Baris rubrik — pilih satu skor (0, 1, atau 2) tiap aspek</p>
+
+  <h3 class="sub">Struktur rubrik — 47 aspek dalam 3 bagian</h3>
+  <table class="t">
+    <thead><tr><th style="width:14mm">Kode</th><th>Bagian</th><th>Cakupan penilaian</th></tr></thead>
+    <tbody>
+      <tr><td><code>A</code></td><td>Kegiatan Pendahuluan</td><td>Orientasi, motivasi, dan apersepsi di awal pembelajaran.</td></tr>
+      <tr><td><code>B</code></td><td>Kegiatan Inti</td><td>Penguasaan materi, strategi mengajar, HOTS &amp; kecakapan abad 21 (4C), pengelolaan kelas, dukungan afektif.</td></tr>
+      <tr><td><code>C</code></td><td>Kegiatan Penutup</td><td>Rangkuman, refleksi, umpan balik, dan tindak lanjut pembelajaran.</td></tr>
+    </tbody>
+  </table>
+
+  <h3 class="sub">Predikat hasil penilaian</h3>
+  <p>Skor seluruh aspek dijumlahkan dan dipersentasekan, lalu diterjemahkan menjadi predikat:</p>
+  <div class="scale">
+    <div class="scale__seg" style="background:var(--success)"><b>Sangat Baik</b><small>nilai ≥ 91</small></div>
+    <div class="scale__seg" style="background:var(--teal)"><b>Baik</b><small>81 – 90</small></div>
+    <div class="scale__seg" style="background:var(--amber)"><b>Cukup</b><small>71 – 80</small></div>
+    <div class="scale__seg" style="background:var(--rose)"><b>Kurang</b><small>di bawah 71</small></div>
+  </div>
+
+  <h3 class="sub">Setelah penilaian</h3>
+  <ul>
+    <li><b>Unduh rubrik PDF</b> — cetak hasil penilaian sebagai arsip resmi.</li>
+    <li><b>Rekap Progres Modul Ajar</b> — pantau sejauh mana para guru mempelajari modul ajar yang tersedia.</li>
+  </ul>
+</section>
+
+<!-- ==================================================================
+     BAB 05 — ADMINISTRATOR
+     ================================================================== -->
+<section class="divider">
+  <div class="divider__no">05</div>
+  <div class="divider__kicker">Bagian Lima · Untuk Administrator</div>
+  <h2 class="divider__title">Panduan Administrator</h2>
+  <p class="divider__desc">Mengelola fondasi sistem: akun pengguna, rubrik penilaian, modul ajar, tampilan beranda, serta memantau seluruh supervisi.</p>
+  <div class="divider__spine"><i></i><span>PENGGUNA · RUBRIK · MODUL · SISTEM</span></div>
+</section>
+
+<section class="page">
+  <div class="chapline"><span class="chapline__no">05</span><span class="chapline__t">Panduan Administrator</span></div>
+  <p class="lead">Administrator memegang kendali penuh atas data sistem. Dari dashboard, Anda mengakses seluruh modul pengelolaan.</p>
+
+  <h3 class="sub">Manajemen pengguna</h3>
+  <p>Menu <b>Pengguna</b> untuk mengelola akun guru, kepala sekolah, dan administrator lain.</p>
+  <div class="flow">
+    <div class="step"><div class="step__no">1</div><div class="step__t">Tambah pengguna</div><p>Isi data pengguna (nama, NIK, peran, dsb). Sistem membuat akun dengan kata sandi awal yang harus diganti saat login pertama.</p></div>
+    <div class="step"><div class="step__no">2</div><div class="step__t">Sunting atau reset</div><p>Perbarui data pengguna, atau <b>Reset Kata Sandi</b> bila ada yang lupa — sistem membuat kata sandi awal baru.</p></div>
+    <div class="step"><div class="step__no">3</div><div class="step__t">Aktif / nonaktifkan</div><p>Gunakan <b>Aktif/Nonaktif</b> untuk memblokir sementara akses akun tanpa menghapus datanya.</p></div>
+  </div>
+  <div class="note note--stop">
+    <div class="note__h">Hati-hati menghapus</div>
+    <p>Menghapus pengguna bersifat permanen dan dapat memengaruhi riwayat supervisi terkait. Bila hanya ingin menghentikan akses sementara, gunakan <b>Nonaktifkan</b>.</p>
+  </div>
+
+  <div class="cols">
+    <div>
+      <h3 class="sub">Tinjau supervisi</h3>
+      <p>Menu <b>Supervisi</b> memungkinkan administrator memantau seluruh pengajuan, memberi umpan balik, meminta revisi, dan mengunduh dokumen — sebagai pengawasan menyeluruh.</p>
+    </div>
+    <div>
+      <h3 class="sub">Kelola carousel beranda</h3>
+      <p>Menu <b>Carousel</b> mengatur gambar sorotan di beranda: tambah, ubah urutan, aktif/nonaktifkan, atau hapus slide. Gambar maksimal sesuai batas yang ditetapkan sistem.</p>
+    </div>
+  </div>
+
+  <h3 class="sub">Kelola rubrik penilaian</h3>
+  <p>Menu <b>Rubrik</b> mengatur ke-47 aspek penilaian dan ambang predikat.</p>
+  <ul>
+    <li><b>Aktif/nonaktifkan aspek</b> — sesuaikan aspek yang dipakai tanpa menghapusnya.</li>
+    <li><b>Atur predikat</b> — sesuaikan ambang nilai untuk Sangat Baik, Baik, Cukup, dan Kurang.</li>
+  </ul>
+  <div class="note">
+    <div class="note__h">Sumber instrumen</div>
+    <p>Rubrik bawaan mengacu pada <b>Instrumen Supervisi Pelaksanaan Pembelajaran</b> dengan 47 aspek yang dikelompokkan ke dalam kegiatan Pendahuluan, Inti, dan Penutup.</p>
+  </div>
+
+  <h3 class="sub">Kelola modul ajar</h3>
+  <p>Menu <b>Modul Ajar</b> untuk menyediakan materi pembelajaran bagi guru.</p>
+  <table class="t">
+    <thead><tr><th>Yang dapat dikelola</th><th>Keterangan</th></tr></thead>
+    <tbody>
+      <tr><td>Kategori modul</td><td>Kelompokkan modul; kategori dapat diaktif/nonaktifkan.</td></tr>
+      <tr><td>Berkas modul (PDF)</td><td>Materi utama berupa PDF, maksimal <b>20 MB</b> per berkas.</td></tr>
+      <tr><td>Video praktik</td><td>Lampirkan video praktik pembelajaran pada modul.</td></tr>
+      <tr><td>Status tampil</td><td>Aktif/nonaktifkan modul agar tampil atau tersembunyi bagi guru.</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ==================================================================
+     BAB 06 — NOTIFIKASI & UMUM
+     ================================================================== -->
+<section class="divider">
+  <div class="divider__no">06</div>
+  <div class="divider__kicker">Bagian Enam · Untuk Semua Pengguna</div>
+  <h2 class="divider__title">Notifikasi &amp; Hal Umum</h2>
+  <p class="divider__desc">Cara sistem mengingatkan Anda, dan kebiasaan baik menjaga keamanan data.</p>
+  <div class="divider__spine"><i></i><span>PENGINGAT · KEAMANAN</span></div>
+</section>
+
+<section class="page">
+  <div class="chapline"><span class="chapline__no">06</span><span class="chapline__t">Notifikasi &amp; Hal Umum</span></div>
+
+  <h3 class="sub">Lonceng notifikasi</h3>
+  <p>Ikon <b>lonceng</b> di bagian atas menampilkan pemberitahuan penting — misalnya supervisi baru diajukan, permintaan revisi, atau evaluasi selesai. Angka merah menunjukkan jumlah notifikasi yang belum dibaca.</p>
+  <ul>
+    <li><b>Buka notifikasi</b> — mengarahkan Anda langsung ke halaman terkait.</li>
+    <li><b>Tandai semua terbaca</b> — mengosongkan penanda notifikasi belum dibaca.</li>
+  </ul>
+
+  <h3 class="sub">Pengingat otomatis</h3>
+  <div class="note note--warn">
+    <div class="note__h">Jadwal pengingat</div>
+    <p>Sistem mengirim pengingat pengisian supervisi secara otomatis setiap <b>Senin dan Kamis pukul 07:00</b>. Guru yang belum melengkapi supervisi akan menerima notifikasi ini.</p>
+  </div>
+
+  <h3 class="sub">Kebiasaan aman</h3>
+  <ul>
+    <li>Selalu <b>keluar (logout)</b> setelah selesai, terutama di komputer bersama.</li>
+    <li>Jaga kerahasiaan kata sandi; ganti secara berkala melalui menu Pengaturan.</li>
+    <li>Ingat: sesi berakhir otomatis setelah <b>10 menit</b> tanpa aktivitas.</li>
+  </ul>
+</section>
+
+<!-- ==================================================================
+     BAB 07 — FAQ
+     ================================================================== -->
+<section class="divider">
+  <div class="divider__no">07</div>
+  <div class="divider__kicker">Bagian Tujuh · Untuk Semua Pengguna</div>
+  <h2 class="divider__title">Pemecahan Masalah</h2>
+  <p class="divider__desc">Pertanyaan yang paling sering muncul beserta solusi cepatnya.</p>
+  <div class="divider__spine"><i></i><span>PERTANYAAN &amp; SOLUSI</span></div>
+</section>
+
+<section class="page">
+  <div class="chapline"><span class="chapline__no">07</span><span class="chapline__t">Pemecahan Masalah</span></div>
+
+  <table class="t">
+    <thead><tr><th style="width:62mm">Kendala</th><th>Solusi</th></tr></thead>
+    <tbody>
+      <tr><td>Tidak bisa login / "terlalu banyak percobaan"</td><td>Pastikan <b>peran</b> dan <b>NIK</b> benar. Bila muncul batas percobaan, tunggu ±1 menit lalu coba lagi. Bila lupa sandi, minta administrator melakukan reset.</td></tr>
+      <tr><td>Diminta ganti kata sandi terus</td><td>Itu wajar saat login pertama. Buat kata sandi baru dan simpan — setelah itu Anda tidak diminta lagi.</td></tr>
+      <tr><td>Tab "Proses" tidak bisa dibuka (Guru)</td><td>Ketujuh dokumen wajib harus terunggah lebih dulu. Lengkapi hingga 7/7, tab Proses akan terbuka otomatis.</td></tr>
+      <tr><td>Berkas ditolak saat diunggah (Guru)</td><td>Gunakan format <b>PDF, JPG, atau PNG</b> dan pastikan ukuran <b>di bawah 2 MB</b>. Kompres berkas bila terlalu besar.</td></tr>
+      <tr><td>Tidak bisa menyelesaikan evaluasi (Kepala)</td><td>Rubrik penilaian harus diisi lengkap dulu (Langkah 1). Setelah rubrik tersimpan, evaluasi baru bisa diselesaikan.</td></tr>
+      <tr><td>Tidak bisa membuat supervisi baru (Guru)</td><td>Anda masih punya supervisi aktif (Draft/Revisi). Selesaikan/ajukan yang berjalan dulu, atau lanjutkan yang itu.</td></tr>
+      <tr><td>Tiba-tiba keluar sendiri</td><td>Sesi berakhir otomatis setelah 10 menit tanpa aktivitas. Masuk kembali untuk melanjutkan.</td></tr>
+      <tr><td>Gambar atau dokumen tidak muncul</td><td>Segarkan (refresh) halaman. Bila masih bermasalah, hubungi administrator sekolah.</td></tr>
+    </tbody>
+  </table>
+
+  <div class="note" style="margin-top:8mm">
+    <div class="note__h">Butuh bantuan lebih lanjut?</div>
+    <p>Untuk kendala yang tidak tercantum di sini — terutama yang berkaitan dengan akun dan data — hubungi <b>Administrator sekolah</b> sebagai penanggung jawab sistem.</p>
+  </div>
+
+  <div class="footnote">
+    <b>Modul Penggunaan E-Supervisi</b> · Versi 1.0 · Edisi Juli 2026 · Sistem Informasi Supervisi Pembelajaran.<br>
+    Dokumen ini disusun sebagai panduan resmi bagi Administrator, Kepala Sekolah, dan Guru pengguna sistem.
+  </div>
+</section>
+
+</body>
+</html>
