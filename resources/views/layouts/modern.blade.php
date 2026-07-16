@@ -503,15 +503,6 @@
 
             <!-- NAVIGATION -->
             <nav class="flex-1 px-3 py-4 overflow-y-auto">
-                <a href="{{ route('notifikasi.index') }}" wire:navigate class="group flex items-center gap-3 px-3 py-2.5 mb-1 min-h-11 rounded-lg text-sm font-medium transition-all duration-200 {{ request()->routeIs('notifikasi.*') ? 'bg-primary-50 dark:bg-primary-900/20 text-primary-600 dark:text-primary-400' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700/50' }}">
-                    <x-icon name="bell" class="w-5 h-5 flex-shrink-0" />
-                    <span class="flex-1">Notifikasi</span>
-                    @if(($unreadNotifCount ?? 0) > 0)
-                        <span class="min-w-[20px] h-5 px-1.5 rounded-full bg-red-600 text-white text-[10px] font-bold flex items-center justify-center">{{ $unreadNotifCount > 9 ? '9+' : $unreadNotifCount }}</span>
-                    @elseif(request()->routeIs('notifikasi.*'))
-                        <div class="w-1.5 h-1.5 bg-primary-600 dark:bg-primary-400 rounded-full"></div>
-                    @endif
-                </a>
             @if(Auth::user()->isAdmin())
                 <a href="{{ route('admin.dashboard') }}" wire:navigate class="group flex items-center gap-3 px-3 py-2.5 mb-1 min-h-11 rounded-lg text-sm font-medium transition-all duration-200 {{ request()->routeIs('admin.dashboard') ? 'bg-primary-50 dark:bg-primary-900/20 text-primary-600 dark:text-primary-400' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700/50' }}">
                     <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -522,6 +513,7 @@
                         <div class="w-1.5 h-1.5 bg-primary-600 dark:bg-primary-400 rounded-full"></div>
                     @endif
                 </a>
+                @include('partials._sidebar-notif-link')
                 <a href="{{ route('admin.users.index') }}" wire:navigate class="group flex items-center gap-3 px-3 py-2.5 mb-1 min-h-11 rounded-lg text-sm font-medium transition-all duration-200 {{ request()->routeIs('admin.users.*') ? 'bg-primary-50 dark:bg-primary-900/20 text-primary-600 dark:text-primary-400' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700/50' }}">
                     <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
@@ -568,6 +560,7 @@
                         <div class="w-1.5 h-1.5 bg-primary-600 dark:bg-primary-400 rounded-full"></div>
                     @endif
                 </a>
+                @include('partials._sidebar-notif-link')
                 <a href="{{ route('guru.modul.index') }}" wire:navigate class="group flex items-center gap-3 px-3 py-2.5 mb-1 min-h-11 rounded-lg text-sm font-medium transition-all duration-200 {{ request()->routeIs('guru.modul.*') ? 'bg-primary-50 dark:bg-primary-900/20 text-primary-600 dark:text-primary-400' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700/50' }}">
                     <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
@@ -596,6 +589,7 @@
                         <div class="w-1.5 h-1.5 bg-primary-600 dark:bg-primary-400 rounded-full"></div>
                     @endif
                 </a>
+                @include('partials._sidebar-notif-link')
                 <a href="{{ route('kepala.modul-progress.index') }}" wire:navigate class="group flex items-center gap-3 px-3 py-2.5 mb-1 min-h-11 rounded-lg text-sm font-medium transition-all duration-200 {{ request()->routeIs('kepala.modul-progress.*') ? 'bg-primary-50 dark:bg-primary-900/20 text-primary-600 dark:text-primary-400' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700/50' }}">
                     <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
