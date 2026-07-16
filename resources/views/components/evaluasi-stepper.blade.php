@@ -15,7 +15,7 @@
         && $supervisi->evaluasiRubrik->scores->count() >= $jumlahItemAktif
         && $jumlahItemAktif > 0;
     $adaFeedbackKepala = $supervisi->feedback
-        ->contains(fn ($f) => $f->user && $f->user->role === 'kepala_sekolah');
+        ->contains(fn ($f) => ! $f->sudah_direvisi && $f->user && $f->user->role === 'kepala_sekolah');
 
     $langkah = [
         1 => ['label' => 'Tinjau Materi',

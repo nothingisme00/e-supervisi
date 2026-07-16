@@ -17,7 +17,13 @@ class Feedback extends Model
         'parent_id',
         'komentar',
         'rating',
-        'is_revision_request'
+        'is_revision_request',
+        'sudah_direvisi'
+    ];
+
+    protected $casts = [
+        'is_revision_request' => 'boolean',
+        'sudah_direvisi' => 'boolean',
     ];
 
     // Relationships

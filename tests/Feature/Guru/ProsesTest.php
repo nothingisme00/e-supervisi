@@ -7,6 +7,7 @@ use App\Models\Supervisi;
 use App\Models\DokumenEvaluasi;
 use App\Models\ProsesPembelajaran;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Notification;
 use Tests\TestCase;
 
 class ProsesTest extends TestCase
@@ -103,6 +104,54 @@ class ProsesTest extends TestCase
         $this->assertNull($supervisi->reviewed_by);
         $this->assertNull($supervisi->reviewed_at);
         $this->assertTrue($supervisi->tanggal_supervisi->equalTo($firstDate));
+    }
+
+    public function test_resubmit_after_revision_notifies_kepala_sekolah(): void
+    {
+        Notification::fake();
+        $guru = User::factory()->guru()->create(['must_change_password' => false, 'tingkat' => 'SD']);
+        $kepala = User::factory()->kepalaSekolah()->create(['must_change_password' => false, 'tingkat' => 'SD', 'is_active' => true]);
+        $supervisi = $this->createSupervisiWithAllDocs($guru);
+        $supervisi->update(['status' => Supervisi::STATUS_REVISION]);
+        ProsesPembelajaran::factory()->create(['supervisi_id' => $supervisi->id]);
+
+        $this->actingAs($guru)->postJson(route('guru.supervisi.submit', $supervisi->id))
+            ->assertJson(['success' => true]);
+
+        Notification::assertSentTo($kepala, \App\Notifications\SupervisiPerluDireview::class);
+    }
+
+    public function test_resubmit_after_revision_resets_rubrik_and_marks_feedback(): void
+    {
+        $guru = User::factory()->guru()->create(['must_change_password' => false, 'tingkat' => 'SD']);
+        $kepala = User::factory()->kepalaSekolah()->create(['must_change_password' => false, 'tingkat' => 'SD']);
+        $supervisi = $this->createSupervisiWithAllDocs($guru);
+        $supervisi->update(['status' => Supervisi::STATUS_REVISION, 'reviewed_by' => $kepala->id]);
+        ProsesPembelajaran::factory()->create(['supervisi_id' => $supervisi->id]);
+
+        // Kepala sudah mengisi rubrik + feedback pada siklus review sebelumnya.
+        \App\Models\RubrikItem::query()->delete();
+        $item = \App\Models\RubrikItem::create([
+            'kode' => 'T.1', 'section' => 'A', 'section_label' => 'Tes',
+            'kelompok_nomor' => 1, 'kelompok_label' => 'Tes', 'sub_label' => 'Tes 1',
+            'urutan' => 1, 'is_active' => true,
+        ]);
+        \App\Models\EvaluasiRubrik::hitungDanSimpan($supervisi, $kepala->id, [$item->id => 2], 'masukan umum');
+        $feedback = \App\Models\Feedback::create([
+            'supervisi_id' => $supervisi->id,
+            'user_id' => $kepala->id,
+            'komentar' => 'Perlu perbaikan bagian pendahuluan.',
+        ]);
+
+        $this->actingAs($guru)->postJson(route('guru.supervisi.submit', $supervisi->id))
+            ->assertJson(['success' => true]);
+
+        // Rubrik direset agar kepala menilai ulang dari awal.
+        $this->assertDatabaseMissing('evaluasi_rubrik', ['supervisi_id' => $supervisi->id]);
+        $this->assertDatabaseMissing('evaluasi_rubrik_scores', ['rubrik_item_id' => $item->id]);
+
+        // Feedback TETAP tersimpan sebagai riwayat, tetapi ditandai sudah direvisi.
+        $this->assertDatabaseHas('feedback', ['id' => $feedback->id, 'sudah_direvisi' => true]);
     }
 
     public function test_submit_fails_without_complete_proses(): void

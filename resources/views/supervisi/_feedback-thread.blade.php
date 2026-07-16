@@ -60,6 +60,13 @@
                                 Revisi Diminta
                             </span>
                         @endif
+
+                        @if($fb->sudah_direvisi)
+                            <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-semibold bg-gray-200 text-gray-600 dark:bg-gray-700 dark:text-gray-300">
+                                <x-icon name="check" class="w-3 h-3" />
+                                Sudah Direvisi
+                            </span>
+                        @endif
                     </div>
                     <div class="inline-flex items-center gap-1.5 text-xs text-gray-500 dark:text-gray-400">
                         <x-icon name="clock" class="w-3.5 h-3.5" />

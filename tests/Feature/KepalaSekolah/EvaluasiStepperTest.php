@@ -78,6 +78,22 @@ class EvaluasiStepperTest extends TestCase
         $response->assertSee('Simpan Draf');
     }
 
+    public function test_stepper_langkah_3_reset_untuk_feedback_yang_sudah_direvisi(): void
+    {
+        [$kepala, $supervisi] = $this->kepalaDanSupervisi('under_review');
+        \App\Models\Feedback::create([
+            'supervisi_id' => $supervisi->id,
+            'user_id' => $kepala->id,
+            'komentar' => 'Feedback dari siklus sebelum revisi.',
+            'sudah_direvisi' => true,
+        ]);
+
+        $response = $this->actingAs($kepala)->get(route('kepala.evaluasi.show', $supervisi->id));
+
+        // Feedback lama (sudah direvisi) tidak boleh menandai langkah 3 selesai.
+        $response->assertSee('data-stepper-step="3" data-status="mendatang"', false);
+    }
+
     public function test_show_completed_menawarkan_lihat_feedback(): void
     {
         [$kepala, $supervisi] = $this->kepalaDanSupervisi('completed');

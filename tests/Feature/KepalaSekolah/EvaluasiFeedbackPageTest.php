@@ -32,6 +32,21 @@ class EvaluasiFeedbackPageTest extends TestCase
         $response->assertSee('Langkah 3');
     }
 
+    public function test_thread_menandai_feedback_yang_sudah_direvisi(): void
+    {
+        [$kepala, $supervisi] = $this->kepalaDanSupervisi();
+        \App\Models\Feedback::create([
+            'supervisi_id' => $supervisi->id,
+            'user_id' => $kepala->id,
+            'komentar' => 'Feedback dari siklus sebelum revisi guru.',
+            'sudah_direvisi' => true,
+        ]);
+
+        $response = $this->actingAs($kepala)->get(route('kepala.evaluasi.feedback.show', $supervisi->id));
+
+        $response->assertSee('Sudah Direvisi');
+    }
+
     public function test_halaman_feedback_403_untuk_kepala_beda_tingkat(): void
     {
         [$kepala, $supervisi] = $this->kepalaDanSupervisi('under_review', 'SMP');

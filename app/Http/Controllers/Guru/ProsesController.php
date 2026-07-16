@@ -129,6 +129,13 @@ class ProsesController extends Controller
             'reviewed_at' => null,
         ]);
 
+        // Reset rubrik penilaian siklus sebelumnya agar kepala sekolah menilai
+        // ulang dari awal (skor ikut terhapus via cascade). Feedback TIDAK dihapus
+        // demi riwayat, tetapi ditandai sudah direvisi sehingga tidak lagi dihitung
+        // sebagai feedback siklus berjalan (stepper langkah 3 kembali kosong).
+        $supervisi->evaluasiRubrik()->delete();
+        $supervisi->feedback()->update(['sudah_direvisi' => true]);
+
         try {
             $penerima = \App\Models\User::where('role', 'kepala_sekolah')
                 ->where('tingkat', $supervisi->user->tingkat)
