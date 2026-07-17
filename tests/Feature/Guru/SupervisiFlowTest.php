@@ -33,6 +33,10 @@ class SupervisiFlowTest extends TestCase
 
         $response->assertStatus(200);
         $this->assertSame('application/pdf', $response->headers->get('content-type'));
+        $this->assertStringContainsString(
+            'Rubrik Penilaian Supervisi - ' . $guru->name,
+            $response->headers->get('content-disposition'),
+        );
     }
 
     public function test_guru_cannot_download_other_guru_rubrik_pdf(): void

@@ -143,6 +143,24 @@ class RubrikPenilaianTest extends TestCase
         $this->assertSame('application/pdf', $response->headers->get('content-type'));
     }
 
+    public function test_kepala_rubrik_pdf_filename_terstruktur(): void
+    {
+        RubrikItem::query()->delete();
+        $item = RubrikItem::create(['kode' => 'T.1', 'section' => 'A', 'section_label' => 'Tes', 'kelompok_nomor' => 1, 'kelompok_label' => 'Tes', 'sub_label' => 'Tes 1', 'urutan' => 1, 'is_active' => true]);
+
+        $kepala = $this->createKepala();
+        $guru = User::factory()->guru()->create(['tingkat' => 'SD', 'name' => 'Budi Santoso']);
+        $supervisi = Supervisi::factory()->underReview()->create(['user_id' => $guru->id, 'reviewed_by' => $kepala->id]);
+        \App\Models\EvaluasiRubrik::hitungDanSimpan($supervisi, $kepala->id, [$item->id => 2], null);
+
+        $response = $this->actingAs($kepala)->get(route('kepala.evaluasi.rubrik.pdf', $supervisi->id));
+
+        $this->assertStringContainsString(
+            'Rubrik Penilaian Supervisi - Budi Santoso',
+            $response->headers->get('content-disposition'),
+        );
+    }
+
     public function test_rubrik_pdf_contains_reviewer_name_in_signature(): void
     {
         RubrikItem::query()->delete();

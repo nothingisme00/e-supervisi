@@ -45,6 +45,28 @@ class Supervisi extends Model
         ];
     }
 
+    // Nama file PDF hasil rubrik yang terstruktur & profesional, mis.
+    // "Rubrik Penilaian Supervisi - Budi Santoso - Matematika - 15 Juli 2026.pdf".
+    public function rubrikPdfFilename(): string
+    {
+        $bagian = ['Rubrik Penilaian Supervisi', $this->user->name];
+
+        if (! empty($this->user->mata_pelajaran)) {
+            $bagian[] = $this->user->mata_pelajaran;
+        }
+        if ($this->tanggal_supervisi) {
+            // Konvensi tanggal Indonesia yang sama dengan blade rubrik-pdf.
+            $bagian[] = $this->tanggal_supervisi->translatedFormat('d F Y');
+        }
+
+        $nama = implode(' - ', $bagian);
+        // Buang karakter yang tidak sah untuk nama file lintas OS, rapikan spasi.
+        $nama = preg_replace('/[\/\\\\:*?"<>|\x00-\x1F]+/', '', $nama);
+        $nama = trim(preg_replace('/\s+/', ' ', $nama));
+
+        return $nama . '.pdf';
+    }
+
     // Boot method for cascade delete and cache clearing
     protected static function boot()
     {
