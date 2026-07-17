@@ -45,8 +45,8 @@
                         @endphp
                         
                         @forelse($supervisi->dokumenEvaluasi as $index => $dokumen)
-                            <div class="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700/50 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200 border-b border-gray-200 dark:border-gray-600 last:border-b-0">
-                                <div class="flex items-center space-x-4">
+                            <div class="flex items-center justify-between gap-3 p-4 bg-gray-50 dark:bg-gray-700/50 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200 border-b border-gray-200 dark:border-gray-600 last:border-b-0">
+                                <div class="flex items-center space-x-4 flex-1 min-w-0">
                                     <!-- Nomor Urut -->
                                     <div class="shrink-0 w-8 text-center">
                                         <span class="text-sm font-semibold text-gray-500 dark:text-gray-400">{{ $loop->iteration }}.</span>
@@ -60,11 +60,11 @@
                                             <path fill-rule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clip-rule="evenodd"/>
                                         </svg>
                                     @endif
-                                    <div>
+                                    <div class="min-w-0">
                                         <p class="text-xs font-semibold text-blue-600 dark:text-blue-400 mb-0.5">
                                             {{ $jenisLabels[$dokumen->jenis_dokumen] ?? ucwords(str_replace('_', ' ', $dokumen->jenis_dokumen)) }}
                                         </p>
-                                        <p class="text-sm font-medium text-gray-900 dark:text-gray-100">
+                                        <p class="text-sm font-medium text-gray-900 dark:text-gray-100 truncate">
                                             {{ $dokumen->nama_file ?? 'Dokumen ' . ($index + 1) }}
                                         </p>
                                         @if($dokumen->deskripsi)
@@ -72,7 +72,7 @@
                                         @endif
                                     </div>
                                 </div>
-                                <div class="flex items-center gap-2">
+                                <div class="flex items-center gap-2 shrink-0">
                                     @if($dokumen->path_file)
                                     <a href="{{ route('kepala.evaluasi.preview', $dokumen->id) }}"
                                        target="_blank"
@@ -82,7 +82,7 @@
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
                                         </svg>
-                                        Preview
+                                        <span class="hidden sm:inline">Preview</span>
                                     </a>
                                     @endif
 
@@ -91,7 +91,7 @@
                                         <svg class="w-3.5 h-3.5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
                                         </svg>
-                                        Download
+                                        <span class="hidden sm:inline">Download</span>
                                     </a>
                                 </div>
                             </div>

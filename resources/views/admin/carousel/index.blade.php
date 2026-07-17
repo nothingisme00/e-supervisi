@@ -49,8 +49,8 @@
                 
                 <!-- Content -->
                 <div class="flex-1 p-4 sm:p-5">
-                    <div class="flex items-start justify-between gap-4">
-                        <div class="flex-1">
+                    <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 sm:gap-4">
+                        <div class="flex-1 min-w-0">
                             <div class="flex items-center gap-2 mb-2">
                                 <x-status-badge :status="$slide->is_active ? 'aktif' : 'nonaktif'" />
                                 <span class="text-xs text-gray-500 dark:text-gray-400">Urutan: {{ $index + 1 }} dari {{ $totalSlides }}</span>
@@ -62,7 +62,7 @@
                         </div>
                         
                         <!-- Actions -->
-                        <div class="flex items-center gap-2">
+                        <div class="flex items-center gap-2 self-end sm:self-auto shrink-0">
                             <form action="{{ route('admin.carousel.toggle', $slide) }}" method="POST" class="inline">
                                 @csrf
                                 @method('PATCH')
@@ -110,7 +110,7 @@
 
 <!-- Add/Edit Modal -->
 <div id="slideModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-[70] hidden items-center justify-center p-4 transition-all duration-300">
-    <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl w-full max-w-lg max-h-[90vh] overflow-hidden transform transition-all scale-100">
+    <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl w-full max-w-lg max-h-[90vh] overflow-hidden transform transition-all scale-100 flex flex-col">
         <!-- Header (outside form) -->
         <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 flex-shrink-0">
             <div class="flex items-center justify-between">
@@ -123,7 +123,7 @@
             </div>
         </div>
         
-        <form id="slideForm" method="POST" enctype="multipart/form-data" class="flex flex-col">
+        <form id="slideForm" method="POST" enctype="multipart/form-data" class="flex flex-col flex-1 min-h-0">
             @csrf
             <input type="hidden" name="_method" id="formMethod" value="POST">
             
