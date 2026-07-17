@@ -88,8 +88,8 @@
                     <div class="flex-1 min-w-0">
                         <div class="font-semibold text-sm sm:text-base text-gray-900 dark:text-white truncate mb-0.5 sm:mb-1">{{ $supervisi->user->name }}</div>
                         <div class="flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm text-gray-600 dark:text-gray-400 flex-wrap">
-                            <span class="px-2 py-0.5 sm:px-3 sm:py-1 bg-gray-100 dark:bg-gray-700/50 text-gray-700 dark:text-gray-300 rounded-lg sm:rounded-lg font-medium text-[10px] sm:text-sm">{{ $supervisi->user->mata_pelajaran ?? '-' }}</span>
-                            <span class="px-2 py-0.5 sm:px-3 sm:py-1 bg-gray-100 dark:bg-gray-700/50 text-gray-700 dark:text-gray-300 rounded-lg sm:rounded-lg font-medium text-[10px] sm:text-sm">{{ $supervisi->user->tingkat ?? '-' }}</span>
+                            <span class="px-2 py-0.5 sm:px-3 sm:py-1 bg-gray-100 dark:bg-gray-700/50 text-gray-700 dark:text-gray-300 rounded-lg sm:rounded-lg font-medium text-xs sm:text-sm">{{ $supervisi->user->mata_pelajaran ?? '-' }}</span>
+                            <span class="px-2 py-0.5 sm:px-3 sm:py-1 bg-gray-100 dark:bg-gray-700/50 text-gray-700 dark:text-gray-300 rounded-lg sm:rounded-lg font-medium text-xs sm:text-sm">{{ $supervisi->user->tingkat ?? '-' }}</span>
                         </div>
                     </div>
                 </div>

@@ -21,7 +21,7 @@
         @csrf
 
         <!-- Sticky progress + step nav -->
-        <div class="sticky top-16 z-10 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-3 mb-6 shadow-sm">
+        <div class="sticky top-[72px] sm:top-[88px] md:top-[72px] lg:top-[84px] z-10 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-3 mb-6 shadow-sm">
             <div class="flex items-center justify-between mb-2">
                 <span class="text-xs font-semibold text-gray-600 dark:text-gray-300">
                     <span id="rubrikProgressCount">0</span>/{{ $totalItem }} terisi
@@ -57,7 +57,7 @@
                                 <div class="px-4 py-4 sm:px-5">
                                     <p class="text-sm text-gray-700 dark:text-gray-300 mb-3">{{ $item->sub_label }}</p>
                                     <div class="grid grid-cols-3 rounded-lg border border-gray-200 dark:border-gray-600 divide-x divide-gray-200 dark:divide-gray-600 overflow-hidden rubrik-radio-group" data-item-id="{{ $item->id }}">
-                                        @foreach ([0 => 'Tidak', 1 => 'Kurang Lengkap/Sesuai', 2 => 'Sudah Lengkap/Sesuai'] as $val => $label)
+                                        @foreach ([0 => 'Tidak', 1 => 'Kurang Lengkap / Sesuai', 2 => 'Sudah Lengkap / Sesuai'] as $val => $label)
                                             <label class="block" title="{{ $val }} · {{ $label }}">
                                                 <input type="radio" name="skor[{{ $item->id }}]" value="{{ $val }}" class="sr-only peer rubrik-radio"
                                                     {{ (isset($skorTersimpan[$item->id]) && (int) $skorTersimpan[$item->id] === $val) ? 'checked' : '' }}>
