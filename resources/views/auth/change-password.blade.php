@@ -188,7 +188,8 @@
         </form>
     </div>
 
-    <div class="h-full flex flex-col justify-center px-6 py-12 sm:px-10 lg:px-14 max-w-lg mx-auto w-full overflow-y-auto scrollbar-hide">
+    <div class="h-full overflow-y-auto scrollbar-hide">
+      <div class="min-h-full flex flex-col justify-center px-6 py-12 sm:px-10 lg:px-14 max-w-lg mx-auto w-full">
         <div class="mb-8 text-center">
             <div class="inline-flex items-center justify-center w-16 h-16 sm:w-20 sm:h-20 bg-amber-500 rounded-2xl sm:rounded-2xl mb-6 shadow-xl shadow-amber-500/30">
                 <x-icon name="key" class="w-8 h-8 sm:w-10 sm:h-10 text-white" />
@@ -307,6 +308,7 @@
         <div class="mt-8 text-center">
             @include('auth.partials.footer')
         </div>
+      </div>
     </div>
 </aside>
 @endsection

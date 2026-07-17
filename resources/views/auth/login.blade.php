@@ -190,7 +190,8 @@
 </main>
 
 <aside class="w-full md:w-[420px] lg:w-[480px] xl:w-[540px] 2xl:w-[600px] flex-shrink-0 flex flex-col h-screen bg-white dark:bg-gray-800 border-l border-gray-200 dark:border-gray-700 shadow-2xl z-20 overflow-hidden relative transition-colors duration-300">
-    <div class="h-full flex flex-col justify-center px-6 py-4 sm:px-8 sm:py-5 lg:py-6 xl:px-10 max-w-md mx-auto w-full overflow-y-auto scrollbar-hide">
+    <div class="h-full overflow-y-auto scrollbar-hide">
+      <div class="min-h-full flex flex-col justify-center px-6 py-4 sm:px-8 sm:py-5 lg:py-6 xl:px-10 max-w-md mx-auto w-full">
         <!-- Header Section -->
         <div class="mb-4 lg:mb-6 text-center">
             <!-- Logo -->
@@ -338,6 +339,7 @@
             </button>
             @include('auth.partials.footer')
         </div>
+      </div>
     </div>
 </aside>
 @endsection
