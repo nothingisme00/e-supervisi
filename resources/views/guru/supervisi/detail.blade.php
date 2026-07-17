@@ -91,7 +91,7 @@
                                 </div>
                                 <div class="flex-1 min-w-0">
                                     <div class="text-xs sm:text-sm font-semibold text-gray-900 dark:text-white truncate">{{ ucfirst(str_replace('_', ' ', $dokumen->jenis_dokumen)) }}</div>
-                                    <div class="text-[10px] sm:text-xs text-gray-600 dark:text-gray-400 truncate">{{ $dokumen->nama_file }}</div>
+                                    <div class="text-xs text-gray-600 dark:text-gray-400 truncate">{{ $dokumen->nama_file }}</div>
                                 </div>
                                 <a href="{{ route('guru.supervisi.preview', $dokumen->id) }}" target="_blank" class="p-1.5 sm:p-2 bg-primary-600 hover:bg-primary-700 text-white rounded-lg transition-all duration-200 flex-shrink-0 active:scale-95">
                                     <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -180,7 +180,7 @@
                 @foreach($refleksiQuestions as $key => $question)
                     <div class="border-l-4 @if($loop->iteration == 1) border-green-500 bg-green-50 dark:bg-green-900/20 @elseif($loop->iteration == 2) border-blue-500 bg-blue-50 dark:bg-blue-900/20 @elseif($loop->iteration == 3) border-primary-500 bg-primary-50 dark:bg-primary-900/20 @elseif($loop->iteration == 4) border-primary-500 bg-primary-50 dark:bg-primary-900/20 @else border-teal-500 bg-teal-50 dark:bg-teal-900/20 @endif rounded-r-lg p-2.5 sm:p-3">
                         <div class="flex items-start gap-2">
-                            <span class="flex items-center justify-center w-5 h-5 sm:w-6 sm:h-6 @if($loop->iteration == 1) bg-green-600 text-white @elseif($loop->iteration == 2) bg-blue-600 text-white @elseif($loop->iteration == 3) bg-primary-600 text-white @elseif($loop->iteration == 4) bg-primary-600 text-white @else bg-teal-600 text-white @endif rounded text-[10px] sm:text-xs font-bold flex-shrink-0">{{ $loop->iteration }}</span>
+                            <span class="flex items-center justify-center w-5 h-5 sm:w-6 sm:h-6 @if($loop->iteration == 1) bg-green-600 text-white @elseif($loop->iteration == 2) bg-blue-600 text-white @elseif($loop->iteration == 3) bg-primary-600 text-white @elseif($loop->iteration == 4) bg-primary-600 text-white @else bg-teal-600 text-white @endif rounded text-xs font-bold flex-shrink-0">{{ $loop->iteration }}</span>
                             <div class="flex-1 min-w-0">
                                 <div class="text-xs sm:text-sm font-semibold text-gray-900 dark:text-white mb-0.5 sm:mb-1 leading-tight">{{ $question }}</div>
                                 <p class="text-xs sm:text-sm text-gray-700 dark:text-gray-300 leading-relaxed">{{ $supervisi->prosesPembelajaran->$key }}</p>

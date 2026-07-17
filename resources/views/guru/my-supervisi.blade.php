@@ -33,17 +33,17 @@
                 <div class="flex flex-col items-center p-2.5 sm:p-3 bg-primary-50 dark:bg-primary-900/20 rounded-lg border border-primary-100 dark:border-primary-800">
                     <x-icon name="document" class="w-5 h-5 text-primary-600 dark:text-primary-400 mb-1" />
                     <div class="text-base sm:text-lg font-bold text-primary-700 dark:text-primary-300 tabular-nums">{{ $mySupervisi->count() }}</div>
-                    <div class="text-xs text-primary-600 dark:text-primary-400">Total</div>
+                    <div class="text-xs text-center leading-tight text-primary-600 dark:text-primary-400">Total</div>
                 </div>
                 <div class="flex flex-col items-center p-2.5 sm:p-3 {{ $perluTindakan > 0 ? 'bg-amber-50 dark:bg-amber-900/20 border-amber-100 dark:border-amber-800' : 'bg-gray-50 dark:bg-gray-700/20 border-gray-200 dark:border-gray-700' }} rounded-lg border">
                     <x-icon name="pencil" class="w-5 h-5 {{ $perluTindakan > 0 ? 'text-amber-600 dark:text-amber-400' : 'text-gray-400 dark:text-gray-500' }} mb-1" />
                     <div class="text-base sm:text-lg font-bold {{ $perluTindakan > 0 ? 'text-amber-700 dark:text-amber-300' : 'text-gray-500 dark:text-gray-400' }} tabular-nums">{{ $perluTindakan }}</div>
-                    <div class="text-xs {{ $perluTindakan > 0 ? 'text-amber-600 dark:text-amber-400' : 'text-gray-500 dark:text-gray-400' }}">Perlu Tindakan</div>
+                    <div class="text-xs text-center leading-tight {{ $perluTindakan > 0 ? 'text-amber-600 dark:text-amber-400' : 'text-gray-500 dark:text-gray-400' }}">Perlu Tindakan</div>
                 </div>
                 <div class="flex flex-col items-center p-2.5 sm:p-3 {{ $totalSelesai > 0 ? 'bg-emerald-50 dark:bg-emerald-900/20 border-emerald-100 dark:border-emerald-800' : 'bg-gray-50 dark:bg-gray-700/20 border-gray-200 dark:border-gray-700' }} rounded-lg border">
                     <x-icon name="check-circle" class="w-5 h-5 {{ $totalSelesai > 0 ? 'text-emerald-600 dark:text-emerald-400' : 'text-gray-400 dark:text-gray-500' }} mb-1" />
                     <div class="text-base sm:text-lg font-bold {{ $totalSelesai > 0 ? 'text-emerald-700 dark:text-emerald-300' : 'text-gray-500 dark:text-gray-400' }} tabular-nums">{{ $totalSelesai }}</div>
-                    <div class="text-xs {{ $totalSelesai > 0 ? 'text-emerald-600 dark:text-emerald-400' : 'text-gray-500 dark:text-gray-400' }}">Selesai</div>
+                    <div class="text-xs text-center leading-tight {{ $totalSelesai > 0 ? 'text-emerald-600 dark:text-emerald-400' : 'text-gray-500 dark:text-gray-400' }}">Selesai</div>
                 </div>
             </div>
 
