@@ -57,6 +57,50 @@ class SessionTimeoutTest extends TestCase
     }
 
     /**
+     * Regresi gejala asli: "berhasil login tiba-tiba keluar lagi".
+     * Login baru harus tetap bertahan walau di tabel sessions masih ada
+     * baris sesi lama user yang sudah basi.
+     */
+    public function test_login_baru_tidak_ditendang_meski_ada_sesi_lama_basi(): void
+    {
+        config(['session.driver' => 'database']);
+
+        $user = User::factory()->admin()->create([
+            'nik' => '1234567890123456',
+            'password' => bcrypt('password123'),
+            'is_active' => true,
+            'must_change_password' => false,
+        ]);
+
+        DB::table('sessions')->insert([
+            'id' => 'sesi-kemarin-basi',
+            'user_id' => $user->id,
+            'ip_address' => '127.0.0.1',
+            'user_agent' => 'PHPUnit',
+            'payload' => base64_encode(serialize([])),
+            'last_activity' => time() - ((int) config('session.lifetime') * 60) - 300,
+        ]);
+
+        $this->post('/login', [
+            'nik' => '1234567890123456',
+            'password' => 'password123',
+            'role' => 'admin',
+        ])->assertRedirect(route('admin.dashboard'));
+
+        $this->get(route('admin.dashboard'))->assertOk();
+        $this->assertAuthenticatedAs($user);
+    }
+
+    /**
+     * Kebijakan: idle timeout 30 menit. .env.testing tidak menyetel
+     * SESSION_LIFETIME, jadi ini menguji fallback default config.
+     */
+    public function test_default_session_lifetime_adalah_30_menit(): void
+    {
+        $this->assertSame(30, (int) config('session.lifetime'));
+    }
+
+    /**
      * Pengaman regresi: sesi request INI yang sudah basi tetap ditendang
      * (idle timeout masih ditegakkan setelah query di-scope per sesi).
      */

@@ -219,6 +219,35 @@ class LoginTest extends TestCase
         $this->assertGuest();
     }
 
+    public function test_halaman_login_tidak_menampilkan_opsi_ingat_saya(): void
+    {
+        $response = $this->get('/login');
+
+        $response->assertOk();
+        $response->assertDontSee('Ingat saya');
+        $response->assertDontSee('name="remember"', false);
+    }
+
+    public function test_login_tidak_memasang_cookie_remember_meski_dikirim_paksa(): void
+    {
+        User::factory()->admin()->create([
+            'nik' => '1234567890123456',
+            'password' => bcrypt('password123'),
+            'is_active' => true,
+            'must_change_password' => false,
+        ]);
+
+        $response = $this->post('/login', [
+            'nik' => '1234567890123456',
+            'password' => 'password123',
+            'role' => 'admin',
+            'remember' => '1',
+        ]);
+
+        $response->assertRedirect(route('admin.dashboard'));
+        $response->assertCookieMissing(auth()->guard('web')->getRecallerName());
+    }
+
     public function test_login_sets_just_logged_in_session(): void
     {
         User::factory()->guru()->create([
