@@ -17,6 +17,46 @@ class LoginTest extends TestCase
         $response->assertStatus(200);
     }
 
+    public function test_halaman_login_selalu_bisa_dibuka_meski_sering_diakses(): void
+    {
+        // Regresi ERR_TOO_MANY_REDIRECTS: GET /login tidak boleh ikut kena
+        // throttle — hanya POST yang dibatasi. Halaman harus selalu render.
+        for ($i = 0; $i < 8; $i++) {
+            $response = $this->get('/login');
+        }
+
+        $response->assertStatus(200);
+    }
+
+    public function test_post_login_terthrottle_kembali_ke_login_dengan_detik_tunggu(): void
+    {
+        // Lampaui batas throttle:5,1 pada POST /login.
+        for ($i = 0; $i < 6; $i++) {
+            $response = $this->from('/login')->post('/login', [
+                'nik' => '1234567890123456',
+                'password' => 'salah',
+                'role' => 'guru',
+            ]);
+        }
+
+        // Bukan halaman error: kembali ke login dengan pesan + detik tunggu untuk countdown.
+        $response->assertRedirect('/login');
+        $response->assertSessionHasErrors('throttle');
+        $response->assertSessionHas('throttle_seconds');
+        $this->assertIsInt(session('throttle_seconds'));
+        $this->assertGreaterThan(0, session('throttle_seconds'));
+    }
+
+    public function test_halaman_login_menampilkan_countdown_saat_throttle(): void
+    {
+        $response = $this->withSession(['throttle_seconds' => 42])->get('/login');
+
+        $response->assertStatus(200);
+        $response->assertSee('data-throttle-seconds="42"', false);
+        $response->assertSee('id="throttle-countdown"', false);
+        $response->assertSee('Terlalu banyak percobaan login');
+    }
+
     public function test_login_page_has_no_cache_headers(): void
     {
         $response = $this->get('/login');

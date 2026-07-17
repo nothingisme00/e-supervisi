@@ -216,8 +216,15 @@
         </div>
         @endif
 
+        <!-- Throttle Alert dengan countdown (tanpa halaman error terpisah) -->
+        @if(session('throttle_seconds'))
+        <div id="throttle-alert" data-throttle-seconds="{{ (int) session('throttle_seconds') }}"
+             class="mb-3 lg:mb-4 bg-amber-50 dark:bg-amber-900/20 text-amber-700 dark:text-amber-400 p-2.5 lg:p-3 rounded-lg text-xs lg:text-sm border border-amber-100 dark:border-amber-800/50 flex items-center gap-2">
+            <x-icon name="clock" class="w-4 h-4 lg:w-5 lg:h-5 flex-shrink-0" />
+            <span id="throttle-message">Terlalu banyak percobaan login. Coba lagi dalam <strong id="throttle-countdown" class="tabular-nums">{{ (int) session('throttle_seconds') }}</strong> detik.</span>
+        </div>
+        @elseif($errors->any())
         <!-- Error Alert -->
-        @if($errors->any())
         <div class="mb-3 lg:mb-4 bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 p-2.5 lg:p-3 rounded-lg text-xs lg:text-sm border border-red-100 dark:border-red-800/50 flex items-center gap-2">
             <x-icon name="exclamation-triangle" class="w-4 h-4 lg:w-5 lg:h-5 flex-shrink-0" />
             <span>{{ $errors->first() }}</span>
@@ -347,6 +354,30 @@
 @push('scripts')
 <script>
     document.addEventListener('DOMContentLoaded', () => {
+        // Countdown throttle login: tombol Masuk nonaktif sampai jeda habis.
+        const throttleAlert = document.getElementById('throttle-alert');
+        if (throttleAlert) {
+            const loginBtn = document.getElementById('loginBtn');
+            const countdownEl = document.getElementById('throttle-countdown');
+            const messageEl = document.getElementById('throttle-message');
+            let sisa = parseInt(throttleAlert.dataset.throttleSeconds, 10) || 0;
+
+            if (loginBtn) loginBtn.disabled = true;
+
+            const timer = setInterval(() => {
+                sisa -= 1;
+                if (sisa > 0) {
+                    if (countdownEl) countdownEl.textContent = sisa;
+                    return;
+                }
+                clearInterval(timer);
+                if (messageEl) messageEl.textContent = 'Silakan coba login kembali.';
+                throttleAlert.classList.remove('bg-amber-50', 'dark:bg-amber-900/20', 'text-amber-700', 'dark:text-amber-400', 'border-amber-100', 'dark:border-amber-800/50');
+                throttleAlert.classList.add('bg-green-50', 'dark:bg-green-900/20', 'text-green-600', 'dark:text-green-400', 'border-green-100', 'dark:border-green-800/50');
+                if (loginBtn) loginBtn.disabled = false;
+            }, 1000);
+        }
+
         // Theme Toggle (dipicu manual oleh tombol — theme-init.blade.php
         // sudah menyetel kelas `dark` di <html> sebelum body dirender).
         const themeText = document.getElementById('theme-text');

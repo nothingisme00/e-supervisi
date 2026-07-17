@@ -33,18 +33,17 @@ Route::get('/', function () {
     return redirect()->route('login');
 });
 
-// Authentication Routes - With Rate Limiting
-Route::middleware('throttle:5,1')->group(function () {
-    Route::get('/login', [CustomLoginController::class, 'showLoginForm'])->name('login')->middleware('guest');
-    Route::post('/login', [CustomLoginController::class, 'login'])->middleware('guest');
-});
+// Authentication Routes - Rate limit hanya di POST; GET harus selalu bisa
+// render agar redirect saat throttle tidak berputar (ERR_TOO_MANY_REDIRECTS).
+Route::get('/login', [CustomLoginController::class, 'showLoginForm'])->name('login')->middleware('guest');
+Route::post('/login', [CustomLoginController::class, 'login'])->middleware(['guest', 'throttle:5,1']);
 Route::post('/logout', [CustomLoginController::class, 'logout'])->name('logout');
 
 // Change Password Routes (must be authenticated, but no must.change.password middleware)
-// Rate limited to prevent abuse
-Route::middleware(['auth', 'prevent.back', 'throttle:10,1'])->group(function () {
+// Rate limit hanya di POST agar halaman form selalu bisa render saat throttle.
+Route::middleware(['auth', 'prevent.back'])->group(function () {
     Route::get('/change-password', [ChangePasswordController::class, 'showChangePasswordForm'])->name('change-password');
-    Route::post('/change-password', [ChangePasswordController::class, 'updatePassword'])->name('change-password.update');
+    Route::post('/change-password', [ChangePasswordController::class, 'updatePassword'])->name('change-password.update')->middleware('throttle:10,1');
 });
 
 // File Download & Preview Routes (without prevent.back middleware to avoid header conflicts)

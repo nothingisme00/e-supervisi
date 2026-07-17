@@ -20,6 +20,19 @@ class ChangePasswordTest extends TestCase
         $response->assertStatus(200);
     }
 
+    public function test_halaman_ganti_password_selalu_bisa_dibuka_meski_sering_diakses(): void
+    {
+        // Pola redirect-loop yang sama dengan login: GET tidak boleh di-throttle,
+        // hanya POST yang dibatasi.
+        $user = User::factory()->guru()->create(['must_change_password' => true]);
+
+        for ($i = 0; $i < 12; $i++) {
+            $response = $this->actingAs($user)->get('/change-password');
+        }
+
+        $response->assertStatus(200);
+    }
+
     public function test_unauthenticated_user_redirected_to_login(): void
     {
         $response = $this->get('/change-password');
