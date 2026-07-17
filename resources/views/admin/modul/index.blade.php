@@ -58,8 +58,9 @@
                 @endforeach
             </x-form.select>
             <x-form.textarea name="deskripsi" label="Deskripsi" rows="2" maxlength="2000">{{ old('deskripsi') }}</x-form.textarea>
-            <x-form.field label="File PDF *" name="file" hint="Hanya PDF, maksimal 20 MB. Jumlah halaman dihitung otomatis.">
-                <input type="file" id="file" name="file" accept="application/pdf" required class="w-full text-sm text-gray-700 dark:text-gray-300">
+            <x-form.field label="File PDF *" name="file" hint="Hanya PDF, maksimal 20 MB. Jumlah halaman & sampul dibuat otomatis dari halaman 1.">
+                <input type="file" id="file" name="file" accept="application/pdf" required data-thumbnail-source class="w-full text-sm text-gray-700 dark:text-gray-300">
+                <input type="file" name="thumbnail" accept="image/*" data-thumbnail-target class="hidden" tabindex="-1" aria-hidden="true">
             </x-form.field>
             <fieldset class="space-y-2">
                 <legend class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Video YouTube (opsional, kosongkan jika tidak ada)</legend>
@@ -81,8 +82,15 @@
             @forelse ($moduls as $modul)
                 <div x-data="{ open: false }" class="border border-gray-100 dark:border-gray-700/50 rounded-lg {{ ! $modul->is_active ? 'opacity-50' : '' }}">
                     <button type="button" @click="open = !open" :aria-expanded="open"
-                            class="w-full flex items-center justify-between gap-3 px-4 py-3 min-h-[44px] cursor-pointer select-none text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 rounded-lg">
-                        <div class="min-w-0">
+                            class="w-full flex items-center gap-3 px-4 py-3 min-h-[44px] cursor-pointer select-none text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 rounded-lg">
+                        <div class="w-9 h-12 shrink-0 rounded overflow-hidden bg-gray-100 dark:bg-gray-700 flex items-center justify-center">
+                            @if ($modul->thumbnail_url)
+                                <img src="{{ $modul->thumbnail_url }}" alt="" class="w-full h-full object-cover" loading="lazy" decoding="async">
+                            @else
+                                <x-icon name="document" class="w-5 h-5 text-gray-400 dark:text-gray-500" />
+                            @endif
+                        </div>
+                        <div class="min-w-0 flex-1">
                             <p class="text-sm font-medium text-gray-900 dark:text-gray-200 truncate">{{ $modul->judul }}</p>
                             <p class="text-xs text-gray-500 dark:text-gray-400">{{ $modul->kategori->nama }} • {{ $modul->jumlah_halaman }} halaman • {{ $modul->videos->count() }} video</p>
                         </div>
@@ -105,8 +113,9 @@
                                 </div>
                                 <textarea name="deskripsi" rows="2" maxlength="2000" class="form-control">{{ $modul->deskripsi }}</textarea>
                                 <div>
-                                    <label class="block text-xs text-gray-500 dark:text-gray-400 mb-1">Ganti PDF (kosongkan bila tidak diganti — progres guru tetap tersimpan)</label>
-                                    <input type="file" name="file" accept="application/pdf" class="w-full text-sm text-gray-700 dark:text-gray-300">
+                                    <label class="block text-xs text-gray-500 dark:text-gray-400 mb-1">Ganti PDF (kosongkan bila tidak diganti — progres guru tetap tersimpan). Sampul ikut diperbarui dari halaman 1.</label>
+                                    <input type="file" name="file" accept="application/pdf" data-thumbnail-source class="w-full text-sm text-gray-700 dark:text-gray-300">
+                                    <input type="file" name="thumbnail" accept="image/*" data-thumbnail-target class="hidden" tabindex="-1" aria-hidden="true">
                                 </div>
                                 @foreach ($modul->videos as $i => $video)
                                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
@@ -136,4 +145,6 @@
         </div>
     </x-card>
 </div>
+
+@vite('resources/js/modul-thumbnail.js')
 @endsection

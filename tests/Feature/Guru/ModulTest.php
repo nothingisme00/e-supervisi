@@ -31,6 +31,27 @@ class ModulTest extends TestCase
         $response->assertSee('60%');
     }
 
+    public function test_kartu_menampilkan_sampul_saat_ada_thumbnail(): void
+    {
+        $modul = Modul::factory()->withThumbnail()->create(['judul' => 'Modul Bersampul']);
+
+        $response = $this->actingAs($this->createGuru())->get(route('guru.modul.index'));
+
+        $response->assertStatus(200);
+        $response->assertSee('src="' . asset('storage/' . $modul->thumbnail_path) . '"', false);
+    }
+
+    public function test_kartu_tanpa_thumbnail_tetap_tampil_tanpa_error(): void
+    {
+        Modul::factory()->create(['judul' => 'Modul Tanpa Sampul', 'thumbnail_path' => null]);
+
+        $response = $this->actingAs($this->createGuru())->get(route('guru.modul.index'));
+
+        $response->assertStatus(200);
+        $response->assertSee('Modul Tanpa Sampul');
+        $response->assertDontSee('storage/modul-thumbnails', false);
+    }
+
     public function test_inactive_modul_hidden_from_list(): void
     {
         Modul::factory()->create(['judul' => 'Modul Nonaktif', 'is_active' => false]);

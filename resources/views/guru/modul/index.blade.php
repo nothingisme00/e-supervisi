@@ -29,7 +29,18 @@
                 @endphp
                 <a href="{{ route('guru.modul.show', $modul->id) }}"
                    class="group block rounded-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-gray-900">
-                    <x-card class="p-4 h-full group-hover:border-primary-300 dark:group-hover:border-primary-700 group-hover:shadow-md transition-all">
+                    <x-card flush class="h-full group-hover:border-primary-300 dark:group-hover:border-primary-700 group-hover:shadow-md transition-all">
+                        <div class="aspect-[16/9] bg-gray-100 dark:bg-gray-700">
+                            @if ($modul->thumbnail_url)
+                                <img src="{{ $modul->thumbnail_url }}" alt="Sampul {{ $modul->judul }}"
+                                     class="w-full h-full object-cover object-top" loading="lazy" decoding="async">
+                            @else
+                                <div class="w-full h-full flex items-center justify-center">
+                                    <x-icon name="book-open" class="w-10 h-10 text-gray-300 dark:text-gray-600" />
+                                </div>
+                            @endif
+                        </div>
+                        <div class="p-4">
                         <div class="flex items-start justify-between gap-2 mb-2">
                             <h2 class="text-base font-semibold text-gray-900 dark:text-gray-100">{{ $modul->judul }}</h2>
                             <span class="shrink-0 px-2 py-0.5 rounded-full text-xs bg-primary-50 dark:bg-primary-900/20 text-primary-600 dark:text-primary-400">{{ $modul->kategori->nama }}</span>
@@ -43,6 +54,7 @@
                         </div>
                         <div class="h-2 rounded-full bg-gray-100 dark:bg-gray-700 overflow-hidden" role="progressbar" aria-valuenow="{{ $persen }}" aria-valuemin="0" aria-valuemax="100" aria-label="Progres baca {{ $modul->judul }}">
                             <div class="h-full rounded-full bg-primary-600 dark:bg-primary-500" style="width: {{ $persen }}%"></div>
+                        </div>
                         </div>
                     </x-card>
                 </a>

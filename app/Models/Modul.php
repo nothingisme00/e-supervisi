@@ -13,13 +13,18 @@ class Modul extends Model
     use HasFactory;
 
     protected $fillable = [
-        'judul', 'deskripsi', 'modul_kategori_id', 'file_path', 'jumlah_halaman', 'is_active',
+        'judul', 'deskripsi', 'modul_kategori_id', 'file_path', 'thumbnail_path', 'jumlah_halaman', 'is_active',
     ];
 
     protected $casts = [
         'is_active' => 'boolean',
         'jumlah_halaman' => 'integer',
     ];
+
+    public function getThumbnailUrlAttribute(): ?string
+    {
+        return $this->thumbnail_path ? asset('storage/' . $this->thumbnail_path) : null;
+    }
 
     public function scopeActive(Builder $query): Builder
     {

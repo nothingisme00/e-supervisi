@@ -10,6 +10,7 @@ export default defineConfig({
                 'resources/css/app.css',
                 'resources/js/app.js',
                 'resources/js/modul-reader.js',
+                'resources/js/modul-thumbnail.js',
             ],
             refresh: true,
         }),

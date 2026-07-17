@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Modul;
 use App\Models\ModulKategori;
+use App\Services\ImageService;
 use App\Services\PdfPageCounter;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -13,7 +14,7 @@ class ModulController extends Controller
 {
     private const PESAN_PDF_RUSAK = 'File PDF tidak dapat dibaca. Pastikan PDF valid dan tidak terkunci kata sandi.';
 
-    public function __construct(private PdfPageCounter $pageCounter)
+    public function __construct(private PdfPageCounter $pageCounter, private ImageService $imageService)
     {
     }
 
@@ -44,6 +45,7 @@ class ModulController extends Controller
             'deskripsi' => $validated['deskripsi'] ?? null,
             'modul_kategori_id' => $validated['modul_kategori_id'],
             'file_path' => $path,
+            'thumbnail_path' => $this->storeThumbnail($request),
             'jumlah_halaman' => $jumlahHalaman,
             'is_active' => true,
         ]);
@@ -83,6 +85,12 @@ class ModulController extends Controller
 
             Storage::disk('local')->delete($modul->file_path);
             $data['file_path'] = $path;
+
+            // Sampul menggambarkan halaman 1 PDF lama, jadi selalu diganti saat PDF diganti.
+            if ($modul->thumbnail_path) {
+                Storage::disk('public')->delete($modul->thumbnail_path);
+            }
+            $data['thumbnail_path'] = $this->storeThumbnail($request);
         }
 
         $modul->update($data);
@@ -123,6 +131,7 @@ class ModulController extends Controller
             'deskripsi' => 'nullable|string|max:2000',
             'modul_kategori_id' => 'required|exists:modul_kategoris,id',
             'file' => ($fileRequired ? 'required' : 'nullable') . '|file|mimes:pdf|max:20480',
+            'thumbnail' => 'nullable|image|mimes:jpeg,png,webp|max:2048',
             'videos' => 'nullable|array|max:5',
             'videos.*.judul' => 'nullable|required_with:videos.*.youtube_url|string|max:255',
             'videos.*.youtube_url' => [
@@ -132,6 +141,16 @@ class ModulController extends Controller
                 'regex:#^https?://(?:(?:www\.|m\.)?youtube\.com/(?:watch\?(?:[^\s]*&)?v=|shorts/)|youtu\.be/)[A-Za-z0-9_-]{11}#',
             ],
         ]);
+    }
+
+    /** Simpan sampul PDF hasil render browser. Kegagalan tidak boleh memblokir modul — kembalikan null. */
+    private function storeThumbnail(Request $request): ?string
+    {
+        if (! $request->hasFile('thumbnail')) {
+            return null;
+        }
+
+        return $this->imageService->uploadAndOptimize($request->file('thumbnail'), 'modul-thumbnails', 640, 75) ?: null;
     }
 
     /** Ganti seluruh daftar video modul dengan input baru (abaikan baris kosong). */
