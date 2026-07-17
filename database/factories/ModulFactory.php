@@ -18,4 +18,9 @@ class ModulFactory extends Factory
             'is_active' => true,
         ];
     }
+
+    public function withThumbnail(): static
+    {
+        return $this->state(fn () => ['thumbnail_path' => 'modul-thumbnails/' . fake()->uuid() . '.webp']);
+    }
 }
