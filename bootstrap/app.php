@@ -34,8 +34,12 @@ return Application::configure(basePath: dirname(__DIR__))
                 ], 429);
             }
             
+            $detik = (int) ($e->getHeaders()['Retry-After'] ?? 60);
+
+            // Kembali ke halaman form (GET tidak di-throttle, jadi tidak berputar);
+            // throttle_seconds dipakai halaman login untuk menampilkan countdown.
             return back()->withErrors([
-                'throttle' => 'Terlalu banyak percobaan login. Silakan tunggu ' . ($e->getHeaders()['Retry-After'] ?? 60) . ' detik sebelum mencoba lagi.',
-            ])->onlyInput('nik', 'role');
+                'throttle' => 'Terlalu banyak percobaan login. Silakan tunggu ' . $detik . ' detik sebelum mencoba lagi.',
+            ])->with('throttle_seconds', $detik)->onlyInput('nik', 'role');
         });
     })->create();
