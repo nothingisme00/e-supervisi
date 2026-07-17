@@ -77,7 +77,7 @@ class HomeController extends Controller
 
         $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('kepala.evaluasi.rubrik-pdf', compact('supervisi', 'evaluasi', 'rubrikItemsBySection', 'skorPerItem'));
 
-        return $pdf->stream('rubrik-penilaian-' . $supervisi->id . '.pdf');
+        return $pdf->stream($supervisi->rubrikPdfFilename());
     }
 
     public function viewOther($id)
