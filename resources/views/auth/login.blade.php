@@ -216,6 +216,14 @@
         </div>
         @endif
 
+        <!-- Warning Alert (mis. sesi berakhir karena idle) -->
+        @if(session('warning'))
+        <div class="mb-3 lg:mb-4 bg-amber-50 dark:bg-amber-900/20 text-amber-600 dark:text-amber-400 p-2.5 lg:p-3 rounded-lg text-xs lg:text-sm border border-amber-100 dark:border-amber-800/50 flex items-center gap-2">
+            <x-icon name="exclamation-triangle" class="w-4 h-4 lg:w-5 lg:h-5 flex-shrink-0" />
+            <span>{{ session('warning') }}</span>
+        </div>
+        @endif
+
         <!-- Throttle Alert dengan countdown (tanpa halaman error terpisah) -->
         @if(session('throttle_seconds'))
         <div id="throttle-alert" data-throttle-seconds="{{ (int) session('throttle_seconds') }}"
@@ -315,17 +323,6 @@
                     </div>
                 </div>
             </x-form.field>
-
-            <div class="flex items-center justify-between pt-0.5">
-                <label class="flex items-center cursor-pointer group select-none">
-                    <div class="relative">
-                        <input class="peer sr-only" id="remember-me" name="remember" type="checkbox" value="1"/>
-                        <div class="w-4 h-4 lg:w-5 lg:h-5 border-2 border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-gray-900 peer-checked:bg-primary-600 peer-checked:border-primary-600 peer-focus-visible:ring-2 peer-focus-visible:ring-primary-500 peer-focus-visible:ring-offset-2 transition-all duration-200"></div>
-                        <x-icon name="check" class="w-3 h-3 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-white opacity-0 peer-checked:opacity-100 transition-opacity duration-200" />
-                    </div>
-                    <span class="ml-2 text-xs lg:text-sm font-medium text-gray-600 dark:text-gray-400 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">Ingat saya</span>
-                </label>
-            </div>
 
             <div class="pt-2 lg:pt-3">
                 <button id="loginBtn" class="group relative w-full flex justify-center items-center py-2.5 lg:py-3 px-6 rounded-lg text-xs lg:text-sm font-semibold text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-gray-900 transition-colors duration-200 disabled:opacity-70 disabled:cursor-not-allowed shadow-lg shadow-primary-500/25 min-h-[44px]" type="submit">

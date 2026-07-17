@@ -36,22 +36,24 @@ class SessionTimeout
         }
 
         if (Auth::check()) {
+            // Periksa HANYA sesi request ini. Memeriksa sesi lain milik user
+            // (mis. baris basi bekas device/sesi lama) membuat login-ulang
+            // via cookie "Ingat saya" ikut tertendang padahal sesinya baru.
             $session = DB::table('sessions')
-                ->where('user_id', Auth::id())
-                ->orderBy('last_activity', 'desc')
+                ->where('id', $request->session()->getId())
                 ->first();
 
             if ($session) {
                 $lastActivity = $session->last_activity;
                 $currentTime = time();
-                
+
                 // Jika session sudah expired (lebih dari timeout)
                 if (($currentTime - $lastActivity) > $this->timeout()) {
-                    // Hapus semua session user ini dari database
+                    // Hapus baris sesi ini dari database
                     DB::table('sessions')
-                        ->where('user_id', Auth::id())
+                        ->where('id', $request->session()->getId())
                         ->delete();
-                    
+
                     // Logout user
                     Auth::logout();
                     

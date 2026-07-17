@@ -37,7 +37,9 @@ class CustomLoginController extends Controller
             'role' => $request->role
         ];
 
-        if (Auth::attempt($credentials, $request->boolean('remember'))) {
+        // Fitur "Ingat saya" sengaja dihapus: sesi hanya hidup selama
+        // session.lifetime, tanpa cookie remember jangka panjang
+        if (Auth::attempt($credentials)) {
             $user = Auth::user();
 
             // Cek apakah user aktif
