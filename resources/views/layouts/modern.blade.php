@@ -7,6 +7,9 @@
 
     <title>@hasSection('page-title')@yield('page-title') · @endif{{ config('app.name', 'Yayasan Az-Zahro') }}</title>
 
+    <link rel="icon" type="image/png" href="{{ asset('images/logo-yayasan.png') }}">
+    <link rel="apple-touch-icon" href="{{ asset('images/logo-yayasan.png') }}">
+
     @include('partials.theme-init')
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -323,11 +326,8 @@
                     
                     <!-- Logo & Brand - Clickable (Full reload to avoid SPA issues) -->
                     <a href="{{ Auth::user()->isAdmin() ? route('admin.dashboard') : (Auth::user()->isGuru() ? route('guru.home') : (Auth::user()->isKepalaSekolah() ? route('kepala.dashboard') : url('/'))) }}" class="flex items-center gap-1.5 sm:gap-2 md:gap-2 lg:gap-2.5 hover:opacity-80 transition-opacity cursor-pointer group">
-                        <div class="w-8 h-8 sm:w-9 sm:h-9 md:w-8 md:h-8 lg:w-9 lg:h-9 bg-gradient-to-br from-primary-500 to-primary-600 rounded-lg flex items-center justify-center shadow-md group-hover:shadow-lg transition-shadow">
-                            <svg class="w-4.5 h-4.5 sm:w-5 sm:h-5 md:w-5 md:h-5 lg:w-5 lg:h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
-                            </svg>
-                        </div>
+                        <img src="{{ asset('images/logo-yayasan.png') }}" alt="Logo {{ config('app.name') }}"
+                             class="w-8 h-8 sm:w-9 sm:h-9 md:w-8 md:h-8 lg:w-9 lg:h-9 object-contain group-hover:opacity-90 transition-opacity" />
                         <!-- Always show brand text, just adjust size -->
                         <div>
                             <h3 class="text-[13px] sm:text-sm md:text-sm lg:text-base font-bold text-gray-900 dark:text-gray-100 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">{{ config('app.name') }}</h3>
@@ -674,11 +674,8 @@
                     <!-- Left: Brand -->
                     <a href="{{ Auth::user()->isAdmin() ? route('admin.dashboard') : (Auth::user()->isGuru() ? route('guru.home') : (Auth::user()->isKepalaSekolah() ? route('kepala.dashboard') : url('/'))) }}" 
                        wire:navigate class="flex items-center gap-3 hover:opacity-80 transition-opacity group">
-                        <div class="w-8 h-8 bg-gradient-to-br from-primary-500 to-primary-600 rounded-lg flex items-center justify-center shadow-sm group-hover:shadow-md transition-shadow">
-                            <svg class="w-4.5 h-4.5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
-                            </svg>
-                        </div>
+                        <img src="{{ asset('images/logo-yayasan.png') }}" alt="Logo {{ config('app.name') }}"
+                             class="w-8 h-8 object-contain group-hover:opacity-90 transition-opacity" />
                         <div class="flex items-baseline gap-2">
                             <span class="font-bold text-sm text-gray-900 dark:text-white group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">{{ config('app.name') }}</span>
                             <span class="text-gray-400 dark:text-gray-500">•</span>
