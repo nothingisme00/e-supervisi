@@ -193,15 +193,21 @@
     <div class="h-full overflow-y-auto scrollbar-hide">
       <div class="min-h-full flex flex-col justify-center px-6 py-4 sm:px-8 sm:py-5 lg:py-6 xl:px-10 max-w-md mx-auto w-full">
         <!-- Header Section -->
-        <div class="mb-4 lg:mb-6 text-center">
-            <!-- Logo -->
-            <div class="inline-flex items-center justify-center w-12 h-12 lg:w-14 lg:h-14 bg-primary-600 rounded-lg mb-3 lg:mb-4 shadow-lg">
-                <x-icon name="book-open" class="w-6 h-6 lg:w-7 lg:h-7 text-white" />
-            </div>
+        <div class="mb-6 lg:mb-8 text-center">
+            <!-- Logo: otomatis pakai file logo yayasan bila tersedia di public/images/,
+                 jika belum ada jatuh ke ikon buku bawaan tanpa perlu ubah kode. -->
+            @if (file_exists(public_path('images/logo-yayasan.png')))
+                <img src="{{ asset('images/logo-yayasan.png') }}" alt="Logo {{ config('app.name') }}"
+                     class="w-16 h-16 lg:w-20 lg:h-20 mx-auto mb-4 object-contain" />
+            @else
+                <div class="inline-flex items-center justify-center w-14 h-14 lg:w-16 lg:h-16 bg-primary-600 rounded-2xl mb-4 shadow-lg shadow-primary-500/25">
+                    <x-icon name="book-open" class="w-7 h-7 lg:w-8 lg:h-8 text-white" />
+                </div>
+            @endif
 
             <!-- App Name -->
-            <h1 class="text-2xl lg:text-3xl font-bold text-gray-900 dark:text-white mb-0.5">
-                {{ config('app.name', 'E-Supervisi') }}
+            <h1 class="text-2xl lg:text-3xl font-bold tracking-tight text-gray-900 dark:text-white mb-1">
+                {{ config('app.name', 'Yayasan Az-Zahro') }}
             </h1>
             <p class="text-gray-500 dark:text-gray-400 text-xs lg:text-sm">
                 Sistem Supervisi Pembelajaran Terpadu
@@ -239,13 +245,7 @@
         </div>
         @endif
 
-        <!-- Welcome Text -->
-        <div class="mb-3 lg:mb-4">
-            <h2 class="text-base lg:text-lg font-semibold text-gray-900 dark:text-white mb-0.5">Selamat Datang</h2>
-            <p class="text-gray-500 dark:text-gray-400 text-xs lg:text-sm">Masuk untuk melanjutkan ke sistem</p>
-        </div>
-
-        <form action="{{ route('login') }}" class="space-y-3 lg:space-y-4" method="POST" id="loginForm">
+        <form action="{{ route('login') }}" class="space-y-4 lg:space-y-5" method="POST" id="loginForm">
             @csrf
 
             <x-form.field label="NIK" name="nik" :error="''">

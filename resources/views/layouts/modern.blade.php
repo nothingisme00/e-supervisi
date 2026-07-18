@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>@hasSection('page-title')@yield('page-title') · @endif{{ config('app.name', 'E-Supervisi') }}</title>
+    <title>@hasSection('page-title')@yield('page-title') · @endif{{ config('app.name', 'Yayasan Az-Zahro') }}</title>
 
     @include('partials.theme-init')
 
@@ -330,7 +330,7 @@
                         </div>
                         <!-- Always show brand text, just adjust size -->
                         <div>
-                            <h3 class="text-[13px] sm:text-sm md:text-sm lg:text-base font-bold text-gray-900 dark:text-gray-100 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">E-Supervisi</h3>
+                            <h3 class="text-[13px] sm:text-sm md:text-sm lg:text-base font-bold text-gray-900 dark:text-gray-100 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">{{ config('app.name') }}</h3>
                             <p class="text-[9px] sm:text-[10px] md:text-xs lg:text-sm text-gray-500 dark:text-gray-400 hidden sm:block">Sistem Supervisi Pembelajaran</p>
                         </div>
                     </a>
@@ -654,7 +654,7 @@
                         <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
                             <path d="M10 2a6 6 0 00-6 6v3.586l-.707.707A1 1 0 004 14h12a1 1 0 00.707-1.707L16 11.586V8a6 6 0 00-6-6zM10 18a3 3 0 01-3-3h6a3 3 0 01-3 3z"/>
                         </svg>
-                        <span>E-Supervisi 2025</span>
+                        <span>{{ config('app.name') }} {{ date('Y') }}</span>
                     </div>
                 </div>
             </div>
@@ -680,7 +680,7 @@
                             </svg>
                         </div>
                         <div class="flex items-baseline gap-2">
-                            <span class="font-bold text-sm text-gray-900 dark:text-white group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">E-Supervisi</span>
+                            <span class="font-bold text-sm text-gray-900 dark:text-white group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">{{ config('app.name') }}</span>
                             <span class="text-gray-400 dark:text-gray-500">•</span>
                             <span class="text-xs text-gray-600 dark:text-gray-400">
                                 @if(Auth::user()->isAdmin())

@@ -17,10 +17,10 @@ class AuthPageFooterTest extends TestCase
     public function test_auth_pages_show_cobrand_footer(): void
     {
         $this->get(route('login'))
-            ->assertSee('E-Supervisi · Sistem Supervisi Pembelajaran');
+            ->assertSee('Yayasan Az-Zahro · Sistem Supervisi Pembelajaran');
 
         $guru = User::factory()->guru()->create(['must_change_password' => true, 'tingkat' => 'SD']);
         $this->actingAs($guru)->get(route('change-password'))
-            ->assertSee('E-Supervisi · Sistem Supervisi Pembelajaran');
+            ->assertSee('Yayasan Az-Zahro · Sistem Supervisi Pembelajaran');
     }
 }
