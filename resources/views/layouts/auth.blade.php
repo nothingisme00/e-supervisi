@@ -23,7 +23,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>@hasSection('page-title')@yield('page-title') · @endif{{ config('app.name', 'E-Supervisi') }}</title>
+    <title>@hasSection('page-title')@yield('page-title') · @endif{{ config('app.name', 'Yayasan Az-Zahro') }}</title>
 
     @include('partials.theme-init')
 
