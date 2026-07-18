@@ -25,6 +25,9 @@
 
     <title>@hasSection('page-title')@yield('page-title') · @endif{{ config('app.name', 'Yayasan Az-Zahro') }}</title>
 
+    <link rel="icon" type="image/png" href="{{ asset('images/logo-yayasan.png') }}">
+    <link rel="apple-touch-icon" href="{{ asset('images/logo-yayasan.png') }}">
+
     @include('partials.theme-init')
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
