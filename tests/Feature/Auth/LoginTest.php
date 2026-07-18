@@ -17,6 +17,25 @@ class LoginTest extends TestCase
         $response->assertStatus(200);
     }
 
+    public function test_login_page_menampilkan_nama_yayasan_sebagai_brand(): void
+    {
+        // Rebrand: header login memakai nama aplikasi "Yayasan Az-Zahro".
+        $response = $this->get('/login');
+
+        $response->assertStatus(200);
+        $response->assertSee('Yayasan Az-Zahro');
+    }
+
+    public function test_login_page_tanpa_blok_selamat_datang(): void
+    {
+        // Redesign hirarki: blok "Selamat Datang" dihapus agar nama yayasan
+        // jadi satu-satunya heading dominan (tidak ada dua heading bersaing).
+        $response = $this->get('/login');
+
+        $response->assertStatus(200);
+        $response->assertDontSee('Selamat Datang');
+    }
+
     public function test_halaman_login_selalu_bisa_dibuka_meski_sering_diakses(): void
     {
         // Regresi ERR_TOO_MANY_REDIRECTS: GET /login tidak boleh ikut kena
