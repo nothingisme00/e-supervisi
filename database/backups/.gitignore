@@ -1,0 +1,4 @@
+# Folder tempat hasil backup .sql disimpan.
+# Dump berisi data asli — JANGAN di-commit ke Git. Folder-nya dipertahankan.
+*
+!.gitignore
