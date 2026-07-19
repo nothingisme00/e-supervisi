@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 
 class CarouselSlide extends Model
 {
@@ -59,8 +60,10 @@ class CarouselSlide extends Model
                 return asset($this->image_path);
             }
             
-            // Default: path relatif dari storage (carousel/, avatars/, dll)
-            return asset('storage/' . $this->image_path);
+            // Default: path relatif dari disk 'public' (carousel/, avatars/, dll).
+            // Pakai URL disk agar ikut ke object storage/bucket di produksi,
+            // bukan di-hardcode ke symlink /storage lokal.
+            return Storage::disk('public')->url($this->image_path);
         }
         return null;
     }

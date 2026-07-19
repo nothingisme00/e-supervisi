@@ -4,6 +4,7 @@ namespace Tests\Unit\Models;
 
 use App\Models\CarouselSlide;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 
 class CarouselSlideModelTest extends TestCase
@@ -58,6 +59,19 @@ class CarouselSlideModelTest extends TestCase
     {
         $slide = CarouselSlide::factory()->create(['image_path' => 'carousel/test.webp']);
         $this->assertStringContainsString('storage/carousel/test.webp', $slide->image_url);
+    }
+
+    public function test_image_url_storage_mengikuti_url_disk_public(): void
+    {
+        // Regresi produksi: saat disk 'public' dihosting di bucket/object storage
+        // (bukan symlink lokal), URL gambar harus mengikuti URL disk tersebut,
+        // bukan di-hardcode ke asset('storage/...') yang menunjuk ke lokal.
+        config(['filesystems.disks.public.url' => 'https://bucket.example.test/media']);
+        Storage::forgetDisk('public');
+
+        $slide = CarouselSlide::factory()->create(['image_path' => 'carousel/foo.webp']);
+
+        $this->assertSame('https://bucket.example.test/media/carousel/foo.webp', $slide->image_url);
     }
 
     public function test_image_url_returns_null_when_no_path(): void
