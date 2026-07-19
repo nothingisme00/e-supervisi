@@ -19,11 +19,12 @@ class LoginTest extends TestCase
 
     public function test_login_page_menampilkan_nama_yayasan_sebagai_brand(): void
     {
-        // Rebrand: header login memakai nama aplikasi "Yayasan Az-Zahro".
+        // Rebrand: header login memakai nama aplikasi "Yayasan Az-Zahroh"
+        // (ejaan resmi sesuai logo, pakai "h").
         $response = $this->get('/login');
 
         $response->assertStatus(200);
-        $response->assertSee('Yayasan Az-Zahro');
+        $response->assertSee('Yayasan Az-Zahroh');
     }
 
     public function test_login_page_membersihkan_jejak_idle_logout(): void
