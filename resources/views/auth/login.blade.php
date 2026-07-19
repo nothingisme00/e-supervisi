@@ -351,6 +351,11 @@
 @push('scripts')
 <script>
     document.addEventListener('DOMContentLoaded', () => {
+        // Bersihkan jejak idle-logout sesi sebelumnya (layouts/modern) —
+        // jejak basi di localStorage bisa menendang login yang baru sah.
+        localStorage.removeItem('lastActivityTime');
+        localStorage.removeItem('sessionLogoutTime');
+
         // Countdown throttle login: tombol Masuk nonaktif sampai jeda habis.
         const throttleAlert = document.getElementById('throttle-alert');
         if (throttleAlert) {
