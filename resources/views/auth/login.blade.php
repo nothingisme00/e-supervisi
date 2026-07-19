@@ -207,7 +207,7 @@
 
             <!-- App Name -->
             <h1 class="text-2xl lg:text-3xl font-bold tracking-tight text-gray-900 dark:text-white mb-1">
-                {{ config('app.name', 'Yayasan Az-Zahro') }}
+                {{ config('app.name', 'Yayasan Az-Zahroh') }}
             </h1>
             <p class="text-gray-500 dark:text-gray-400 text-xs lg:text-sm">
                 Sistem Supervisi Pembelajaran Terpadu
