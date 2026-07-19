@@ -5,6 +5,7 @@ namespace Tests\Unit\Models;
 use App\Models\Modul;
 use App\Models\ModulKategori;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 
 class ModulModelTest extends TestCase
@@ -17,6 +18,18 @@ class ModulModelTest extends TestCase
         Modul::factory()->create(['is_active' => false]);
 
         $this->assertSame(1, Modul::active()->count());
+    }
+
+    public function test_thumbnail_url_mengikuti_url_disk_public(): void
+    {
+        // Regresi produksi: thumbnail modul harus memakai URL disk 'public'
+        // (bucket/object storage), bukan asset('storage/...') yang lokal.
+        config(['filesystems.disks.public.url' => 'https://bucket.example.test/media']);
+        Storage::forgetDisk('public');
+
+        $modul = Modul::factory()->create(['thumbnail_path' => 'modul-thumbnails/foo.webp']);
+
+        $this->assertSame('https://bucket.example.test/media/modul-thumbnails/foo.webp', $modul->thumbnail_url);
     }
 
     public function test_modul_belongs_to_kategori(): void
