@@ -26,6 +26,19 @@ class LoginTest extends TestCase
         $response->assertSee('Yayasan Az-Zahro');
     }
 
+    public function test_login_page_membersihkan_jejak_idle_logout(): void
+    {
+        // Regresi "login lalu ter-logout seketika": jejak lastActivityTime /
+        // sessionLogoutTime basi di localStorage (sisa sesi lama) menendang
+        // login baru via init() script idle-logout. Halaman login harus
+        // membersihkan jejak itu.
+        $response = $this->get('/login');
+
+        $response->assertStatus(200);
+        $response->assertSee("localStorage.removeItem('lastActivityTime')", false);
+        $response->assertSee("localStorage.removeItem('sessionLogoutTime')", false);
+    }
+
     public function test_login_page_tanpa_blok_selamat_datang(): void
     {
         // Redesign hirarki: blok "Selamat Datang" dihapus agar nama yayasan

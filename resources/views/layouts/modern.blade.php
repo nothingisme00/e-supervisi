@@ -1808,7 +1808,7 @@ if (backToTopBtn) {
 <script>
 (function() {
     // CONFIGURATION
-    const INACTIVITY_TIMEOUT = 10 * 60 * 1000; // 10 menit
+    const INACTIVITY_TIMEOUT = {{ (int) config('session.lifetime') }} * 60 * 1000; // ikut SESSION_LIFETIME (satu sumber dgn middleware SessionTimeout)
     const WARNING_SECONDS = 15; // Warning 15 detik sebelum logout
     const STORAGE_KEY = 'lastActivityTime';
     const LOGOUT_TIME_KEY = 'sessionLogoutTime';
@@ -2064,38 +2064,16 @@ if (backToTopBtn) {
     
     // Inisialisasi saat load
     function init() {
-        // Cek apakah ada stored logout time yang sudah lewat
-        const storedLogoutTime = localStorage.getItem(LOGOUT_TIME_KEY);
-        if (storedLogoutTime && Date.now() >= parseInt(storedLogoutTime, 10)) {
-            // Waktu logout sudah lewat, langsung logout
-            performLogout();
-            return;
-        }
-        
-        // Cek session expired
-        if (isSessionExpired()) {
-            performLogout();
-            return;
-        }
-        
-        // Cek apakah perlu tampilkan warning
-        if (shouldShowWarning()) {
-            showWarningAndStartCountdown();
-            return;
-        }
-        
-        // Jika tidak ada stored activity time, set sekarang
-        if (!localStorage.getItem(STORAGE_KEY)) {
-            saveActivityTime();
-        }
-        
-        // Hitung sisa waktu ke warning
-        const lastActivity = getLastActivityTime();
-        const elapsed = Date.now() - lastActivity;
-        const remainingToWarning = Math.max(0, WARNING_TIME - elapsed);
-        
-        // Set timer
-        logoutTimer = setTimeout(showWarningAndStartCountdown, remainingToWarning);
+        // Halaman ini baru saja dirender server = sesi PASTI masih valid
+        // (hakim validitas sesi adalah middleware SessionTimeout, 30 menit).
+        // Jejak localStorage lama (sisa sesi/tab sebelumnya yang tak sempat
+        // dibersihkan) TIDAK boleh menendang login yang baru sah — dulu blok
+        // performLogout() di sini membuat user ter-logout seketika setelah
+        // login. Mulai segar: hapus jejak, catat aktivitas sekarang.
+        localStorage.removeItem(LOGOUT_TIME_KEY);
+        saveActivityTime();
+
+        logoutTimer = setTimeout(showWarningAndStartCountdown, WARNING_TIME);
     }
     
     // Mulai
