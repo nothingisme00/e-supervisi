@@ -210,7 +210,7 @@
                 {{ config('app.name', 'Yayasan Az-Zahroh') }}
             </h1>
             <p class="text-gray-500 dark:text-gray-400 text-xs lg:text-sm">
-                Tes Git Deploy
+                Sistem Supervisi Pembelajaran Terpadu
             </p>
         </div>
 
