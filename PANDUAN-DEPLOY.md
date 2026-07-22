@@ -157,6 +157,34 @@ tanya support). Tanpa cron, aplikasi tetap jalan — hanya notifikasi terjadwal 
 > arahkan upload ke sana, atau set `FILESYSTEM_DISK` sesuai kebutuhan. Untuk mayoritas
 > host Niagahoster/Hostinger, `storage:link` berfungsi normal.
 
+### A9. Auto-deploy dari GitHub (opsional; AKTIF di produksi sejak 2026-07-22)
+
+Alur: **push ke `main` → web live terupdate otomatis ≤ 5 menit.** Komponen:
+
+1. Repo di-clone ke folder kerja terpisah (BUKAN web root):
+   `git clone <repo> ~/repositories/esupervisi`
+2. Cron tiap 5 menit menjalankan `scripts/deploy-server.sh` (ada di repo):
+   ```
+   */5 * * * * /bin/bash /home/namauser/repositories/esupervisi/scripts/deploy-server.sh >> /home/namauser/deploy.log 2>&1
+   ```
+   Script keluar diam-diam jika tidak ada commit baru; flag `--force` untuk memaksa.
+   Ia rsync kode ke folder aplikasi + salin aset publik ke web root **tanpa
+   menyentuh** `.env`, `storage/`, `vendor/`, `bootstrap/cache/`, `index.php`
+   web root, dan symlink `storage`; lalu `migrate --force` + clear cache.
+
+Konsekuensi workflow (karena server tanpa Node & composer tidak dijalankan deploy):
+
+- `public/build` **di-commit ke repo** — setiap ubah CSS/JS: `npm run build`
+  lalu commit hasil build bersama perubahan sebelum push.
+- Perubahan `composer.json` tetap butuh `composer install` manual di server.
+
+> **JANGAN pakai "Git Deploy Manager" bawaan hosting** (Gavia/RapidPlex): tool itu
+> selalu men-deploy seluruh repo langsung ke document root — pernah menyebabkan
+> insiden source code + `.git/` terekspos publik dan symlink storage tertimpa
+> (2026-07-22). File `.cpanel.yml` di repo dibuat untuk fitur Git cPanel native
+> yang ternyata tidak tersedia di host ini; yang otoritatif adalah
+> `scripts/deploy-server.sh`.
+
 ---
 
 ## Bagian B — VPS / Railway (ringkas)
