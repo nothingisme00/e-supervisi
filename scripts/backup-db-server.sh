@@ -11,9 +11,22 @@ APPDIR=/home/esupervi/esupervisi
 BACKUP_DIR=/home/esupervi/backups
 KEEP=30   # jumlah backup harian yang disimpan (30 hari terakhir)
 
-# Ambil nilai satu variabel dari .env (tahan spasi & tanda kutip)
+# Ambil nilai satu variabel dari .env, meniru aturan parser Laravel:
+# - nilai berkutip ("..." / '...') diambil apa adanya (boleh mengandung #)
+# - nilai tanpa kutip: buang komentar inline (spasi lalu #...) & spasi ujung
 env_get() {
-    grep -E "^$1=" "$APPDIR/.env" | head -1 | cut -d= -f2- | sed 's/^["'\'']//;s/["'\'']$//'
+    local raw
+    raw=$(grep -E "^$1=" "$APPDIR/.env" | head -1 | cut -d= -f2-)
+    raw="${raw#"${raw%%[![:space:]]*}"}"          # buang spasi depan
+    if [[ "$raw" == '"'* ]]; then
+        raw="${raw#\"}"; raw="${raw%%\"*}"          # isi di antara kutip ganda
+    elif [[ "$raw" == "'"* ]]; then
+        raw="${raw#\'}"; raw="${raw%%\'*}"          # isi di antara kutip tunggal
+    else
+        raw="${raw%%[[:space:]]#*}"                 # buang komentar inline
+        raw="${raw%"${raw##*[![:space:]]}"}"        # buang spasi belakang
+    fi
+    printf '%s' "$raw"
 }
 
 DB_DATABASE=$(env_get DB_DATABASE)
