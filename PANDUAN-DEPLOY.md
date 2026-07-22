@@ -130,6 +130,18 @@ php artisan event:cache
 Untuk membersihkan cache setelah update konfigurasi:
 `php artisan optimize:clear`.
 
+> **Waspada shared hosting dengan OPcache "nakal":** di beberapa host (terjadi di
+> cPanel Gavia/DomaiNesia, 2026-07-21), OPcache tidak mendeteksi perubahan file
+> `bootstrap/cache/*.php` setelah `config:cache` dijalankan ulang — hasilnya
+> `MissingAppKeyException` padahal `.env` sudah benar, dan tetap gagal walau
+> `config:cache` diulang berkali-kali. Cirinya: error yang **persis sama**
+> muncul lagi walau sudah re-cache. Kalau ini terjadi, jalankan
+> `php artisan optimize:clear` (BUKAN cache ulang) dan **jangan pakai
+> `config:cache`/`route:cache`/`view:cache`/`event:cache` sama sekali** di host
+> tersebut — biarkan aplikasi jalan tanpa cache (sedikit lebih lambat, tapi
+> stabil dan tidak perlu akses restart PHP-FPM/OPcache yang biasanya tidak
+> tersedia di shared hosting).
+
 ### A8. Pasang cron scheduler
 cPanel → **Cron Jobs** → tambah, jalan **setiap menit**:
 
