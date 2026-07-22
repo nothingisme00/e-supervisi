@@ -57,6 +57,31 @@ Tidak perlu apa-apa ekstra — script deploy otomatis menjalankan
 
 ---
 
+## Backup (jaring pengaman kalau data rusak/hilang)
+
+Ada **3 lapis** backup, semuanya otomatis — kamu tidak perlu apa-apa:
+
+| Lapis | Apa | Seberapa sering | Di mana |
+|---|---|---|---|
+| Kode | Seluruh source code | Tiap push | GitHub |
+| Database harian | Data aplikasi (guru, supervisi, nilai) | Tiap hari 02:30 | `~/backups/` di server (30 hari terakhir) |
+| Full account | Semua (file + DB + config) | Mingguan | JetBackup cPanel |
+
+**Cek backup database jalan:**
+```bash
+ls -lh ~/backups/        # daftar file backup harian
+tail ~/backup.log        # riwayat + error kalau ada
+```
+
+**Restore database dari backup harian** (kalau suatu saat data rusak) — lewat Terminal cPanel:
+```bash
+cd ~/esupervisi
+# ganti NAMAFILE dengan file backup yang mau dipulihkan (lihat ls ~/backups/)
+gunzip < ~/backups/NAMAFILE.sql.gz | mysql -u DB_USER -p NAMA_DATABASE
+```
+(DB_USER & NAMA_DATABASE ada di `~/esupervisi/.env`; akan diminta password.)
+Untuk restore full account / file upload, pakai **JetBackup 5** di cPanel (tombol Restore).
+
 ## Cara mengecek deploy jalan atau tidak
 
 Buka **Terminal cPanel**, lalu:
@@ -74,6 +99,16 @@ Kalau butuh deploy SEKARANG tanpa menunggu cron:
 ```bash
 bash ~/repositories/e-supervisi/scripts/deploy-server.sh --force
 ```
+
+## Daftar cron yang terpasang di server (3 buah)
+
+| Jadwal | Perintah | Fungsi |
+|---|---|---|
+| Tiap menit | `artisan schedule:run` | Pengingat supervisi (Senin & Kamis 07:00) |
+| Tiap 5 menit | `deploy-server.sh` | Auto-update dari GitHub |
+| Harian 02:30 | `backup-db-server.sh` | Backup database |
+
+Cek/kelola di **cPanel → Cron Jobs**.
 
 ---
 
