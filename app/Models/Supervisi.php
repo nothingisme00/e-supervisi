@@ -30,7 +30,10 @@ class Supervisi extends Model
 
     protected $casts = [
         'tanggal_supervisi' => 'date',
-        'reviewed_at' => 'datetime'
+        'reviewed_at' => 'datetime',
+        // Wajib integer: driver PDO tanpa mysqlnd (shared hosting) mengembalikan
+        // string, membuat perbandingan ketat di lockedByOther() salah tolak
+        'reviewed_by' => 'integer',
     ];
 
     // Helper method untuk list semua status
