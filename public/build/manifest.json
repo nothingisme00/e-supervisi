@@ -1,0 +1,42 @@
+{
+  "_pdf.worker.min-DyKMSyxm.js": {
+    "file": "assets/pdf.worker.min-DyKMSyxm.js",
+    "name": "pdf.worker.min",
+    "assets": [
+      "assets/pdf.worker.min-DEtVeC4l.mjs"
+    ]
+  },
+  "node_modules/pdfjs-dist/build/pdf.worker.min.mjs": {
+    "file": "assets/pdf.worker.min-DEtVeC4l.mjs",
+    "src": "node_modules/pdfjs-dist/build/pdf.worker.min.mjs"
+  },
+  "resources/css/app.css": {
+    "file": "assets/app-Df1FrDm6.css",
+    "src": "resources/css/app.css",
+    "isEntry": true
+  },
+  "resources/js/app.js": {
+    "file": "assets/app-Cgu7uJiN.js",
+    "name": "app",
+    "src": "resources/js/app.js",
+    "isEntry": true
+  },
+  "resources/js/modul-reader.js": {
+    "file": "assets/modul-reader-D2fRnJxE.js",
+    "name": "modul-reader",
+    "src": "resources/js/modul-reader.js",
+    "isEntry": true,
+    "imports": [
+      "_pdf.worker.min-DyKMSyxm.js"
+    ]
+  },
+  "resources/js/modul-thumbnail.js": {
+    "file": "assets/modul-thumbnail-4YLd1BLc.js",
+    "name": "modul-thumbnail",
+    "src": "resources/js/modul-thumbnail.js",
+    "isEntry": true,
+    "imports": [
+      "_pdf.worker.min-DyKMSyxm.js"
+    ]
+  }
+}

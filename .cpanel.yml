@@ -1,0 +1,27 @@
+---
+# Resep deploy Git Version Control cPanel (server Gavia, e-supervisiazzahroh.com).
+# Struktur server SPLIT: kode di ~/esupervisi, web root di ~/public_html
+# (Document Root main domain tidak bisa diubah — lihat PANDUAN-DEPLOY.md A5 Opsi 2).
+#
+# Yang TIDAK BOLEH disentuh deploy:
+#   - ~/esupervisi/.env, storage/, vendor/, bootstrap/cache/  (state server)
+#   - ~/public_html/index.php   (versi edit-an dengan path ../esupervisi/...)
+#   - ~/public_html/storage     (symlink -> esupervisi/storage/app/public)
+deployment:
+  tasks:
+    - export APPDIR=/home/esupervi/esupervisi
+    - export WEBROOT=/home/esupervi/public_html
+    # 1. Sinkron kode repo -> folder aplikasi (state server dikecualikan)
+    - /usr/bin/rsync -a --delete-after --exclude=.git/ --exclude=.env --exclude=storage/ --exclude=vendor/ --exclude=node_modules/ --exclude=bootstrap/cache/ --exclude=composer.lock --exclude=package-lock.json ./ $APPDIR/
+    # 2. Aset publik -> web root (index.php SENGAJA tidak di-copy)
+    - /usr/bin/rsync -a --delete-after $APPDIR/public/build/ $WEBROOT/build/
+    - /usr/bin/rsync -a $APPDIR/public/fonts/ $WEBROOT/fonts/
+    - /usr/bin/rsync -a $APPDIR/public/images/ $WEBROOT/images/
+    - /bin/cp -f $APPDIR/public/.htaccess $WEBROOT/.htaccess
+    - /bin/cp -f $APPDIR/public/robots.txt $WEBROOT/robots.txt
+    - /bin/cp -f $APPDIR/public/favicon.ico $WEBROOT/favicon.ico
+    # 3. Migrasi DB + bersihkan cache view/config (JANGAN config:cache di host ini,
+    #    OPcache-nya tidak invalidasi bootstrap/cache — lihat PANDUAN-DEPLOY.md A7)
+    - cd $APPDIR && php artisan migrate --force
+    - cd $APPDIR && php artisan view:clear
+    - cd $APPDIR && php artisan config:clear
