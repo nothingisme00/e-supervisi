@@ -122,6 +122,29 @@ class SupervisiModelTest extends TestCase
         $this->assertInstanceOf(\Illuminate\Support\Carbon::class, $supervisi->tanggal_supervisi);
     }
 
+    public function test_reviewed_by_is_cast_to_integer(): void
+    {
+        // Driver PDO tanpa mysqlnd (umum di shared hosting) mengembalikan angka
+        // sebagai string — tanpa cast, lockedByOther() salah menolak reviewer sendiri
+        $supervisi = new Supervisi(['reviewed_by' => '2']);
+
+        $this->assertSame(2, $supervisi->reviewed_by);
+    }
+
+    public function test_locked_by_other_is_false_for_same_reviewer_even_when_db_returns_string(): void
+    {
+        $kepala = User::factory()->kepalaSekolah()->create();
+        $this->actingAs($kepala);
+
+        $supervisi = Supervisi::factory()->underReview()->create(['reviewed_by' => $kepala->id]);
+        // Simulasi driver PDO shared hosting yang mengembalikan angka sebagai string
+        $supervisi->setRawAttributes(array_merge($supervisi->getAttributes(), [
+            'reviewed_by' => (string) $kepala->id,
+        ]));
+
+        $this->assertFalse($supervisi->lockedByOther());
+    }
+
     public function test_needs_revision_column_is_removed(): void
     {
         // R3: kolom mati — tidak pernah ditulis aplikasi, sumber data salah
