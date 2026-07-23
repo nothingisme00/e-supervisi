@@ -44,6 +44,7 @@ rsync -a "$APPDIR"/public/fonts/ "$WEBROOT"/fonts/
 rsync -a "$APPDIR"/public/images/ "$WEBROOT"/images/
 cp -f "$APPDIR"/public/.htaccess "$WEBROOT"/.htaccess
 cp -f "$APPDIR"/public/robots.txt "$WEBROOT"/robots.txt
+cp -f "$APPDIR"/public/sitemap.xml "$WEBROOT"/sitemap.xml
 cp -f "$APPDIR"/public/favicon.ico "$WEBROOT"/favicon.ico
 
 # 3. Migrasi DB + bersihkan cache
