@@ -32,8 +32,10 @@ class Supervisi extends Model
         'tanggal_supervisi' => 'date',
         'reviewed_at' => 'datetime',
         // Wajib integer: driver PDO tanpa mysqlnd (shared hosting) mengembalikan
-        // string, membuat perbandingan ketat di lockedByOther() salah tolak
+        // string, membuat perbandingan ketat salah tolak — reviewed_by di
+        // lockedByOther(), user_id di guard pemilik previewDocument()
         'reviewed_by' => 'integer',
+        'user_id' => 'integer',
     ];
 
     // Helper method untuk list semua status
